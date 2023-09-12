@@ -9,7 +9,6 @@
 #include<sys/socket.h>
 #include<netdb.h>
 #include<string.h>
-#include "./log_config_utils.c"
 typedef enum
 {
 	MENSAJE,

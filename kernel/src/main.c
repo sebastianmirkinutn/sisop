@@ -2,9 +2,10 @@
 #include <commons/log.h>
 #include <commons/config.h>
 #include "./../../shared/src/client_utils.c"
+#include "./../../shared/src/log_utils.c"
 
 int main(int argc, char* argv[]){
-    t_log* logger = iniciar_logger();
+    t_log* logger = iniciar_logger("log_kernel","Kernel");
     t_config* config = iniciar_config("./cfg/kernel.config");
     
     char* ip_cpu = config_get_string_value(config, "IP_CPU");

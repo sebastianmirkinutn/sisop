@@ -28,50 +28,9 @@ int iniciar_servidor(t_log *logger, char *puerto){
 	listen(socket_servidor, SOMAXCONN);
 
 	freeaddrinfo(servinfo);
-	log_trace(logger, "Listo para escuchar a mi cliente");
+	log_info(logger, "Listo para escuchar a mi cliente");
 	return socket_servidor;
 }
-
-/*int iniciar_servidor(char* puerto, t_log *logger)
-{
-	struct addrinfo hints, *server_info;
-	int socket_servidor, s;
-
-	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_flags = AI_PASSIVE;
-
-	s = getaddrinfo(NULL, puerto, &hints, &server_info);
-	if(s!=0){
-		exit(EXIT_FAILURE);
-	}
-
-	socket_servidor = socket(server_info->ai_family,
-	                    server_info->ai_socktype,
-	                    server_info->ai_protocol);
-
-	if(socket_servidor == -1){
-		close(socket_servidor);
-		exit(EXIT_FAILURE);
-	}
-
-	if(bind(socket_servidor, server_info->ai_addr, server_info->ai_addrlen) == -1){
-		close(socket_servidor);
-		exit(EXIT_FAILURE);
-	}
-
-	if(listen(socket_servidor, SOMAXCONN) == -1){
-		close(socket_servidor);
-		exit(EXIT_FAILURE);
-	}
-
-	freeaddrinfo(server_info);
-	log_info(logger, "Servidor iniciado");
-
-	return socket_servidor;
-} 
-*/
 
 int esperar_cliente(t_log* logger, int socket_servidor)
 {
