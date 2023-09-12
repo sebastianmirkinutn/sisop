@@ -40,7 +40,7 @@ int crear_conexion(t_log *logger, char *ip, char *puerto)
 	int ret_addrinfo = getaddrinfo(ip, puerto, &hints, &server_info);
 
 	if (ret_addrinfo != 0){
-		log_info(logger, "Error: %s\n", gai_strerror(ret_addrinfo));
+		log_info(logger, "Error addrinfo\n");
 		return 0;
 	}
 
@@ -49,14 +49,14 @@ int crear_conexion(t_log *logger, char *ip, char *puerto)
 								server_info->ai_protocol);
 	if (socket_cliente == -1)
 	{
-		log_info(logger, "Error: ½i\n",socket_cliente);
+		log_info(logger, "Error socket_cliente\n");
 		freeaddrinfo(server_info);
 		return 0;
 	}
 
 	if (connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen) == -1)
 	{
-		log_info(logger, "Error\n");
+		log_info(logger, "Error connect\n");
 		freeaddrinfo(server_info);
 		return 0;
 	}
@@ -64,6 +64,13 @@ int crear_conexion(t_log *logger, char *ip, char *puerto)
 	log_info(logger, "Cliente conectado al server");
 	freeaddrinfo(server_info);
 	return socket_cliente;
+}
+
+void eliminar_paquete(t_paquete* paquete)
+{
+	free(paquete->buffer->stream);
+	free(paquete->buffer);
+	free(paquete);
 }
 
 void* serializar_paquete(t_paquete* paquete, int bytes)
@@ -135,13 +142,6 @@ void enviar_paquete(t_paquete* paquete, int socket_cliente)
 	send(socket_cliente, a_enviar, bytes, 0);
 
 	free(a_enviar);
-}
-
-void eliminar_paquete(t_paquete* paquete)
-{
-	free(paquete->buffer->stream);
-	free(paquete->buffer);
-	free(paquete);
 }
 
 void liberar_conexion(int socket_cliente)
