@@ -4,6 +4,7 @@
 #include <commons/config.h>
 #include "./../../shared/src/log_utils.c"
 #include "./../../shared/src/server_utils.c"
+#include "./../../shared/src/client_utils.c"
 
 
 int main(int argc, char* argv[]){

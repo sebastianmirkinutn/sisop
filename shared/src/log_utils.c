@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <commons/log.h>
-#include <commons/config.h>
+#include "./../include/log_utils.h"
 
 t_log * iniciar_logger(char* archivo, char* nombre_del_proceso)
 {

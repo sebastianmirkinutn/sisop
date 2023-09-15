@@ -10,7 +10,7 @@ int main(int argc, char* argv[]){
     t_log* logger = iniciar_logger("log_cpu.log","CPU");
     t_config* config = iniciar_config("./cfg/cpu.config");
     char* puerto_escucha;
-    puerto_escucha = config_get_string_value(config,"PUERTO_ESCUCHA");
+    puerto_escucha = config_get_string_value(config,"PUERTO_ESCUCHA_DISPATCH");
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
 
     int socket_servidor = iniciar_servidor(logger,puerto_escucha);

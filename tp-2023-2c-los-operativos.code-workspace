@@ -15,5 +15,11 @@
 		{
 			"path": "shared"
 		}
-	]
+	],
+	"settings": {
+		"files.associations": {
+			"client_utils.h": "c",
+			"stdio.h": "c"
+		}
+	}
 }
