@@ -12,9 +12,12 @@ int main(int argc, char* argv[]){
 	char* puerto_cpu = config_get_string_value(config, "PUERTO_CPU_DISPATCH");
     char* ip_memoria = config_get_string_value(config, "IP_MEMORIA");
 	char* puerto_memoria = config_get_string_value(config, "PUERTO_MEMORIA");
+    char* ip_filesystem = config_get_string_value(config, "IP_FILESYSTEM");
+	char* puerto_filesystem = config_get_string_value(config, "PUERTO_FILESYSTEM");
 
     int conexion_cpu = crear_conexion(logger, ip_cpu, puerto_cpu);
     int conexion_memoria = crear_conexion(logger, ip_memoria, puerto_memoria);
+    int conexion_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
 
 
     enviar_mensaje("Mensaje", conexion_cpu);

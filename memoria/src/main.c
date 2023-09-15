@@ -15,5 +15,16 @@ int main(int argc, char* argv[]){
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
 
     int socket_servidor = iniciar_servidor(logger,puerto_escucha);
+    int socket_filesystem = esperar_cliente(logger, socket_servidor);
+    if(socket_filesystem){
+        log_info(logger,"Se conectó filesystem");
+    }
+    int socket_cpu = esperar_cliente(logger, socket_servidor);
+    if(socket_filesystem){
+        log_info(logger,"Se conectó cpu");
+    }
     int socket_kernel = esperar_cliente(logger, socket_servidor);
+    if(socket_filesystem){
+        log_info(logger,"Se conectó kernel");
+    }
 }

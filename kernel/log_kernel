@@ -7,3 +7,22 @@
 [INFO] 18:03:34:576 Kernel/(4177:4177): Cliente conectado al server
 [INFO] 18:06:23:301 Kernel/(4430:4430): Cliente conectado al server
 [INFO] 18:06:23:302 Kernel/(4430:4430): Cliente conectado al server
+[INFO] 18:22:03:988 Kernel/(4664:4664): Error connect
+
+[INFO] 18:22:03:988 Kernel/(4664:4664): Error connect
+
+[INFO] 18:22:41:694 Kernel/(4741:4741): Error connect
+
+[INFO] 18:22:41:695 Kernel/(4741:4741): Error connect
+
+[ERROR] 18:22:50:025 Kernel/(4812:4812): Error connect
+
+[ERROR] 18:22:50:027 Kernel/(4812:4812): Error connect
+
+[INFO] 18:39:41:723 Kernel/(5369:5369): Cliente conectado al server
+[INFO] 18:39:41:726 Kernel/(5369:5369): Cliente conectado al server
+[INFO] 18:49:42:184 Kernel/(6128:6128): Cliente conectado al server
+[INFO] 18:49:42:185 Kernel/(6128:6128): Cliente conectado al server
+[INFO] 18:51:21:784 Kernel/(6281:6281): Cliente conectado al server
+[INFO] 18:51:21:785 Kernel/(6281:6281): Cliente conectado al server
+[INFO] 18:51:21:785 Kernel/(6281:6281): Cliente conectado al server

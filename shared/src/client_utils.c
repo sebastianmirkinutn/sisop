@@ -30,7 +30,7 @@ int crear_conexion(t_log *logger, char *ip, char *puerto)
 	int ret_addrinfo = getaddrinfo(ip, puerto, &hints, &server_info);
 
 	if (ret_addrinfo != 0){
-		log_info(logger, "Error addrinfo\n");
+		log_error(logger, "Error addrinfo\n");
 		return 0;
 	}
 
@@ -46,7 +46,7 @@ int crear_conexion(t_log *logger, char *ip, char *puerto)
 
 	if (connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen) == -1)
 	{
-		log_info(logger, "Error connect\n");
+		log_error(logger, "Error connect\n");
 		freeaddrinfo(server_info);
 		return 0;
 	}
