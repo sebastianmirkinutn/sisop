@@ -1,28 +1,13 @@
-[INFO] 20:21:12:319 Kernel/(8955:8955): Cliente conectado al server
-[INFO] 17:27:04:906 Kernel/(2854:2854): Error connect
+[ERROR] 19:28:45:031 Kernel/(69140:69140): Error connect
 
-[INFO] 17:31:04:461 Kernel/(3359:3359): Cliente conectado al server
-[INFO] 18:03:23:253 Kernel/(4175:4175): Error connect
+[ERROR] 19:28:45:031 Kernel/(69140:69140): Error connect
 
-[INFO] 18:03:34:576 Kernel/(4177:4177): Cliente conectado al server
-[INFO] 18:06:23:301 Kernel/(4430:4430): Cliente conectado al server
-[INFO] 18:06:23:302 Kernel/(4430:4430): Cliente conectado al server
-[INFO] 18:22:03:988 Kernel/(4664:4664): Error connect
-
-[INFO] 18:22:03:988 Kernel/(4664:4664): Error connect
-
-[INFO] 18:22:41:694 Kernel/(4741:4741): Error connect
-
-[INFO] 18:22:41:695 Kernel/(4741:4741): Error connect
-
-[ERROR] 18:22:50:025 Kernel/(4812:4812): Error connect
-
-[ERROR] 18:22:50:027 Kernel/(4812:4812): Error connect
-
-[INFO] 18:39:41:723 Kernel/(5369:5369): Cliente conectado al server
-[INFO] 18:39:41:726 Kernel/(5369:5369): Cliente conectado al server
-[INFO] 18:49:42:184 Kernel/(6128:6128): Cliente conectado al server
-[INFO] 18:49:42:185 Kernel/(6128:6128): Cliente conectado al server
-[INFO] 18:51:21:784 Kernel/(6281:6281): Cliente conectado al server
-[INFO] 18:51:21:785 Kernel/(6281:6281): Cliente conectado al server
-[INFO] 18:51:21:785 Kernel/(6281:6281): Cliente conectado al server
+[INFO] 19:28:45:032 Kernel/(69140:69140): Cliente conectado al server
+[INFO] 19:28:45:032 Kernel/(69140:69140): Cliente conectado al server
+[INFO] 19:30:28:969 Kernel/(72861:72861): Cliente conectado al server
+[INFO] 19:30:28:969 Kernel/(72861:72861): Cliente conectado al server
+[INFO] 19:30:28:969 Kernel/(72861:72861): Cliente conectado al server
+[INFO] 19:30:28:969 Kernel/(72861:72861): Cliente conectado al server
+[INFO] 19:30:37:168 Kernel/(72861:72861): prueba
+[INFO] 19:31:07:619 Kernel/(72861:72861): prueba 2
+[INFO] 19:31:29:344 Kernel/(72861:72861): prueba123

@@ -6,3 +6,37 @@
 [INFO] 18:51:09:487 FILESYSTEM/(6212:6212): Listo para escuchar a mi cliente
 [INFO] 18:51:21:785 FILESYSTEM/(6212:6212): Se conecto un cliente!
 [INFO] 18:51:21:785 FILESYSTEM/(6212:6212): Se conectó kernel
+[INFO] 18:52:03:155 FILESYSTEM/(2306:2306): Cliente conectado al server
+[INFO] 18:52:03:157 FILESYSTEM/(2306:2306): Listo para escuchar a mi cliente
+[INFO] 18:55:28:428 FILESYSTEM/(2306:2306): Se conecto un cliente!
+[INFO] 18:55:28:428 FILESYSTEM/(2306:2306): Se conectó kernel
+[INFO] 19:00:28:626 FILESYSTEM/(3012:3012): Cliente conectado al server
+[INFO] 19:00:28:627 FILESYSTEM/(3012:3012): Listo para escuchar a mi cliente
+[INFO] 19:01:34:059 FILESYSTEM/(3012:3012): Se conecto un cliente!
+[INFO] 19:01:34:059 FILESYSTEM/(3012:3012): Se conectó kernel
+[INFO] 19:03:02:547 FILESYSTEM/(3310:3310): Cliente conectado al server
+[INFO] 19:03:02:547 FILESYSTEM/(3310:3310): Listo para escuchar a mi cliente
+[INFO] 19:03:13:058 FILESYSTEM/(3310:3310): Se conecto un cliente!
+[INFO] 19:03:13:058 FILESYSTEM/(3310:3310): Se conectó kernel
+[INFO] 19:05:38:349 FILESYSTEM/(3470:3470): Cliente conectado al server
+[INFO] 19:05:38:349 FILESYSTEM/(3470:3470): Listo para escuchar a mi cliente
+[INFO] 19:05:42:704 FILESYSTEM/(3470:3470): Se conecto un cliente!
+[INFO] 19:05:42:704 FILESYSTEM/(3470:3470): Se conectó kernel
+[INFO] 19:05:59:934 FILESYSTEM/(3516:3516): Cliente conectado al server
+[INFO] 19:05:59:934 FILESYSTEM/(3516:3516): Listo para escuchar a mi cliente
+[INFO] 19:14:08:743 FILESYSTEM/(6111:6111): Cliente conectado al server
+[INFO] 19:14:08:752 FILESYSTEM/(6111:6111): Listo para escuchar a mi cliente
+[INFO] 19:14:49:854 FILESYSTEM/(6111:6111): Se conecto un cliente!
+[INFO] 19:14:49:854 FILESYSTEM/(6111:6111): Se conectó kernel
+[INFO] 19:19:12:133 FILESYSTEM/(30588:30588): Cliente conectado al server
+[INFO] 19:19:12:134 FILESYSTEM/(30588:30588): Listo para escuchar a mi cliente
+[INFO] 19:19:26:396 FILESYSTEM/(30588:30588): Se conecto un cliente!
+[INFO] 19:19:26:396 FILESYSTEM/(30588:30588): Se conectó kernel
+[INFO] 19:28:19:329 FILESYSTEM/(68067:68067): Cliente conectado al server
+[INFO] 19:28:19:331 FILESYSTEM/(68067:68067): Listo para escuchar a mi cliente
+[INFO] 19:28:45:033 FILESYSTEM/(68067:68067): Se conecto un cliente!
+[INFO] 19:28:45:033 FILESYSTEM/(68067:68067): Se conectó kernel
+[INFO] 19:30:02:391 FILESYSTEM/(71895:71895): Cliente conectado al server
+[INFO] 19:30:02:391 FILESYSTEM/(71895:71895): Listo para escuchar a mi cliente
+[INFO] 19:30:28:970 FILESYSTEM/(71895:71895): Se conecto un cliente!
+[INFO] 19:30:28:970 FILESYSTEM/(71895:71895): Se conectó kernel
