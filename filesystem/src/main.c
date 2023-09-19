@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <commons/log.h>
-#include <commons/config.h>
-#include "./../../shared/src/client_utils.c"
-#include "./../../shared/src/server_utils.c"
-#include "./../../shared/src/log_utils.c"
+#include "../include/main.h"
 
 int main(int argc, char* argv[]) {
     t_log* logger = iniciar_logger("log_filesystem.log","FILESYSTEM");
