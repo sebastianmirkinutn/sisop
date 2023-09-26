@@ -19,10 +19,13 @@ int main(int argc, char* argv[]){
     int conexion_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
 
     while(1){
+        t_mensaje mensaje;
         char* leido = readline("> ");
         add_history(leido);
         log_info(logger,leido);
-        enviar_mensaje(leido,conexion_cpu_dispatch);
+        mensaje.mensaje = leido;
+        mensaje.size_mensaje = strlen(leido) + 1;
+        enviar_mensaje(mensaje ,conexion_cpu_dispatch);
         if(!strcmp(leido,"exit")){
             free(leido);
             break;
