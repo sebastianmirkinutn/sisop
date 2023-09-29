@@ -70,14 +70,17 @@ void enviar_mensaje(char* mensaje, int socket_cliente)
 	paquete->buffer->stream = malloc(paquete->buffer->size);
 	memcpy(paquete->buffer->stream, mensaje, paquete->buffer->size);
 
-	int bytes = paquete->buffer->size + 2*sizeof(int);
+	//int bytes; = paquete->buffer->size + 2*sizeof(int);
 
-	void* a_enviar = serializar_paquete(paquete, bytes);
+	//void* a_enviar = serializar_paquete(paquete, bytes);
 
-	send(socket_cliente, &bytes, sizeof(int), 0);
-	send(socket_cliente, a_enviar, bytes, 0);
+	send(socket_cliente, &(paquete->codigo_operacion), sizeof(int), 0);
+	printf("Mandé: %i\n",paquete->codigo_operacion);
+	send(socket_cliente, &(paquete->buffer->size), sizeof(int), 0);
+	printf("Mandé: %i\n",paquete->buffer->size);
+	send(socket_cliente, paquete->buffer->stream, paquete->buffer->size, 0);
 	printf("Mensaje: %s - Size: %i\n", paquete->buffer->stream, paquete->buffer->size);
-	free(a_enviar);
+	//free(a_enviar);
 	eliminar_paquete(paquete);
 }
 

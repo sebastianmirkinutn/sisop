@@ -45,38 +45,44 @@ int recibir_operacion(int socket_cliente)
 
 void* recibir_buffer(int* size, int socket_cliente)
 {
-	void * buffer;
+	void * stream;
 
 	recv(socket_cliente, size, sizeof(int), MSG_WAITALL);
-	buffer = malloc(*size);
-	recv(socket_cliente, buffer, *size, MSG_WAITALL);
+	stream = malloc(*size);
+	recv(socket_cliente, stream, *size, MSG_WAITALL);
 
-	return buffer;
-}
-
-void recibir_mensaje(t_log* logger, int socket_cliente)
-{
-	int size;
-	void* buffer = recibir_buffer(&size, socket_cliente);
-	t_paquete* paquete = desserializar_paquete(buffer, size);
-	log_info(logger, "Me llego el mensaje %s\n", (char*)(paquete->buffer->stream));
-	free(buffer);
+	return stream;
 }
 
 t_paquete* desserializar_paquete(void* magic, int bytes)
 {
 	t_paquete* paquete;
-	void * magic = malloc(bytes);
 	int desplazamiento = 0;
 
 	memcpy(&(paquete->codigo_operacion), magic + desplazamiento, sizeof(int));
 	desplazamiento+= sizeof(int);
+	printf("cod_op\n");
 	memcpy(&(paquete->buffer->size), magic + desplazamiento, sizeof(int));
+	printf("size\n");
 	desplazamiento+= sizeof(int);
 	memcpy(paquete->buffer->stream, magic + desplazamiento, paquete->buffer->size);
 	desplazamiento+= paquete->buffer->size;
 
 	return paquete;
+}
+
+void recibir_mensaje(t_log* logger, int socket_cliente)
+{
+	t_paquete* paquete = malloc(sizeof(t_paquete));
+	paquete->buffer = malloc(sizeof(t_buffer));
+	recv(socket_cliente, &(paquete->codigo_operacion), sizeof(int), MSG_WAITALL);
+	recv(socket_cliente, &(paquete->buffer->size), sizeof(int), MSG_WAITALL);
+	paquete->buffer->stream = malloc(paquete->buffer->size);
+	recv(socket_cliente, paquete->buffer->stream,paquete->buffer->size, MSG_WAITALL);
+	char* datos = malloc(paquete->buffer->size);
+	memcpy(datos, paquete->buffer->stream,paquete->buffer->size);
+	printf("Recibí: %s\n", datos);
+	eliminar_paquete(paquete);
 }
 
 t_list* recibir_paquete(t_log* logger, int socket_cliente)

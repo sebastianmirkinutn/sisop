@@ -22,6 +22,7 @@ int main(int argc, char* argv[]){
     if(socket_kernel_interrupt){
         log_info(logger,"Se conectó kernel al puerto interrupt");
     }
+    //recibir_mensaje(logger, socket_kernel_dispatch);
     while(1){
         recibir_mensaje(logger, socket_kernel_dispatch);
     }
