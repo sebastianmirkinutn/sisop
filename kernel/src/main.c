@@ -17,7 +17,12 @@ int main(int argc, char* argv[]){
     int conexion_cpu_interrupt = crear_conexion(logger, ip_cpu, puerto_cpu_interrupt);
     int conexion_memoria = crear_conexion(logger, ip_memoria, puerto_memoria);
     int conexion_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
-
+    /*
+    t_mensaje mensaje;
+    mensaje.mensaje = strdup("mensaje_de_prueba");
+    mensaje.size_mensaje = 17 + 1;
+    enviar_mensaje(mensaje ,conexion_cpu_dispatch);
+*/
     while(1){
         t_mensaje mensaje;
         char* leido = readline("> ");
@@ -25,7 +30,7 @@ int main(int argc, char* argv[]){
         log_info(logger,leido);
         mensaje.mensaje = leido;
         mensaje.size_mensaje = strlen(leido) + 1;
-        enviar_mensaje(mensaje ,conexion_cpu_dispatch);
+        enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
         if(!strcmp(leido,"exit")){
             free(leido);
             break;

@@ -1,28 +1,5 @@
 #include "./../include/client_utils.h"
 
-typedef enum
-{   MENSAJE,
-	PAQUETE
-}op_code;
-
-typedef struct
-{
-	int size;
-	void* stream;
-} t_buffer;
-
-typedef struct
-{
-	op_code codigo_operacion;
-	t_buffer* buffer;
-} t_paquete;
-
-typedef struct
-{
-	int size_mensaje;
-	char* mensaje;
-} t_mensaje;
-
 int crear_conexion(t_log *logger, char *ip, char *puerto)
 {
 	struct addrinfo hints;
@@ -83,18 +60,15 @@ void* serializar_paquete(t_paquete* paquete, int bytes)
 	return magic;
 }
 
-void enviar_mensaje(t_mensaje mensaje, int socket_cliente)
+void enviar_mensaje(char* mensaje, int socket_cliente)
 {
 	t_paquete* paquete = malloc(sizeof(t_paquete));
 
-	int offset = 0;
 	paquete->codigo_operacion = MENSAJE;
 	paquete->buffer = malloc(sizeof(t_buffer));
-	paquete->buffer->size = mensaje.size_mensaje + strlen(mensaje.mensaje) + 1;
+	paquete->buffer->size = strlen(mensaje) + 1;
 	paquete->buffer->stream = malloc(paquete->buffer->size);
-	memcpy(paquete->buffer->stream, &mensaje.size_mensaje, sizeof(int));
-	offset += sizeof(int);
-	memcpy(paquete->buffer->stream + offset, &mensaje.size_mensaje, mensaje.size_mensaje);
+	memcpy(paquete->buffer->stream, mensaje, paquete->buffer->size);
 
 	int bytes = paquete->buffer->size + 2*sizeof(int);
 

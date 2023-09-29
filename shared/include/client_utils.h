@@ -10,5 +10,6 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <string.h>
+#include "main.h"
 
 #endif

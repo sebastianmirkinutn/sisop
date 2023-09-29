@@ -20,3 +20,80 @@
 [ERROR] 18:14:59:267 Kernel/(6965:6965): Error connect
 
 [INFO] 18:15:41:270 Kernel/(6965:6965): hola
+[INFO] 23:23:45:664 Kernel/(2063:2063): Cliente conectado al server
+[INFO] 23:23:45:664 Kernel/(2063:2063): Cliente conectado al server
+[INFO] 23:23:45:665 Kernel/(2063:2063): Cliente conectado al server
+[INFO] 23:23:45:665 Kernel/(2063:2063): Cliente conectado al server
+[INFO] 23:23:48:442 Kernel/(2063:2063): mensaje1
+[INFO] 23:30:58:661 Kernel/(3183:3183): Cliente conectado al server
+[INFO] 23:30:58:661 Kernel/(3183:3183): Cliente conectado al server
+[INFO] 23:30:58:661 Kernel/(3183:3183): Cliente conectado al server
+[INFO] 23:30:58:662 Kernel/(3183:3183): Cliente conectado al server
+[INFO] 23:31:03:522 Kernel/(3183:3183): mensaje1
+[INFO] 23:31:09:381 Kernel/(3183:3183): abcd
+[INFO] 23:48:43:880 Kernel/(5253:5253): Cliente conectado al server
+[INFO] 23:48:43:884 Kernel/(5253:5253): Cliente conectado al server
+[INFO] 23:48:43:884 Kernel/(5253:5253): Cliente conectado al server
+[INFO] 23:48:43:884 Kernel/(5253:5253): Cliente conectado al server
+[INFO] 23:48:46:735 Kernel/(5253:5253): mensaej1
+[INFO] 23:48:55:048 Kernel/(5253:5253): mensaje2
+[ERROR] 23:54:49:995 Kernel/(5632:5632): Error connect
+
+[ERROR] 23:54:49:996 Kernel/(5632:5632): Error connect
+
+[INFO] 23:54:49:996 Kernel/(5632:5632): Cliente conectado al server
+[INFO] 23:54:49:997 Kernel/(5632:5632): Cliente conectado al server
+[INFO] 23:56:15:336 Kernel/(5646:5646): Cliente conectado al server
+[INFO] 23:56:15:336 Kernel/(5646:5646): Cliente conectado al server
+[INFO] 23:56:15:336 Kernel/(5646:5646): Cliente conectado al server
+[INFO] 23:56:15:337 Kernel/(5646:5646): Cliente conectado al server
+[INFO] 23:56:23:150 Kernel/(5646:5646): mensaje1
+[INFO] 23:58:37:168 Kernel/(5780:5780): Cliente conectado al server
+[INFO] 23:58:37:169 Kernel/(5780:5780): Cliente conectado al server
+[INFO] 23:58:37:169 Kernel/(5780:5780): Cliente conectado al server
+[INFO] 23:58:37:169 Kernel/(5780:5780): Cliente conectado al server
+[INFO] 23:58:45:175 Kernel/(5780:5780): mensaje2
+[INFO] 00:01:52:900 Kernel/(5780:5780): a
+[INFO] 00:01:53:300 Kernel/(5780:5780): a
+[INFO] 00:01:53:551 Kernel/(5780:5780): a
+[INFO] 00:01:53:768 Kernel/(5780:5780): a
+[INFO] 00:01:53:977 Kernel/(5780:5780): a
+[INFO] 00:01:54:181 Kernel/(5780:5780): a
+[INFO] 00:01:54:368 Kernel/(5780:5780): a
+[INFO] 00:01:54:583 Kernel/(5780:5780): a
+[INFO] 00:01:54:777 Kernel/(5780:5780): a
+[INFO] 00:01:54:949 Kernel/(5780:5780): a
+[INFO] 00:01:55:111 Kernel/(5780:5780): a
+[INFO] 00:01:57:544 Kernel/(5780:5780): aaaaaaaaaaaaaaaaaa
+[INFO] 00:07:22:098 Kernel/(6148:6148): Cliente conectado al server
+[INFO] 00:07:22:098 Kernel/(6148:6148): Cliente conectado al server
+[INFO] 00:07:22:098 Kernel/(6148:6148): Cliente conectado al server
+[INFO] 00:07:22:098 Kernel/(6148:6148): Cliente conectado al server
+[INFO] 00:07:27:133 Kernel/(6148:6148): mensaje 2
+[INFO] 00:07:33:269 Kernel/(6148:6148): mensaje3
+[INFO] 00:07:36:254 Kernel/(6148:6148): mensaje4
+[INFO] 00:09:54:507 Kernel/(6501:6501): Cliente conectado al server
+[INFO] 00:09:54:507 Kernel/(6501:6501): Cliente conectado al server
+[INFO] 00:09:54:508 Kernel/(6501:6501): Cliente conectado al server
+[INFO] 00:09:54:508 Kernel/(6501:6501): Cliente conectado al server
+[INFO] 00:09:59:720 Kernel/(6501:6501): mensaje1
+[INFO] 00:10:05:477 Kernel/(6501:6501): menasje2
+[INFO] 00:13:01:932 Kernel/(6911:6911): Cliente conectado al server
+[INFO] 00:13:01:932 Kernel/(6911:6911): Cliente conectado al server
+[INFO] 00:13:01:932 Kernel/(6911:6911): Cliente conectado al server
+[INFO] 00:13:01:932 Kernel/(6911:6911): Cliente conectado al server
+[INFO] 12:15:43:969 Kernel/(6911:6911): make
+[INFO] 12:16:00:002 Kernel/(7405:7405): Cliente conectado al server
+[INFO] 12:16:00:003 Kernel/(7405:7405): Cliente conectado al server
+[INFO] 12:16:00:003 Kernel/(7405:7405): Cliente conectado al server
+[INFO] 12:16:00:004 Kernel/(7405:7405): Cliente conectado al server
+[INFO] 12:18:32:810 Kernel/(7661:7661): Cliente conectado al server
+[INFO] 12:18:32:810 Kernel/(7661:7661): Cliente conectado al server
+[INFO] 12:18:32:811 Kernel/(7661:7661): Cliente conectado al server
+[INFO] 12:18:32:811 Kernel/(7661:7661): Cliente conectado al server
+[INFO] 12:29:46:701 Kernel/(8367:8367): Cliente conectado al server
+[INFO] 12:29:46:702 Kernel/(8367:8367): Cliente conectado al server
+[INFO] 12:29:46:702 Kernel/(8367:8367): Cliente conectado al server
+[INFO] 12:29:46:703 Kernel/(8367:8367): Cliente conectado al server
+[INFO] 12:29:50:361 Kernel/(8367:8367): mensaje
+[INFO] 12:29:53:809 Kernel/(8367:8367): mensaje

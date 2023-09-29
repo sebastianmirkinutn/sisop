@@ -82,3 +82,97 @@
 [INFO] 19:30:11:296 CPU/(71568:71568): Se conectó cpu
 [INFO] 19:30:28:969 CPU/(71568:71568): Se conecto un cliente!
 [INFO] 19:30:28:969 CPU/(71568:71568): Se conectó kernel
+[INFO] 23:23:03:688 CPU/(1936:1936): Listo para escuchar a mi cliente
+[INFO] 23:23:25:890 CPU/(1936:1936): Se conecto un cliente!
+[INFO] 23:23:25:890 CPU/(1936:1936): Se conectó filesystem
+[INFO] 23:23:37:947 CPU/(1936:1936): Se conecto un cliente!
+[INFO] 23:23:37:947 CPU/(1936:1936): Se conectó cpu
+[INFO] 23:23:45:664 CPU/(1936:1936): Se conecto un cliente!
+[INFO] 23:23:45:665 CPU/(1936:1936): Se conectó kernel
+[INFO] 23:30:45:850 CPU/(3180:3180): Listo para escuchar a mi cliente
+[INFO] 23:30:51:482 CPU/(3180:3180): Se conecto un cliente!
+[INFO] 23:30:51:482 CPU/(3180:3180): Se conectó filesystem
+[INFO] 23:30:55:705 CPU/(3180:3180): Se conecto un cliente!
+[INFO] 23:30:55:705 CPU/(3180:3180): Se conectó cpu
+[INFO] 23:30:58:661 CPU/(3180:3180): Se conecto un cliente!
+[INFO] 23:30:58:661 CPU/(3180:3180): Se conectó kernel
+[INFO] 23:48:32:083 CPU/(5250:5250): Listo para escuchar a mi cliente
+[INFO] 23:48:35:355 CPU/(5250:5250): Se conecto un cliente!
+[INFO] 23:48:35:355 CPU/(5250:5250): Se conectó filesystem
+[INFO] 23:48:38:502 CPU/(5250:5250): Se conecto un cliente!
+[INFO] 23:48:38:502 CPU/(5250:5250): Se conectó cpu
+[INFO] 23:48:43:884 CPU/(5250:5250): Se conecto un cliente!
+[INFO] 23:48:43:884 CPU/(5250:5250): Se conectó kernel
+[INFO] 23:54:32:199 CPU/(5458:5458): Listo para escuchar a mi cliente
+[INFO] 23:54:35:137 CPU/(5458:5458): Se conecto un cliente!
+[INFO] 23:54:35:137 CPU/(5458:5458): Se conectó filesystem
+[INFO] 23:54:45:851 CPU/(5458:5458): Se conecto un cliente!
+[INFO] 23:54:45:852 CPU/(5458:5458): Se conectó cpu
+[INFO] 23:54:49:996 CPU/(5458:5458): Se conecto un cliente!
+[INFO] 23:54:49:996 CPU/(5458:5458): Se conectó kernel
+[INFO] 23:55:02:867 CPU/(5636:5636): Listo para escuchar a mi cliente
+[INFO] 23:55:42:248 CPU/(5639:5639): Listo para escuchar a mi cliente
+[INFO] 23:56:04:894 CPU/(5643:5643): Listo para escuchar a mi cliente
+[INFO] 23:56:07:176 CPU/(5643:5643): Se conecto un cliente!
+[INFO] 23:56:07:176 CPU/(5643:5643): Se conectó filesystem
+[INFO] 23:56:09:951 CPU/(5643:5643): Se conecto un cliente!
+[INFO] 23:56:09:952 CPU/(5643:5643): Se conectó cpu
+[INFO] 23:56:15:336 CPU/(5643:5643): Se conecto un cliente!
+[INFO] 23:56:15:336 CPU/(5643:5643): Se conectó kernel
+[INFO] 23:57:17:067 CPU/(5665:5665): Listo para escuchar a mi cliente
+[INFO] 23:57:45:010 CPU/(5669:5669): Listo para escuchar a mi cliente
+[INFO] 23:57:56:284 CPU/(5672:5672): Listo para escuchar a mi cliente
+[INFO] 23:58:23:146 CPU/(5676:5676): Listo para escuchar a mi cliente
+[INFO] 23:58:25:756 CPU/(5676:5676): Se conecto un cliente!
+[INFO] 23:58:25:757 CPU/(5676:5676): Se conectó filesystem
+[INFO] 23:58:33:257 CPU/(5676:5676): Se conecto un cliente!
+[INFO] 23:58:33:257 CPU/(5676:5676): Se conectó cpu
+[INFO] 23:58:37:169 CPU/(5676:5676): Se conecto un cliente!
+[INFO] 23:58:37:169 CPU/(5676:5676): Se conectó kernel
+[INFO] 00:07:12:458 CPU/(6145:6145): Listo para escuchar a mi cliente
+[INFO] 00:07:15:803 CPU/(6145:6145): Se conecto un cliente!
+[INFO] 00:07:15:804 CPU/(6145:6145): Se conectó filesystem
+[INFO] 00:07:18:922 CPU/(6145:6145): Se conecto un cliente!
+[INFO] 00:07:18:922 CPU/(6145:6145): Se conectó cpu
+[INFO] 00:07:22:098 CPU/(6145:6145): Se conecto un cliente!
+[INFO] 00:07:22:098 CPU/(6145:6145): Se conectó kernel
+[INFO] 00:08:54:438 CPU/(6463:6463): Listo para escuchar a mi cliente
+[INFO] 00:09:14:190 CPU/(6465:6465): Listo para escuchar a mi cliente
+[INFO] 00:09:45:695 CPU/(6498:6498): Listo para escuchar a mi cliente
+[INFO] 00:09:48:065 CPU/(6498:6498): Se conecto un cliente!
+[INFO] 00:09:48:065 CPU/(6498:6498): Se conectó filesystem
+[INFO] 00:09:51:778 CPU/(6498:6498): Se conecto un cliente!
+[INFO] 00:09:51:778 CPU/(6498:6498): Se conectó cpu
+[INFO] 00:09:54:508 CPU/(6498:6498): Se conecto un cliente!
+[INFO] 00:09:54:508 CPU/(6498:6498): Se conectó kernel
+[INFO] 00:12:49:317 CPU/(6838:6838): Listo para escuchar a mi cliente
+[INFO] 00:12:55:856 CPU/(6838:6838): Se conecto un cliente!
+[INFO] 00:12:55:857 CPU/(6838:6838): Se conectó filesystem
+[INFO] 00:12:58:951 CPU/(6838:6838): Se conecto un cliente!
+[INFO] 00:12:58:951 CPU/(6838:6838): Se conectó cpu
+[INFO] 00:13:01:932 CPU/(6838:6838): Se conecto un cliente!
+[INFO] 00:13:01:932 CPU/(6838:6838): Se conectó kernel
+[INFO] 12:15:51:014 CPU/(7402:7402): Listo para escuchar a mi cliente
+[INFO] 12:15:53:422 CPU/(7402:7402): Se conecto un cliente!
+[INFO] 12:15:53:422 CPU/(7402:7402): Se conectó filesystem
+[INFO] 12:15:57:127 CPU/(7402:7402): Se conecto un cliente!
+[INFO] 12:15:57:128 CPU/(7402:7402): Se conectó cpu
+[INFO] 12:16:00:003 CPU/(7402:7402): Se conecto un cliente!
+[INFO] 12:16:00:003 CPU/(7402:7402): Se conectó kernel
+[INFO] 12:17:10:486 CPU/(7581:7581): Listo para escuchar a mi cliente
+[INFO] 12:17:37:529 CPU/(7595:7595): Listo para escuchar a mi cliente
+[INFO] 12:17:52:488 CPU/(7603:7603): Listo para escuchar a mi cliente
+[INFO] 12:18:24:889 CPU/(7617:7617): Listo para escuchar a mi cliente
+[INFO] 12:18:27:047 CPU/(7617:7617): Se conecto un cliente!
+[INFO] 12:18:27:047 CPU/(7617:7617): Se conectó filesystem
+[INFO] 12:18:30:569 CPU/(7617:7617): Se conecto un cliente!
+[INFO] 12:18:30:571 CPU/(7617:7617): Se conectó cpu
+[INFO] 12:18:32:811 CPU/(7617:7617): Se conecto un cliente!
+[INFO] 12:18:32:811 CPU/(7617:7617): Se conectó kernel
+[INFO] 12:29:40:310 CPU/(8364:8364): Listo para escuchar a mi cliente
+[INFO] 12:29:42:666 CPU/(8364:8364): Se conecto un cliente!
+[INFO] 12:29:42:667 CPU/(8364:8364): Se conectó filesystem
+[INFO] 12:29:44:851 CPU/(8364:8364): Se conecto un cliente!
+[INFO] 12:29:44:851 CPU/(8364:8364): Se conectó cpu
+[INFO] 12:29:46:702 CPU/(8364:8364): Se conecto un cliente!
+[INFO] 12:29:46:702 CPU/(8364:8364): Se conectó kernel
