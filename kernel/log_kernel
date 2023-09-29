@@ -97,3 +97,59 @@
 [INFO] 12:29:46:703 Kernel/(8367:8367): Cliente conectado al server
 [INFO] 12:29:50:361 Kernel/(8367:8367): mensaje
 [INFO] 12:29:53:809 Kernel/(8367:8367): mensaje
+[INFO] 12:36:19:661 Kernel/(8883:8883): Cliente conectado al server
+[INFO] 12:36:19:661 Kernel/(8883:8883): Cliente conectado al server
+[INFO] 12:36:19:662 Kernel/(8883:8883): Cliente conectado al server
+[INFO] 12:36:19:662 Kernel/(8883:8883): Cliente conectado al server
+[INFO] 12:36:22:757 Kernel/(8883:8883): mensaje1
+[INFO] 12:39:36:439 Kernel/(9068:9068): Cliente conectado al server
+[INFO] 12:39:36:440 Kernel/(9068:9068): Cliente conectado al server
+[INFO] 12:39:36:440 Kernel/(9068:9068): Cliente conectado al server
+[INFO] 12:39:36:443 Kernel/(9068:9068): Cliente conectado al server
+[INFO] 12:39:40:600 Kernel/(9068:9068): mensaje1
+[INFO] 12:39:46:207 Kernel/(9068:9068): mensaje 2 3
+[ERROR] 12:46:36:805 Kernel/(9280:9280): Error connect
+
+[ERROR] 12:46:36:805 Kernel/(9280:9280): Error connect
+
+[INFO] 12:46:36:806 Kernel/(9280:9280): Cliente conectado al server
+[INFO] 12:46:36:806 Kernel/(9280:9280): Cliente conectado al server
+[ERROR] 12:46:40:885 Kernel/(9281:9281): Error connect
+
+[ERROR] 12:46:40:886 Kernel/(9281:9281): Error connect
+
+[ERROR] 12:46:40:886 Kernel/(9281:9281): Error connect
+
+[ERROR] 12:46:40:886 Kernel/(9281:9281): Error connect
+
+[INFO] 12:48:17:071 Kernel/(9289:9289): Cliente conectado al server
+[INFO] 12:48:17:071 Kernel/(9289:9289): Cliente conectado al server
+[INFO] 12:48:17:072 Kernel/(9289:9289): Cliente conectado al server
+[INFO] 12:48:17:072 Kernel/(9289:9289): Cliente conectado al server
+[INFO] 12:48:20:419 Kernel/(9289:9289): mensaje1
+[INFO] 12:48:25:489 Kernel/(9289:9289): mensaje2
+[INFO] 12:54:23:560 Kernel/(9569:9569): Cliente conectado al server
+[INFO] 12:54:23:561 Kernel/(9569:9569): Cliente conectado al server
+[INFO] 12:54:23:561 Kernel/(9569:9569): Cliente conectado al server
+[INFO] 12:54:23:562 Kernel/(9569:9569): Cliente conectado al server
+[INFO] 12:54:26:182 Kernel/(9569:9569): mensaje
+[INFO] 12:54:29:627 Kernel/(9569:9569): mensaje2
+[INFO] 12:54:35:608 Kernel/(9569:9569): a
+[INFO] 12:54:36:924 Kernel/(9569:9569): a
+[INFO] 12:54:38:090 Kernel/(9569:9569): a
+[INFO] 13:00:30:885 Kernel/(9843:9843): Cliente conectado al server
+[INFO] 13:00:30:885 Kernel/(9843:9843): Cliente conectado al server
+[INFO] 13:00:30:885 Kernel/(9843:9843): Cliente conectado al server
+[INFO] 13:00:30:886 Kernel/(9843:9843): Cliente conectado al server
+[INFO] 13:00:34:162 Kernel/(9843:9843): mensaje
+[INFO] 13:00:37:918 Kernel/(9843:9843): mensaje1
+[INFO] 13:02:14:933 Kernel/(10032:10032): Cliente conectado al server
+[INFO] 13:02:14:934 Kernel/(10032:10032): Cliente conectado al server
+[INFO] 13:02:14:934 Kernel/(10032:10032): Cliente conectado al server
+[INFO] 13:02:14:935 Kernel/(10032:10032): Cliente conectado al server
+[INFO] 13:02:17:577 Kernel/(10032:10032): mensaje1
+[INFO] 13:02:19:475 Kernel/(10032:10032): a
+[INFO] 13:02:20:529 Kernel/(10032:10032): a
+[INFO] 13:02:20:877 Kernel/(10032:10032): a
+[INFO] 13:02:21:198 Kernel/(10032:10032): a
+[INFO] 13:02:21:918 Kernel/(10032:10032): a

@@ -57,9 +57,26 @@ void* recibir_buffer(int* size, int socket_cliente)
 void recibir_mensaje(t_log* logger, int socket_cliente)
 {
 	int size;
-	char* buffer = recibir_buffer(&size, socket_cliente);
-	log_info(logger, "Me llego el mensaje %s", buffer);
+	void* buffer = recibir_buffer(&size, socket_cliente);
+	t_paquete* paquete = desserializar_paquete(buffer, size);
+	log_info(logger, "Me llego el mensaje %s\n", (char*)(paquete->buffer->stream));
 	free(buffer);
+}
+
+t_paquete* desserializar_paquete(void* magic, int bytes)
+{
+	t_paquete* paquete;
+	void * magic = malloc(bytes);
+	int desplazamiento = 0;
+
+	memcpy(&(paquete->codigo_operacion), magic + desplazamiento, sizeof(int));
+	desplazamiento+= sizeof(int);
+	memcpy(&(paquete->buffer->size), magic + desplazamiento, sizeof(int));
+	desplazamiento+= sizeof(int);
+	memcpy(paquete->buffer->stream, magic + desplazamiento, paquete->buffer->size);
+	desplazamiento+= paquete->buffer->size;
+
+	return paquete;
 }
 
 t_list* recibir_paquete(t_log* logger, int socket_cliente)
