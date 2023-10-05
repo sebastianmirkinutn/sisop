@@ -1,0 +1,27 @@
+#ifndef SOCKETS_H
+#define SOCKETS_H
+
+typedef enum
+{   MENSAJE,
+	PAQUETE
+}op_code;
+
+typedef struct
+{
+	int size;
+	void* stream;
+} t_buffer;
+
+typedef struct
+{
+	op_code codigo_operacion;
+	t_buffer* buffer;
+} t_paquete;
+
+typedef struct
+{
+	int size_mensaje;
+	char* mensaje;
+} t_mensaje;
+
+#endif

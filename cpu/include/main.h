@@ -8,6 +8,7 @@
 #include "./../../shared/src/log_utils.c"
 #include "./../../shared/src/server_utils.c"
 #include "./../../shared/src/client_utils.c"
+#include "./../../shared/src/pcb.c"
 
 #endif
 

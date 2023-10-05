@@ -1,0 +1,12 @@
+[INFO] 17:17:00:608 CPU/(7397:7397): Cliente conectado al server
+[INFO] 17:17:00:608 CPU/(7397:7397): Listo para escuchar a mi cliente
+[INFO] 17:17:00:608 CPU/(7397:7397): Listo para escuchar a mi cliente
+[INFO] 17:17:03:755 CPU/(7397:7397): Se conecto un cliente!
+[INFO] 17:17:03:755 CPU/(7397:7397): Se conectó kernel al puerto dispatch
+[INFO] 17:17:03:755 CPU/(7397:7397): Se conecto un cliente!
+[INFO] 17:17:03:755 CPU/(7397:7397): Se conectó kernel al puerto interrupt
+[INFO] 17:17:16:301 CPU/(7397:7397): INICIAR_PROCESO 1 2 3
+[ERROR] 17:41:39:610 CPU/(9511:9511): Error connect
+
+[INFO] 17:41:39:610 CPU/(9511:9511): Listo para escuchar a mi cliente
+[INFO] 17:41:39:610 CPU/(9511:9511): Listo para escuchar a mi cliente

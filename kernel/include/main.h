@@ -8,5 +8,6 @@
 #include "./../../shared/src/log_utils.c"
 #include <readline/readline.h>
 #include <readline/history.h>
+#include "./../../shared/src/pcb.c"
 
 #endif 

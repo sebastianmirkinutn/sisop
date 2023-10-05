@@ -1,6 +1,5 @@
 #include "./../include/server_utils.h"
 
-
 int iniciar_servidor(t_log *logger, char *puerto){
 	int socket_servidor;
 
@@ -71,7 +70,7 @@ t_paquete* desserializar_paquete(void* magic, int bytes)
 	return paquete;
 }
 
-char* recibir_mensaje(t_log* logger, int socket_cliente)
+char* recibir_mensaje(int socket_cliente)
 {
 	t_paquete* paquete = malloc(sizeof(t_paquete));
 	paquete->buffer = malloc(sizeof(t_buffer));
@@ -85,7 +84,7 @@ char* recibir_mensaje(t_log* logger, int socket_cliente)
 	return datos;
 }
 
-t_list* recibir_paquete(t_log* logger, int socket_cliente)
+t_paquete* recibir_paquete(t_log* logger, int socket_cliente)
 {
 	int size;
 	int desplazamiento = 0;

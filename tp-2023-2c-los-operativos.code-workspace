@@ -21,7 +21,17 @@
 			"client_utils.h": "c",
 			"stdio.h": "c",
 			"server_utils.h": "c",
-			"main.h": "c"
+			"main.h": "c",
+			"memory.h": "c",
+			"socket.h": "c",
+			"config.h": "c",
+			"unistd.h": "c",
+			"stdlib.h": "c",
+			"log.h": "c",
+			"history.h": "c",
+			"readline.h": "c",
+			"list.h": "c",
+			"sockets.h": "c"
 		}
 	}
 }
