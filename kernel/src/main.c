@@ -28,12 +28,18 @@ int main(int argc, char* argv[]){
         char* leido = readline("> ");
         add_history(leido);
         log_info(logger,leido);
-        mensaje.mensaje = leido;
-        mensaje.size_mensaje = strlen(leido) + 1;
+        char* token = strtok(leido, " ");
+        //Deberíamos mandar un paquete con los parámetros serializados.
+        //Por ahora mandamos un mensaje para la función, y uno por parámetro.
+        mensaje.mensaje = token;
+        mensaje.size_mensaje = strlen(token) + 1;
         enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
-        if(!strcmp(leido,"exit")){
-            free(leido);
-            break;
+        token = strtok(NULL, " ");
+        while(token != NULL){
+            mensaje.mensaje = token;
+            mensaje.size_mensaje = strlen(token) + 1;
+            enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
+            token = strtok(NULL, " ");
         }
     }
 

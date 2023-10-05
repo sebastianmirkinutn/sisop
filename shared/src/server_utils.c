@@ -71,7 +71,7 @@ t_paquete* desserializar_paquete(void* magic, int bytes)
 	return paquete;
 }
 
-void recibir_mensaje(t_log* logger, int socket_cliente)
+char* recibir_mensaje(t_log* logger, int socket_cliente)
 {
 	t_paquete* paquete = malloc(sizeof(t_paquete));
 	paquete->buffer = malloc(sizeof(t_buffer));
@@ -81,8 +81,8 @@ void recibir_mensaje(t_log* logger, int socket_cliente)
 	recv(socket_cliente, paquete->buffer->stream,paquete->buffer->size, MSG_WAITALL);
 	char* datos = malloc(paquete->buffer->size);
 	memcpy(datos, paquete->buffer->stream,paquete->buffer->size);
-	printf("Recibí: %s\n", datos);
 	eliminar_paquete(paquete);
+	return datos;
 }
 
 t_list* recibir_paquete(t_log* logger, int socket_cliente)
