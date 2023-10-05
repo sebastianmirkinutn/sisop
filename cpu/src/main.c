@@ -25,12 +25,10 @@ int main(int argc, char* argv[]){
     //recibir_mensaje(logger, socket_kernel_dispatch);
     while(1){
         char* funcion = recibir_mensaje(logger, socket_kernel_dispatch);
-        if(!strcmp(funcion, "INICIAR_PROCESO")){
-            char* parametros[3];
-            parametros[0] = recibir_mensaje(logger, socket_kernel_dispatch);
-            parametros[1] = recibir_mensaje(logger, socket_kernel_dispatch);
-            parametros[2] = recibir_mensaje(logger, socket_kernel_dispatch);
-            log_info(logger, "INICIAR_PROCESO %s %s %s", parametros[0], parametros[1], parametros[2]);
-        }
+        char* parametros[3];
+        parametros[0] = recibir_mensaje(logger, socket_kernel_dispatch);
+        parametros[1] = recibir_mensaje(logger, socket_kernel_dispatch);
+        parametros[2] = recibir_mensaje(logger, socket_kernel_dispatch);
+        log_info(logger, "%s %s %s %s", funcion, parametros[0], parametros[1], parametros[2]);
     }
 }

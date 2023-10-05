@@ -33,12 +33,6 @@ typedef struct
 
 typedef struct
 {
-	int size_mensaje;
-	char* mensaje;
-} t_registros;
-
-typedef struct
-{
 	t_registros registros;
 	t_list* instrucciones;
 } t_contexto_de_ejecucion;

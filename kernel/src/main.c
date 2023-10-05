@@ -29,17 +29,61 @@ int main(int argc, char* argv[]){
         add_history(leido);
         log_info(logger,leido);
         char* token = strtok(leido, " ");
+        char* c_argv[4]; //Va a haber como máximo 4 tokens.
+        uint8_t i = 0;
         //Deberíamos mandar un paquete con los parámetros serializados.
         //Por ahora mandamos un mensaje para la función, y uno por parámetro.
-        mensaje.mensaje = token;
-        mensaje.size_mensaje = strlen(token) + 1;
-        enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
+        //mensaje.mensaje = token;
+        //mensaje.size_mensaje = strlen(token) + 1;
+        //enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
+        c_argv[i] = strdup(token);
         token = strtok(NULL, " ");
+
         while(token != NULL){
-            mensaje.mensaje = token;
-            mensaje.size_mensaje = strlen(token) + 1;
-            enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
+            i++;
+            if(i<4){
+                c_argv[i] = strdup(token);
+            }
+            else{
+                //En este caso, se pasan parámetros de más
+            }
             token = strtok(NULL, " ");
+        }
+
+        if(!strcmp(c_argv[0], "INICIAR_PROCESO")){
+            mensaje.mensaje = c_argv[0];
+            mensaje.size_mensaje = strlen(c_argv[0]) + 1;
+            enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
+
+            mensaje.mensaje = c_argv[1];
+            mensaje.size_mensaje = strlen(c_argv[1]) + 1;
+            enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
+
+            mensaje.mensaje = c_argv[2];
+            mensaje.size_mensaje = strlen(c_argv[2]) + 1;
+            enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
+
+            mensaje.mensaje = c_argv[3];
+            mensaje.size_mensaje = strlen(c_argv[3]) + 1;
+            enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
+        }
+        else if(!strcmp(c_argv[0], "FINALIZAR_PROCESO")){
+
+        }
+        else if(!strcmp(c_argv[0], "DETENER_PLANIFICACION")){
+
+        }
+        else if(!strcmp(c_argv[0], "INICIAR_PLANIFICACION")){
+
+        }
+        else if(!strcmp(c_argv[0], "MULTIPROGRAMACION")){
+
+        }
+        else if(!strcmp(c_argv[0], "PROCESO_ESTADO")){
+
+        }
+        else{
+            log_warning(logger, "La función %s no existe.", c_argv[0]);
         }
     }
 
