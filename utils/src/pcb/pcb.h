@@ -3,6 +3,7 @@
 #include <commons/collections/list.h>
 #include <ctype.h>
 #include <stdint.h>
+#include <stddef.h>
 
 typedef struct
 {

@@ -1,4 +1,4 @@
-# include "./../include/pcb.h"
+# include "pcb.h"
 
 uint32_t contador_pid;
 

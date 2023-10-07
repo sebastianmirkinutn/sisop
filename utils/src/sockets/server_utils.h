@@ -10,6 +10,8 @@
 #include <commons/log.h>
 #include<commons/collections/list.h>
 #include<string.h>
+#include <commons/config.h>
+#include <stddef.h>
 
 int iniciar_servidor(t_log* logger, char* puerto);
 int esperar_cliente(t_log* logger, int socket_servidor);

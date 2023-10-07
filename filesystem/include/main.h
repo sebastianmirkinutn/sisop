@@ -4,8 +4,10 @@
 #include <stdio.h>
 #include <commons/log.h>
 #include <commons/config.h>
-#include "./../../shared/src/client_utils.c"
-#include "./../../shared/src/server_utils.c"
-#include "./../../shared/src/log_utils.c"
+#include <log/log_utils.h>
+#include <sockets/sockets.h>
+#include <sockets/client_utils.h>
+#include <sockets/server_utils.h>
+#include <pcb/pcb.h>
 
 #endif

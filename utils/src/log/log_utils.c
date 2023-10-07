@@ -1,4 +1,4 @@
-#include "./../include/log_utils.h"
+#include "log_utils.h"
 
 t_log * iniciar_logger(char* archivo, char* nombre_del_proceso)
 {

@@ -1,4 +1,4 @@
-#include "./../include/server_utils.h"
+#include "server_utils.h"
 
 int iniciar_servidor(t_log *logger, char *puerto){
 	int socket_servidor;
