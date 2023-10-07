@@ -24,18 +24,14 @@ t_list* parsear_instrucciones(char* str)
     return instrucciones;
 }
 
-t_contexto_de_ejecucion* crear_contexto_de_ejecucion(char* instrucciones)
-{
-
-}
-
-t_pcb* crear_pcb(char* instrucciones, uint32_t prioridad)
+t_pcb* crear_pcb(uint32_t prioridad)
 {
     t_pcb* pcb = malloc(sizeof(t_pcb));
     pcb->prioridad = prioridad;
+    pcb->estado = NEW;
     pcb->pid = contador_pid;
     contador_pid++;
-    pcb->contexto = crear_contexto_de_ejecucion(instrucciones);
+    //pcb->contexto
     pcb->tabla_de_archivos_abiertos = list_create();
     return pcb;
 }

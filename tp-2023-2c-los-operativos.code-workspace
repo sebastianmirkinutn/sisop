@@ -31,7 +31,8 @@
 			"history.h": "c",
 			"readline.h": "c",
 			"list.h": "c",
-			"sockets.h": "c"
+			"sockets.h": "c",
+			"queue.h": "c"
 		}
 	}
 }

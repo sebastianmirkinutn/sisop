@@ -2,7 +2,7 @@
 #include "../include/main.h"
 
 int main(int argc, char* argv[]){
-    t_log* logger = iniciar_logger("log_kernel","Kernel");
+    logger = iniciar_logger("log_kernel","Kernel");
     t_config* config = iniciar_config("./cfg/kernel.config");
     
     char* ip_cpu = config_get_string_value(config, "IP_CPU");
@@ -12,17 +12,16 @@ int main(int argc, char* argv[]){
 	char* puerto_memoria = config_get_string_value(config, "PUERTO_MEMORIA");
     char* ip_filesystem = config_get_string_value(config, "IP_FILESYSTEM");
 	char* puerto_filesystem = config_get_string_value(config, "PUERTO_FILESYSTEM");
+    char* grado_max_de_multiprogramacion = config_get_string_value(config, "GRADO_MULTIPROGRAMACION_INI");
 
     int conexion_cpu_dispatch = crear_conexion(logger, ip_cpu, puerto_cpu_dispatch);
     int conexion_cpu_interrupt = crear_conexion(logger, ip_cpu, puerto_cpu_interrupt);
     int conexion_memoria = crear_conexion(logger, ip_memoria, puerto_memoria);
     int conexion_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
-    /*
-    t_mensaje mensaje;
-    mensaje.mensaje = strdup("mensaje_de_prueba");
-    mensaje.size_mensaje = 17 + 1;
-    enviar_mensaje(mensaje ,conexion_cpu_dispatch);
-*/
+
+    sem_init(&mutex_cola_new, 0, 1);
+    sem_init(&grado_de_multiprogramacion, 0, atoi(grado_max_de_multiprogramacion));
+
     while(1){
         t_mensaje mensaje;
         char* leido = readline("> ");
@@ -31,26 +30,27 @@ int main(int argc, char* argv[]){
         char* token = strtok(leido, " ");
         char* c_argv[4]; //Va a haber como máximo 4 tokens.
         uint8_t i = 0;
-        //Deberíamos mandar un paquete con los parámetros serializados.
-        //Por ahora mandamos un mensaje para la función, y uno por parámetro.
-        //mensaje.mensaje = token;
-        //mensaje.size_mensaje = strlen(token) + 1;
-        //enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
         c_argv[i] = strdup(token);
         token = strtok(NULL, " ");
-
-        while(token != NULL){
-            i++;
-            if(i<4){
-                c_argv[i] = strdup(token);
-            }
-            else{
-                //En este caso, se pasan parámetros de más
-            }
+        i++;
+        while(token != NULL && i < 4)
+        {
+            c_argv[i] = strdup(token);
             token = strtok(NULL, " ");
+            i++;
         }
 
         if(!strcmp(c_argv[0], "INICIAR_PROCESO")){
+
+            if (i < 3)
+            {
+                log_warning(logger, "Se pasaron parámetros de menos");
+            }
+            else if (i > 3)
+            {
+                log_warning(logger, "Se pasaron parámetros de más");
+            }
+            
             mensaje.mensaje = c_argv[0];
             mensaje.size_mensaje = strlen(c_argv[0]) + 1;
             enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
@@ -66,6 +66,9 @@ int main(int argc, char* argv[]){
             mensaje.mensaje = c_argv[3];
             mensaje.size_mensaje = strlen(c_argv[3]) + 1;
             enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
+
+            
+            t_pcb* pcb = crear_pcb(atoi(c_argv[3]));
         }
         else if(!strcmp(c_argv[0], "FINALIZAR_PROCESO")){
 
