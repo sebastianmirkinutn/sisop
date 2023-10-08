@@ -9,8 +9,9 @@ sem_t procesos_en_new;
 t_queue *cola_ready;
 t_queue *cola_blocked;
 t_queue *cola_exit;
+t_queue *cola_new;
 
-void planificador_largo_plazo(t_queue* cola_new)
+void planificador_largo_plazo()
 {
     t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
     //t_queue* cola_new_h = &cola_new;
@@ -25,16 +26,23 @@ void planificador_largo_plazo(t_queue* cola_new)
         log_info(logger_hilo,"Hice wait de la cola de new: %i",cola_new);
         t_pcb* pcb = queue_pop(cola_new);
         sem_post(&mutex_cola_new);
-        //sem_wait(&mutex_cola_ready);
-        //queue_push(cola_ready_h, pcb);
-        //sem_post(&mutex_cola_ready);
+        sem_wait(&mutex_cola_ready);
+        queue_push(cola_ready_h, pcb);
+        sem_post(&mutex_cola_ready);
         log_info(logger_hilo, "PID: %i - Estado Anterior: NEW - Estado Actual: READY", pcb->pid);
         liberar_pcb(pcb);
     }
 }
 
+void planificador_corto_plazo(/*ALGORITMO*/)
+{
+    while(1)
+    {
+        //t_registros* contexto = esperar_contexto_de_ejecucion();
+    }
+}
+
 int main(int argc, char* argv[]){
-    t_queue *cola_new;
    
     t_log* logger = iniciar_logger("log_kernel","Kernel");
     t_config* config = iniciar_config("./cfg/kernel.config");
@@ -54,6 +62,7 @@ int main(int argc, char* argv[]){
     int conexion_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
 
     sem_init(&mutex_cola_new, 0, 1);
+    sem_init(&mutex_cola_ready, 0, 1);
     sem_init(&procesos_en_new, 0, 0);
     sem_init(&grado_de_multiprogramacion, 0, atoi(grado_max_de_multiprogramacion));
     log_info(logger,"GDMP: %i",atoi(grado_max_de_multiprogramacion));
@@ -67,7 +76,7 @@ log_info(logger, " ANTES DE QUEUE_CREATE():%i",cola_new);
 
     pthread_t hilo_planificador_de_largo_plazo;
     printf("Declaré el hilo\n");
-    pthread_create(&hilo_planificador_de_largo_plazo, NULL, &planificador_largo_plazo, cola_new);
+    pthread_create(&hilo_planificador_de_largo_plazo, NULL, &planificador_largo_plazo, NULL);
     printf("Creé el hilo\n");
     pthread_detach(&hilo_planificador_de_largo_plazo);
     printf("Desvinculé el hilo\n");
@@ -129,8 +138,8 @@ log_info(logger, " ANTES DE QUEUE_CREATE():%i",cola_new);
             log_info(logger, "Hice pop");
             log_info(logger, "PCB-POP(Prioridad): %i",pcb2->prioridad);
             queue_push(cola_new, pcb);
-            sem_post(&procesos_en_new);
             sem_post(&mutex_cola_new);
+            sem_post(&procesos_en_new);
 
             log_info(logger, "Se crea el proceso %i en NEW", pcb->pid);
         }

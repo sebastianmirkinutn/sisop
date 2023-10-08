@@ -1249,3 +1249,136 @@
 [INFO] 18:46:42:333 Kernel/(4114:4114): Hice pop
 [INFO] 18:46:42:333 Kernel/(4114:4114): PCB-POP(Prioridad): 3
 [INFO] 18:46:42:333 Kernel/(4114:4114): Se crea el proceso 4 en NEW
+[ERROR] 18:55:43:190 Kernel/(4270:4270): Error connect
+
+[ERROR] 18:55:43:190 Kernel/(4270:4270): Error connect
+
+[ERROR] 18:55:43:190 Kernel/(4270:4270): Error connect
+
+[ERROR] 18:55:43:190 Kernel/(4270:4270): Error connect
+
+[INFO] 18:55:43:191 Kernel/(4270:4270): GDMP: 10
+[INFO] 18:55:43:191 Kernel/(4270:4270):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:55:43:191 Kernel/(4270:4270): QUEUE_CREATE():-1218581744
+[INFO] 18:55:43:191 Kernel/(4270:4270): Cola new -1218581744
+[INFO] 18:55:48:719 Kernel/(4270:4270): Hice wait
+[INFO] 18:55:48:719 Kernel/(4270:4270): Hice push
+[INFO] 18:55:48:720 Kernel/(4270:4270): Hice pop
+[INFO] 18:55:48:720 Kernel/(4270:4270): PCB-POP(Prioridad): 3
+[INFO] 18:55:48:721 Kernel/(4270:4270): Se crea el proceso 0 en NEW
+[ERROR] 18:56:51:821 Kernel/(4344:4344): Error connect
+
+[ERROR] 18:56:51:821 Kernel/(4344:4344): Error connect
+
+[ERROR] 18:56:51:821 Kernel/(4344:4344): Error connect
+
+[ERROR] 18:56:51:821 Kernel/(4344:4344): Error connect
+
+[INFO] 18:56:51:821 Kernel/(4344:4344): GDMP: 10
+[INFO] 18:56:51:821 Kernel/(4344:4344):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:56:51:821 Kernel/(4344:4344): QUEUE_CREATE():-1842664688
+[INFO] 18:56:51:821 Kernel/(4344:4344): Cola new -1842664688
+[INFO] 18:56:57:294 Kernel/(4344:4344): Hice wait
+[INFO] 18:56:57:294 Kernel/(4344:4344): Hice push
+[INFO] 18:56:57:294 Kernel/(4344:4344): Hice pop
+[INFO] 18:56:57:294 Kernel/(4344:4344): PCB-POP(Prioridad): 3
+[INFO] 18:56:57:294 Kernel/(4344:4344): Se crea el proceso 0 en NEW
+[ERROR] 18:57:04:687 Kernel/(4382:4382): Error connect
+
+[ERROR] 18:57:04:723 Kernel/(4382:4382): Error connect
+
+[ERROR] 18:57:04:725 Kernel/(4382:4382): Error connect
+
+[ERROR] 18:57:04:725 Kernel/(4382:4382): Error connect
+
+[INFO] 18:57:04:728 Kernel/(4382:4382): GDMP: 10
+[INFO] 18:57:04:729 Kernel/(4382:4382):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:57:04:730 Kernel/(4382:4382): QUEUE_CREATE():78842048
+[INFO] 18:57:04:788 Kernel/(4382:4382): Cola new 78842048
+[INFO] 18:57:10:838 Kernel/(4382:4382): Hice wait
+[INFO] 18:57:10:840 Kernel/(4382:4382): Hice push
+[INFO] 18:57:10:841 Kernel/(4382:4382): Hice pop
+[INFO] 18:57:10:841 Kernel/(4382:4382): PCB-POP(Prioridad): 3
+[INFO] 18:57:10:842 Kernel/(4382:4382): Se crea el proceso 0 en NEW
+[INFO] 18:57:14:858 Kernel/(4382:4382): Hice wait
+[INFO] 18:57:14:859 Kernel/(4382:4382): Hice push
+[INFO] 18:57:14:860 Kernel/(4382:4382): Hice pop
+[INFO] 18:57:14:860 Kernel/(4382:4382): PCB-POP(Prioridad): 3
+[INFO] 18:57:14:861 Kernel/(4382:4382): Se crea el proceso 1 en NEW
+[INFO] 18:57:16:426 Kernel/(4382:4382): Hice wait
+[INFO] 18:57:16:427 Kernel/(4382:4382): Hice push
+[INFO] 18:57:16:427 Kernel/(4382:4382): Hice pop
+[INFO] 18:57:16:428 Kernel/(4382:4382): PCB-POP(Prioridad): 3
+[INFO] 18:57:16:429 Kernel/(4382:4382): Se crea el proceso 2 en NEW
+[INFO] 18:57:17:350 Kernel/(4382:4382): Hice wait
+[INFO] 18:57:17:351 Kernel/(4382:4382): Hice push
+[INFO] 18:57:17:351 Kernel/(4382:4382): Hice pop
+[INFO] 18:57:17:351 Kernel/(4382:4382): PCB-POP(Prioridad): 3
+[INFO] 18:57:17:352 Kernel/(4382:4382): Se crea el proceso 3 en NEW
+[INFO] 18:57:18:216 Kernel/(4382:4382): Hice wait
+[INFO] 18:57:18:217 Kernel/(4382:4382): Hice push
+[INFO] 18:57:18:217 Kernel/(4382:4382): Hice pop
+[INFO] 18:57:18:218 Kernel/(4382:4382): PCB-POP(Prioridad): 3
+[INFO] 18:57:18:218 Kernel/(4382:4382): Se crea el proceso 4 en NEW
+[INFO] 18:57:18:975 Kernel/(4382:4382): Hice wait
+[INFO] 18:57:18:975 Kernel/(4382:4382): Hice push
+[INFO] 18:57:18:976 Kernel/(4382:4382): Hice pop
+[INFO] 18:57:18:976 Kernel/(4382:4382): PCB-POP(Prioridad): 3
+[INFO] 18:57:18:977 Kernel/(4382:4382): Se crea el proceso 5 en NEW
+[INFO] 18:57:19:686 Kernel/(4382:4382): Hice wait
+[INFO] 18:57:19:687 Kernel/(4382:4382): Hice push
+[INFO] 18:57:19:688 Kernel/(4382:4382): Hice pop
+[INFO] 18:57:19:688 Kernel/(4382:4382): PCB-POP(Prioridad): 3
+[INFO] 18:57:19:689 Kernel/(4382:4382): Se crea el proceso 6 en NEW
+[INFO] 18:57:20:343 Kernel/(4382:4382): Hice wait
+[INFO] 18:57:20:344 Kernel/(4382:4382): Hice push
+[INFO] 18:57:20:344 Kernel/(4382:4382): Hice pop
+[INFO] 18:57:20:345 Kernel/(4382:4382): PCB-POP(Prioridad): 3
+[INFO] 18:57:20:345 Kernel/(4382:4382): Se crea el proceso 7 en NEW
+[INFO] 18:57:21:042 Kernel/(4382:4382): Hice wait
+[INFO] 18:57:21:046 Kernel/(4382:4382): Hice push
+[INFO] 18:57:21:046 Kernel/(4382:4382): Hice pop
+[INFO] 18:57:21:047 Kernel/(4382:4382): PCB-POP(Prioridad): 3
+[INFO] 18:57:21:047 Kernel/(4382:4382): Se crea el proceso 8 en NEW
+[INFO] 18:57:21:756 Kernel/(4382:4382): Hice wait
+[INFO] 18:57:21:757 Kernel/(4382:4382): Hice push
+[INFO] 18:57:21:758 Kernel/(4382:4382): Hice pop
+[INFO] 18:57:21:758 Kernel/(4382:4382): PCB-POP(Prioridad): 3
+[INFO] 18:57:21:758 Kernel/(4382:4382): Se crea el proceso 9 en NEW
+[INFO] 18:57:22:476 Kernel/(4382:4382): Hice wait
+[INFO] 18:57:22:477 Kernel/(4382:4382): Hice push
+[INFO] 18:57:22:477 Kernel/(4382:4382): Hice pop
+[INFO] 18:57:22:478 Kernel/(4382:4382): PCB-POP(Prioridad): 3
+[INFO] 18:57:22:478 Kernel/(4382:4382): Se crea el proceso 10 en NEW
+[INFO] 18:57:28:933 Kernel/(4382:4382): Hice wait
+[INFO] 18:57:28:933 Kernel/(4382:4382): Hice push
+[INFO] 18:57:28:934 Kernel/(4382:4382): Hice pop
+[INFO] 18:57:28:934 Kernel/(4382:4382): PCB-POP(Prioridad): 3
+[INFO] 18:57:28:934 Kernel/(4382:4382): Se crea el proceso 11 en NEW
+[INFO] 18:57:29:728 Kernel/(4382:4382): Hice wait
+[INFO] 18:57:29:729 Kernel/(4382:4382): Hice push
+[INFO] 18:57:29:729 Kernel/(4382:4382): Hice pop
+[INFO] 18:57:29:729 Kernel/(4382:4382): PCB-POP(Prioridad): 3
+[INFO] 18:57:29:729 Kernel/(4382:4382): Se crea el proceso 12 en NEW
+[ERROR] 19:06:41:156 Kernel/(4665:4665): Error connect
+
+[ERROR] 19:06:41:156 Kernel/(4665:4665): Error connect
+
+[ERROR] 19:06:41:156 Kernel/(4665:4665): Error connect
+
+[ERROR] 19:06:41:156 Kernel/(4665:4665): Error connect
+
+[INFO] 19:06:41:156 Kernel/(4665:4665): GDMP: 10
+[INFO] 19:06:41:156 Kernel/(4665:4665):  ANTES DE QUEUE_CREATE():0
+[INFO] 19:06:41:156 Kernel/(4665:4665): QUEUE_CREATE():-1646052592
+[INFO] 19:06:41:156 Kernel/(4665:4665): Cola new -1646052592
+[INFO] 19:06:46:035 Kernel/(4665:4665): Hice wait
+[INFO] 19:06:46:035 Kernel/(4665:4665): Hice push
+[INFO] 19:06:46:035 Kernel/(4665:4665): Hice pop
+[INFO] 19:06:46:035 Kernel/(4665:4665): PCB-POP(Prioridad): 3
+[INFO] 19:06:46:035 Kernel/(4665:4665): Se crea el proceso 0 en NEW
+[INFO] 19:06:47:808 Kernel/(4665:4665): Hice wait
+[INFO] 19:06:47:808 Kernel/(4665:4665): Hice push
+[INFO] 19:06:47:808 Kernel/(4665:4665): Hice pop
+[INFO] 19:06:47:808 Kernel/(4665:4665): PCB-POP(Prioridad): 3
+[INFO] 19:06:47:808 Kernel/(4665:4665): Se crea el proceso 1 en NEW

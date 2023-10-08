@@ -160,3 +160,45 @@
 [INFO] 18:46:42:334 HILO/(4114:4115): Hice wait del gdmp
 [INFO] 18:46:42:335 HILO/(4114:4115): Hice wait de la cola de new: 78842048
 [INFO] 18:46:42:336 HILO/(4114:4115): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 18:55:48:720 HILO/(4270:4271): Hice wait del gdmp
+[INFO] 18:55:48:720 HILO/(4270:4271): Hice wait de la cola de new: -1218581744
+[INFO] 18:55:48:720 HILO/(4270:4271): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 18:56:57:294 HILO/(4344:4345): Hice wait del gdmp
+[INFO] 18:56:57:294 HILO/(4344:4345): Hice wait de la cola de new: -1842664688
+[INFO] 18:56:57:294 HILO/(4344:4345): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 18:57:10:846 HILO/(4382:4383): Hice wait del gdmp
+[INFO] 18:57:10:846 HILO/(4382:4383): Hice wait de la cola de new: 78842048
+[INFO] 18:57:10:855 HILO/(4382:4383): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 18:57:14:862 HILO/(4382:4383): Hice wait del gdmp
+[INFO] 18:57:14:862 HILO/(4382:4383): Hice wait de la cola de new: 78842048
+[INFO] 18:57:14:863 HILO/(4382:4383): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 18:57:16:430 HILO/(4382:4383): Hice wait del gdmp
+[INFO] 18:57:16:430 HILO/(4382:4383): Hice wait de la cola de new: 78842048
+[INFO] 18:57:16:430 HILO/(4382:4383): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 18:57:17:352 HILO/(4382:4383): Hice wait del gdmp
+[INFO] 18:57:17:353 HILO/(4382:4383): Hice wait de la cola de new: 78842048
+[INFO] 18:57:17:354 HILO/(4382:4383): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 18:57:18:219 HILO/(4382:4383): Hice wait del gdmp
+[INFO] 18:57:18:224 HILO/(4382:4383): Hice wait de la cola de new: 78842048
+[INFO] 18:57:18:224 HILO/(4382:4383): PID: 4 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 18:57:18:978 HILO/(4382:4383): Hice wait del gdmp
+[INFO] 18:57:18:978 HILO/(4382:4383): Hice wait de la cola de new: 78842048
+[INFO] 18:57:18:979 HILO/(4382:4383): PID: 5 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 18:57:19:689 HILO/(4382:4383): Hice wait del gdmp
+[INFO] 18:57:19:690 HILO/(4382:4383): Hice wait de la cola de new: 78842048
+[INFO] 18:57:19:691 HILO/(4382:4383): PID: 6 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 18:57:20:345 HILO/(4382:4383): Hice wait del gdmp
+[INFO] 18:57:20:347 HILO/(4382:4383): Hice wait de la cola de new: 78842048
+[INFO] 18:57:20:348 HILO/(4382:4383): PID: 7 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 18:57:21:048 HILO/(4382:4383): Hice wait del gdmp
+[INFO] 18:57:21:048 HILO/(4382:4383): Hice wait de la cola de new: 78842048
+[INFO] 18:57:21:049 HILO/(4382:4383): PID: 8 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 18:57:21:759 HILO/(4382:4383): Hice wait del gdmp
+[INFO] 18:57:21:760 HILO/(4382:4383): Hice wait de la cola de new: 78842048
+[INFO] 18:57:21:761 HILO/(4382:4383): PID: 9 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 19:06:46:035 HILO/(4665:4666): Hice wait del gdmp
+[INFO] 19:06:46:035 HILO/(4665:4666): Hice wait de la cola de new: -1646052592
+[INFO] 19:06:46:035 HILO/(4665:4666): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 19:06:47:808 HILO/(4665:4666): Hice wait del gdmp
+[INFO] 19:06:47:808 HILO/(4665:4666): Hice wait de la cola de new: -1646052592
+[INFO] 19:06:47:808 HILO/(4665:4666): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
