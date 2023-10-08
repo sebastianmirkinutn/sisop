@@ -1382,3 +1382,15 @@
 [INFO] 19:06:47:808 Kernel/(4665:4665): Hice pop
 [INFO] 19:06:47:808 Kernel/(4665:4665): PCB-POP(Prioridad): 3
 [INFO] 19:06:47:808 Kernel/(4665:4665): Se crea el proceso 1 en NEW
+[ERROR] 19:28:50:594 Kernel/(5451:5451): Error connect
+
+[ERROR] 19:28:50:594 Kernel/(5451:5451): Error connect
+
+[ERROR] 19:28:50:594 Kernel/(5451:5451): Error connect
+
+[ERROR] 19:28:50:594 Kernel/(5451:5451): Error connect
+
+[INFO] 19:28:50:594 Kernel/(5451:5451): GDMP: 10
+[INFO] 19:28:50:594 Kernel/(5451:5451):  ANTES DE QUEUE_CREATE():0
+[INFO] 19:28:50:594 Kernel/(5451:5451): QUEUE_CREATE():933440272
+[INFO] 19:28:50:594 Kernel/(5451:5451): Cola new 933440272

@@ -38,7 +38,7 @@ void planificador_corto_plazo(/*ALGORITMO*/)
 {
     while(1)
     {
-        //t_registros* contexto = esperar_contexto_de_ejecucion();
+        t_registros* contexto = recibir_contexto_de_ejecucion();
     }
 }
 

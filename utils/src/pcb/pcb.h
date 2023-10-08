@@ -6,6 +6,9 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <commons/collections/list.h>
+#include <sockets/sockets.h>
+#include <sockets/client_utils.h>
+#include <sockets/server_utils.h>
 
 typedef struct
 {
