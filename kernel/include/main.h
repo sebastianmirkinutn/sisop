@@ -15,6 +15,4 @@
 #include <pthread.h>
 //#include "./../src/planificador_largo_plazo.c"
 
-
-
 #endif 

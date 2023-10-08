@@ -744,3 +744,508 @@
 
 [INFO] 14:17:58:264 Kernel/(13889:13889): GDMP: 10
 [WARNING] 14:18:04:555 Kernel/(13889:13889): Se pasaron parámetros de menos
+[ERROR] 14:27:34:839 Kernel/(14013:14013): Error connect
+
+[ERROR] 14:27:34:883 Kernel/(14013:14013): Error connect
+
+[ERROR] 14:27:34:887 Kernel/(14013:14013): Error connect
+
+[ERROR] 14:27:34:888 Kernel/(14013:14013): Error connect
+
+[INFO] 14:27:34:892 Kernel/(14013:14013): GDMP: 10
+[ERROR] 14:45:15:226 Kernel/(14257:14257): Error connect
+
+[ERROR] 14:45:15:227 Kernel/(14257:14257): Error connect
+
+[ERROR] 14:45:15:227 Kernel/(14257:14257): Error connect
+
+[ERROR] 14:45:15:227 Kernel/(14257:14257): Error connect
+
+[INFO] 14:45:15:227 Kernel/(14257:14257): GDMP: 10
+[ERROR] 14:46:11:142 Kernel/(14320:14320): Error connect
+
+[ERROR] 14:46:11:181 Kernel/(14320:14320): Error connect
+
+[ERROR] 14:46:11:183 Kernel/(14320:14320): Error connect
+
+[ERROR] 14:46:11:184 Kernel/(14320:14320): Error connect
+
+[INFO] 14:46:11:187 Kernel/(14320:14320): GDMP: 10
+[ERROR] 14:51:52:304 Kernel/(14398:14398): Error connect
+
+[ERROR] 14:51:52:305 Kernel/(14398:14398): Error connect
+
+[ERROR] 14:51:52:305 Kernel/(14398:14398): Error connect
+
+[ERROR] 14:51:52:305 Kernel/(14398:14398): Error connect
+
+[INFO] 14:51:52:305 Kernel/(14398:14398): GDMP: 10
+[INFO] 14:51:52:305 Kernel/(14398:14398): Cola new -1917195504
+[ERROR] 14:52:44:986 Kernel/(14463:14463): Error connect
+
+[ERROR] 14:52:44:986 Kernel/(14463:14463): Error connect
+
+[ERROR] 14:52:44:987 Kernel/(14463:14463): Error connect
+
+[ERROR] 14:52:44:987 Kernel/(14463:14463): Error connect
+
+[INFO] 14:52:44:987 Kernel/(14463:14463): GDMP: 10
+[INFO] 14:52:44:987 Kernel/(14463:14463): Cola new 824765200
+[ERROR] 14:56:29:990 Kernel/(14961:14961): Error connect
+
+[ERROR] 14:56:29:990 Kernel/(14961:14961): Error connect
+
+[ERROR] 14:56:29:991 Kernel/(14961:14961): Error connect
+
+[ERROR] 14:56:29:991 Kernel/(14961:14961): Error connect
+
+[INFO] 14:56:29:991 Kernel/(14961:14961): GDMP: 10
+[INFO] 14:56:29:991 Kernel/(14961:14961): Cola new -1091314928
+[ERROR] 14:57:34:423 Kernel/(15038:15038): Error connect
+
+[ERROR] 14:57:34:423 Kernel/(15038:15038): Error connect
+
+[ERROR] 14:57:34:424 Kernel/(15038:15038): Error connect
+
+[ERROR] 14:57:34:424 Kernel/(15038:15038): Error connect
+
+[INFO] 14:57:34:424 Kernel/(15038:15038): GDMP: 10
+[INFO] 14:57:34:424 Kernel/(15038:15038): Cola new -2046764272
+[WARNING] 14:57:42:038 Kernel/(15038:15038): La función INICIAR no existe.
+[ERROR] 14:57:51:472 Kernel/(15042:15042): Error connect
+
+[ERROR] 14:57:51:472 Kernel/(15042:15042): Error connect
+
+[ERROR] 14:57:51:472 Kernel/(15042:15042): Error connect
+
+[ERROR] 14:57:51:472 Kernel/(15042:15042): Error connect
+
+[INFO] 14:57:51:472 Kernel/(15042:15042): GDMP: 10
+[INFO] 14:57:51:473 Kernel/(15042:15042): Cola new -1415660784
+[ERROR] 14:59:05:279 Kernel/(15144:15144): Error connect
+
+[ERROR] 14:59:05:279 Kernel/(15144:15144): Error connect
+
+[ERROR] 14:59:05:279 Kernel/(15144:15144): Error connect
+
+[ERROR] 14:59:05:280 Kernel/(15144:15144): Error connect
+
+[INFO] 14:59:05:280 Kernel/(15144:15144): GDMP: 10
+[INFO] 14:59:05:280 Kernel/(15144:15144): Cola new 2079959824
+[INFO] 14:59:10:057 Kernel/(15144:15144): Hice wait
+[ERROR] 15:02:50:508 Kernel/(15305:15305): Error connect
+
+[ERROR] 15:02:50:508 Kernel/(15305:15305): Error connect
+
+[ERROR] 15:02:50:511 Kernel/(15305:15305): Error connect
+
+[ERROR] 15:02:50:511 Kernel/(15305:15305): Error connect
+
+[INFO] 15:02:50:511 Kernel/(15305:15305): GDMP: 10
+[INFO] 15:02:50:511 Kernel/(15305:15305): QUEUE_CREATE():
+[INFO] 15:02:50:511 Kernel/(15305:15305): Cola new -1479898352
+[WARNING] 15:03:11:103 Kernel/(15305:15305): La función make no existe.
+[WARNING] 15:03:12:440 Kernel/(15305:15305): La función make no existe.
+[ERROR] 15:03:17:657 Kernel/(15363:15363): Error connect
+
+[ERROR] 15:03:17:657 Kernel/(15363:15363): Error connect
+
+[ERROR] 15:03:17:657 Kernel/(15363:15363): Error connect
+
+[ERROR] 15:03:17:657 Kernel/(15363:15363): Error connect
+
+[INFO] 15:03:17:657 Kernel/(15363:15363): GDMP: 10
+[INFO] 15:03:17:657 Kernel/(15363:15363):  ANTES DE QUEUE_CREATE():
+[INFO] 15:03:17:657 Kernel/(15363:15363): QUEUE_CREATE():
+[INFO] 15:03:17:658 Kernel/(15363:15363): Cola new -1511548144
+[ERROR] 15:03:37:359 Kernel/(15409:15409): Error connect
+
+[ERROR] 15:03:37:360 Kernel/(15409:15409): Error connect
+
+[ERROR] 15:03:37:360 Kernel/(15409:15409): Error connect
+
+[ERROR] 15:03:37:360 Kernel/(15409:15409): Error connect
+
+[INFO] 15:03:37:360 Kernel/(15409:15409): GDMP: 10
+[INFO] 15:03:37:360 Kernel/(15409:15409):  ANTES DE QUEUE_CREATE():½i
+[INFO] 15:03:37:360 Kernel/(15409:15409): QUEUE_CREATE():½i
+[INFO] 15:03:37:360 Kernel/(15409:15409): Cola new -1228018928
+[ERROR] 15:05:31:086 Kernel/(15474:15474): Error connect
+
+[ERROR] 15:05:31:086 Kernel/(15474:15474): Error connect
+
+[ERROR] 15:05:31:086 Kernel/(15474:15474): Error connect
+
+[ERROR] 15:05:31:086 Kernel/(15474:15474): Error connect
+
+[INFO] 15:05:31:087 Kernel/(15474:15474): GDMP: 10
+[INFO] 15:05:31:087 Kernel/(15474:15474):  ANTES DE QUEUE_CREATE():0
+[INFO] 15:05:31:087 Kernel/(15474:15474): QUEUE_CREATE():1678379792
+[INFO] 15:05:31:087 Kernel/(15474:15474): Cola new 1678379792
+[INFO] 15:05:42:483 Kernel/(15474:15474): Hice wait
+[ERROR] 15:06:38:948 Kernel/(15560:15560): Error connect
+
+[ERROR] 15:06:38:966 Kernel/(15560:15560): Error connect
+
+[ERROR] 15:06:38:969 Kernel/(15560:15560): Error connect
+
+[ERROR] 15:06:38:970 Kernel/(15560:15560): Error connect
+
+[INFO] 15:06:38:972 Kernel/(15560:15560): GDMP: 10
+[INFO] 15:06:38:973 Kernel/(15560:15560):  ANTES DE QUEUE_CREATE():0
+[INFO] 15:06:38:981 Kernel/(15560:15560): QUEUE_CREATE():78836496
+[INFO] 15:06:39:000 Kernel/(15560:15560): Cola new 78836496
+[INFO] 15:07:22:156 Kernel/(15560:15560): Hice wait
+[ERROR] 15:10:47:869 Kernel/(15647:15647): Error connect
+
+[ERROR] 15:10:47:869 Kernel/(15647:15647): Error connect
+
+[ERROR] 15:10:47:869 Kernel/(15647:15647): Error connect
+
+[ERROR] 15:10:47:869 Kernel/(15647:15647): Error connect
+
+[INFO] 15:10:47:869 Kernel/(15647:15647): GDMP: 10
+[INFO] 15:10:47:869 Kernel/(15647:15647):  ANTES DE QUEUE_CREATE():0
+[INFO] 15:10:47:870 Kernel/(15647:15647): QUEUE_CREATE():1794960144
+[INFO] 15:10:47:870 Kernel/(15647:15647): Cola new 1794960144
+[INFO] 15:10:55:933 Kernel/(15647:15647): Hice wait
+[ERROR] 18:14:57:596 Kernel/(1747:1747): Error connect
+
+[ERROR] 18:14:57:665 Kernel/(1747:1747): Error connect
+
+[ERROR] 18:14:57:668 Kernel/(1747:1747): Error connect
+
+[ERROR] 18:14:57:669 Kernel/(1747:1747): Error connect
+
+[INFO] 18:14:57:672 Kernel/(1747:1747): GDMP: 10
+[INFO] 18:14:57:674 Kernel/(1747:1747):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:14:57:675 Kernel/(1747:1747): QUEUE_CREATE():78842048
+[INFO] 18:14:57:740 Kernel/(1747:1747): Cola new 78842048
+[INFO] 18:15:14:316 Kernel/(1747:1747): Hice wait
+[ERROR] 18:27:55:701 Kernel/(2545:2545): Error connect
+
+[ERROR] 18:27:55:702 Kernel/(2545:2545): Error connect
+
+[ERROR] 18:27:55:703 Kernel/(2545:2545): Error connect
+
+[ERROR] 18:27:55:703 Kernel/(2545:2545): Error connect
+
+[INFO] 18:27:55:703 Kernel/(2545:2545): GDMP: 10
+[INFO] 18:27:55:703 Kernel/(2545:2545):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:27:55:703 Kernel/(2545:2545): QUEUE_CREATE():-2013840624
+[INFO] 18:27:55:704 Kernel/(2545:2545): Cola new -2013840624
+[INFO] 18:28:02:828 Kernel/(2545:2545): Hice wait
+[INFO] 18:28:02:828 Kernel/(2545:2545): Hice push
+[INFO] 18:28:02:828 Kernel/(2545:2545): Hice pop
+[INFO] 18:28:02:828 Kernel/(2545:2545): PCB-POP(Prioridad): 3
+[INFO] 18:28:02:828 Kernel/(2545:2545): Se crea el proceso 0 en NEW
+[ERROR] 18:28:40:140 Kernel/(2602:2602): Error connect
+
+[ERROR] 18:28:40:140 Kernel/(2602:2602): Error connect
+
+[ERROR] 18:28:40:140 Kernel/(2602:2602): Error connect
+
+[ERROR] 18:28:40:140 Kernel/(2602:2602): Error connect
+
+[INFO] 18:28:40:140 Kernel/(2602:2602): GDMP: 10
+[INFO] 18:28:40:141 Kernel/(2602:2602):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:28:40:141 Kernel/(2602:2602): QUEUE_CREATE():1815620368
+[INFO] 18:28:40:141 Kernel/(2602:2602): Cola new 1815620368
+[INFO] 18:28:46:726 Kernel/(2602:2602): Hice wait
+[INFO] 18:28:46:726 Kernel/(2602:2602): Hice push
+[INFO] 18:28:46:726 Kernel/(2602:2602): Hice pop
+[INFO] 18:28:46:726 Kernel/(2602:2602): PCB-POP(Prioridad): 3
+[INFO] 18:28:46:726 Kernel/(2602:2602): Se crea el proceso 0 en NEW
+[ERROR] 18:29:26:533 Kernel/(2711:2711): Error connect
+
+[ERROR] 18:29:26:533 Kernel/(2711:2711): Error connect
+
+[ERROR] 18:29:26:533 Kernel/(2711:2711): Error connect
+
+[ERROR] 18:29:26:533 Kernel/(2711:2711): Error connect
+
+[INFO] 18:29:26:534 Kernel/(2711:2711): GDMP: 10
+[INFO] 18:29:26:534 Kernel/(2711:2711):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:29:26:534 Kernel/(2711:2711): QUEUE_CREATE():-581575920
+[INFO] 18:29:26:534 Kernel/(2711:2711): Cola new -581575920
+[ERROR] 18:29:37:414 Kernel/(2715:2715): Error connect
+
+[ERROR] 18:29:37:415 Kernel/(2715:2715): Error connect
+
+[ERROR] 18:29:37:415 Kernel/(2715:2715): Error connect
+
+[ERROR] 18:29:37:415 Kernel/(2715:2715): Error connect
+
+[INFO] 18:29:37:415 Kernel/(2715:2715): GDMP: 10
+[INFO] 18:29:37:415 Kernel/(2715:2715):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:29:37:416 Kernel/(2715:2715): QUEUE_CREATE():1597143824
+[INFO] 18:29:37:416 Kernel/(2715:2715): Cola new 1597143824
+[ERROR] 18:29:58:720 Kernel/(2765:2765): Error connect
+
+[ERROR] 18:29:58:761 Kernel/(2765:2765): Error connect
+
+[ERROR] 18:29:58:763 Kernel/(2765:2765): Error connect
+
+[ERROR] 18:29:58:763 Kernel/(2765:2765): Error connect
+
+[INFO] 18:29:58:765 Kernel/(2765:2765): GDMP: 10
+[INFO] 18:29:58:767 Kernel/(2765:2765):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:29:58:767 Kernel/(2765:2765): QUEUE_CREATE():78842048
+[INFO] 18:29:58:840 Kernel/(2765:2765): Cola new 78842048
+[ERROR] 18:31:26:027 Kernel/(2855:2855): Error connect
+
+[ERROR] 18:31:26:065 Kernel/(2855:2855): Error connect
+
+[ERROR] 18:31:26:068 Kernel/(2855:2855): Error connect
+
+[ERROR] 18:31:26:071 Kernel/(2855:2855): Error connect
+
+[INFO] 18:31:26:074 Kernel/(2855:2855): GDMP: 10
+[INFO] 18:31:26:076 Kernel/(2855:2855):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:31:26:077 Kernel/(2855:2855): QUEUE_CREATE():78842048
+[INFO] 18:31:26:130 Kernel/(2855:2855): Cola new 78842048
+[ERROR] 18:34:34:167 Kernel/(3163:3163): Error connect
+
+[ERROR] 18:34:34:167 Kernel/(3163:3163): Error connect
+
+[ERROR] 18:34:34:168 Kernel/(3163:3163): Error connect
+
+[ERROR] 18:34:34:168 Kernel/(3163:3163): Error connect
+
+[INFO] 18:34:34:168 Kernel/(3163:3163): GDMP: 10
+[INFO] 18:34:34:168 Kernel/(3163:3163):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:34:34:168 Kernel/(3163:3163): QUEUE_CREATE():-577365232
+[INFO] 18:34:34:168 Kernel/(3163:3163): Cola new -577365232
+[ERROR] 18:35:21:706 Kernel/(3168:3168): Error connect
+
+[ERROR] 18:35:21:707 Kernel/(3168:3168): Error connect
+
+[ERROR] 18:35:21:707 Kernel/(3168:3168): Error connect
+
+[ERROR] 18:35:21:708 Kernel/(3168:3168): Error connect
+
+[INFO] 18:35:21:708 Kernel/(3168:3168): GDMP: 10
+[INFO] 18:35:21:708 Kernel/(3168:3168):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:35:21:708 Kernel/(3168:3168): QUEUE_CREATE():37419792
+[INFO] 18:35:21:708 Kernel/(3168:3168): Cola new 37419792
+[ERROR] 18:38:50:963 Kernel/(3501:3501): Error connect
+
+[ERROR] 18:38:50:964 Kernel/(3501:3501): Error connect
+
+[ERROR] 18:38:50:964 Kernel/(3501:3501): Error connect
+
+[ERROR] 18:38:50:964 Kernel/(3501:3501): Error connect
+
+[INFO] 18:38:50:964 Kernel/(3501:3501): GDMP: 10
+[INFO] 18:38:50:964 Kernel/(3501:3501):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:38:50:964 Kernel/(3501:3501): QUEUE_CREATE():-1348646448
+[INFO] 18:38:50:964 Kernel/(3501:3501): Cola new -1380327232
+[ERROR] 18:39:29:701 Kernel/(3557:3557): Error connect
+
+[ERROR] 18:39:29:701 Kernel/(3557:3557): Error connect
+
+[ERROR] 18:39:29:701 Kernel/(3557:3557): Error connect
+
+[ERROR] 18:39:29:701 Kernel/(3557:3557): Error connect
+
+[INFO] 18:39:29:701 Kernel/(3557:3557): GDMP: 10
+[INFO] 18:39:29:701 Kernel/(3557:3557):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:39:29:701 Kernel/(3557:3557): QUEUE_CREATE():298625808
+[INFO] 18:39:29:701 Kernel/(3557:3557): Cola new 298625808
+[WARNING] 18:39:35:670 Kernel/(3557:3557): Se pasaron parámetros de menos
+[ERROR] 18:39:40:346 Kernel/(3560:3560): Error connect
+
+[ERROR] 18:39:40:346 Kernel/(3560:3560): Error connect
+
+[ERROR] 18:39:40:346 Kernel/(3560:3560): Error connect
+
+[ERROR] 18:39:40:346 Kernel/(3560:3560): Error connect
+
+[INFO] 18:39:40:346 Kernel/(3560:3560): GDMP: 10
+[INFO] 18:39:40:346 Kernel/(3560:3560):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:39:40:346 Kernel/(3560:3560): QUEUE_CREATE():687282960
+[INFO] 18:39:40:346 Kernel/(3560:3560): Cola new 687282960
+[INFO] 18:39:47:544 Kernel/(3560:3560): Hice wait
+[INFO] 18:39:47:544 Kernel/(3560:3560): Hice push
+[INFO] 18:39:47:544 Kernel/(3560:3560): Hice pop
+[INFO] 18:39:47:544 Kernel/(3560:3560): PCB-POP(Prioridad): 3
+[INFO] 18:39:47:544 Kernel/(3560:3560): Se crea el proceso 0 en NEW
+[ERROR] 18:40:44:694 Kernel/(3688:3688): Error connect
+
+[ERROR] 18:40:44:695 Kernel/(3688:3688): Error connect
+
+[ERROR] 18:40:44:695 Kernel/(3688:3688): Error connect
+
+[ERROR] 18:40:44:695 Kernel/(3688:3688): Error connect
+
+[INFO] 18:40:44:695 Kernel/(3688:3688): GDMP: 10
+[INFO] 18:40:44:695 Kernel/(3688:3688):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:40:44:695 Kernel/(3688:3688): QUEUE_CREATE():2071636752
+[INFO] 18:40:44:695 Kernel/(3688:3688): Cola new 2071636752
+[INFO] 18:40:50:386 Kernel/(3688:3688): Hice wait
+[INFO] 18:40:50:387 Kernel/(3688:3688): Hice push
+[INFO] 18:40:50:387 Kernel/(3688:3688): Hice pop
+[INFO] 18:40:50:387 Kernel/(3688:3688): PCB-POP(Prioridad): 3
+[INFO] 18:40:50:387 Kernel/(3688:3688): Se crea el proceso 0 en NEW
+[ERROR] 18:41:17:382 Kernel/(3788:3788): Error connect
+
+[ERROR] 18:41:17:382 Kernel/(3788:3788): Error connect
+
+[ERROR] 18:41:17:382 Kernel/(3788:3788): Error connect
+
+[ERROR] 18:41:17:382 Kernel/(3788:3788): Error connect
+
+[INFO] 18:41:17:382 Kernel/(3788:3788): GDMP: 10
+[INFO] 18:41:17:382 Kernel/(3788:3788):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:41:17:382 Kernel/(3788:3788): QUEUE_CREATE():-856863984
+[INFO] 18:41:17:383 Kernel/(3788:3788): Cola new -856863984
+[ERROR] 18:43:30:813 Kernel/(3890:3890): Error connect
+
+[ERROR] 18:43:30:813 Kernel/(3890:3890): Error connect
+
+[ERROR] 18:43:30:813 Kernel/(3890:3890): Error connect
+
+[ERROR] 18:43:30:813 Kernel/(3890:3890): Error connect
+
+[INFO] 18:43:30:813 Kernel/(3890:3890): GDMP: 10
+[INFO] 18:43:30:813 Kernel/(3890:3890):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:43:30:813 Kernel/(3890:3890): QUEUE_CREATE():-1599132912
+[INFO] 18:43:30:813 Kernel/(3890:3890): Cola new -1599132912
+[INFO] 18:43:36:091 Kernel/(3890:3890): Hice wait
+[INFO] 18:43:36:091 Kernel/(3890:3890): Hice push
+[INFO] 18:43:36:091 Kernel/(3890:3890): Hice pop
+[INFO] 18:43:36:091 Kernel/(3890:3890): PCB-POP(Prioridad): 3
+[INFO] 18:43:36:091 Kernel/(3890:3890): Se crea el proceso 0 en NEW
+[INFO] 18:43:48:695 Kernel/(3890:3890): Hice wait
+[INFO] 18:43:48:695 Kernel/(3890:3890): Hice push
+[INFO] 18:43:48:695 Kernel/(3890:3890): Hice pop
+[INFO] 18:43:48:695 Kernel/(3890:3890): PCB-POP(Prioridad): 3
+[INFO] 18:43:48:695 Kernel/(3890:3890): Se crea el proceso 1 en NEW
+[ERROR] 18:44:33:879 Kernel/(3972:3972): Error connect
+
+[ERROR] 18:44:33:879 Kernel/(3972:3972): Error connect
+
+[ERROR] 18:44:33:879 Kernel/(3972:3972): Error connect
+
+[ERROR] 18:44:33:879 Kernel/(3972:3972): Error connect
+
+[INFO] 18:44:33:880 Kernel/(3972:3972): GDMP: 10
+[INFO] 18:44:33:880 Kernel/(3972:3972):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:44:33:880 Kernel/(3972:3972): QUEUE_CREATE():1076198160
+[INFO] 18:44:33:880 Kernel/(3972:3972): Cola new 1076198160
+[INFO] 18:44:40:674 Kernel/(3972:3972): Hice wait
+[INFO] 18:44:40:674 Kernel/(3972:3972): Hice push
+[INFO] 18:44:40:674 Kernel/(3972:3972): Hice pop
+[INFO] 18:44:40:674 Kernel/(3972:3972): PCB-POP(Prioridad): 3
+[INFO] 18:44:40:674 Kernel/(3972:3972): Se crea el proceso 0 en NEW
+[ERROR] 18:45:02:893 Kernel/(4010:4010): Error connect
+
+[ERROR] 18:45:02:938 Kernel/(4010:4010): Error connect
+
+[ERROR] 18:45:02:940 Kernel/(4010:4010): Error connect
+
+[ERROR] 18:45:02:941 Kernel/(4010:4010): Error connect
+
+[INFO] 18:45:02:944 Kernel/(4010:4010): GDMP: 10
+[INFO] 18:45:02:950 Kernel/(4010:4010):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:45:02:952 Kernel/(4010:4010): QUEUE_CREATE():78842048
+[INFO] 18:45:03:027 Kernel/(4010:4010): Cola new 78842048
+[INFO] 18:45:08:809 Kernel/(4010:4010): Hice wait
+[INFO] 18:45:08:812 Kernel/(4010:4010): Hice push
+[INFO] 18:45:08:814 Kernel/(4010:4010): Hice pop
+[INFO] 18:45:08:815 Kernel/(4010:4010): PCB-POP(Prioridad): 3
+[INFO] 18:45:08:816 Kernel/(4010:4010): Se crea el proceso 0 en NEW
+[INFO] 18:45:14:117 Kernel/(4010:4010): Hice wait
+[INFO] 18:45:14:118 Kernel/(4010:4010): Hice push
+[INFO] 18:45:14:118 Kernel/(4010:4010): Hice pop
+[INFO] 18:45:14:119 Kernel/(4010:4010): PCB-POP(Prioridad): 3
+[INFO] 18:45:14:120 Kernel/(4010:4010): Se crea el proceso 1 en NEW
+[INFO] 18:45:15:472 Kernel/(4010:4010): Hice wait
+[INFO] 18:45:15:473 Kernel/(4010:4010): Hice push
+[INFO] 18:45:15:474 Kernel/(4010:4010): Hice pop
+[INFO] 18:45:15:474 Kernel/(4010:4010): PCB-POP(Prioridad): 3
+[INFO] 18:45:15:477 Kernel/(4010:4010): Se crea el proceso 2 en NEW
+[INFO] 18:45:16:110 Kernel/(4010:4010): Hice wait
+[INFO] 18:45:16:111 Kernel/(4010:4010): Hice push
+[INFO] 18:45:16:112 Kernel/(4010:4010): Hice pop
+[INFO] 18:45:16:112 Kernel/(4010:4010): PCB-POP(Prioridad): 3
+[INFO] 18:45:16:112 Kernel/(4010:4010): Se crea el proceso 3 en NEW
+[INFO] 18:45:16:834 Kernel/(4010:4010): Hice wait
+[INFO] 18:45:16:835 Kernel/(4010:4010): Hice push
+[INFO] 18:45:16:836 Kernel/(4010:4010): Hice pop
+[INFO] 18:45:16:836 Kernel/(4010:4010): PCB-POP(Prioridad): 3
+[INFO] 18:45:16:837 Kernel/(4010:4010): Se crea el proceso 4 en NEW
+[INFO] 18:45:25:237 Kernel/(4010:4010): Hice wait
+[INFO] 18:45:25:238 Kernel/(4010:4010): Hice push
+[INFO] 18:45:25:239 Kernel/(4010:4010): Hice pop
+[INFO] 18:45:25:239 Kernel/(4010:4010): PCB-POP(Prioridad): 3
+[INFO] 18:45:25:243 Kernel/(4010:4010): Se crea el proceso 5 en NEW
+[INFO] 18:45:27:857 Kernel/(4010:4010): Hice wait
+[INFO] 18:45:27:858 Kernel/(4010:4010): Hice push
+[INFO] 18:45:27:859 Kernel/(4010:4010): Hice pop
+[INFO] 18:45:27:859 Kernel/(4010:4010): PCB-POP(Prioridad): 3
+[INFO] 18:45:27:860 Kernel/(4010:4010): Se crea el proceso 6 en NEW
+[INFO] 18:45:30:281 Kernel/(4010:4010): Hice wait
+[INFO] 18:45:30:282 Kernel/(4010:4010): Hice push
+[INFO] 18:45:30:283 Kernel/(4010:4010): Hice pop
+[INFO] 18:45:30:283 Kernel/(4010:4010): PCB-POP(Prioridad): 3
+[INFO] 18:45:30:287 Kernel/(4010:4010): Se crea el proceso 7 en NEW
+[INFO] 18:45:32:092 Kernel/(4010:4010): Hice wait
+[INFO] 18:45:32:093 Kernel/(4010:4010): Hice push
+[INFO] 18:45:32:093 Kernel/(4010:4010): Hice pop
+[INFO] 18:45:32:093 Kernel/(4010:4010): PCB-POP(Prioridad): 3
+[INFO] 18:45:32:093 Kernel/(4010:4010): Se crea el proceso 8 en NEW
+[ERROR] 18:45:57:829 Kernel/(4075:4075): Error connect
+
+[ERROR] 18:45:57:829 Kernel/(4075:4075): Error connect
+
+[ERROR] 18:45:57:829 Kernel/(4075:4075): Error connect
+
+[ERROR] 18:45:57:829 Kernel/(4075:4075): Error connect
+
+[INFO] 18:45:57:829 Kernel/(4075:4075): GDMP: 10
+[INFO] 18:45:57:829 Kernel/(4075:4075):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:45:57:829 Kernel/(4075:4075): QUEUE_CREATE():519932688
+[INFO] 18:45:57:829 Kernel/(4075:4075): Cola new 519932688
+[INFO] 18:46:02:564 Kernel/(4075:4075): Hice wait
+[INFO] 18:46:02:564 Kernel/(4075:4075): Hice push
+[INFO] 18:46:02:564 Kernel/(4075:4075): Hice pop
+[INFO] 18:46:02:564 Kernel/(4075:4075): PCB-POP(Prioridad): 3
+[INFO] 18:46:02:564 Kernel/(4075:4075): Se crea el proceso 0 en NEW
+[ERROR] 18:46:22:552 Kernel/(4114:4114): Error connect
+
+[ERROR] 18:46:22:585 Kernel/(4114:4114): Error connect
+
+[ERROR] 18:46:22:586 Kernel/(4114:4114): Error connect
+
+[ERROR] 18:46:22:587 Kernel/(4114:4114): Error connect
+
+[INFO] 18:46:22:591 Kernel/(4114:4114): GDMP: 10
+[INFO] 18:46:22:596 Kernel/(4114:4114):  ANTES DE QUEUE_CREATE():0
+[INFO] 18:46:22:597 Kernel/(4114:4114): QUEUE_CREATE():78842048
+[INFO] 18:46:22:659 Kernel/(4114:4114): Cola new 78842048
+[INFO] 18:46:27:211 Kernel/(4114:4114): Hice wait
+[INFO] 18:46:27:215 Kernel/(4114:4114): Hice push
+[INFO] 18:46:27:216 Kernel/(4114:4114): Hice pop
+[INFO] 18:46:27:216 Kernel/(4114:4114): PCB-POP(Prioridad): 3
+[INFO] 18:46:27:219 Kernel/(4114:4114): Se crea el proceso 0 en NEW
+[INFO] 18:46:28:854 Kernel/(4114:4114): Hice wait
+[INFO] 18:46:28:854 Kernel/(4114:4114): Hice push
+[INFO] 18:46:28:855 Kernel/(4114:4114): Hice pop
+[INFO] 18:46:28:856 Kernel/(4114:4114): PCB-POP(Prioridad): 3
+[INFO] 18:46:28:857 Kernel/(4114:4114): Se crea el proceso 1 en NEW
+[INFO] 18:46:30:651 Kernel/(4114:4114): Hice wait
+[INFO] 18:46:30:651 Kernel/(4114:4114): Hice push
+[INFO] 18:46:30:652 Kernel/(4114:4114): Hice pop
+[INFO] 18:46:30:652 Kernel/(4114:4114): PCB-POP(Prioridad): 3
+[INFO] 18:46:30:653 Kernel/(4114:4114): Se crea el proceso 2 en NEW
+[INFO] 18:46:34:594 Kernel/(4114:4114): Hice wait
+[INFO] 18:46:34:595 Kernel/(4114:4114): Hice push
+[INFO] 18:46:34:595 Kernel/(4114:4114): Hice pop
+[INFO] 18:46:34:596 Kernel/(4114:4114): PCB-POP(Prioridad): 3
+[INFO] 18:46:34:596 Kernel/(4114:4114): Se crea el proceso 3 en NEW
+[INFO] 18:46:42:332 Kernel/(4114:4114): Hice wait
+[INFO] 18:46:42:333 Kernel/(4114:4114): Hice push
+[INFO] 18:46:42:333 Kernel/(4114:4114): Hice pop
+[INFO] 18:46:42:333 Kernel/(4114:4114): PCB-POP(Prioridad): 3
+[INFO] 18:46:42:333 Kernel/(4114:4114): Se crea el proceso 4 en NEW
