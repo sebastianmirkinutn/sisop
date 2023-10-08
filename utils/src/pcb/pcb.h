@@ -1,9 +1,14 @@
 #ifndef PCB_H
 #define PCB_H
+#include <stdlib.h>
 #include <commons/collections/list.h>
 #include <ctype.h>
 #include <stdint.h>
 #include <stddef.h>
+#include <commons/collections/list.h>
+#include <sockets/sockets.h>
+#include <sockets/client_utils.h>
+#include <sockets/server_utils.h>
 
 typedef struct
 {
@@ -45,5 +50,6 @@ typedef struct
 
 t_list* parsear_instrucciones(char* str);
 t_pcb* crear_pcb(uint32_t prioridad);
+void liberar_pcb(t_pcb* pcb);
 
 #endif

@@ -4,6 +4,12 @@
         "config.h": "c",
         "log_utils.h": "c",
         "pcb.h": "c",
-        "client_utils.h": "c"
+        "client_utils.h": "c",
+        "semaphore.h": "c",
+        "history.h": "c",
+        "readline.h": "c",
+        "planificador_largo_plazo.h": "c",
+        "queue.h": "c",
+        "server_utils.h": "c"
     }
 }
