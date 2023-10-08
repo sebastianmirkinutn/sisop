@@ -35,3 +35,10 @@ t_pcb* crear_pcb(uint32_t prioridad)
     pcb->tabla_de_archivos_abiertos = list_create();
     return pcb;
 }
+
+void liberar_pcb(t_pcb* pcb)
+{
+    list_destroy_and_destroy_elements(pcb->tabla_de_archivos_abiertos, free);
+    free(pcb->contexto);
+    free(pcb);
+}

@@ -1,0 +1,746 @@
+[ERROR] 12:11:35:714 Kernel/(2601:2601): Error connect
+
+[ERROR] 12:11:35:714 Kernel/(2601:2601): Error connect
+
+[ERROR] 12:11:35:717 Kernel/(2601:2601): Error connect
+
+[ERROR] 12:11:35:717 Kernel/(2601:2601): Error connect
+
+[ERROR] 12:12:53:548 Kernel/(2642:2642): Error connect
+
+[ERROR] 12:12:53:549 Kernel/(2642:2642): Error connect
+
+[ERROR] 12:12:53:549 Kernel/(2642:2642): Error connect
+
+[ERROR] 12:12:53:549 Kernel/(2642:2642): Error connect
+
+[INFO] 12:12:58:467 Kernel/(2642:2642): INICIAR_PROCESO A B C
+[WARNING] 12:12:58:467 Kernel/(2642:2642): Se pasaron parámetros de más
+[ERROR] 12:13:19:028 Kernel/(2714:2714): Error connect
+
+[ERROR] 12:13:19:028 Kernel/(2714:2714): Error connect
+
+[ERROR] 12:13:19:028 Kernel/(2714:2714): Error connect
+
+[ERROR] 12:13:19:028 Kernel/(2714:2714): Error connect
+
+[INFO] 12:13:26:471 Kernel/(2714:2714): INICAR_PROCESO A B C
+[WARNING] 12:13:26:471 Kernel/(2714:2714): La función INICAR_PROCESO no existe.
+[INFO] 12:13:32:736 Kernel/(2714:2714): INICIAR_PROCESO A B C
+[ERROR] 12:34:53:705 Kernel/(4901:4901): Error connect
+
+[ERROR] 12:34:53:706 Kernel/(4901:4901): Error connect
+
+[ERROR] 12:34:53:706 Kernel/(4901:4901): Error connect
+
+[ERROR] 12:34:53:706 Kernel/(4901:4901): Error connect
+
+[ERROR] 12:40:54:816 Kernel/(6077:6077): Error connect
+
+[ERROR] 12:40:54:817 Kernel/(6077:6077): Error connect
+
+[ERROR] 12:40:54:817 Kernel/(6077:6077): Error connect
+
+[ERROR] 12:40:54:817 Kernel/(6077:6077): Error connect
+
+[ERROR] 12:50:19:314 Kernel/(7136:7136): Error connect
+
+[ERROR] 12:50:19:314 Kernel/(7136:7136): Error connect
+
+[ERROR] 12:50:19:314 Kernel/(7136:7136): Error connect
+
+[ERROR] 12:50:19:314 Kernel/(7136:7136): Error connect
+
+[ERROR] 12:51:10:206 Kernel/(7239:7239): Error connect
+
+[ERROR] 12:51:10:207 Kernel/(7239:7239): Error connect
+
+[ERROR] 12:51:10:207 Kernel/(7239:7239): Error connect
+
+[ERROR] 12:51:10:207 Kernel/(7239:7239): Error connect
+
+[ERROR] 12:51:25:135 Kernel/(7301:7301): Error connect
+
+[ERROR] 12:51:25:135 Kernel/(7301:7301): Error connect
+
+[ERROR] 12:51:25:135 Kernel/(7301:7301): Error connect
+
+[ERROR] 12:51:25:135 Kernel/(7301:7301): Error connect
+
+[ERROR] 12:51:44:474 Kernel/(7363:7363): Error connect
+
+[ERROR] 12:51:44:474 Kernel/(7363:7363): Error connect
+
+[ERROR] 12:51:44:475 Kernel/(7363:7363): Error connect
+
+[ERROR] 12:51:44:475 Kernel/(7363:7363): Error connect
+
+[ERROR] 12:51:56:604 Kernel/(7420:7420): Error connect
+
+[ERROR] 12:51:56:604 Kernel/(7420:7420): Error connect
+
+[ERROR] 12:51:56:604 Kernel/(7420:7420): Error connect
+
+[ERROR] 12:51:56:604 Kernel/(7420:7420): Error connect
+
+[ERROR] 12:52:05:700 Kernel/(7465:7465): Error connect
+
+[ERROR] 12:52:05:700 Kernel/(7465:7465): Error connect
+
+[ERROR] 12:52:05:703 Kernel/(7465:7465): Error connect
+
+[ERROR] 12:52:05:703 Kernel/(7465:7465): Error connect
+
+[ERROR] 12:52:26:851 Kernel/(7517:7517): Error connect
+
+[ERROR] 12:52:26:851 Kernel/(7517:7517): Error connect
+
+[ERROR] 12:52:26:851 Kernel/(7517:7517): Error connect
+
+[ERROR] 12:52:26:851 Kernel/(7517:7517): Error connect
+
+[ERROR] 12:52:40:640 Kernel/(7602:7602): Error connect
+
+[ERROR] 12:52:40:640 Kernel/(7602:7602): Error connect
+
+[ERROR] 12:52:40:641 Kernel/(7602:7602): Error connect
+
+[ERROR] 12:52:40:641 Kernel/(7602:7602): Error connect
+
+[ERROR] 12:52:51:405 Kernel/(7648:7648): Error connect
+
+[ERROR] 12:52:51:406 Kernel/(7648:7648): Error connect
+
+[ERROR] 12:52:51:406 Kernel/(7648:7648): Error connect
+
+[ERROR] 12:52:51:406 Kernel/(7648:7648): Error connect
+
+[ERROR] 12:53:18:914 Kernel/(7702:7702): Error connect
+
+[ERROR] 12:53:18:915 Kernel/(7702:7702): Error connect
+
+[ERROR] 12:53:18:915 Kernel/(7702:7702): Error connect
+
+[ERROR] 12:53:18:915 Kernel/(7702:7702): Error connect
+
+[ERROR] 12:55:26:304 Kernel/(7766:7766): Error connect
+
+[ERROR] 12:55:26:304 Kernel/(7766:7766): Error connect
+
+[ERROR] 12:55:26:305 Kernel/(7766:7766): Error connect
+
+[ERROR] 12:55:26:306 Kernel/(7766:7766): Error connect
+
+[ERROR] 12:56:13:950 Kernel/(7838:7838): Error connect
+
+[ERROR] 12:56:13:950 Kernel/(7838:7838): Error connect
+
+[ERROR] 12:56:13:950 Kernel/(7838:7838): Error connect
+
+[ERROR] 12:56:13:951 Kernel/(7838:7838): Error connect
+
+[ERROR] 12:56:27:341 Kernel/(7892:7892): Error connect
+
+[ERROR] 12:56:27:341 Kernel/(7892:7892): Error connect
+
+[ERROR] 12:56:27:341 Kernel/(7892:7892): Error connect
+
+[ERROR] 12:56:27:341 Kernel/(7892:7892): Error connect
+
+[ERROR] 12:57:07:458 Kernel/(7955:7955): Error connect
+
+[ERROR] 12:57:07:459 Kernel/(7955:7955): Error connect
+
+[ERROR] 12:57:07:459 Kernel/(7955:7955): Error connect
+
+[ERROR] 12:57:07:459 Kernel/(7955:7955): Error connect
+
+[ERROR] 12:57:20:968 Kernel/(8015:8015): Error connect
+
+[ERROR] 12:57:20:969 Kernel/(8015:8015): Error connect
+
+[ERROR] 12:57:20:969 Kernel/(8015:8015): Error connect
+
+[ERROR] 12:57:20:969 Kernel/(8015:8015): Error connect
+
+[ERROR] 12:57:44:954 Kernel/(8055:8055): Error connect
+
+[ERROR] 12:57:44:998 Kernel/(8055:8055): Error connect
+
+[ERROR] 12:57:45:001 Kernel/(8055:8055): Error connect
+
+[ERROR] 12:57:45:003 Kernel/(8055:8055): Error connect
+
+[ERROR] 12:58:51:996 Kernel/(8122:8122): Error connect
+
+[ERROR] 12:58:52:042 Kernel/(8122:8122): Error connect
+
+[ERROR] 12:58:52:046 Kernel/(8122:8122): Error connect
+
+[ERROR] 12:58:52:047 Kernel/(8122:8122): Error connect
+
+[ERROR] 12:59:38:166 Kernel/(8208:8208): Error connect
+
+[ERROR] 12:59:38:203 Kernel/(8208:8208): Error connect
+
+[ERROR] 12:59:38:206 Kernel/(8208:8208): Error connect
+
+[ERROR] 12:59:38:207 Kernel/(8208:8208): Error connect
+
+[ERROR] 13:01:47:994 Kernel/(8380:8380): Error connect
+
+[ERROR] 13:01:48:039 Kernel/(8380:8380): Error connect
+
+[ERROR] 13:01:48:046 Kernel/(8380:8380): Error connect
+
+[ERROR] 13:01:48:047 Kernel/(8380:8380): Error connect
+
+[ERROR] 13:01:59:588 Kernel/(8417:8417): Error connect
+
+[ERROR] 13:01:59:637 Kernel/(8417:8417): Error connect
+
+[ERROR] 13:01:59:644 Kernel/(8417:8417): Error connect
+
+[ERROR] 13:01:59:646 Kernel/(8417:8417): Error connect
+
+[ERROR] 13:03:11:223 Kernel/(8562:8562): Error connect
+
+[ERROR] 13:03:11:224 Kernel/(8562:8562): Error connect
+
+[ERROR] 13:03:11:224 Kernel/(8562:8562): Error connect
+
+[ERROR] 13:03:11:224 Kernel/(8562:8562): Error connect
+
+[ERROR] 13:03:34:356 Kernel/(8612:8612): Error connect
+
+[ERROR] 13:03:34:394 Kernel/(8612:8612): Error connect
+
+[ERROR] 13:03:34:396 Kernel/(8612:8612): Error connect
+
+[ERROR] 13:03:34:397 Kernel/(8612:8612): Error connect
+
+[ERROR] 13:04:44:916 Kernel/(8714:8714): Error connect
+
+[ERROR] 13:04:45:010 Kernel/(8714:8714): Error connect
+
+[ERROR] 13:04:45:021 Kernel/(8714:8714): Error connect
+
+[ERROR] 13:04:45:022 Kernel/(8714:8714): Error connect
+
+[ERROR] 13:11:38:333 Kernel/(8904:8904): Error connect
+
+[ERROR] 13:11:38:333 Kernel/(8904:8904): Error connect
+
+[ERROR] 13:11:38:333 Kernel/(8904:8904): Error connect
+
+[ERROR] 13:11:38:333 Kernel/(8904:8904): Error connect
+
+[ERROR] 13:11:56:598 Kernel/(8956:8956): Error connect
+
+[ERROR] 13:11:56:598 Kernel/(8956:8956): Error connect
+
+[ERROR] 13:11:56:598 Kernel/(8956:8956): Error connect
+
+[ERROR] 13:11:56:598 Kernel/(8956:8956): Error connect
+
+[ERROR] 13:11:59:786 Kernel/(8959:8959): Error connect
+
+[ERROR] 13:11:59:788 Kernel/(8959:8959): Error connect
+
+[ERROR] 13:11:59:788 Kernel/(8959:8959): Error connect
+
+[ERROR] 13:11:59:788 Kernel/(8959:8959): Error connect
+
+[ERROR] 13:12:18:046 Kernel/(9008:9008): Error connect
+
+[ERROR] 13:12:18:047 Kernel/(9008:9008): Error connect
+
+[ERROR] 13:12:18:047 Kernel/(9008:9008): Error connect
+
+[ERROR] 13:12:18:047 Kernel/(9008:9008): Error connect
+
+[ERROR] 13:12:38:186 Kernel/(9071:9071): Error connect
+
+[ERROR] 13:12:38:225 Kernel/(9071:9071): Error connect
+
+[ERROR] 13:12:38:227 Kernel/(9071:9071): Error connect
+
+[ERROR] 13:12:38:227 Kernel/(9071:9071): Error connect
+
+[ERROR] 13:13:54:320 Kernel/(9229:9229): Error connect
+
+[ERROR] 13:13:54:321 Kernel/(9229:9229): Error connect
+
+[ERROR] 13:13:54:321 Kernel/(9229:9229): Error connect
+
+[ERROR] 13:13:54:321 Kernel/(9229:9229): Error connect
+
+[INFO] 13:13:55:716 Kernel/(9229:9229): as
+[WARNING] 13:13:55:716 Kernel/(9229:9229): La función as no existe.
+[INFO] 13:13:57:172 Kernel/(9229:9229): asas
+[WARNING] 13:13:57:172 Kernel/(9229:9229): La función asas no existe.
+[ERROR] 13:14:21:634 Kernel/(9360:9360): Error connect
+
+[ERROR] 13:14:21:635 Kernel/(9360:9360): Error connect
+
+[ERROR] 13:14:21:635 Kernel/(9360:9360): Error connect
+
+[ERROR] 13:14:21:635 Kernel/(9360:9360): Error connect
+
+[ERROR] 13:15:22:908 Kernel/(9495:9495): Error connect
+
+[ERROR] 13:15:22:908 Kernel/(9495:9495): Error connect
+
+[ERROR] 13:15:22:908 Kernel/(9495:9495): Error connect
+
+[ERROR] 13:15:22:908 Kernel/(9495:9495): Error connect
+
+[INFO] 13:15:22:909 Kernel/(9495:9496): HILO
+[INFO] 13:15:26:907 Kernel/(9495:9495): asas
+[WARNING] 13:15:26:907 Kernel/(9495:9495): La función asas no existe.
+[INFO] 13:15:32:036 Kernel/(9495:9495): asdd
+[WARNING] 13:15:32:036 Kernel/(9495:9495): La función asdd no existe.
+[ERROR] 13:16:02:966 Kernel/(9542:9542): Error connect
+
+[ERROR] 13:16:02:967 Kernel/(9542:9542): Error connect
+
+[ERROR] 13:16:02:967 Kernel/(9542:9542): Error connect
+
+[ERROR] 13:16:02:967 Kernel/(9542:9542): Error connect
+
+[INFO] 13:16:02:968 Kernel/(9542:9543): HILO
+[ERROR] 13:16:09:393 Kernel/(9581:9581): Error connect
+
+[ERROR] 13:16:09:430 Kernel/(9581:9581): Error connect
+
+[ERROR] 13:16:09:432 Kernel/(9581:9581): Error connect
+
+[ERROR] 13:16:09:433 Kernel/(9581:9581): Error connect
+
+[INFO] 13:16:09:521 Kernel/(9581:9582): HILO
+[ERROR] 13:16:48:585 Kernel/(9647:9647): Error connect
+
+[ERROR] 13:16:48:585 Kernel/(9647:9647): Error connect
+
+[ERROR] 13:16:48:585 Kernel/(9647:9647): Error connect
+
+[ERROR] 13:16:48:585 Kernel/(9647:9647): Error connect
+
+[INFO] 13:16:48:587 Kernel/(9647:9648): HILO
+[INFO] 13:16:52:013 Kernel/(9647:9647): saads
+[WARNING] 13:16:52:013 Kernel/(9647:9647): La función saads no existe.
+[ERROR] 13:17:27:710 Kernel/(9727:9727): Error connect
+
+[ERROR] 13:17:27:711 Kernel/(9727:9727): Error connect
+
+[ERROR] 13:17:27:711 Kernel/(9727:9727): Error connect
+
+[ERROR] 13:17:27:711 Kernel/(9727:9727): Error connect
+
+[INFO] 13:17:27:711 Kernel/(9727:9728): HILO
+[INFO] 13:17:29:563 Kernel/(9727:9727): asd
+[WARNING] 13:17:29:563 Kernel/(9727:9727): La función asd no existe.
+[INFO] 13:17:30:398 Kernel/(9727:9727): asd
+[WARNING] 13:17:30:398 Kernel/(9727:9727): La función asd no existe.
+[INFO] 13:17:31:067 Kernel/(9727:9727): ad
+[WARNING] 13:17:31:067 Kernel/(9727:9727): La función ad no existe.
+[ERROR] 13:17:52:566 Kernel/(9798:9798): Error connect
+
+[ERROR] 13:17:52:567 Kernel/(9798:9798): Error connect
+
+[ERROR] 13:17:52:567 Kernel/(9798:9798): Error connect
+
+[ERROR] 13:17:52:567 Kernel/(9798:9798): Error connect
+
+[ERROR] 13:18:53:150 Kernel/(9854:9854): Error connect
+
+[ERROR] 13:18:53:151 Kernel/(9854:9854): Error connect
+
+[ERROR] 13:18:53:151 Kernel/(9854:9854): Error connect
+
+[ERROR] 13:18:53:151 Kernel/(9854:9854): Error connect
+
+[ERROR] 13:19:28:676 Kernel/(9901:9901): Error connect
+
+[ERROR] 13:19:28:676 Kernel/(9901:9901): Error connect
+
+[ERROR] 13:19:28:676 Kernel/(9901:9901): Error connect
+
+[ERROR] 13:19:28:676 Kernel/(9901:9901): Error connect
+
+[ERROR] 13:19:33:150 Kernel/(9939:9939): Error connect
+
+[ERROR] 13:19:33:188 Kernel/(9939:9939): Error connect
+
+[ERROR] 13:19:33:190 Kernel/(9939:9939): Error connect
+
+[ERROR] 13:19:33:191 Kernel/(9939:9939): Error connect
+
+[ERROR] 13:22:16:034 Kernel/(10007:10007): Error connect
+
+[ERROR] 13:22:16:034 Kernel/(10007:10007): Error connect
+
+[ERROR] 13:22:16:034 Kernel/(10007:10007): Error connect
+
+[ERROR] 13:22:16:034 Kernel/(10007:10007): Error connect
+
+[ERROR] 13:23:48:290 Kernel/(10264:10264): Error connect
+
+[ERROR] 13:23:48:290 Kernel/(10264:10264): Error connect
+
+[ERROR] 13:23:48:290 Kernel/(10264:10264): Error connect
+
+[ERROR] 13:23:48:290 Kernel/(10264:10264): Error connect
+
+[INFO] 13:23:48:291 Kernel/(10264:10265): HILO
+[INFO] 13:23:50:967 Kernel/(10264:10264): ass
+[WARNING] 13:23:50:968 Kernel/(10264:10264): La función ass no existe.
+[ERROR] 13:26:41:809 Kernel/(10517:10517): Error connect
+
+[ERROR] 13:26:41:811 Kernel/(10517:10517): Error connect
+
+[ERROR] 13:26:41:811 Kernel/(10517:10517): Error connect
+
+[ERROR] 13:26:41:812 Kernel/(10517:10517): Error connect
+
+[INFO] 13:26:41:812 Kernel/(10517:10518): 2
+[ERROR] 13:28:23:962 Kernel/(10735:10735): Error connect
+
+[ERROR] 13:28:23:962 Kernel/(10735:10735): Error connect
+
+[ERROR] 13:28:23:963 Kernel/(10735:10735): Error connect
+
+[ERROR] 13:28:23:963 Kernel/(10735:10735): Error connect
+
+[INFO] 13:28:23:964 Kernel/(10735:10736): 1
+[INFO] 13:28:50:110 Kernel/(10735:10735): make
+[WARNING] 13:28:50:110 Kernel/(10735:10735): La función make no existe.
+[ERROR] 13:28:55:379 Kernel/(10812:10812): Error connect
+
+[ERROR] 13:28:55:379 Kernel/(10812:10812): Error connect
+
+[ERROR] 13:28:55:379 Kernel/(10812:10812): Error connect
+
+[ERROR] 13:28:55:380 Kernel/(10812:10812): Error connect
+
+[ERROR] 13:29:02:950 Kernel/(10852:10852): Error connect
+
+[ERROR] 13:29:02:998 Kernel/(10852:10852): Error connect
+
+[ERROR] 13:29:03:000 Kernel/(10852:10852): Error connect
+
+[ERROR] 13:29:03:002 Kernel/(10852:10852): Error connect
+
+[ERROR] 13:31:14:249 Kernel/(11012:11012): Error connect
+
+[ERROR] 13:31:14:249 Kernel/(11012:11012): Error connect
+
+[ERROR] 13:31:14:249 Kernel/(11012:11012): Error connect
+
+[ERROR] 13:31:14:249 Kernel/(11012:11012): Error connect
+
+[ERROR] 13:31:20:606 Kernel/(11051:11051): Error connect
+
+[ERROR] 13:31:20:663 Kernel/(11051:11051): Error connect
+
+[ERROR] 13:31:20:667 Kernel/(11051:11051): Error connect
+
+[ERROR] 13:31:20:668 Kernel/(11051:11051): Error connect
+
+[ERROR] 13:31:40:759 Kernel/(11116:11116): Error connect
+
+[ERROR] 13:31:40:817 Kernel/(11116:11116): Error connect
+
+[ERROR] 13:31:40:819 Kernel/(11116:11116): Error connect
+
+[ERROR] 13:31:40:820 Kernel/(11116:11116): Error connect
+
+[ERROR] 13:32:53:394 Kernel/(11216:11216): Error connect
+
+[ERROR] 13:32:53:394 Kernel/(11216:11216): Error connect
+
+[ERROR] 13:32:53:394 Kernel/(11216:11216): Error connect
+
+[ERROR] 13:32:53:395 Kernel/(11216:11216): Error connect
+
+[ERROR] 13:32:58:381 Kernel/(11254:11254): Error connect
+
+[ERROR] 13:32:58:421 Kernel/(11254:11254): Error connect
+
+[ERROR] 13:32:58:424 Kernel/(11254:11254): Error connect
+
+[ERROR] 13:32:58:424 Kernel/(11254:11254): Error connect
+
+[ERROR] 13:33:38:632 Kernel/(11356:11356): Error connect
+
+[ERROR] 13:33:38:632 Kernel/(11356:11356): Error connect
+
+[ERROR] 13:33:38:632 Kernel/(11356:11356): Error connect
+
+[ERROR] 13:33:38:633 Kernel/(11356:11356): Error connect
+
+[ERROR] 13:33:43:564 Kernel/(11394:11394): Error connect
+
+[ERROR] 13:33:43:603 Kernel/(11394:11394): Error connect
+
+[ERROR] 13:33:43:605 Kernel/(11394:11394): Error connect
+
+[ERROR] 13:33:43:605 Kernel/(11394:11394): Error connect
+
+[ERROR] 13:36:59:270 Kernel/(11859:11859): Error connect
+
+[ERROR] 13:36:59:270 Kernel/(11859:11859): Error connect
+
+[ERROR] 13:36:59:270 Kernel/(11859:11859): Error connect
+
+[ERROR] 13:36:59:270 Kernel/(11859:11859): Error connect
+
+[INFO] 13:37:01:352 Kernel/(11859:11859): asd
+[WARNING] 13:37:01:352 Kernel/(11859:11859): La función asd no existe.
+[INFO] 13:37:11:676 Kernel/(11859:11859): INICIAR_PROCESO a b c
+[INFO] 13:37:11:677 Kernel/(11859:11859): Se crea el proceso 0 en NEW
+[ERROR] 13:37:46:199 Kernel/(11876:11876): Error connect
+
+[ERROR] 13:37:46:199 Kernel/(11876:11876): Error connect
+
+[ERROR] 13:37:46:199 Kernel/(11876:11876): Error connect
+
+[ERROR] 13:37:46:199 Kernel/(11876:11876): Error connect
+
+[ERROR] 13:37:47:724 Kernel/(11885:11885): Error connect
+
+[ERROR] 13:37:47:725 Kernel/(11885:11885): Error connect
+
+[ERROR] 13:37:47:725 Kernel/(11885:11885): Error connect
+
+[ERROR] 13:37:47:725 Kernel/(11885:11885): Error connect
+
+[INFO] 13:37:55:044 Kernel/(11885:11885): INICIAR_PROCESO 1 2 3
+[INFO] 13:37:55:044 Kernel/(11885:11885): Se crea el proceso 0 en NEW
+[INFO] 13:38:03:356 Kernel/(11885:11885): INICIAR_PROCESO 1 2 3
+[INFO] 13:38:03:357 Kernel/(11885:11885): Se crea el proceso 1 en NEW
+[ERROR] 13:39:16:784 Kernel/(11974:11974): Error connect
+
+[ERROR] 13:39:16:784 Kernel/(11974:11974): Error connect
+
+[ERROR] 13:39:16:786 Kernel/(11974:11974): Error connect
+
+[ERROR] 13:39:16:786 Kernel/(11974:11974): Error connect
+
+[INFO] 13:39:22:843 Kernel/(11974:11974): INICIAR_PROCESO 1 2 3
+[ERROR] 13:39:59:017 Kernel/(12033:12033): Error connect
+
+[ERROR] 13:39:59:017 Kernel/(12033:12033): Error connect
+
+[ERROR] 13:39:59:018 Kernel/(12033:12033): Error connect
+
+[ERROR] 13:39:59:018 Kernel/(12033:12033): Error connect
+
+[INFO] 13:40:04:133 Kernel/(12033:12033): INICIAR_PROCESO 1 2 3
+[ERROR] 13:40:11:870 Kernel/(12070:12070): Error connect
+
+[ERROR] 13:40:11:912 Kernel/(12070:12070): Error connect
+
+[ERROR] 13:40:11:915 Kernel/(12070:12070): Error connect
+
+[ERROR] 13:40:11:916 Kernel/(12070:12070): Error connect
+
+[INFO] 13:40:20:785 Kernel/(12070:12070): INICIAR_PROCESO 1 2 3
+[ERROR] 13:42:01:287 Kernel/(12150:12150): Error connect
+
+[ERROR] 13:42:01:287 Kernel/(12150:12150): Error connect
+
+[ERROR] 13:42:01:287 Kernel/(12150:12150): Error connect
+
+[ERROR] 13:42:01:288 Kernel/(12150:12150): Error connect
+
+[ERROR] 13:42:09:826 Kernel/(12152:12152): Error connect
+
+[ERROR] 13:42:09:826 Kernel/(12152:12152): Error connect
+
+[ERROR] 13:42:09:826 Kernel/(12152:12152): Error connect
+
+[ERROR] 13:42:09:826 Kernel/(12152:12152): Error connect
+
+[ERROR] 13:42:31:055 Kernel/(12212:12212): Error connect
+
+[ERROR] 13:42:31:098 Kernel/(12212:12212): Error connect
+
+[ERROR] 13:42:31:100 Kernel/(12212:12212): Error connect
+
+[ERROR] 13:42:31:100 Kernel/(12212:12212): Error connect
+
+[ERROR] 13:43:12:910 Kernel/(12269:12269): Error connect
+
+[ERROR] 13:43:12:958 Kernel/(12269:12269): Error connect
+
+[ERROR] 13:43:12:966 Kernel/(12269:12269): Error connect
+
+[ERROR] 13:43:12:967 Kernel/(12269:12269): Error connect
+
+[ERROR] 13:43:53:718 Kernel/(12363:12363): Error connect
+
+[ERROR] 13:43:53:757 Kernel/(12363:12363): Error connect
+
+[ERROR] 13:43:53:760 Kernel/(12363:12363): Error connect
+
+[ERROR] 13:43:53:761 Kernel/(12363:12363): Error connect
+
+[ERROR] 13:45:19:307 Kernel/(12510:12510): Error connect
+
+[ERROR] 13:45:19:351 Kernel/(12510:12510): Error connect
+
+[ERROR] 13:45:19:353 Kernel/(12510:12510): Error connect
+
+[ERROR] 13:45:19:356 Kernel/(12510:12510): Error connect
+
+[WARNING] 13:45:22:908 Kernel/(12510:12510): La función INICAR_PROCESO no existe.
+[INFO] 13:45:29:502 Kernel/(12510:12510): Se crea el proceso 0 en NEW
+[INFO] 13:45:34:676 Kernel/(12510:12510): Se crea el proceso 1 en NEW
+[ERROR] 13:45:53:277 Kernel/(12584:12584): Error connect
+
+[ERROR] 13:45:53:322 Kernel/(12584:12584): Error connect
+
+[ERROR] 13:45:53:324 Kernel/(12584:12584): Error connect
+
+[ERROR] 13:45:53:324 Kernel/(12584:12584): Error connect
+
+[ERROR] 13:47:54:534 Kernel/(12722:12722): Error connect
+
+[ERROR] 13:47:54:570 Kernel/(12722:12722): Error connect
+
+[ERROR] 13:47:54:573 Kernel/(12722:12722): Error connect
+
+[ERROR] 13:47:54:574 Kernel/(12722:12722): Error connect
+
+[INFO] 13:48:00:390 Kernel/(12722:12722): Se crea el proceso 0 en NEW
+[INFO] 13:48:03:019 Kernel/(12722:12722): Se crea el proceso 1 en NEW
+[ERROR] 13:48:24:882 Kernel/(12794:12794): Error connect
+
+[ERROR] 13:48:24:927 Kernel/(12794:12794): Error connect
+
+[ERROR] 13:48:24:934 Kernel/(12794:12794): Error connect
+
+[ERROR] 13:48:24:936 Kernel/(12794:12794): Error connect
+
+[INFO] 13:48:32:145 Kernel/(12794:12794): Se crea el proceso 0 en NEW
+[INFO] 13:48:35:913 Kernel/(12794:12794): Se crea el proceso 1 en NEW
+[ERROR] 13:48:59:132 Kernel/(12869:12869): Error connect
+
+[ERROR] 13:48:59:202 Kernel/(12869:12869): Error connect
+
+[ERROR] 13:48:59:215 Kernel/(12869:12869): Error connect
+
+[ERROR] 13:48:59:219 Kernel/(12869:12869): Error connect
+
+[ERROR] 13:50:17:573 Kernel/(12934:12934): Error connect
+
+[ERROR] 13:50:17:612 Kernel/(12934:12934): Error connect
+
+[ERROR] 13:50:17:614 Kernel/(12934:12934): Error connect
+
+[ERROR] 13:50:17:615 Kernel/(12934:12934): Error connect
+
+[ERROR] 13:55:57:633 Kernel/(13041:13041): Error connect
+
+[ERROR] 13:55:57:683 Kernel/(13041:13041): Error connect
+
+[ERROR] 13:55:57:685 Kernel/(13041:13041): Error connect
+
+[ERROR] 13:55:57:685 Kernel/(13041:13041): Error connect
+
+[ERROR] 14:00:53:223 Kernel/(13168:13168): Error connect
+
+[ERROR] 14:00:53:223 Kernel/(13168:13168): Error connect
+
+[ERROR] 14:00:53:224 Kernel/(13168:13168): Error connect
+
+[ERROR] 14:00:53:224 Kernel/(13168:13168): Error connect
+
+[ERROR] 14:01:16:629 Kernel/(13228:13228): Error connect
+
+[ERROR] 14:01:16:629 Kernel/(13228:13228): Error connect
+
+[ERROR] 14:01:16:629 Kernel/(13228:13228): Error connect
+
+[ERROR] 14:01:16:629 Kernel/(13228:13228): Error connect
+
+[INFO] 14:01:23:990 Kernel/(13228:13228): Saqué 0
+[INFO] 14:01:23:990 Kernel/(13228:13228): Se crea el proceso 0 en NEW
+[INFO] 14:01:28:419 Kernel/(13228:13228): Saqué 1
+[INFO] 14:01:28:420 Kernel/(13228:13228): Se crea el proceso 1 en NEW
+[ERROR] 14:02:32:548 Kernel/(13306:13306): Error connect
+
+[ERROR] 14:02:32:548 Kernel/(13306:13306): Error connect
+
+[ERROR] 14:02:32:548 Kernel/(13306:13306): Error connect
+
+[ERROR] 14:02:32:549 Kernel/(13306:13306): Error connect
+
+[ERROR] 14:03:17:738 Kernel/(13386:13386): Error connect
+
+[ERROR] 14:03:17:789 Kernel/(13386:13386): Error connect
+
+[ERROR] 14:03:17:792 Kernel/(13386:13386): Error connect
+
+[ERROR] 14:03:17:795 Kernel/(13386:13386): Error connect
+
+[ERROR] 14:04:09:963 Kernel/(13442:13442): Error connect
+
+[ERROR] 14:04:10:010 Kernel/(13442:13442): Error connect
+
+[ERROR] 14:04:10:014 Kernel/(13442:13442): Error connect
+
+[ERROR] 14:04:10:016 Kernel/(13442:13442): Error connect
+
+[ERROR] 14:08:44:156 Kernel/(13535:13535): Error connect
+
+[ERROR] 14:08:44:156 Kernel/(13535:13535): Error connect
+
+[ERROR] 14:08:44:156 Kernel/(13535:13535): Error connect
+
+[ERROR] 14:08:44:156 Kernel/(13535:13535): Error connect
+
+[ERROR] 14:11:02:823 Kernel/(13650:13650): Error connect
+
+[ERROR] 14:11:02:823 Kernel/(13650:13650): Error connect
+
+[ERROR] 14:11:02:823 Kernel/(13650:13650): Error connect
+
+[ERROR] 14:11:02:823 Kernel/(13650:13650): Error connect
+
+[ERROR] 14:11:18:493 Kernel/(13689:13689): Error connect
+
+[ERROR] 14:11:18:540 Kernel/(13689:13689): Error connect
+
+[ERROR] 14:11:18:543 Kernel/(13689:13689): Error connect
+
+[ERROR] 14:11:18:544 Kernel/(13689:13689): Error connect
+
+[ERROR] 14:16:01:827 Kernel/(13813:13813): Error connect
+
+[ERROR] 14:16:01:869 Kernel/(13813:13813): Error connect
+
+[ERROR] 14:16:01:872 Kernel/(13813:13813): Error connect
+
+[ERROR] 14:16:01:873 Kernel/(13813:13813): Error connect
+
+[ERROR] 14:17:43:864 Kernel/(13886:13886): Error connect
+
+[ERROR] 14:17:43:868 Kernel/(13886:13886): Error connect
+
+[ERROR] 14:17:43:868 Kernel/(13886:13886): Error connect
+
+[ERROR] 14:17:43:868 Kernel/(13886:13886): Error connect
+
+[INFO] 14:17:43:868 Kernel/(13886:13886): GDMP: 10
+[ERROR] 14:17:58:264 Kernel/(13889:13889): Error connect
+
+[ERROR] 14:17:58:264 Kernel/(13889:13889): Error connect
+
+[ERROR] 14:17:58:264 Kernel/(13889:13889): Error connect
+
+[ERROR] 14:17:58:264 Kernel/(13889:13889): Error connect
+
+[INFO] 14:17:58:264 Kernel/(13889:13889): GDMP: 10
+[WARNING] 14:18:04:555 Kernel/(13889:13889): Se pasaron parámetros de menos
