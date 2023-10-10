@@ -11,4 +11,23 @@
 #include <sockets/server_utils.h>
 #include <pcb/pcb.h>
 
+typedef struct
+{
+    char* parametro;
+}t_parametro;
+
+typedef struct
+{
+    char* operacion;
+    t_list* parametros;
+}t_instruccion;
+
+
+typedef struct
+{
+    uint32_t pid;
+    t_list* instrucciones;
+}t_proceso;
+
+
 #endif

@@ -2,28 +2,6 @@
 
 uint32_t contador_pid;
 
-t_list* parsear_instrucciones(char* str)
-{
-    if(str == NULL)
-    {
-       return NULL;
-    }
-    t_list* instrucciones = list_create();
-    char* str_cpy = strdup(str);
-    char* token; strtok(str_cpy, "\n");
-    while(token != NULL)
-    {
-        if (strlen(token) > 0)
-        {
-            char* token_cpy = strdup(token);
-            token_cpy[strlen(token_cpy)] = '\0';
-            list_add(instrucciones, token_cpy);
-        }
-        token = strtok(NULL, "\n");
-    }
-    return instrucciones;
-}
-
 t_pcb* crear_pcb(uint32_t prioridad)
 {
     t_pcb* pcb = malloc(sizeof(t_pcb));

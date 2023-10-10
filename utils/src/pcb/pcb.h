@@ -48,8 +48,11 @@ typedef struct
 	uint32_t size;
 } t_pcb;
 
-t_list* parsear_instrucciones(char* str);
 t_pcb* crear_pcb(uint32_t prioridad);
 void liberar_pcb(t_pcb* pcb);
+void* serializar_contexto(t_registros* registros);
+t_registros* deserializar_contexto(void* magic);
+t_registros* recibir_contexto_de_ejecucion(int socket);
+void enviar_contexto(t_registros* registros, int socket);
 
 #endif
