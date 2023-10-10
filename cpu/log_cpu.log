@@ -1,0 +1,149 @@
+[INFO] 15:41:33:870 CPU/(3761:3761): Cliente conectado al server
+[INFO] 15:41:33:871 CPU/(3761:3761): Listo para escuchar a mi cliente
+[INFO] 15:41:33:871 CPU/(3761:3761): Listo para escuchar a mi cliente
+[INFO] 15:41:40:264 CPU/(3761:3761): Se conecto un cliente!
+[INFO] 15:41:40:264 CPU/(3761:3761): Se conectó kernel al puerto dispatch
+[INFO] 15:41:40:264 CPU/(3761:3761): Se conecto un cliente!
+[INFO] 15:41:40:264 CPU/(3761:3761): Se conectó kernel al puerto interrupt
+[INFO] 15:43:49:675 CPU/(3803:3803): Cliente conectado al server
+[INFO] 15:43:49:676 CPU/(3803:3803): Listo para escuchar a mi cliente
+[INFO] 15:43:49:676 CPU/(3803:3803): Listo para escuchar a mi cliente
+[INFO] 15:43:52:018 CPU/(3803:3803): Se conecto un cliente!
+[INFO] 15:43:52:018 CPU/(3803:3803): Se conectó kernel al puerto dispatch
+[INFO] 15:43:52:019 CPU/(3803:3803): Se conecto un cliente!
+[INFO] 15:43:52:019 CPU/(3803:3803): Se conectó kernel al puerto interrupt
+[INFO] 15:45:11:733 CPU/(3947:3947): Cliente conectado al server
+[INFO] 15:45:11:734 CPU/(3947:3947): Listo para escuchar a mi cliente
+[INFO] 15:45:11:734 CPU/(3947:3947): Listo para escuchar a mi cliente
+[INFO] 15:45:14:356 CPU/(3947:3947): Se conecto un cliente!
+[INFO] 15:45:14:357 CPU/(3947:3947): Se conectó kernel al puerto dispatch
+[INFO] 15:45:14:357 CPU/(3947:3947): Se conecto un cliente!
+[INFO] 15:45:14:357 CPU/(3947:3947): Se conectó kernel al puerto interrupt
+[INFO] 17:11:05:309 CPU/(4189:4189): Cliente conectado al server
+[INFO] 17:11:05:309 CPU/(4189:4189): Listo para escuchar a mi cliente
+[INFO] 17:11:05:310 CPU/(4189:4189): Listo para escuchar a mi cliente
+[INFO] 17:11:07:792 CPU/(4189:4189): Se conecto un cliente!
+[INFO] 17:11:07:792 CPU/(4189:4189): Se conectó kernel al puerto dispatch
+[INFO] 17:11:07:794 CPU/(4189:4189): Se conecto un cliente!
+[INFO] 17:11:07:794 CPU/(4189:4189): Se conectó kernel al puerto interrupt
+[INFO] 17:14:09:005 CPU/(4492:4492): Cliente conectado al server
+[INFO] 17:14:09:005 CPU/(4492:4492): Listo para escuchar a mi cliente
+[INFO] 17:14:09:005 CPU/(4492:4492): Listo para escuchar a mi cliente
+[INFO] 17:14:10:960 CPU/(4492:4492): Se conecto un cliente!
+[INFO] 17:14:10:960 CPU/(4492:4492): Se conectó kernel al puerto dispatch
+[INFO] 17:14:10:960 CPU/(4492:4492): Se conecto un cliente!
+[INFO] 17:14:10:960 CPU/(4492:4492): Se conectó kernel al puerto interrupt
+[INFO] 17:17:06:231 CPU/(5012:5012): Se estableció la conexión al servidor.
+[INFO] 17:17:06:234 CPU/(5012:5012): Listo para escuchar a mi cliente
+[INFO] 17:17:06:234 CPU/(5012:5012): Listo para escuchar a mi cliente
+[INFO] 17:17:10:515 CPU/(5012:5012): Se conecto un cliente!
+[INFO] 17:17:10:515 CPU/(5012:5012): Se conectó kernel al puerto dispatch
+[INFO] 17:17:10:515 CPU/(5012:5012): Se conecto un cliente!
+[INFO] 17:17:10:515 CPU/(5012:5012): Se conectó kernel al puerto interrupt
+[INFO] 17:19:00:780 CPU/(5070:5070): Se estableció la conexión al servidor.
+[INFO] 17:19:00:780 CPU/(5070:5070): Listo para escuchar a mi cliente
+[INFO] 17:19:00:781 CPU/(5070:5070): Listo para escuchar a mi cliente
+[INFO] 17:19:03:999 CPU/(5070:5070): Se conecto un cliente!
+[INFO] 17:19:03:999 CPU/(5070:5070): Se conectó kernel al puerto dispatch
+[INFO] 17:19:04:000 CPU/(5070:5070): Se conecto un cliente!
+[INFO] 17:19:04:000 CPU/(5070:5070): Se conectó kernel al puerto interrupt
+[INFO] 17:20:51:592 CPU/(5185:5185): Se estableció la conexión al servidor.
+[INFO] 17:20:51:592 CPU/(5185:5185): Listo para escuchar a mi cliente
+[INFO] 17:20:51:592 CPU/(5185:5185): Listo para escuchar a mi cliente
+[INFO] 17:20:54:178 CPU/(5185:5185): Se conecto un cliente!
+[INFO] 17:20:54:178 CPU/(5185:5185): Se conectó kernel al puerto dispatch
+[INFO] 17:20:54:180 CPU/(5185:5185): Se conecto un cliente!
+[INFO] 17:20:54:180 CPU/(5185:5185): Se conectó kernel al puerto interrupt
+[INFO] 17:22:24:438 CPU/(5293:5293): Se estableció la conexión al servidor.
+[INFO] 17:22:24:438 CPU/(5293:5293): Listo para escuchar a mi cliente
+[INFO] 17:22:24:438 CPU/(5293:5293): Listo para escuchar a mi cliente
+[INFO] 17:22:27:822 CPU/(5293:5293): Se conecto un cliente!
+[INFO] 17:22:27:822 CPU/(5293:5293): Se conectó kernel al puerto dispatch
+[INFO] 17:22:27:822 CPU/(5293:5293): Se conecto un cliente!
+[INFO] 17:22:27:822 CPU/(5293:5293): Se conectó kernel al puerto interrupt
+[INFO] 17:24:42:953 CPU/(5571:5571): Se estableció la conexión al servidor.
+[INFO] 17:24:42:955 CPU/(5571:5571): Listo para escuchar a mi cliente
+[INFO] 17:24:42:955 CPU/(5571:5571): Listo para escuchar a mi cliente
+[INFO] 17:24:46:180 CPU/(5571:5571): Se conecto un cliente!
+[INFO] 17:24:46:180 CPU/(5571:5571): Se conectó kernel al puerto dispatch
+[INFO] 17:24:46:181 CPU/(5571:5571): Se conecto un cliente!
+[INFO] 17:24:46:181 CPU/(5571:5571): Se conectó kernel al puerto interrupt
+[INFO] 17:27:31:182 CPU/(5670:5670): Se estableció la conexión al servidor.
+[INFO] 17:27:31:183 CPU/(5670:5670): Listo para escuchar a mi cliente
+[INFO] 17:27:31:183 CPU/(5670:5670): Listo para escuchar a mi cliente
+[INFO] 17:27:33:872 CPU/(5670:5670): Se conecto un cliente!
+[INFO] 17:27:33:872 CPU/(5670:5670): Se conectó kernel al puerto dispatch
+[INFO] 17:27:33:873 CPU/(5670:5670): Se conecto un cliente!
+[INFO] 17:27:33:873 CPU/(5670:5670): Se conectó kernel al puerto interrupt
+[INFO] 17:28:46:111 CPU/(5742:5742): Se estableció la conexión al servidor.
+[INFO] 17:28:46:111 CPU/(5742:5742): Listo para escuchar a mi cliente
+[INFO] 17:28:46:111 CPU/(5742:5742): Listo para escuchar a mi cliente
+[INFO] 17:28:48:354 CPU/(5742:5742): Se conecto un cliente!
+[INFO] 17:28:48:354 CPU/(5742:5742): Se conectó kernel al puerto dispatch
+[INFO] 17:28:48:354 CPU/(5742:5742): Se conecto un cliente!
+[INFO] 17:28:48:354 CPU/(5742:5742): Se conectó kernel al puerto interrupt
+[INFO] 17:30:08:885 CPU/(5859:5859): Se estableció la conexión al servidor.
+[INFO] 17:30:08:885 CPU/(5859:5859): Listo para escuchar a mi cliente
+[INFO] 17:30:08:885 CPU/(5859:5859): Listo para escuchar a mi cliente
+[INFO] 17:30:11:221 CPU/(5859:5859): Se conecto un cliente!
+[INFO] 17:30:11:222 CPU/(5859:5859): Se conectó kernel al puerto dispatch
+[INFO] 17:30:11:222 CPU/(5859:5859): Se conecto un cliente!
+[INFO] 17:30:11:222 CPU/(5859:5859): Se conectó kernel al puerto interrupt
+[INFO] 17:31:21:844 CPU/(6010:6010): Se estableció la conexión al servidor.
+[INFO] 17:31:21:844 CPU/(6010:6010): Listo para escuchar a mi cliente
+[INFO] 17:31:21:845 CPU/(6010:6010): Listo para escuchar a mi cliente
+[INFO] 17:31:24:224 CPU/(6010:6010): Se conecto un cliente!
+[INFO] 17:31:24:224 CPU/(6010:6010): Se conectó kernel al puerto dispatch
+[INFO] 17:31:24:225 CPU/(6010:6010): Se conecto un cliente!
+[INFO] 17:31:24:225 CPU/(6010:6010): Se conectó kernel al puerto interrupt
+[INFO] 17:33:47:072 CPU/(6104:6104): Se estableció la conexión al servidor.
+[INFO] 17:33:47:072 CPU/(6104:6104): Listo para escuchar a mi cliente
+[INFO] 17:33:47:072 CPU/(6104:6104): Listo para escuchar a mi cliente
+[INFO] 17:38:29:933 CPU/(6290:6290): Se estableció la conexión al servidor.
+[INFO] 17:38:29:933 CPU/(6290:6290): Listo para escuchar a mi cliente
+[INFO] 17:38:29:934 CPU/(6290:6290): Listo para escuchar a mi cliente
+[INFO] 17:38:32:657 CPU/(6290:6290): Se conecto un cliente!
+[INFO] 17:38:32:658 CPU/(6290:6290): Se conectó kernel al puerto dispatch
+[INFO] 17:38:32:658 CPU/(6290:6290): Se conecto un cliente!
+[INFO] 17:38:32:658 CPU/(6290:6290): Se conectó kernel al puerto interrupt
+[INFO] 17:40:34:204 CPU/(6363:6363): Se estableció la conexión al servidor.
+[INFO] 17:40:34:204 CPU/(6363:6363): Listo para escuchar a mi cliente
+[INFO] 17:40:34:205 CPU/(6363:6363): Listo para escuchar a mi cliente
+[INFO] 17:40:36:575 CPU/(6363:6363): Se conecto un cliente!
+[INFO] 17:40:36:575 CPU/(6363:6363): Se conectó kernel al puerto dispatch
+[INFO] 17:40:36:576 CPU/(6363:6363): Se conecto un cliente!
+[INFO] 17:40:36:576 CPU/(6363:6363): Se conectó kernel al puerto interrupt
+[INFO] 17:42:18:603 CPU/(6439:6439): Se estableció la conexión al servidor.
+[INFO] 17:42:18:603 CPU/(6439:6439): Listo para escuchar a mi cliente
+[INFO] 17:42:18:603 CPU/(6439:6439): Listo para escuchar a mi cliente
+[INFO] 17:42:21:524 CPU/(6439:6439): Se conecto un cliente!
+[INFO] 17:42:21:524 CPU/(6439:6439): Se conectó kernel al puerto dispatch
+[INFO] 17:42:21:524 CPU/(6439:6439): Se conecto un cliente!
+[INFO] 17:42:21:524 CPU/(6439:6439): Se conectó kernel al puerto interrupt
+[INFO] 17:44:50:144 CPU/(6528:6528): Se estableció la conexión al servidor.
+[INFO] 17:44:50:145 CPU/(6528:6528): Listo para escuchar a mi cliente
+[INFO] 17:44:50:145 CPU/(6528:6528): Listo para escuchar a mi cliente
+[INFO] 17:44:52:395 CPU/(6528:6528): Se conecto un cliente!
+[INFO] 17:44:52:395 CPU/(6528:6528): Se conectó kernel al puerto dispatch
+[INFO] 17:44:52:397 CPU/(6528:6528): Se conecto un cliente!
+[INFO] 17:44:52:397 CPU/(6528:6528): Se conectó kernel al puerto interrupt
+[INFO] 17:46:22:022 CPU/(6670:6670): Se estableció la conexión al servidor.
+[INFO] 17:46:22:023 CPU/(6670:6670): Listo para escuchar a mi cliente
+[INFO] 17:46:22:023 CPU/(6670:6670): Listo para escuchar a mi cliente
+[INFO] 17:50:20:759 CPU/(6804:6804): Se estableció la conexión al servidor.
+[INFO] 17:50:20:759 CPU/(6804:6804): Listo para escuchar a mi cliente
+[INFO] 17:50:20:759 CPU/(6804:6804): Listo para escuchar a mi cliente
+[INFO] 17:50:23:237 CPU/(6804:6804): Se conecto un cliente!
+[INFO] 17:50:23:237 CPU/(6804:6804): Se conectó kernel al puerto dispatch
+[INFO] 17:50:23:237 CPU/(6804:6804): Se conecto un cliente!
+[INFO] 17:50:23:237 CPU/(6804:6804): Se conectó kernel al puerto interrupt
+[INFO] 17:51:43:607 CPU/(6955:6955): Se estableció la conexión al servidor.
+[INFO] 17:51:43:607 CPU/(6955:6955): Listo para escuchar a mi cliente
+[INFO] 17:51:43:607 CPU/(6955:6955): Listo para escuchar a mi cliente
+[INFO] 17:51:46:048 CPU/(6955:6955): Se conecto un cliente!
+[INFO] 17:51:46:049 CPU/(6955:6955): Se conectó kernel al puerto dispatch
+[INFO] 17:51:46:049 CPU/(6955:6955): Se conecto un cliente!
+[INFO] 17:51:46:049 CPU/(6955:6955): Se conectó kernel al puerto interrupt
+[INFO] 17:54:48:582 CPU/(7084:7084): Se estableció la conexión al servidor.
+[INFO] 17:54:48:582 CPU/(7084:7084): Listo para escuchar a mi cliente
+[INFO] 17:54:48:582 CPU/(7084:7084): Listo para escuchar a mi cliente

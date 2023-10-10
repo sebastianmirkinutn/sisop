@@ -38,7 +38,8 @@ void planificador_corto_plazo(/*ALGORITMO*/)
 {
     while(1)
     {
-        t_registros* contexto = recibir_contexto_de_ejecucion();
+        //t_registros* contexto = recibir_contexto_de_ejecucion();
+
     }
 }
 
@@ -67,7 +68,7 @@ int main(int argc, char* argv[]){
     sem_init(&grado_de_multiprogramacion, 0, atoi(grado_max_de_multiprogramacion));
     log_info(logger,"GDMP: %i",atoi(grado_max_de_multiprogramacion));
 
-log_info(logger, " ANTES DE QUEUE_CREATE():%i",cola_new);
+    log_info(logger, " ANTES DE QUEUE_CREATE():%i",cola_new);
     cola_new = queue_create();
     log_info(logger, "QUEUE_CREATE():%i",cola_new);
 	cola_ready = queue_create();
@@ -81,6 +82,7 @@ log_info(logger, " ANTES DE QUEUE_CREATE():%i",cola_new);
     pthread_detach(&hilo_planificador_de_largo_plazo);
     printf("Desvinculé el hilo\n");
     log_info(logger,"Cola new %i", cola_new);
+
     while(1){
         t_mensaje mensaje;
         char* leido = readline("> ");
@@ -140,6 +142,16 @@ log_info(logger, " ANTES DE QUEUE_CREATE():%i",cola_new);
             queue_push(cola_new, pcb);
             sem_post(&mutex_cola_new);
             sem_post(&procesos_en_new);
+
+            op_code operacion = INICIAR_PROCESO;
+            send(conexion_memoria, &operacion, sizeof(op_code), 0);
+            uint32_t pid = 1;
+            send(conexion_memoria, pid, sizeof(uint32_t), 0);
+            char* cod = "MOV A B" ;
+            int size = strlen(cod) + 1;
+            send(conexion_memoria, &size, sizeof(int), 0);
+            send(conexion_memoria, cod, size, 0);
+
 
             log_info(logger, "Se crea el proceso %i en NEW", pcb->pid);
         }

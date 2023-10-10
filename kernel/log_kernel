@@ -1394,3 +1394,219 @@
 [INFO] 19:28:50:594 Kernel/(5451:5451):  ANTES DE QUEUE_CREATE():0
 [INFO] 19:28:50:594 Kernel/(5451:5451): QUEUE_CREATE():933440272
 [INFO] 19:28:50:594 Kernel/(5451:5451): Cola new 933440272
+[ERROR] 15:39:05:149 Kernel/(3513:3513): Error connect
+
+[ERROR] 15:39:05:150 Kernel/(3513:3513): Error connect
+
+[INFO] 15:39:05:151 Kernel/(3513:3513): Cliente conectado al server
+[ERROR] 15:39:05:151 Kernel/(3513:3513): Error connect
+
+[INFO] 15:39:05:151 Kernel/(3513:3513): GDMP: 10
+[INFO] 15:39:05:152 Kernel/(3513:3513):  ANTES DE QUEUE_CREATE():0
+[INFO] 15:39:05:152 Kernel/(3513:3513): QUEUE_CREATE():-887616752
+[INFO] 15:39:05:152 Kernel/(3513:3513): Cola new -887616752
+[INFO] 15:39:18:013 Kernel/(3513:3513): Hice wait
+[INFO] 15:39:18:014 Kernel/(3513:3513): Hice push
+[INFO] 15:39:18:014 Kernel/(3513:3513): Hice pop
+[INFO] 15:39:18:014 Kernel/(3513:3513): PCB-POP(Prioridad): 0
+[INFO] 15:39:18:014 Kernel/(3513:3513): Se crea el proceso 0 en NEW
+[INFO] 15:39:27:336 Kernel/(3513:3513): Hice wait
+[INFO] 15:39:27:337 Kernel/(3513:3513): Hice push
+[INFO] 15:39:27:337 Kernel/(3513:3513): Hice pop
+[INFO] 15:39:27:337 Kernel/(3513:3513): PCB-POP(Prioridad): 0
+[INFO] 15:39:27:337 Kernel/(3513:3513): Se crea el proceso 1 en NEW
+[INFO] 15:41:40:263 Kernel/(3762:3762): Cliente conectado al server
+[INFO] 15:41:40:264 Kernel/(3762:3762): Cliente conectado al server
+[INFO] 15:41:40:264 Kernel/(3762:3762): Cliente conectado al server
+[INFO] 15:41:40:265 Kernel/(3762:3762): Cliente conectado al server
+[INFO] 15:41:40:265 Kernel/(3762:3762): GDMP: 10
+[INFO] 15:41:40:265 Kernel/(3762:3762):  ANTES DE QUEUE_CREATE():0
+[INFO] 15:41:40:265 Kernel/(3762:3762): QUEUE_CREATE():387083024
+[INFO] 15:41:40:266 Kernel/(3762:3762): Cola new 387083024
+[INFO] 15:43:52:018 Kernel/(3804:3804): Cliente conectado al server
+[INFO] 15:43:52:019 Kernel/(3804:3804): Cliente conectado al server
+[INFO] 15:43:52:019 Kernel/(3804:3804): Cliente conectado al server
+[INFO] 15:43:52:019 Kernel/(3804:3804): Cliente conectado al server
+[INFO] 15:43:52:019 Kernel/(3804:3804): GDMP: 10
+[INFO] 15:43:52:019 Kernel/(3804:3804):  ANTES DE QUEUE_CREATE():0
+[INFO] 15:43:52:019 Kernel/(3804:3804): QUEUE_CREATE():-1558017264
+[INFO] 15:43:52:020 Kernel/(3804:3804): Cola new -1558017264
+[INFO] 15:45:14:357 Kernel/(3948:3948): Cliente conectado al server
+[INFO] 15:45:14:357 Kernel/(3948:3948): Cliente conectado al server
+[INFO] 15:45:14:357 Kernel/(3948:3948): Cliente conectado al server
+[INFO] 15:45:14:358 Kernel/(3948:3948): Cliente conectado al server
+[INFO] 15:45:14:358 Kernel/(3948:3948): GDMP: 10
+[INFO] 15:45:14:358 Kernel/(3948:3948):  ANTES DE QUEUE_CREATE():0
+[INFO] 15:45:14:358 Kernel/(3948:3948): QUEUE_CREATE():-665048304
+[INFO] 15:45:14:358 Kernel/(3948:3948): Cola new -665048304
+[INFO] 17:11:07:792 Kernel/(4190:4190): Cliente conectado al server
+[INFO] 17:11:07:794 Kernel/(4190:4190): Cliente conectado al server
+[INFO] 17:11:07:794 Kernel/(4190:4190): Cliente conectado al server
+[INFO] 17:11:07:795 Kernel/(4190:4190): Cliente conectado al server
+[INFO] 17:11:07:795 Kernel/(4190:4190): GDMP: 10
+[INFO] 17:11:07:795 Kernel/(4190:4190):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:11:07:795 Kernel/(4190:4190): QUEUE_CREATE():-1945068784
+[INFO] 17:11:07:795 Kernel/(4190:4190): Cola new -1945068784
+[INFO] 17:14:10:960 Kernel/(4493:4493): Cliente conectado al server
+[INFO] 17:14:10:960 Kernel/(4493:4493): Cliente conectado al server
+[INFO] 17:14:10:961 Kernel/(4493:4493): Cliente conectado al server
+[INFO] 17:14:10:961 Kernel/(4493:4493): Cliente conectado al server
+[INFO] 17:14:10:961 Kernel/(4493:4493): GDMP: 10
+[INFO] 17:14:10:961 Kernel/(4493:4493):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:14:10:961 Kernel/(4493:4493): QUEUE_CREATE():-436307184
+[INFO] 17:14:10:961 Kernel/(4493:4493): Cola new -436307184
+[INFO] 17:17:10:515 Kernel/(5057:5057): Se estableció la conexión al servidor.
+[INFO] 17:17:10:515 Kernel/(5057:5057): Se estableció la conexión al servidor.
+[INFO] 17:17:10:515 Kernel/(5057:5057): Se estableció la conexión al servidor.
+[INFO] 17:17:10:516 Kernel/(5057:5057): Se estableció la conexión al servidor.
+[INFO] 17:17:10:516 Kernel/(5057:5057): GDMP: 10
+[INFO] 17:17:10:516 Kernel/(5057:5057):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:17:10:516 Kernel/(5057:5057): QUEUE_CREATE():-1107809520
+[INFO] 17:17:10:516 Kernel/(5057:5057): Cola new -1107809520
+[INFO] 17:19:03:999 Kernel/(5071:5071): Se estableció la conexión al servidor.
+[INFO] 17:19:04:000 Kernel/(5071:5071): Se estableció la conexión al servidor.
+[INFO] 17:19:04:000 Kernel/(5071:5071): Se estableció la conexión al servidor.
+[INFO] 17:19:04:003 Kernel/(5071:5071): Se estableció la conexión al servidor.
+[INFO] 17:19:04:003 Kernel/(5071:5071): GDMP: 10
+[INFO] 17:19:04:003 Kernel/(5071:5071):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:19:04:003 Kernel/(5071:5071): QUEUE_CREATE():-1358607600
+[INFO] 17:19:04:004 Kernel/(5071:5071): Cola new -1358607600
+[INFO] 17:20:54:177 Kernel/(5192:5192): Se estableció la conexión al servidor.
+[INFO] 17:20:54:180 Kernel/(5192:5192): Se estableció la conexión al servidor.
+[INFO] 17:20:54:180 Kernel/(5192:5192): Se estableció la conexión al servidor.
+[INFO] 17:20:54:181 Kernel/(5192:5192): Se estableció la conexión al servidor.
+[INFO] 17:20:54:181 Kernel/(5192:5192): GDMP: 10
+[INFO] 17:20:54:181 Kernel/(5192:5192):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:20:54:181 Kernel/(5192:5192): QUEUE_CREATE():-502478064
+[INFO] 17:20:54:181 Kernel/(5192:5192): Cola new -502478064
+[INFO] 17:22:27:821 Kernel/(5294:5294): Se estableció la conexión al servidor.
+[INFO] 17:22:27:822 Kernel/(5294:5294): Se estableció la conexión al servidor.
+[INFO] 17:22:27:822 Kernel/(5294:5294): Se estableció la conexión al servidor.
+[INFO] 17:22:27:822 Kernel/(5294:5294): Se estableció la conexión al servidor.
+[INFO] 17:22:27:823 Kernel/(5294:5294): GDMP: 10
+[INFO] 17:22:27:823 Kernel/(5294:5294):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:22:27:823 Kernel/(5294:5294): QUEUE_CREATE():52865808
+[INFO] 17:22:27:823 Kernel/(5294:5294): Cola new 52865808
+[INFO] 17:22:33:960 Kernel/(5294:5294): Hice wait
+[INFO] 17:22:33:961 Kernel/(5294:5294): Hice push
+[INFO] 17:22:33:961 Kernel/(5294:5294): Hice pop
+[INFO] 17:22:33:961 Kernel/(5294:5294): PCB-POP(Prioridad): 0
+[INFO] 17:24:46:180 Kernel/(5578:5578): Se estableció la conexión al servidor.
+[INFO] 17:24:46:181 Kernel/(5578:5578): Se estableció la conexión al servidor.
+[INFO] 17:24:46:182 Kernel/(5578:5578): Se estableció la conexión al servidor.
+[INFO] 17:24:46:182 Kernel/(5578:5578): Se estableció la conexión al servidor.
+[INFO] 17:24:46:182 Kernel/(5578:5578): GDMP: 10
+[INFO] 17:24:46:182 Kernel/(5578:5578):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:24:46:182 Kernel/(5578:5578): QUEUE_CREATE():-1983644912
+[INFO] 17:24:46:182 Kernel/(5578:5578): Cola new -1983644912
+[WARNING] 17:24:49:165 Kernel/(5578:5578): La función AA no existe.
+[WARNING] 17:24:49:950 Kernel/(5578:5578): La función A no existe.
+[WARNING] 17:24:50:604 Kernel/(5578:5578): La función AA no existe.
+[INFO] 17:24:55:882 Kernel/(5578:5578): Hice wait
+[INFO] 17:24:55:883 Kernel/(5578:5578): Hice push
+[INFO] 17:24:55:883 Kernel/(5578:5578): Hice pop
+[INFO] 17:24:55:883 Kernel/(5578:5578): PCB-POP(Prioridad): 0
+[INFO] 17:27:33:872 Kernel/(5671:5671): Se estableció la conexión al servidor.
+[INFO] 17:27:33:873 Kernel/(5671:5671): Se estableció la conexión al servidor.
+[INFO] 17:27:33:873 Kernel/(5671:5671): Se estableció la conexión al servidor.
+[INFO] 17:27:33:873 Kernel/(5671:5671): Se estableció la conexión al servidor.
+[INFO] 17:27:33:873 Kernel/(5671:5671): GDMP: 10
+[INFO] 17:27:33:874 Kernel/(5671:5671):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:27:33:874 Kernel/(5671:5671): QUEUE_CREATE():-934495472
+[INFO] 17:27:33:874 Kernel/(5671:5671): Cola new -934495472
+[INFO] 17:28:48:354 Kernel/(5743:5743): Se estableció la conexión al servidor.
+[INFO] 17:28:48:354 Kernel/(5743:5743): Se estableció la conexión al servidor.
+[INFO] 17:28:48:354 Kernel/(5743:5743): Se estableció la conexión al servidor.
+[INFO] 17:28:48:355 Kernel/(5743:5743): Se estableció la conexión al servidor.
+[INFO] 17:28:48:355 Kernel/(5743:5743): GDMP: 10
+[INFO] 17:28:48:355 Kernel/(5743:5743):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:28:48:355 Kernel/(5743:5743): QUEUE_CREATE():-811660528
+[INFO] 17:28:48:355 Kernel/(5743:5743): Cola new -811660528
+[INFO] 17:30:11:221 Kernel/(5860:5860): Se estableció la conexión al servidor.
+[INFO] 17:30:11:221 Kernel/(5860:5860): Se estableció la conexión al servidor.
+[INFO] 17:30:11:221 Kernel/(5860:5860): Se estableció la conexión al servidor.
+[INFO] 17:30:11:221 Kernel/(5860:5860): Se estableció la conexión al servidor.
+[INFO] 17:30:11:221 Kernel/(5860:5860): GDMP: 10
+[INFO] 17:30:11:221 Kernel/(5860:5860):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:30:11:221 Kernel/(5860:5860): QUEUE_CREATE():-2116408560
+[INFO] 17:30:11:221 Kernel/(5860:5860): Cola new -2116408560
+[INFO] 17:31:24:224 Kernel/(6017:6017): Se estableció la conexión al servidor.
+[INFO] 17:31:24:225 Kernel/(6017:6017): Se estableció la conexión al servidor.
+[INFO] 17:31:24:225 Kernel/(6017:6017): Se estableció la conexión al servidor.
+[INFO] 17:31:24:225 Kernel/(6017:6017): Se estableció la conexión al servidor.
+[INFO] 17:31:24:225 Kernel/(6017:6017): GDMP: 10
+[INFO] 17:31:24:226 Kernel/(6017:6017):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:31:24:226 Kernel/(6017:6017): QUEUE_CREATE():729500432
+[INFO] 17:31:24:226 Kernel/(6017:6017): Cola new 729500432
+[ERROR] 17:33:51:310 Kernel/(6111:6111): Error al conectarse al servidor.
+[ERROR] 17:33:51:310 Kernel/(6111:6111): Error al conectarse al servidor.
+[INFO] 17:33:51:311 Kernel/(6111:6111): Se estableció la conexión al servidor.
+[INFO] 17:33:51:312 Kernel/(6111:6111): Se estableció la conexión al servidor.
+[INFO] 17:33:51:312 Kernel/(6111:6111): GDMP: 10
+[INFO] 17:33:51:312 Kernel/(6111:6111):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:33:51:312 Kernel/(6111:6111): QUEUE_CREATE():1096985360
+[INFO] 17:33:51:312 Kernel/(6111:6111): Cola new 1096985360
+[INFO] 17:38:32:656 Kernel/(6291:6291): Se estableció la conexión al servidor.
+[INFO] 17:38:32:658 Kernel/(6291:6291): Se estableció la conexión al servidor.
+[INFO] 17:38:32:659 Kernel/(6291:6291): Se estableció la conexión al servidor.
+[INFO] 17:38:32:659 Kernel/(6291:6291): Se estableció la conexión al servidor.
+[INFO] 17:38:32:659 Kernel/(6291:6291): GDMP: 10
+[INFO] 17:38:32:659 Kernel/(6291:6291):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:38:32:659 Kernel/(6291:6291): QUEUE_CREATE():1416178448
+[INFO] 17:38:32:659 Kernel/(6291:6291): Cola new 1416178448
+[INFO] 17:40:36:575 Kernel/(6365:6365): Se estableció la conexión al servidor.
+[INFO] 17:40:36:576 Kernel/(6365:6365): Se estableció la conexión al servidor.
+[INFO] 17:40:36:576 Kernel/(6365:6365): Se estableció la conexión al servidor.
+[INFO] 17:40:36:576 Kernel/(6365:6365): Se estableció la conexión al servidor.
+[INFO] 17:40:36:576 Kernel/(6365:6365): GDMP: 10
+[INFO] 17:40:36:576 Kernel/(6365:6365):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:40:36:576 Kernel/(6365:6365): QUEUE_CREATE():743172880
+[INFO] 17:40:36:576 Kernel/(6365:6365): Cola new 743172880
+[INFO] 17:42:21:524 Kernel/(6440:6440): Se estableció la conexión al servidor.
+[INFO] 17:42:21:524 Kernel/(6440:6440): Se estableció la conexión al servidor.
+[INFO] 17:42:21:525 Kernel/(6440:6440): Se estableció la conexión al servidor.
+[INFO] 17:42:21:526 Kernel/(6440:6440): Se estableció la conexión al servidor.
+[INFO] 17:42:21:526 Kernel/(6440:6440): GDMP: 10
+[INFO] 17:42:21:526 Kernel/(6440:6440):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:42:21:526 Kernel/(6440:6440): QUEUE_CREATE():1716415248
+[INFO] 17:42:21:526 Kernel/(6440:6440): Cola new 1716415248
+[INFO] 17:44:52:395 Kernel/(6529:6529): Se estableció la conexión al servidor.
+[INFO] 17:44:52:397 Kernel/(6529:6529): Se estableció la conexión al servidor.
+[INFO] 17:44:52:397 Kernel/(6529:6529): Se estableció la conexión al servidor.
+[INFO] 17:44:52:397 Kernel/(6529:6529): Se estableció la conexión al servidor.
+[INFO] 17:44:52:397 Kernel/(6529:6529): GDMP: 10
+[INFO] 17:44:52:398 Kernel/(6529:6529):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:44:52:398 Kernel/(6529:6529): QUEUE_CREATE():1249008400
+[INFO] 17:44:52:398 Kernel/(6529:6529): Cola new 1249008400
+[ERROR] 17:46:29:940 Kernel/(6677:6677): Error al conectarse al servidor.
+[ERROR] 17:46:29:940 Kernel/(6677:6677): Error al conectarse al servidor.
+[INFO] 17:46:29:940 Kernel/(6677:6677): Se estableció la conexión al servidor.
+[INFO] 17:46:29:940 Kernel/(6677:6677): Se estableció la conexión al servidor.
+[INFO] 17:46:29:940 Kernel/(6677:6677): GDMP: 10
+[INFO] 17:46:29:940 Kernel/(6677:6677):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:46:29:941 Kernel/(6677:6677): QUEUE_CREATE():-1414653168
+[INFO] 17:46:29:941 Kernel/(6677:6677): Cola new -1414653168
+[INFO] 17:50:23:237 Kernel/(6805:6805): Se estableció la conexión al servidor.
+[INFO] 17:50:23:237 Kernel/(6805:6805): Se estableció la conexión al servidor.
+[INFO] 17:50:23:238 Kernel/(6805:6805): Se estableció la conexión al servidor.
+[INFO] 17:50:23:238 Kernel/(6805:6805): Se estableció la conexión al servidor.
+[INFO] 17:50:23:238 Kernel/(6805:6805): GDMP: 10
+[INFO] 17:50:23:238 Kernel/(6805:6805):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:50:23:238 Kernel/(6805:6805): QUEUE_CREATE():-2062472432
+[INFO] 17:50:23:238 Kernel/(6805:6805): Cola new -2062472432
+[INFO] 17:51:46:049 Kernel/(6962:6962): Se estableció la conexión al servidor.
+[INFO] 17:51:46:049 Kernel/(6962:6962): Se estableció la conexión al servidor.
+[INFO] 17:51:46:049 Kernel/(6962:6962): Se estableció la conexión al servidor.
+[INFO] 17:51:46:050 Kernel/(6962:6962): Se estableció la conexión al servidor.
+[INFO] 17:51:46:050 Kernel/(6962:6962): GDMP: 10
+[INFO] 17:51:46:050 Kernel/(6962:6962):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:51:46:050 Kernel/(6962:6962): QUEUE_CREATE():2157328
+[INFO] 17:51:46:050 Kernel/(6962:6962): Cola new 2157328
+[ERROR] 17:54:50:693 Kernel/(7085:7085): Error al conectarse al servidor.
+[ERROR] 17:54:50:693 Kernel/(7085:7085): Error al conectarse al servidor.
+[INFO] 17:54:50:693 Kernel/(7085:7085): Se estableció la conexión al servidor.
+[INFO] 17:54:50:693 Kernel/(7085:7085): Se estableció la conexión al servidor.
+[INFO] 17:54:50:693 Kernel/(7085:7085): GDMP: 10
+[INFO] 17:54:50:694 Kernel/(7085:7085):  ANTES DE QUEUE_CREATE():0
+[INFO] 17:54:50:694 Kernel/(7085:7085): QUEUE_CREATE():-1648112880
+[INFO] 17:54:50:694 Kernel/(7085:7085): Cola new -1648112880

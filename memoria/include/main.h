@@ -10,6 +10,7 @@
 #include <sockets/client_utils.h>
 #include <sockets/server_utils.h>
 #include <pcb/pcb.h>
+#include <pthread.h>
 
 typedef struct
 {
@@ -28,6 +29,11 @@ typedef struct
     uint32_t pid;
     t_list* instrucciones;
 }t_proceso;
+
+typedef struct
+{
+    int socket;
+}t_args_hilo;
 
 
 #endif
