@@ -146,7 +146,7 @@ int main(int argc, char* argv[]){
             op_code operacion = INICIAR_PROCESO;
             send(conexion_memoria, &operacion, sizeof(op_code), 0);
             uint32_t pid = 1;
-            send(conexion_memoria, pid, sizeof(uint32_t), 0);
+            send(conexion_memoria, &pid, sizeof(uint32_t), 0);
             char* cod = "MOV A B" ;
             int size = strlen(cod) + 1;
             send(conexion_memoria, &size, sizeof(int), 0);

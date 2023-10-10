@@ -65,8 +65,8 @@ int recibir_ruta_pseudocodigo(int socket)
 {
     int size;
     char* ruta;
-    recv(socket, &size, sizeof(int), 0);
-    recv(socket, ruta, size, 0);
+    recv(socket, &size, sizeof(int), MSG_WAITALL);
+    recv(socket, ruta, size, MSG_WAITALL);
     return ruta;
 
 }
@@ -78,26 +78,27 @@ t_proceso* crear_proceso(uint32_t pid)
     proceso->instrucciones = list_create();
 }
 
-void conexion_kernel(/*void* arg*/)
+void conexion_kernel(void* arg)
 {
-    printf("HILOOO");
     t_log* logger_hilo = iniciar_logger("logger_hilo.log","HILO");
     log_info(logger_hilo, "HILO");
-    while(1){}
-    //t_args_hilo* arg_h = (t_args_hilo*) arg;
-    /*
+    t_args_hilo* arg_h = (t_args_hilo*) arg;
+    
     while(1)
     {
-        op_code codigo = recibir_operacion(arg_h->socket);
+        op_code codigo;// = recibir_operacion(arg_h->socket);
+        recv(socket, &codigo, sizeof(int), MSG_WAITALL);
+        log_info(logger_hilo,"op_code: %i", codigo);
         switch (codigo)
         {
         case INICIAR_PROCESO:
             uint32_t pid;
-            recv(socket, &pid, sizeof(uint32_t), 0);
+            recv(socket, &pid, sizeof(uint32_t), MSG_WAITALL);
+            log_info(logger_hilo,"pid: %i", pid);
             t_proceso* proceso = crear_proceso(pid);
             char* ruta = recibir_ruta_pseudocodigo(socket);
             parsear_instrucciones(proceso, leer_pseudocodigo(ruta));
-            
+            log_info(logger_hilo, list_get(proceso->instrucciones,0));
             break;
         
         default:
@@ -105,7 +106,7 @@ void conexion_kernel(/*void* arg*/)
         }
 
     }
-    */
+    
 }
 
 void conexion_cpu(int socket)
@@ -122,7 +123,7 @@ int main(int argc, char* argv[]){
     char* puerto_escucha;
     puerto_escucha = config_get_string_value(config,"PUERTO_ESCUCHA");
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
-/*
+
     int socket_servidor = iniciar_servidor(logger,puerto_escucha);
     int socket_filesystem = esperar_cliente(logger, socket_servidor);
     if(socket_filesystem){
@@ -136,13 +137,13 @@ int main(int argc, char* argv[]){
     if(socket_kernel){
         log_info(logger,"Se conectó kernel");
     }
-*/
+
     t_args_hilo args_conexion_kernel;
     //args_conexion_kernel.socket = socket_kernel;
     pthread_t hilo_conexion_kernel;
     log_info(logger, "Declaré el hilo.");
     log_info(logger, "socket: %i", args_conexion_kernel.socket);
-    pthread_create(&hilo_conexion_kernel, NULL, &conexion_kernel, /*(void*)&args_conexion_kernel*/NULL);
+    pthread_create(&hilo_conexion_kernel, NULL, &conexion_kernel, (void*)&args_conexion_kernel);
     log_info(logger, "Creé el hilo.");
     pthread_join(&hilo_conexion_kernel,NULL);
     //pthread_detach(&hilo_conexion_kernel);
