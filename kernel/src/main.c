@@ -11,12 +11,12 @@ t_queue *cola_blocked;
 t_queue *cola_exit;
 t_queue *cola_new;
 
-void planificador_largo_plazo()
+void planificador_largo_plazo(void* arg)
 {
     t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
-    //t_queue* cola_new_h = &cola_new;
+    t_args_hilo* arg_h = (t_args_hilo*) arg;
     t_queue* cola_ready_h = &cola_ready;
-    //  log_info(logger_hilo,"%i",b);
+
     while(1)
     {
         sem_wait(&procesos_en_new);
@@ -30,6 +30,14 @@ void planificador_largo_plazo()
         queue_push(cola_ready_h, pcb);
         sem_post(&mutex_cola_ready);
         log_info(logger_hilo, "PID: %i - Estado Anterior: NEW - Estado Actual: READY", pcb->pid);
+
+        op_code operacion = INICIAR_PROCESO;
+        send(arg_h->socket, &operacion, sizeof(op_code), 0);
+        send(arg_h->socket, &pcb->pid, sizeof(int), 0);
+        enviar_mensaje(pcb->archivo_de_pseudocodigo, arg_h->socket);     
+
+
+
         liberar_pcb(pcb);
     }
 }
@@ -66,22 +74,25 @@ int main(int argc, char* argv[]){
     sem_init(&mutex_cola_ready, 0, 1);
     sem_init(&procesos_en_new, 0, 0);
     sem_init(&grado_de_multiprogramacion, 0, atoi(grado_max_de_multiprogramacion));
-    log_info(logger,"GDMP: %i",atoi(grado_max_de_multiprogramacion));
+    //log_info(logger,"GDMP: %i",atoi(grado_max_de_multiprogramacion));
 
-    log_info(logger, " ANTES DE QUEUE_CREATE():%i",cola_new);
+    //log_info(logger, " ANTES DE QUEUE_CREATE():%i",cola_new);
     cola_new = queue_create();
-    log_info(logger, "QUEUE_CREATE():%i",cola_new);
+    //log_info(logger, "QUEUE_CREATE():%i",cola_new);
 	cola_ready = queue_create();
 	cola_blocked = queue_create();
 	cola_exit = queue_create();
 
+    t_args_hilo args_conexion_memoria;
+    args_conexion_memoria.socket = conexion_memoria;
+    
     pthread_t hilo_planificador_de_largo_plazo;
-    printf("Declaré el hilo\n");
-    pthread_create(&hilo_planificador_de_largo_plazo, NULL, &planificador_largo_plazo, NULL);
-    printf("Creé el hilo\n");
+    //printf("Declaré el hilo\n");
+    pthread_create(&hilo_planificador_de_largo_plazo, NULL, &planificador_largo_plazo, (void*)&args_conexion_memoria);
+    //printf("Creé el hilo\n");
     pthread_detach(&hilo_planificador_de_largo_plazo);
-    printf("Desvinculé el hilo\n");
-    log_info(logger,"Cola new %i", cola_new);
+    //printf("Desvinculé el hilo\n");
+    //log_info(logger,"Cola new %i", cola_new);
 
     while(1){
         t_mensaje mensaje;
@@ -106,7 +117,7 @@ int main(int argc, char* argv[]){
         printf(" Parametros %i",i);
 
         if(!strcmp(c_argv[0], "INICIAR_PROCESO")){
-
+            /*INICIAR_PROCESO [PATH] [SIZE] [PRIORIDAD]*/
             if (i < 3)
             {
                 log_warning(logger, "Se pasaron parámetros de menos");
@@ -133,26 +144,13 @@ int main(int argc, char* argv[]){
             //enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
 
             
-            t_pcb* pcb = crear_pcb(atoi(c_argv[3]));
+            t_pcb* pcb = crear_pcb(atoi(c_argv[3]), c_argv[1]);
             sem_wait(&mutex_cola_new);
-            log_info(logger,"Hice wait");
+            //log_info(logger,"Hice wait");
             queue_push(cola_new, pcb);
-            log_info(logger,"Hice push");
-            t_pcb* pcb2 = queue_pop(cola_new);
-            log_info(logger, "Hice pop");
-            log_info(logger, "PCB-POP(Prioridad): %i",pcb2->prioridad);
-            queue_push(cola_new, pcb);
+            //log_info(logger,"Hice push");
             sem_post(&mutex_cola_new);
             sem_post(&procesos_en_new);
-
-            op_code operacion = INICIAR_PROCESO;
-            send(conexion_memoria, &operacion, sizeof(op_code), 0);
-            //log_info(logger,"Mandé codop");
-            int pid = 1;
-            send(conexion_memoria, &pid, sizeof(int), 0);
-            //char* cod = "MOV A B" ;
-            //enviar_mensaje(cod, conexion_memoria);
-
 
             log_info(logger, "Se crea el proceso %i en NEW", pcb->pid);
         }

@@ -46,9 +46,10 @@ typedef struct
 	t_estado estado;
 	uint32_t cant_instrucciones;
 	uint32_t size;
+	char* archivo_de_pseudocodigo;
 } t_pcb;
 
-t_pcb* crear_pcb(uint32_t prioridad);
+t_pcb* crear_pcb(uint32_t prioridad, char* pseudocodigo);
 void liberar_pcb(t_pcb* pcb);
 void* serializar_contexto(t_registros* registros);
 t_registros* deserializar_contexto(void* magic);

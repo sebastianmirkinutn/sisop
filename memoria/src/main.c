@@ -91,11 +91,12 @@ void conexion_kernel(void* arg)
         switch (codigo)
         {
         case INICIAR_PROCESO:
-            int pid;
-            recv(socket, &pid, sizeof(int), MSG_WAITALL);
+            uint32_t pid;
+            recv(arg_h->socket, &pid, sizeof(uint32_t), MSG_WAITALL);
+            t_proceso* proceso = crear_proceso(pid);
             log_info(logger_hilo,"pid: %i", pid);
-            //t_proceso* proceso = crear_proceso(pid);
-            //char* ruta = recibir_mensaje(socket);
+            char* ruta = recibir_mensaje(arg_h->socket);
+            log_info(logger_hilo, "%s", ruta);
             //parsear_instrucciones(proceso, leer_pseudocodigo(ruta));
             //log_info(logger_hilo, list_get(proceso->instrucciones,0));
             break;

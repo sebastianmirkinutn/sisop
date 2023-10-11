@@ -2,7 +2,7 @@
 
 uint32_t contador_pid;
 
-t_pcb* crear_pcb(uint32_t prioridad)
+t_pcb* crear_pcb(uint32_t prioridad, char* pseudocodigo)
 {
     t_pcb* pcb = malloc(sizeof(t_pcb));
     pcb->prioridad = prioridad;
@@ -11,6 +11,7 @@ t_pcb* crear_pcb(uint32_t prioridad)
     contador_pid++;
     pcb->contexto = malloc(sizeof(t_registros));
     pcb->tabla_de_archivos_abiertos = list_create();
+    pcb->archivo_de_pseudocodigo = strndup(pseudocodigo, strlen(pseudocodigo) + 1);
     return pcb;
 }
 
