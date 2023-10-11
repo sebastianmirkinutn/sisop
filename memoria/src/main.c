@@ -1,64 +1,112 @@
 #include "../include/main.h"
 
-t_instruccion* parserar_argumentos(char* str)
+char* saveptr;
+
+t_instruccion* crear_instruccion()
 {
-    if(str == NULL)
-    {
-       return NULL;
-    }
-    t_instruccion* instruccion = malloc(instruccion);
-    t_list* argumentos = list_create();
-    char* str_cpy = strdup(str);
-    char* token = strtok(str_cpy, " ");
-    instruccion->operacion = token;
-    token = strtok(NULL, " ");
-    while(token != NULL)
-    {
-        if (strlen(token) > 0)
-        {
-            char* token_cpy = strdup(token);
-            token_cpy[strlen(token_cpy)] = '\0';
-            list_add(argumentos, token_cpy);
-        }
-        token = strtok(NULL, " ");
-    }
+    t_instruccion* instruccion = malloc(sizeof(t_instruccion));
+    instruccion->parametros = list_create();
     return instruccion;
 }
 
-void parsear_instrucciones(t_proceso* proceso, char* str)
+t_instruccion* parserar_argumentos(t_log* logger, char* str)
 {
     if(str == NULL)
     {
        return NULL;
+    }
+    t_instruccion* instruccion = crear_instruccion();
+    t_list* argumentos = list_create();
+    char* str_cpy = strdup(str);
+    char* token = strtok_r(str_cpy, " ", &saveptr);
+    instruccion->operacion = token;
+    log_info(logger, "Operacion: %s", token);
+    token = strtok_r(NULL, " ", &saveptr);
+    while(token != NULL)
+    {
+        log_info(logger, "Argumento: %s", token);
+        if (strlen(token) > 0)
+        {
+            //char* token_cpy = strdup(token);
+            //token_cpy[strlen(token_cpy)] = '\0';
+            list_add(instruccion->parametros, &token);
+        }
+        token = strtok_r(NULL, " ", &saveptr);
+    }
+    log_info(logger, "return: %s", instruccion->operacion);
+    return instruccion;
+}
+
+void parsear_instrucciones(t_log* logger,t_proceso* proceso, char* str)
+{
+    if(str == NULL)
+    {
+        log_error(logger, "No hay instrucciones.");
+        return NULL;
     }
     //t_list* instrucciones = list_create();
     char* str_cpy = strdup(str);
     char* token = strtok(str_cpy, "\n");
+    //log_info(logger, "Instruccion: %s", token);
     while(token != NULL)
     {
+        log_info(logger, "Instruccion: %s", token);
         if (strlen(token) > 0)
         {
-            char* token_cpy = strdup(token);
+            char* token_cpy = malloc(strlen(token));
+            memcpy(token_cpy, token,strlen(token));
             token_cpy[strlen(token_cpy)] = '\0';
-            list_add(proceso->instrucciones, (parserar_argumentos(token_cpy)));
-            //log_info(logger, token);
+            parserar_argumentos(logger, token_cpy);
+            free(token_cpy);
+            //list_add(proceso->instrucciones, (parserar_argumentos(logger, token)));
+            log_info(logger, "Hice list_add de: %s", token);
         }
         token = strtok(NULL, "\n");
+        log_info(logger, "Instruccion: %s", token);
     }
+    log_info(logger,"TOKEN NULL");
 }
 
-char* leer_pseudocodigo(char* nombre_archivo)
+char* leer_pseudocodigo(t_log* logger, char* nombre_archivo)
 {
-    char* ruta = "./pseudocodigo/";
-    char* pseudocodigo;
+    log_info(logger, "leer_pseudocodigo.");
+    char* ruta = malloc(strlen(nombre_archivo) + 15);
+    strcpy(ruta, "./pseudocodigo/");
+    log_info(logger, "char*.");
     strcat(ruta, nombre_archivo);
-    free(nombre_archivo);
-    FILE* archivo = fopen(ruta, "R");
+    log_info(logger, "strcat.");
+    log_info(logger, "ruta: %s", ruta);    
+    FILE* archivo = fopen(ruta, "r");
+    log_info(logger, "Se abrió el archivo.");
+    if(archivo == NULL)
+    {
+        log_error(logger, "Error al abrir el archivo.");
+        return NULL;
+    }
+
+    int size;
+    char* pseudocodigo;
+
     fseek(archivo, 0, SEEK_END);
-    int size = ftell(archivo);
+    size = ftell(archivo);
     fseek(archivo, 0, SEEK_SET);
-    fread(archivo, sizeof(char), 1, pseudocodigo);
+
+    pseudocodigo = malloc(size + 1);
+
+    if(pseudocodigo == NULL)
+    {
+        log_error(logger, "Error asignando memoria.");
+        fclose(archivo);
+    }
+
+    fread(pseudocodigo, 1, size, archivo);
+    pseudocodigo[size] = '\0';
+
+    fclose(archivo);
+
+    printf("%s", pseudocodigo);
     return pseudocodigo;
+
 }
 /*
 int recibir_ruta_pseudocodigo(int socket)
@@ -76,6 +124,7 @@ t_proceso* crear_proceso(uint32_t pid)
     t_proceso* proceso = malloc(sizeof(t_proceso));
     proceso->pid = pid;
     proceso->instrucciones = list_create();
+    return proceso;
 }
 
 void conexion_kernel(void* arg)
@@ -97,7 +146,8 @@ void conexion_kernel(void* arg)
             log_info(logger_hilo,"pid: %i", pid);
             char* ruta = recibir_mensaje(arg_h->socket);
             log_info(logger_hilo, "%s", ruta);
-            //parsear_instrucciones(proceso, leer_pseudocodigo(ruta));
+            //leer_pseudocodigo(logger_hilo, ruta);
+            parsear_instrucciones(logger_hilo, proceso, leer_pseudocodigo(logger_hilo, ruta));
             //log_info(logger_hilo, list_get(proceso->instrucciones,0));
             break;
         
