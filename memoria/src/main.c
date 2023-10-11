@@ -60,7 +60,7 @@ char* leer_pseudocodigo(char* nombre_archivo)
     fread(archivo, sizeof(char), 1, pseudocodigo);
     return pseudocodigo;
 }
-
+/*
 int recibir_ruta_pseudocodigo(int socket)
 {
     int size;
@@ -70,7 +70,7 @@ int recibir_ruta_pseudocodigo(int socket)
     return ruta;
 
 }
-
+*/
 t_proceso* crear_proceso(uint32_t pid)
 {
     t_proceso* proceso = malloc(sizeof(t_proceso));
@@ -83,22 +83,21 @@ void conexion_kernel(void* arg)
     t_log* logger_hilo = iniciar_logger("logger_hilo.log","HILO");
     log_info(logger_hilo, "HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
-    
+    log_info(logger_hilo,"Socket: %i", arg_h->socket);
     while(1)
     {
-        op_code codigo;// = recibir_operacion(arg_h->socket);
-        recv(socket, &codigo, sizeof(int), MSG_WAITALL);
+        op_code codigo = recibir_operacion(arg_h->socket);
         log_info(logger_hilo,"op_code: %i", codigo);
         switch (codigo)
         {
         case INICIAR_PROCESO:
-            uint32_t pid;
-            recv(socket, &pid, sizeof(uint32_t), MSG_WAITALL);
+            int pid;
+            recv(socket, &pid, sizeof(int), MSG_WAITALL);
             log_info(logger_hilo,"pid: %i", pid);
-            t_proceso* proceso = crear_proceso(pid);
-            char* ruta = recibir_ruta_pseudocodigo(socket);
-            parsear_instrucciones(proceso, leer_pseudocodigo(ruta));
-            log_info(logger_hilo, list_get(proceso->instrucciones,0));
+            //t_proceso* proceso = crear_proceso(pid);
+            //char* ruta = recibir_mensaje(socket);
+            //parsear_instrucciones(proceso, leer_pseudocodigo(ruta));
+            //log_info(logger_hilo, list_get(proceso->instrucciones,0));
             break;
         
         default:
@@ -139,7 +138,7 @@ int main(int argc, char* argv[]){
     }
 
     t_args_hilo args_conexion_kernel;
-    //args_conexion_kernel.socket = socket_kernel;
+    args_conexion_kernel.socket = socket_kernel;
     pthread_t hilo_conexion_kernel;
     log_info(logger, "Declaré el hilo.");
     log_info(logger, "socket: %i", args_conexion_kernel.socket);
