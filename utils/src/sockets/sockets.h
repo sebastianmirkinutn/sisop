@@ -4,8 +4,7 @@
 typedef enum
 {   MENSAJE,
 	PAQUETE,
-	INICIAR_PROCESO,
-	FINALIZAR,PROCESO
+	INICIAR_PROCESO
 }op_code;
 
 typedef struct

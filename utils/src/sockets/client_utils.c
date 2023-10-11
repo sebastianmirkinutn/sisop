@@ -12,7 +12,7 @@ int crear_conexion(t_log *logger, char *ip, char *puerto)
 	int ret_addrinfo = getaddrinfo(ip, puerto, &hints, &server_info);
 
 	if (ret_addrinfo != 0){
-		log_error(logger, "Error addrinfo\n");
+		log_error(logger, "Error al obtener información del servidor.");
 		return 0;
 	}
 
@@ -21,19 +21,19 @@ int crear_conexion(t_log *logger, char *ip, char *puerto)
 								server_info->ai_protocol);
 	if (socket_cliente == -1)
 	{
-		log_info(logger, "Error socket_cliente\n");
+		log_info(logger, "Error al crear el socket.");
 		freeaddrinfo(server_info);
 		return 0;
 	}
 
 	if (connect(socket_cliente, server_info->ai_addr, server_info->ai_addrlen) == -1)
 	{
-		log_error(logger, "Error connect\n");
+		log_error(logger, "Error al conectarse al servidor.");
 		freeaddrinfo(server_info);
 		return 0;
 	}
 
-	log_info(logger, "Cliente conectado al server");
+	log_info(logger, "Se estableció la conexión al servidor.");
 	freeaddrinfo(server_info);
 	return socket_cliente;
 }

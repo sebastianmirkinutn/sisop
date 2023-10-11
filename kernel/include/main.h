@@ -15,4 +15,10 @@
 #include <pthread.h>
 //#include "./../src/planificador_largo_plazo.c"
 
+typedef struct
+{
+    int socket;
+}t_args_hilo;
+
+
 #endif 

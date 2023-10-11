@@ -1,9 +1,9 @@
 # Libraries
-LIBS=commons
+LIBS=commons utils
 
 # Custom libraries' paths
 SHARED_LIBPATHS=
-STATIC_LIBPATHS=
+STATIC_LIBPATHS=../utils
 
 # Compiler flags
 CDEBUG=-g -Wall -DDEBUG -fcommon -fdiagnostics-color=always
