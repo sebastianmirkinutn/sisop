@@ -1,5 +1,7 @@
 #include <string.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <commons/log.h>
 #include <commons/config.h>
 #include <readline/readline.h>
@@ -7,7 +9,7 @@
 /*-------------------------------------------*/
 #define PATH_FAT "fat.dat"
 #define PATH_BLOQUES "bloques.dat"
-#define PATH_FCB "fcbs"
+#define PATH_FCB "/fcbs"
 /*-------------------------------------------*/
 #define CANT_BLOQUES_TOTAL 1024
 #define CANT_BLOQUES_SWAP 64
@@ -23,7 +25,9 @@ struct regFCB {
 
 
 FILE *filesystem;
+FILE *fcb;
 FILE *fat;
+
 struct regFCB tablaFCB[100];
 
 
@@ -81,6 +85,11 @@ int iniciarArchivoFilesystem() {
     }
     return (1);
 }
+
+/*---------------------------------------------------------------------------------*/
+/*-- Creacion de Filesystem - archivo: de tabla FCB --*/
+
+
 
 /*---------------------------------------------------------------------------------*/
 /*-- Creacion de Filesystem - archivo: fat.dat --*/
@@ -151,57 +160,79 @@ uint32_t buscarBloqueFatDisponible() {
     rewind(fat);
     uint32_t bloqueFAT;
     uint32_t iBloque=0;
+    uint32_t cantBloques=0;
 
     iBloque=0;
+    cantBloques=CANT_BLOQUES_TOTAL-CANT_BLOQUES_SWAP;
+    rewind(fat);
     fread (&bloqueFAT,sizeof(bloqueFAT),1,fat);
-    printf ("Contenido de bloque:%u\n",bloqueFAT);
-    while ((bloqueFAT!=0) && (iBloque<=20)) {
-        iBloque++;
+    while ((bloqueFAT!=0) && (iBloque<=cantBloques)) {
+        iBloque=iBloque+1;
         fread (&bloqueFAT,sizeof(bloqueFAT),1,fat);
-        printf ("Contenido de bloque:%u\n",bloqueFAT);
     }
-    printf ("El bloque libre disponible es:%d\n",iBloque);
-    return (iBloque);
+    fseek(fat,-4,SEEK_CUR);
+    return (iBloque*4);
 }
 
-int asignarBloquesFAT(char *nombreArchivo) {
-    uint32_t bloqueFAT;
-    uint32_t bloqueFAT_Anterior;
-    uint32_t tamArchivo;
-    int cantBloquesNecesitados;
-    int i=0;
-    //--------- En proceso de desarrollo
-    tamArchivo=tamanoArchivo(nombreArchivo)
-    cantBloquesNecesitados=tamArchivo/TAM_BLOQUE;
-    strcpy(tablaFCB[0].nombreArchivo,nombreArchivo);
-    tablaFCB[0].tamanoArchivo=tamArchivo;
-    bloqueFAT=buscarBloqueFatDisponible();
-    tablaFCB[0].bloqueInicial = bloqueFAT;
-    fseek(fat,-1,SEEK_CUR);
-    fwrite (&bloqueFAT,sizeof(bloqueFAT),1,fat);
-    bloqueFAT_Anterior=ftell(fat)-1;
 
-    for (i=0;i<cantBloquesNecesitados-1;i++) {
-        bloqueFAT=buscarBloqueFatDisponible();
-        fseek(fat,-1,SEEK_CUR);
-        fwrite (&bloqueFAT,sizeof(bloqueFAT),1,fat);
-    }
-
-    return (1);
-}
-
-void recorrerArchivoFAT() {
+void mostrarContenidoArchivoFAT() {
     uint32_t bloqueFAT;
     rewind(fat);
     printf ("---------------------------------------\n");
     printf ("---------Contenido de la FAT-----------\n");
     printf ("---------------------------------------\n");
-    for (int i=0;i<=20;i++) { 
+    for (int i=0;i<=30;i++) { 
         fread (&bloqueFAT,sizeof(bloqueFAT),1,fat);
-        printf ("Bloque:%d tiene el dato:%u\n",i,bloqueFAT);
+        if (bloqueFAT!=9999) printf ("Bloque:%d tiene el dato:%u\n",i,bloqueFAT/4);
+        else printf ("Bloque:%d tiene el dato:%u\n",i,bloqueFAT);
     }
     printf ("---------------------------------------\n");
+    rewind(fat);
+}
 
+
+int asignarBloquesFAT(char *nombreArchivo) {
+    uint32_t index_bloqueFAT=0;
+    uint32_t index_bloqueFAT_anterior=0;
+    uint32_t data_bloqueFAT=0;
+    uint32_t i;
+    uint32_t tamArchivo;
+
+    /* ------- Completar datos de la FCB ----- */
+    strcpy(tablaFCB[0].nombreArchivo,nombreArchivo);
+    tablaFCB[0].tamanoArchivo = tamanoArchivo(nombreArchivo);
+    index_bloqueFAT=buscarBloqueFatDisponible();
+    tablaFCB[0].bloqueInicial = index_bloqueFAT;
+    /*-----------------------------------------*/
+    /* Asigna el primer bloque disponible */
+    data_bloqueFAT=9999;
+    fwrite (&data_bloqueFAT,sizeof(data_bloqueFAT),1,fat);
+    /*------------------------------------------*/
+    tamArchivo=(tablaFCB[0].tamanoArchivo)/1024;
+    printf("La cantidad de bloques necesitados por el archivo es:%d\n",tamArchivo);
+    index_bloqueFAT_anterior=ftell(fat)-4;
+    for (i=0;i<tamArchivo;i++) {
+        /*----------------------------------------------*/
+        index_bloqueFAT=buscarBloqueFatDisponible();
+        data_bloqueFAT=9999;
+        fwrite (&data_bloqueFAT,sizeof(data_bloqueFAT),1,fat);
+        /*----------------------------------------------*/
+        fseek(fat,index_bloqueFAT_anterior,SEEK_SET);
+        data_bloqueFAT=index_bloqueFAT;
+        fwrite (&data_bloqueFAT,sizeof(data_bloqueFAT),1,fat);
+        /*----------------------------------------------*/
+        index_bloqueFAT_anterior=index_bloqueFAT;
+        index_bloqueFAT=index_bloqueFAT+4;
+        fseek(fat,index_bloqueFAT,SEEK_CUR);
+    }
+    return (1);
+}
+
+int reiniciar_fat() {
+    uint32_t unBloque32Bits=0;
+    int tamanoFAT = (CANT_BLOQUES_TOTAL-CANT_BLOQUES_SWAP);
+    for (int i=0;i<tamanoFAT;i++) fwrite(&unBloque32Bits,sizeof(unBloque32Bits),1,fat);
+    rewind(fat);
 }
 
 int abrirDocumento(char *nombreArchivo) {
@@ -219,18 +250,74 @@ int abrirDocumento(char *nombreArchivo) {
     fclose(f);
     return(1);
 }
-
+/*---------------------------------------------------------------------------------*//
+int crear_archivo(char *nombreArchivo) {
+    char nombreArchivo[100]="./fcbs/";
+    strcat(nombreArchivo,argv[2]);
+    strcat(nombreArchivo,".fcb");
+    printf ("%s\n",nombreArchivo);
+    f=fopen((nombreArchivo),"w");
+    char datos[100]="NOMBRE_ARCHIVO=";
+    strcat(datos,argv[2]);
+    fwrite(datos,sizeof(datos),1,f);
+    strcpy(datos,"TAMANIO_ARCHIVO=0");
+    fwrite(datos,sizeof(datos),1,f);
+    strcpy(datos,"BLOQUE_INICIAL=9999");
+    fwrite(datos,sizeof(datos),1,f);
+    fclose(f);
+}
 /*---------------------------------------------------------------------------------*/
-int main() {
-    char nombreArchivo[20]="documento1.fcb";
-    abrirDocumento(nombreArchivo);
-    if (iniciarArchivoFilesystem()) {
-        if (iniciarArchivoFAT()) {
-            asignarBloquesFAT(nombreArchivo);
-            recorrerArchivoFAT();
-            fclose(fat);
+int main(int argc, char *argv[]) {
+    uint32_t unBloque32Bits=0;
+    int parametrosCorrectos=0;
+    FILE *f;
+
+    iniciarArchivoFilesystem();
+    iniciarArchivoFAT();
+
+    if (argc==2) {
+        if (!(strcmp(argv[1],"reiniciar_fat"))) {
+            reiniciar_fat();
+            parametrosCorrectos=1;
         }
-        fclose(filesystem);
+        if (!(strcmp(argv[1],"mostrar_fat"))) {
+            mostrarContenidoArchivoFAT();
+            parametrosCorrectos=1;
+        }
+
     }
+
+    if (argc==3) {
+        if (!(strcmp(argv[1],"asignar_fat"))) {
+            abrirDocumento(argv[2]);
+            asignarBloquesFAT(argv[2]);
+            parametrosCorrectos=1;
+        }
+
+        if (!(strcmp(argv[1],"liberar_bloque"))) {
+            rewind(fat);
+            fseek(fat,atol(argv[2])*4,SEEK_SET);
+            fwrite(&unBloque32Bits,sizeof(unBloque32Bits),1,fat);
+            rewind(fat);
+            printf("Bloque restablecido a 0 en tabla FAT\n");
+            parametrosCorrectos=1;
+        }
+
+        if (!(strcmp(argv[1],"crear_archivo"))) {
+            crear_archivo(argv[2]);
+            parametrosCorrectos=1;
+        }
+    }
+    if (!(parametrosCorrectos)) {
+        printf("\n----- listado de parametros --------\n");
+        printf("Reset de archivo FAT: ./filesystemv2.o reiniciar_fat\n\n");
+        printf("Mostrar contenido archivo FAT: ./filesystemv2.o mostrar_fat\n\n");
+        printf("Asignar FAT a un archivo: ./filesystemv2.o asignar_fat nombreArchivo.fcb\n\n");
+        printf("Libera un bloque de la FAT: ./filesystemv2.o liberar_bloque numBloque\n\n");
+        printf("Crear un archivo nuevo: ./filesystemv2.o crear_archivo nombreArchivo\n\n");
+    }
+
+    fclose(fat);
+    fclose(filesystem);
     return(1);
 }
