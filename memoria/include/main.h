@@ -11,19 +11,6 @@
 #include <sockets/server_utils.h>
 #include <pcb/pcb.h>
 #include <pthread.h>
-
-typedef struct
-{
-    char* parametro;
-}t_parametro;
-
-typedef struct
-{
-    char* operacion;
-    t_list* parametros;
-}t_instruccion;
-
-
 typedef struct
 {
     uint32_t pid;

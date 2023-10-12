@@ -1,6 +1,9 @@
 #include "../include/main.h"
 
+/*ESTRUCTURAS PARA MEMORIA DE INSTRUCCIONES*/
+t_list* procesos_en_memoria;
 char* saveptr;
+/*
 
 t_instruccion* crear_instruccion()
 {
@@ -8,7 +11,6 @@ t_instruccion* crear_instruccion()
     instruccion->parametros = list_create();
     return instruccion;
 }
-
 t_instruccion* parserar_argumentos(t_log* logger, char* str)
 {
     if(str == NULL)
@@ -36,7 +38,7 @@ t_instruccion* parserar_argumentos(t_log* logger, char* str)
     log_info(logger, "return: %s", instruccion->operacion);
     return instruccion;
 }
-
+*/
 void parsear_instrucciones(t_log* logger,t_proceso* proceso, char* str)
 {
     if(str == NULL)
@@ -56,13 +58,13 @@ void parsear_instrucciones(t_log* logger,t_proceso* proceso, char* str)
             char* token_cpy = malloc(strlen(token));
             memcpy(token_cpy, token,strlen(token));
             token_cpy[strlen(token_cpy)] = '\0';
-            parserar_argumentos(logger, token_cpy);
-            free(token_cpy);
-            //list_add(proceso->instrucciones, (parserar_argumentos(logger, token)));
+            //parserar_argumentos(logger, token_cpy);
+            list_add(proceso->instrucciones, token);
             log_info(logger, "Hice list_add de: %s", token);
+            free(token_cpy);
         }
         token = strtok(NULL, "\n");
-        log_info(logger, "Instruccion: %s", token);
+        //log_info(logger, "Instruccion: %s", token);
     }
     log_info(logger,"TOKEN NULL");
 }
@@ -149,6 +151,7 @@ void conexion_kernel(void* arg)
             //leer_pseudocodigo(logger_hilo, ruta);
             parsear_instrucciones(logger_hilo, proceso, leer_pseudocodigo(logger_hilo, ruta));
             //log_info(logger_hilo, list_get(proceso->instrucciones,0));
+            list_add(procesos_en_memoria, proceso);
             break;
         
         default:
@@ -159,11 +162,36 @@ void conexion_kernel(void* arg)
     
 }
 
-void conexion_cpu(int socket)
+void conexion_cpu(void* arg)
 {
+    t_log* logger_hilo = iniciar_logger("logger_hilo_conec_cpu.log","HILO_CPU");
+    log_info(logger_hilo, "HILO");
+    t_args_hilo* arg_h = (t_args_hilo*) arg;
+    log_info(logger_hilo,"Socket: %i", arg_h->socket);
     while(1)
     {
+        op_code codigo = recibir_operacion(arg_h->socket);
+        log_info(logger_hilo,"op_code: %i", codigo);
+        switch (codigo)
+        {
+        case FETCH_INSTRUCCION:
+            uint32_t pid, program_counter;
+            recv(arg_h->socket, &pid, sizeof(uint32_t), MSG_WAITALL);
+            log_info(logger_hilo,"pid: %i", pid);
+            recv(arg_h->socket, &program_counter, sizeof(uint32_t), MSG_WAITALL);
+            log_info(logger_hilo,"ip: %i", program_counter);
+
+            //Acá va a haber que buscar por el PID, y mandar todos los parámetros
+            t_proceso* proceso = list_get(procesos_en_memoria, 0);
+            log_info(logger_hilo,"Envío: %s", list_get(proceso->instrucciones, 0));
+            //t_instruccion* instruccion = list_get(proceso->instrucciones, 0);
+            enviar_mensaje(list_get(proceso->instrucciones, 0), arg_h->socket);
+            break;
         
+        default:
+            //break;
+        }
+
     }
 }
 
@@ -187,7 +215,7 @@ int main(int argc, char* argv[]){
     if(socket_kernel){
         log_info(logger,"Se conectó kernel");
     }
-
+    procesos_en_memoria = list_create();
     t_args_hilo args_conexion_kernel;
     args_conexion_kernel.socket = socket_kernel;
     pthread_t hilo_conexion_kernel;
@@ -195,6 +223,13 @@ int main(int argc, char* argv[]){
     log_info(logger, "socket: %i", args_conexion_kernel.socket);
     pthread_create(&hilo_conexion_kernel, NULL, &conexion_kernel, (void*)&args_conexion_kernel);
     log_info(logger, "Creé el hilo.");
+
+    pthread_t hilo_conexion_cpu;
+    t_args_hilo args_conexion_cpu;
+    args_conexion_cpu.socket = socket_cpu;
+    pthread_create(&hilo_conexion_cpu, NULL, &conexion_cpu, (void*)&args_conexion_cpu);
+
+
     pthread_join(&hilo_conexion_kernel,NULL);
     //pthread_detach(&hilo_conexion_kernel);
     //while(1);
