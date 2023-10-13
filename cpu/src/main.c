@@ -25,7 +25,8 @@ int main(int argc, char* argv[]){
     if(socket_kernel_interrupt){
         log_info(logger,"Se conectó kernel al puerto interrupt");
     }
-    //recibir_mensaje(logger, socket_kernel_dispatch);
+    //log_info(logger,"Mensaje: %s",recibir_mensaje(conexion_memoria));
+    
     
     
     
@@ -70,5 +71,7 @@ int main(int argc, char* argv[]){
         log_info(logger, "%s %s %s", parametros[0], parametros[1], parametros[2]);
 
         /*EXECUTE*/
+
+        program_counter++;
     }
 }

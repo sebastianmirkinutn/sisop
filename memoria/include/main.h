@@ -11,6 +11,7 @@
 #include <sockets/server_utils.h>
 #include <pcb/pcb.h>
 #include <pthread.h>
+#include <semaphore.h>
 typedef struct
 {
     uint32_t pid;

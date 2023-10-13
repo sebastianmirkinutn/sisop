@@ -3,6 +3,7 @@
 /*ESTRUCTURAS PARA MEMORIA DE INSTRUCCIONES*/
 t_list* procesos_en_memoria;
 char* saveptr;
+sem_t mutex_lista_procesos;
 /*
 
 t_instruccion* crear_instruccion()
@@ -151,7 +152,9 @@ void conexion_kernel(void* arg)
             //leer_pseudocodigo(logger_hilo, ruta);
             parsear_instrucciones(logger_hilo, proceso, leer_pseudocodigo(logger_hilo, ruta));
             //log_info(logger_hilo, list_get(proceso->instrucciones,0));
+            sem_wait(&mutex_lista_procesos);
             list_add(procesos_en_memoria, proceso);
+            sem_post(&mutex_lista_procesos);
             break;
         
         default:
@@ -162,12 +165,27 @@ void conexion_kernel(void* arg)
     
 }
 
+t_proceso* buscar_proceso(uint32_t pid)
+{
+    t_proceso* proceso;
+    bool comparar(void* arg)
+    {
+        t_proceso* proceso = arg;
+        return proceso->pid == pid;
+    }
+    sem_wait(&mutex_lista_procesos);
+    proceso = list_find(procesos_en_memoria, comparar);
+    sem_post(&mutex_lista_procesos);
+    return proceso;
+}
+
 void conexion_cpu(void* arg)
 {
     t_log* logger_hilo = iniciar_logger("logger_hilo_conec_cpu.log","HILO_CPU");
     log_info(logger_hilo, "HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     log_info(logger_hilo,"Socket: %i", arg_h->socket);
+    //enviar_mensaje("LISTO_PARA_RECIBIR_PEDIDOS",arg_h->socket);
     while(1)
     {
         op_code codigo = recibir_operacion(arg_h->socket);
@@ -182,10 +200,11 @@ void conexion_cpu(void* arg)
             log_info(logger_hilo,"ip: %i", program_counter);
 
             //Acá va a haber que buscar por el PID, y mandar todos los parámetros
-            t_proceso* proceso = list_get(procesos_en_memoria, 0);
+
+            t_proceso* proceso = buscar_proceso(pid);
             log_info(logger_hilo,"Envío: %s", list_get(proceso->instrucciones, 0));
             //t_instruccion* instruccion = list_get(proceso->instrucciones, 0);
-            enviar_mensaje(list_get(proceso->instrucciones, 0), arg_h->socket);
+            enviar_mensaje(list_get(proceso->instrucciones, program_counter), arg_h->socket);
             break;
         
         default:
@@ -215,6 +234,7 @@ int main(int argc, char* argv[]){
     if(socket_kernel){
         log_info(logger,"Se conectó kernel");
     }
+    sem_init(&mutex_lista_procesos, 0, 1);
     procesos_en_memoria = list_create();
     t_args_hilo args_conexion_kernel;
     args_conexion_kernel.socket = socket_kernel;
