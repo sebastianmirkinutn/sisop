@@ -140,7 +140,7 @@ int asignarBloquesFAT(char *nombreArchivo) {
     return (1);
 }
 
-/*Mustrar el contenido del archivo de la tabla FAT - Limitado a primeros 40 bloques*/
+/*Muestrar el contenido del archivo de la tabla FAT - Limitado a primeros 40 bloques*/
 void mostrar_tabla_FAT(FILE *fat,uint32_t ui32_cantBloqueTotales_FAT,uint32_t ui32_cant_bloques_swap) {
     uint32_t ui32_bloqueFAT=0;
     uint32_t ui32_cantBloques_FAT_total=0;
