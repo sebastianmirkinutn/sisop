@@ -4,6 +4,7 @@
 t_list* procesos_en_memoria;
 char* saveptr;
 sem_t mutex_lista_procesos;
+sem_t cantidad_de_procesos;
 /*
 
 t_instruccion* crear_instruccion()
@@ -155,6 +156,8 @@ void conexion_kernel(void* arg)
             sem_wait(&mutex_lista_procesos);
             list_add(procesos_en_memoria, proceso);
             sem_post(&mutex_lista_procesos);
+            log_info(logger_hilo, "SIGNAL cantidad_de_procesos");
+            sem_post(&cantidad_de_procesos);
             break;
         
         default:
@@ -165,17 +168,24 @@ void conexion_kernel(void* arg)
     
 }
 
+
+uint32_t pid_funcion;
+    int comparar(void* arg){
+        printf("COMPARAR");
+        t_proceso* proceso = arg;
+        return proceso->pid == pid_funcion;
+    }
 t_proceso* buscar_proceso(uint32_t pid)
 {
+    printf("EMPIEZA BUCAR_PROCESO\n");
     t_proceso* proceso;
-    bool comparar(void* arg)
-    {
-        t_proceso* proceso = arg;
-        return proceso->pid == pid;
-    }
+     printf("EMPIEZA BUCAR_PROCESO\n");
     sem_wait(&mutex_lista_procesos);
-    proceso = list_find(procesos_en_memoria, comparar);
+     printf("hice waitss BUCAR_PROCESO\n");
+     pid_funcion = pid;
+    proceso = list_find(procesos_en_memoria, (void*)comparar);
     sem_post(&mutex_lista_procesos);
+    printf("TERMINA BUCAR_PROCESO\n");
     return proceso;
 }
 
@@ -185,7 +195,7 @@ void conexion_cpu(void* arg)
     log_info(logger_hilo, "HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     log_info(logger_hilo,"Socket: %i", arg_h->socket);
-    //enviar_mensaje("LISTO_PARA_RECIBIR_PEDIDOS",arg_h->socket);
+    enviar_mensaje("LISTO_PARA_RECIBIR_PEDIDOS",arg_h->socket);
     while(1)
     {
         op_code codigo = recibir_operacion(arg_h->socket);
@@ -200,11 +210,14 @@ void conexion_cpu(void* arg)
             log_info(logger_hilo,"ip: %i", program_counter);
 
             //Acá va a haber que buscar por el PID, y mandar todos los parámetros
-
+            sem_wait(&cantidad_de_procesos);
+            sem_wait(&mutex_lista_procesos);
             t_proceso* proceso = buscar_proceso(pid);
+            log_info(logger_hilo,"HAY QUE ENVIAR LA INSTRUCCION");
             log_info(logger_hilo,"Envío: %s", list_get(proceso->instrucciones, 0));
             //t_instruccion* instruccion = list_get(proceso->instrucciones, 0);
             enviar_mensaje(list_get(proceso->instrucciones, program_counter), arg_h->socket);
+            sem_post(&mutex_lista_procesos);
             break;
         
         default:
@@ -235,6 +248,7 @@ int main(int argc, char* argv[]){
         log_info(logger,"Se conectó kernel");
     }
     sem_init(&mutex_lista_procesos, 0, 1);
+    sem_init(&cantidad_de_procesos, 0, 0);
     procesos_en_memoria = list_create();
     t_args_hilo args_conexion_kernel;
     args_conexion_kernel.socket = socket_kernel;
