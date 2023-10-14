@@ -157,7 +157,7 @@ void conexion_kernel(void* arg)
             list_add(procesos_en_memoria, proceso);
             sem_post(&mutex_lista_procesos);
             log_info(logger_hilo, "SIGNAL cantidad_de_procesos");
-            sem_post(&cantidad_de_procesos);
+            if (proceso != NULL) sem_post(&cantidad_de_procesos);
             break;
         
         default:
@@ -211,9 +211,9 @@ void conexion_cpu(void* arg)
 
             //Acá va a haber que buscar por el PID, y mandar todos los parámetros
             sem_wait(&cantidad_de_procesos);
-            sem_wait(&mutex_lista_procesos);
             t_proceso* proceso = buscar_proceso(pid);
             log_info(logger_hilo,"HAY QUE ENVIAR LA INSTRUCCION");
+            sem_wait(&mutex_lista_procesos);
             log_info(logger_hilo,"Envío: %s", list_get(proceso->instrucciones, 0));
             //t_instruccion* instruccion = list_get(proceso->instrucciones, 0);
             enviar_mensaje(list_get(proceso->instrucciones, program_counter), arg_h->socket);
