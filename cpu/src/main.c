@@ -25,24 +25,14 @@ int main(int argc, char* argv[]){
     if(socket_kernel_interrupt){
         log_info(logger,"Se conectó kernel al puerto interrupt");
     }
-    log_info(logger,"Mensaje: %s",recibir_mensaje(conexion_memoria));
-    
-    
-    
+    if(strcmp(recibir_mensaje(conexion_memoria), "LISTO_PARA_RECIBIR_PEDIDOS"))
+    {
+        log_error(logger, "No se pudo establecer la conexión con Memoria");
+    }
     
 
     /*CICLO DE INSTRUCCIÓN*/
     while(1){
-        /*
-        char* funcion = recibir_mensaje(socket_kernel_dispatch);
-        char* parametros[3];
-        parametros[0] = recibir_mensaje(socket_kernel_dispatch);
-        parametros[1] = recibir_mensaje(socket_kernel_dispatch);
-        parametros[2] = recibir_mensaje(socket_kernel_dispatch);
-        log_info(logger, "%s %s %s %s", funcion, parametros[0], parametros[1], parametros[2]);
-        */
-       
-        //getchar();
         /*FETCH*/
         op_code codigo = FETCH_INSTRUCCION;
         uint32_t pid = 0;
