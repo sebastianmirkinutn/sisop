@@ -25,29 +25,21 @@ int main(int argc, char* argv[]){
     if(socket_kernel_interrupt){
         log_info(logger,"Se conectó kernel al puerto interrupt");
     }
-    //recibir_mensaje(logger, socket_kernel_dispatch);
-    
-    
+    if(strcmp(recibir_mensaje(conexion_memoria), "LISTO_PARA_RECIBIR_PEDIDOS"))
+    {
+        log_error(logger, "No se pudo establecer la conexión con Memoria");
+    }
     
 
     /*CICLO DE INSTRUCCIÓN*/
     while(1){
-        /*
-        char* funcion = recibir_mensaje(socket_kernel_dispatch);
-        char* parametros[3];
-        parametros[0] = recibir_mensaje(socket_kernel_dispatch);
-        parametros[1] = recibir_mensaje(socket_kernel_dispatch);
-        parametros[2] = recibir_mensaje(socket_kernel_dispatch);
-        log_info(logger, "%s %s %s %s", funcion, parametros[0], parametros[1], parametros[2]);
-        */
-       
-        getchar();
         /*FETCH*/
         op_code codigo = FETCH_INSTRUCCION;
         uint32_t pid = 0;
         send(conexion_memoria, &codigo, sizeof(op_code), 0);
         send(conexion_memoria, &pid, sizeof(uint32_t), 0);
-        send(conexion_memoria, &program_counter, sizeof(uint32_t), 0) ;       
+        send(conexion_memoria, &program_counter, sizeof(uint32_t), 0) ;  
+        log_info(logger, "Envié el pedido");     
         char* instruccion = recibir_mensaje(conexion_memoria);
         log_info(logger, "%s", instruccion);
 
@@ -70,5 +62,7 @@ int main(int argc, char* argv[]){
         log_info(logger, "%s %s %s", parametros[0], parametros[1], parametros[2]);
 
         /*EXECUTE*/
+
+        program_counter++;
     }
 }

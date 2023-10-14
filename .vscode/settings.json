@@ -11,6 +11,7 @@
         "planificador_largo_plazo.h": "c",
         "queue.h": "c",
         "server_utils.h": "c",
-        "sockets.h": "c"
+        "sockets.h": "c",
+        "log.h": "c"
     }
 }

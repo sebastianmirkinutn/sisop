@@ -74,11 +74,8 @@ int main(int argc, char* argv[]){
     sem_init(&mutex_cola_ready, 0, 1);
     sem_init(&procesos_en_new, 0, 0);
     sem_init(&grado_de_multiprogramacion, 0, atoi(grado_max_de_multiprogramacion));
-    //log_info(logger,"GDMP: %i",atoi(grado_max_de_multiprogramacion));
 
-    //log_info(logger, " ANTES DE QUEUE_CREATE():%i",cola_new);
     cola_new = queue_create();
-    //log_info(logger, "QUEUE_CREATE():%i",cola_new);
 	cola_ready = queue_create();
 	cola_blocked = queue_create();
 	cola_exit = queue_create();
@@ -87,12 +84,8 @@ int main(int argc, char* argv[]){
     args_conexion_memoria.socket = conexion_memoria;
     
     pthread_t hilo_planificador_de_largo_plazo;
-    //printf("Declaré el hilo\n");
     pthread_create(&hilo_planificador_de_largo_plazo, NULL, &planificador_largo_plazo, (void*)&args_conexion_memoria);
-    //printf("Creé el hilo\n");
     pthread_detach(&hilo_planificador_de_largo_plazo);
-    //printf("Desvinculé el hilo\n");
-    //log_info(logger,"Cola new %i", cola_new);
 
     while(1){
         t_mensaje mensaje;
@@ -126,33 +119,17 @@ int main(int argc, char* argv[]){
             {
                 log_warning(logger, "Se pasaron parámetros de más");
             }
-            
-            //mensaje.size_mensaje = strlen(c_argv[0]) + 1;
-            //enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
-            //mensaje.mensaje = c_argv[0];
-            //mensaje.mensaje = c_argv[1];
-            //mensaje.size_mensaje = strlen(c_argv[1]) + 1;
-            //enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
+            else{
+                t_pcb* pcb = crear_pcb(atoi(c_argv[3]), c_argv[1]);
+                sem_wait(&mutex_cola_new);
+                //log_info(logger,"Hice wait");
+                queue_push(cola_new, pcb);
+                //log_info(logger,"Hice push");
+                sem_post(&mutex_cola_new);
+                sem_post(&procesos_en_new);
 
-            //mensaje.mensaje = c_argv[2];
-            //mensaje.size_mensaje = strlen(c_argv[2]) + 1;
-            //enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
-
-            //mensaje.mensaje = c_argv[3];
-            //mensaje.size_mensaje = strlen(c_argv[3]) + 1;
-
-            //enviar_mensaje(mensaje.mensaje ,conexion_cpu_dispatch);
-
-            
-            t_pcb* pcb = crear_pcb(atoi(c_argv[3]), c_argv[1]);
-            sem_wait(&mutex_cola_new);
-            //log_info(logger,"Hice wait");
-            queue_push(cola_new, pcb);
-            //log_info(logger,"Hice push");
-            sem_post(&mutex_cola_new);
-            sem_post(&procesos_en_new);
-
-            log_info(logger, "Se crea el proceso %i en NEW", pcb->pid);
+                log_info(logger, "Se crea el proceso %i en NEW", pcb->pid);
+            }
         }
         else if(!strcmp(c_argv[0], "FINALIZAR_PROCESO")){
 
@@ -173,8 +150,6 @@ int main(int argc, char* argv[]){
             log_warning(logger, "La función %s no existe.", c_argv[0]);
         }
     }
-
-    //enviar_mensaje("Mensaje", conexion_cpu);
 
     log_destroy(logger);
     config_destroy(config);
