@@ -1,0 +1,46 @@
+[INFO] 13:45:54:978 HILO/(5698:5701): Hice wait del gdmp
+[INFO] 13:45:54:979 HILO/(5698:5701): Hice wait de la cola de new: 425872144
+[INFO] 13:45:54:979 HILO/(5698:5701): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:49:32:105 HILO/(6253:6256): Hice wait del gdmp
+[INFO] 13:49:32:105 HILO/(6253:6256): Hice wait de la cola de new: 1975692048
+[INFO] 13:49:32:105 HILO/(6253:6256): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:51:10:753 HILO/(6327:6328): Hice wait del gdmp
+[INFO] 13:51:10:753 HILO/(6327:6328): Hice wait de la cola de new: 943885072
+[INFO] 13:51:10:753 HILO/(6327:6328): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:51:29:096 HILO/(6327:6328): Hice wait del gdmp
+[INFO] 13:51:29:097 HILO/(6327:6328): Hice wait de la cola de new: 943885072
+[INFO] 13:51:29:097 HILO/(6327:6328): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:53:36:565 HILO/(6581:6584): Hice wait del gdmp
+[INFO] 13:53:36:565 HILO/(6581:6584): Hice wait de la cola de new: -1237456112
+[INFO] 13:53:36:565 HILO/(6581:6584): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:55:24:692 HILO/(6665:6668): Hice wait del gdmp
+[INFO] 13:55:24:692 HILO/(6665:6668): Hice wait de la cola de new: -657933552
+[INFO] 13:55:24:692 HILO/(6665:6668): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:55:30:543 HILO/(6665:6668): Hice wait del gdmp
+[INFO] 13:55:30:544 HILO/(6665:6668): Hice wait de la cola de new: -657933552
+[INFO] 13:55:30:544 HILO/(6665:6668): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:57:23:400 HILO/(6786:6789): Hice wait del gdmp
+[INFO] 13:57:23:400 HILO/(6786:6789): Hice wait de la cola de new: 1886960400
+[INFO] 13:57:23:400 HILO/(6786:6789): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:57:23:401 HILO/(6786:6790): PID: -1923668118 pasa a EXEC
+[INFO] 13:57:23:401 HILO/(6786:6790): mandé el contexto
+[INFO] 13:57:47:451 HILO/(6786:6790): Fin de proceso -1923668118 motivo -1
+[INFO] 14:01:59:621 HILO/(6979:6982): Hice wait del gdmp
+[INFO] 14:01:59:621 HILO/(6979:6982): Hice wait de la cola de new: -1893315824
+[INFO] 14:01:59:621 HILO/(6979:6982): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 14:01:59:621 HILO/(6979:6983): PID: -68627805 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 14:01:59:621 HILO/(6979:6983): mandé el contexto
+[INFO] 14:02:18:999 HILO/(6979:6983): Fin de proceso -68627805 motivo -1
+[INFO] 14:03:49:062 HILO/(7111:7114): Hice wait del gdmp
+[INFO] 14:03:49:062 HILO/(7111:7114): Hice wait de la cola de new: 930917136
+[INFO] 14:03:49:063 HILO/(7111:7114): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 14:03:49:063 HILO/(7111:7115): PID: -2134681815 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 14:03:49:063 HILO/(7111:7115): mandé el contexto
+[INFO] 14:03:59:095 HILO/(7111:7115): Fin de proceso -2134681815 motivo -1
+[INFO] 14:09:22:046 HILO/(7235:7238): Hice wait del gdmp
+[INFO] 14:09:22:046 HILO/(7235:7238): Hice wait de la cola de new: -1522685168
+[INFO] 14:09:22:046 HILO/(7235:7238): PID:0 - Estado:0
+[INFO] 14:09:22:046 HILO/(7235:7238): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 14:09:22:046 HILO/(7235:7239): PID: 139096713 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 14:09:22:046 HILO/(7235:7239): mandé el contexto
+[INFO] 14:09:52:854 HILO/(7235:7239): Fin de proceso 139096713 motivo -1

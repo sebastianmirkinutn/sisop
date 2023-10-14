@@ -18,15 +18,6 @@ typedef struct
 	uint32_t DX;
 } t_registros;
 
-/*
-typedef struct
-{
-	t_registros registros;
-	t_list* instrucciones;
-	
-} t_contexto_de_ejecucion;
-*/
-
 typedef enum
 {
 	NEW,
@@ -49,11 +40,20 @@ typedef struct
 	char* archivo_de_pseudocodigo;
 } t_pcb;
 
+typedef enum
+{
+    SUCCESS,
+    INVALID_RESOURCE,
+    INVALID_WRITE
+}t_motivo_desalojo;
+
 t_pcb* crear_pcb(uint32_t prioridad, char* pseudocodigo);
 void liberar_pcb(t_pcb* pcb);
 void* serializar_contexto(t_registros* registros);
 t_registros* deserializar_contexto(void* magic);
 t_registros* recibir_contexto_de_ejecucion(int socket);
 void enviar_contexto(t_registros* registros, int socket);
+t_motivo_desalojo recibir_desalojo(int socket);
+void enviar_desalojo(int socket, t_motivo_desalojo motivo);
 
 #endif

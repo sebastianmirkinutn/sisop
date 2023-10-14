@@ -89,3 +89,19 @@ void enviar_contexto(t_registros* registros, int socket)
     send(socket, &size, sizeof(int), 0);
     send(socket, &a_enviar,sizeof(uint32_t) * 4, 0);
 }
+
+t_motivo_desalojo recibir_desalojo(int socket){
+    t_motivo_desalojo motivo;
+	if(recv(socket, &motivo, sizeof(t_motivo_desalojo), MSG_WAITALL) > 0)
+		return motivo;
+	else
+	{
+		close(socket);
+		return -1;
+	}
+}
+
+void enviar_desalojo(int socket, t_motivo_desalojo motivo)
+{
+    send(socket, &motivo, sizeof(t_motivo_desalojo), 0);
+}

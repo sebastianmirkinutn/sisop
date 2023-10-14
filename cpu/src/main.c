@@ -1,6 +1,6 @@
 #include "../include/main.h"
 
-t_registros registros;
+t_registros* registros;
 uint32_t program_counter;
 
 int main(int argc, char* argv[]){
@@ -30,39 +30,50 @@ int main(int argc, char* argv[]){
         log_error(logger, "No se pudo establecer la conexión con Memoria");
     }
     
-
-    /*CICLO DE INSTRUCCIÓN*/
-    while(1){
-        /*FETCH*/
-        op_code codigo = FETCH_INSTRUCCION;
-        uint32_t pid = 0;
-        send(conexion_memoria, &codigo, sizeof(op_code), 0);
-        send(conexion_memoria, &pid, sizeof(uint32_t), 0);
-        send(conexion_memoria, &program_counter, sizeof(uint32_t), 0) ;  
-        log_info(logger, "Envié el pedido");     
-        char* instruccion = recibir_mensaje(conexion_memoria);
-        log_info(logger, "%s", instruccion);
-
-        /*DECODE*/
-        char* parametros[4];
+    uint32_t pid = 0;
+    while(1)
+    {
+        recv(socket_kernel_dispatch, &pid, sizeof(uint32_t), MSG_WAITALL);
+        registros = recibir_contexto_de_ejecucion(socket_kernel_dispatch);
+        log_info(logger, "recibí pid %i", pid);
+        /*CICLO DE INSTRUCCIÓN*/
+        while(1)
         {
-            char* token;
-            int i = 0;
-            token = strtok(instruccion, " ");
-            while(token != NULL && i < 4)
+            /*FETCH*/
+            op_code codigo = FETCH_INSTRUCCION;
+            send(conexion_memoria, &codigo, sizeof(op_code), 0);
+            send(conexion_memoria, &pid, sizeof(uint32_t), 0);
+            send(conexion_memoria, &program_counter, sizeof(uint32_t), 0) ;  
+            log_info(logger, "Envié el pedido");     
+            char* instruccion = recibir_mensaje(conexion_memoria);
+            log_info(logger, "%s", instruccion);
+
+            /*DECODE*/
+            char* parametros[4];
             {
-                parametros[i] = strdup(token);
-                token = strtok(NULL, " ");
-                i++;
+                char* token;
+                int i = 0;
+                token = strtok(instruccion, " ");
+                while(token != NULL && i < 4)
+                {
+                    parametros[i] = strdup(token);
+                    token = strtok(NULL, " ");
+                    i++;
+                }
             }
+            log_info(logger, "%s", parametros[0]);
+            log_info(logger, "%s", parametros[1]);
+            log_info(logger, "%s", parametros[2]);
+            log_info(logger, "%s %s %s", parametros[0], parametros[1], parametros[2]);
+
+            /*EXECUTE*/
+            if(!strcmp(parametros[0], "EXIT"))
+            {
+                enviar_contexto(registros, socket_kernel_dispatch);
+                enviar_desalojo(socket_kernel_dispatch, SUCCESS);
+            }
+
+            program_counter++;
         }
-        log_info(logger, "%s", parametros[0]);
-        log_info(logger, "%s", parametros[1]);
-        log_info(logger, "%s", parametros[2]);
-        log_info(logger, "%s %s %s", parametros[0], parametros[1], parametros[2]);
-
-        /*EXECUTE*/
-
-        program_counter++;
     }
 }

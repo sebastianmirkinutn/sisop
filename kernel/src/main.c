@@ -4,6 +4,7 @@ sem_t grado_de_multiprogramacion;
 sem_t mutex_cola_new;
 sem_t mutex_cola_ready;
 sem_t procesos_en_new;
+sem_t procesos_en_ready;
 
 
 t_queue *cola_ready;
@@ -11,11 +12,12 @@ t_queue *cola_blocked;
 t_queue *cola_exit;
 t_queue *cola_new;
 
+t_pcb* execute;
+
 void planificador_largo_plazo(void* arg)
 {
     t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
-    t_queue* cola_ready_h = &cola_ready;
 
     while(1)
     {
@@ -27,14 +29,16 @@ void planificador_largo_plazo(void* arg)
         t_pcb* pcb = queue_pop(cola_new);
         sem_post(&mutex_cola_new);
         sem_wait(&mutex_cola_ready);
-        queue_push(cola_ready_h, pcb);
+        queue_push(cola_ready, pcb);
         sem_post(&mutex_cola_ready);
+        log_info(logger_hilo, "PID:%i - Estado:%i", pcb->pid, pcb->estado);
         log_info(logger_hilo, "PID: %i - Estado Anterior: NEW - Estado Actual: READY", pcb->pid);
 
         op_code operacion = INICIAR_PROCESO;
         send(arg_h->socket, &operacion, sizeof(op_code), 0);
         send(arg_h->socket, &pcb->pid, sizeof(int), 0);
         enviar_mensaje(pcb->archivo_de_pseudocodigo, arg_h->socket);     
+        sem_post(&procesos_en_ready);
 
 
 
@@ -42,12 +46,30 @@ void planificador_largo_plazo(void* arg)
     }
 }
 
-void planificador_corto_plazo(/*ALGORITMO*/)
+void planificador_corto_plazo(void* arg)
 {
+    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
+    t_args_hilo* arg_h = (t_args_hilo*) arg;
     while(1)
     {
-        //t_registros* contexto = recibir_contexto_de_ejecucion();
+        sem_wait(&procesos_en_ready);
+        sem_wait(&mutex_cola_ready);
+        t_pcb* pcb = queue_pop(cola_ready);
+        sem_post(&mutex_cola_ready);
+        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", pcb->pid);
+        pcb->estado = EXEC; 
+        execute = pcb;
+        send(arg_h->socket, pcb->pid, sizeof(uint32_t), 0);
+        enviar_contexto(pcb->contexto, arg_h->socket);
+        log_info(logger_hilo, "mandé el contexto");
 
+        pcb->contexto = recibir_contexto_de_ejecucion(arg_h->socket);
+        t_motivo_desalojo motivo = recibir_desalojo(arg_h->socket);
+        log_info(logger_hilo, "Fin de proceso %i motivo %i", pcb->pid, motivo);
+        sem_wait(&mutex_cola_ready);
+        queue_push(cola_ready, pcb);
+        sem_post(&mutex_cola_ready);
+        liberar_pcb(pcb);
     }
 }
 
@@ -73,6 +95,7 @@ int main(int argc, char* argv[]){
     sem_init(&mutex_cola_new, 0, 1);
     sem_init(&mutex_cola_ready, 0, 1);
     sem_init(&procesos_en_new, 0, 0);
+    sem_init(&procesos_en_ready, 0, 0);
     sem_init(&grado_de_multiprogramacion, 0, atoi(grado_max_de_multiprogramacion));
 
     cola_new = queue_create();
@@ -86,6 +109,10 @@ int main(int argc, char* argv[]){
     pthread_t hilo_planificador_de_largo_plazo;
     pthread_create(&hilo_planificador_de_largo_plazo, NULL, &planificador_largo_plazo, (void*)&args_conexion_memoria);
     pthread_detach(&hilo_planificador_de_largo_plazo);
+
+    pthread_t hilo_planificador_de_corto_plazo;
+    pthread_create(&hilo_planificador_de_corto_plazo, NULL, &planificador_corto_plazo, (void*)&args_conexion_memoria);
+    pthread_detach(&hilo_planificador_de_corto_plazo);
 
     while(1){
         t_mensaje mensaje;
@@ -156,4 +183,3 @@ int main(int argc, char* argv[]){
     liberar_conexion(conexion_cpu_dispatch);
     
 }
-
