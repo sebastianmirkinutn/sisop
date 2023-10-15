@@ -16,7 +16,7 @@ t_pcb* execute;
 
 void planificador_largo_plazo(void* arg)
 {
-    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
+    t_log* logger_hilo = iniciar_logger("log_planil.log","HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
 
     while(1)
@@ -30,6 +30,7 @@ void planificador_largo_plazo(void* arg)
         sem_post(&mutex_cola_new);
         sem_wait(&mutex_cola_ready);
         queue_push(cola_ready, pcb);
+
         sem_post(&mutex_cola_ready);
         log_info(logger_hilo, "PID:%i - Estado:%i", pcb->pid, pcb->estado);
         log_info(logger_hilo, "PID: %i - Estado Anterior: NEW - Estado Actual: READY", pcb->pid);
@@ -48,25 +49,39 @@ void planificador_largo_plazo(void* arg)
 
 void planificador_corto_plazo(void* arg)
 {
-    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
+    t_log* logger_hilo = iniciar_logger("log_planic.log","HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
-    log_info(logger_hilo, "Empieza el planificador fifo");
+
+    t_pcb* pcb; 
     while(1)
-    {
+    {   
+        //char* algoritmo = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
+//
+        //if(!strcmp(algoritmo, "FIFO")) {
+		//	pcb = algoritmo_fifo();
+		//} else if (!strcmp(algoritmo, "RR")){
+		//	pcb = algoritmo_rr();
+		//} else if (!strcmp(algoritmo, "Prioridades")){
+		//	pcb = algoritmo_prioridades();
+		//} else {
+        //    log_error(logger_hilo, "El algoritmo de planificacion ingresado no existe\n");
+        //}
         sem_wait(&procesos_en_ready);
-        log_info(logger_hilo, "hice wait procesos_en_ready");
         sem_wait(&mutex_cola_ready);
-        log_info(logger_hilo, "hice wait mutex_cola_ready");
-        t_pcb* pcb2;
-        pcb2->pid = 12;
-        queue_push(cola_ready, pcb2);
-        t_pcb* pcb = queue_pop(cola_ready);
+        execute = queue_pop(cola_ready);
         sem_post(&mutex_cola_ready);
-        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", pcb->pid);
+
+
+        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute);
         pcb->estado = EXEC; 
         execute = pcb;
         send(arg_h->socket, pcb->pid, sizeof(uint32_t), 0);
-        enviar_contexto(pcb->contexto, arg_h->socket);
+        send(arg_h->socket, pcb->contexto->AX, sizeof(uint32_t), 0);
+        send(arg_h->socket, pcb->contexto->BX, sizeof(uint32_t), 0);
+        send(arg_h->socket, pcb->contexto->CX, sizeof(uint32_t), 0);
+        send(arg_h->socket, pcb->contexto->DX, sizeof(uint32_t), 0);
+        send(arg_h->socket, pcb->contexto->PC, sizeof(uint32_t), 0);
+        //enviar_contexto(pcb->contexto, arg_h->socket);
         log_info(logger_hilo, "mandé el contexto");
 
         pcb->contexto = recibir_contexto_de_ejecucion(arg_h->socket);
@@ -78,7 +93,6 @@ void planificador_corto_plazo(void* arg)
         liberar_pcb(pcb);
     }
 }
-
 
 int main(int argc, char* argv[]){
    
@@ -126,23 +140,25 @@ int main(int argc, char* argv[]){
     log_info(logger,"Creé los hilos");
 
 
-    t_pcb* pcb_prueba = crear_pcb(1, "");
-    pcb_prueba->contexto->AX = 1;
-    pcb_prueba->contexto->BX = 2;
-    pcb_prueba->contexto->CX = 3;
-    pcb_prueba->contexto->DX = 4;
-    pcb_prueba->contexto->PC = 0;
-
-    t_registros* a_serializar = pcb_prueba->contexto;
-    void* serializado = serializar_contexto(a_serializar);
-    t_registros* deserializados = deserializar_contexto(serializado);
-    log_info(logger, "AX: %i", deserializados->AX);
-
-    printf("Voy a enviar el contexto\n");
-    getchar();
-    enviar_mensaje("MENSAJE", conexion_cpu_dispatch);
-    enviar_contexto(pcb_prueba->contexto,conexion_cpu_dispatch);
-    printf("Envié el contexto\n");
+    //t_pcb* pcb_prueba = crear_pcb(1, "");
+    //pcb_prueba->contexto->AX = 1;
+    //pcb_prueba->contexto->BX = 2;
+    //pcb_prueba->contexto->CX = 3;
+    //pcb_prueba->contexto->DX = 4;
+    //pcb_prueba->contexto->PC = 0;
+//
+    //t_registros* a_serializar = pcb_prueba->contexto;
+    //void* serializado = serializar_contexto(a_serializar);
+    //t_registros* deserializados = deserializar_contexto(serializado);
+    //log_info(logger, "Serializado: %i",serializado);
+    //log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", deserializados->AX, deserializados->BX, deserializados->CX, deserializados->DX, deserializados->PC);
+//
+//
+    //printf("Voy a enviar el contexto\n");
+    //enviar_mensaje((char*) serializado, conexion_cpu_dispatch);
+    //getchar();
+    //enviar_contexto(pcb_prueba->contexto,conexion_cpu_dispatch);
+    //printf("Envié el contexto\n");
     while(1){
         t_mensaje mensaje;
         char* leido = readline("> ");

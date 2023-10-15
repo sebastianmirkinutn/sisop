@@ -60,36 +60,16 @@ t_registros* deserializar_contexto(void* magic)
 
 t_registros* recibir_contexto_de_ejecucion(int socket)
 {
-    printf("recibir_contexto_de_ejecucion - socket: %i\n", socket);
-	op_code cod_op;
-    int size;
-    t_registros* registros = malloc(sizeof(t_registros));
+    printf("recibir_contexto_de_ejecucion\n");
+    op_code operacion;
+    t_registros* registros;
     void* recibido;
-	if(recv(socket, &cod_op, sizeof(op_code), MSG_WAITALL) > 0)
-		if(cod_op == PAQUETE)
-        {
-            printf("cod_op: %i", cod_op);
-            recv(socket, &size, sizeof(int), MSG_WAITALL);
-            printf("size: %i", size);
-            recibido = malloc(size);
-            recv(socket, &recibido, size, MSG_WAITALL);
-            printf("recibido: %i", recibido);
-            registros = deserializar_contexto(recibido);
-            free(recibido);
-            return registros;
-        }
-        else
-        {
-            printf("cod_op: %i", cod_op);
-            //error
-        }
-	else
-	{
-        //error
-        printf("Error al recibir el mensaje\n");
-		close(socket);
-	}
-    printf("Salgo de recibir");
+    uint32_t size;
+    recv(socket, &operacion, sizeof(operacion), MSG_WAITALL);
+    recv(socket, &size, sizeof(uint32_t), MSG_WAITALL);
+    recv(socket, &recibido, size, MSG_WAITALL);
+    registros = deserializar_contexto(recibido);
+    return registros;
 }
 
 void enviar_contexto(t_registros* registros, int socket)

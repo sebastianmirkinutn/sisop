@@ -31,16 +31,28 @@ int main(int argc, char* argv[]){
     
     uint32_t pid = 0;
 
-    t_pcb* pcb_prueba = crear_pcb(1,"");
-    printf("%s", recibir_mensaje(socket_kernel_dispatch));
-    printf("Voy a recibir el contexto - socket %i\n", socket_kernel_dispatch);
-    pcb_prueba->contexto = recibir_contexto_de_ejecucion(socket_kernel_dispatch);
-    log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
+    //t_pcb* pcb_prueba = crear_pcb(1,"");
+    //char* mensaje = recibir_mensaje(socket_kernel_dispatch);
+    //printf("%s",mensaje );
+    //t_registros* deserializado = deserializar_contexto((void*)mensaje);
+    //log_info(logger, "Mensaje: %i", mensaje);
+    //pcb_prueba->contexto = deserializado;
+    //printf("AX: %i\n",deserializado->AX );
+    //printf("%s", );
+    //printf("Voy a recibir el contexto - socket %i\n", socket_kernel_dispatch);
+    //pcb_prueba->contexto = recibir_contexto_de_ejecucion(socket_kernel_dispatch);
+    //log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
 
     while(1)
     {
+        getchar();
         recv(socket_kernel_dispatch, &pid, sizeof(uint32_t), MSG_WAITALL);
-        registros = recibir_contexto_de_ejecucion(socket_kernel_dispatch);
+        //registros = recibir_contexto_de_ejecucion(socket_kernel_dispatch);
+        recv(socket_kernel_dispatch, &registros->AX, sizeof(uint32_t), MSG_WAITALL);
+        recv(socket_kernel_dispatch, &registros->BX, sizeof(uint32_t), MSG_WAITALL);
+        recv(socket_kernel_dispatch, &registros->CX, sizeof(uint32_t), MSG_WAITALL);
+        recv(socket_kernel_dispatch, &registros->DX, sizeof(uint32_t), MSG_WAITALL);
+        recv(socket_kernel_dispatch, &registros->PC, sizeof(uint32_t), MSG_WAITALL);
         log_info(logger, "recibí pid %i", pid);
         /*CICLO DE INSTRUCCIÓN*/
         while(1)
