@@ -252,7 +252,7 @@ int main(int argc, char *argv[]) {
 
     creacionFilesystem(); //reset temporal de archivo bloques.dat
     
-    printf ("---> El sistema esta limitado para trabajar con archivos de hasta 40.000 bytes <----")
+    printf ("---> El sistema esta limitado para trabajar con archivos de hasta 40.000 bytes <----");
 
 
     printf("-----------------------------------------------------------------------\n");
