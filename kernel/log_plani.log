@@ -48,3 +48,48 @@
 [INFO] 00:35:30:934 HILO/(86076:86079): Hice wait de la cola de new: -1190630640
 [INFO] 00:35:30:934 HILO/(86076:86079): PID:0 - Estado:0
 [INFO] 00:35:30:934 HILO/(86076:86079): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 19:51:55:276 HILO/(2922:2925): Hice wait del gdmp
+[INFO] 19:51:55:276 HILO/(2922:2925): Hice wait de la cola de new: -983590128
+[INFO] 19:51:55:276 HILO/(2922:2925): PID:0 - Estado:0
+[INFO] 19:51:55:276 HILO/(2922:2925): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 19:51:55:277 HILO/(2922:2926): PID: -1676905336 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 19:51:55:277 HILO/(2922:2926): mandé el contexto
+[INFO] 19:53:05:479 HILO/(2922:2926): Fin de proceso -1676905336 motivo -1
+[INFO] 19:55:41:629 HILO/(3043:3046): Hice wait del gdmp
+[INFO] 19:55:41:629 HILO/(3043:3046): Hice wait de la cola de new: -299164912
+[INFO] 19:55:41:629 HILO/(3043:3046): PID:0 - Estado:0
+[INFO] 19:55:41:629 HILO/(3043:3046): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 19:58:18:285 HILO/(3206:3209): Hice wait del gdmp
+[INFO] 19:58:18:285 HILO/(3206:3209): Hice wait de la cola de new: 2040961808
+[INFO] 19:58:18:285 HILO/(3206:3209): PID:0 - Estado:0
+[INFO] 19:58:18:285 HILO/(3206:3209): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 20:01:54:734 HILO/(3369:3371): Empieza el planificador fifo
+[INFO] 20:02:04:780 HILO/(3369:3370): Hice wait del gdmp
+[INFO] 20:02:04:780 HILO/(3369:3370): Hice wait de la cola de new: -2140558576
+[INFO] 20:02:04:780 HILO/(3369:3370): PID:0 - Estado:0
+[INFO] 20:02:04:780 HILO/(3369:3370): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 20:02:04:781 HILO/(3369:3371): hice wait procesos_en_ready
+[INFO] 20:02:04:781 HILO/(3369:3371): hice wait mutex_cola_ready
+[INFO] 20:37:55:488 HILO/(5142:5146): Empieza el planificador fifo
+[INFO] 20:40:40:012 HILO/(5360:5364): Empieza el planificador fifo
+[INFO] 20:46:09:011 HILO/(5725:5729): Empieza el planificador fifo
+[INFO] 20:47:40:151 HILO/(5910:5914): Empieza el planificador fifo
+[INFO] 20:49:26:119 HILO/(6029:6033): Empieza el planificador fifo
+[INFO] 20:51:42:501 HILO/(6190:6194): Empieza el planificador fifo
+[INFO] 20:53:20:788 HILO/(6521:6523): Empieza el planificador fifo
+[INFO] 20:54:46:818 HILO/(6585:6589): Empieza el planificador fifo
+[INFO] 20:54:57:999 HILO/(6585:6588): Hice wait del gdmp
+[INFO] 20:54:57:999 HILO/(6585:6588): Hice wait de la cola de new: -371225840
+[INFO] 20:54:58:000 HILO/(6585:6588): PID:1 - Estado:0
+[INFO] 20:54:58:000 HILO/(6585:6588): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 20:54:58:002 HILO/(6585:6589): hice wait procesos_en_ready
+[INFO] 20:54:58:002 HILO/(6585:6589): hice wait mutex_cola_ready
+[INFO] 21:01:42:423 HILO/(6907:6910): Empieza el planificador fifo
+[INFO] 21:03:10:893 HILO/(6948:6952): Empieza el planificador fifo
+[INFO] 21:06:53:733 HILO/(7005:7007): Empieza el planificador fifo
+[INFO] 21:08:29:743 HILO/(7187:7191): Empieza el planificador fifo
+[INFO] 21:09:50:018 HILO/(7432:7436): Empieza el planificador fifo
+[INFO] 21:11:51:114 HILO/(7470:7474): Empieza el planificador fifo
+[INFO] 21:14:21:200 HILO/(7696:7700): Empieza el planificador fifo
+[INFO] 21:18:15:575 HILO/(7908:7910): Empieza el planificador fifo
+[INFO] 21:23:35:351 HILO/(8196:8200): Empieza el planificador fifo

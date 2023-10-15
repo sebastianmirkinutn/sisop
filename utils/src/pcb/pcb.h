@@ -16,6 +16,7 @@ typedef struct
 	uint32_t BX;
 	uint32_t CX;
 	uint32_t DX;
+	uint32_t PC;
 } t_registros;
 
 typedef enum

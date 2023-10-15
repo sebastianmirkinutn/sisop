@@ -50,3 +50,137 @@
 [INFO] 00:35:09:521 Kernel/(86076:86076): Se estableció la conexión al servidor.
 [INFO] 00:35:09:521 Kernel/(86076:86076): Se estableció la conexión al servidor.
 [INFO] 00:35:30:934 Kernel/(86076:86076): Se crea el proceso 0 en NEW
+[INFO] 19:51:42:654 Kernel/(2922:2922): Se estableció la conexión al servidor.
+[INFO] 19:51:42:655 Kernel/(2922:2922): Se estableció la conexión al servidor.
+[INFO] 19:51:42:655 Kernel/(2922:2922): Se estableció la conexión al servidor.
+[INFO] 19:51:42:656 Kernel/(2922:2922): Se estableció la conexión al servidor.
+[INFO] 19:51:55:276 Kernel/(2922:2922): Se crea el proceso 0 en NEW
+[INFO] 19:55:32:295 Kernel/(3043:3043): Se estableció la conexión al servidor.
+[INFO] 19:55:32:296 Kernel/(3043:3043): Se estableció la conexión al servidor.
+[INFO] 19:55:32:296 Kernel/(3043:3043): Se estableció la conexión al servidor.
+[INFO] 19:55:32:297 Kernel/(3043:3043): Se estableció la conexión al servidor.
+[INFO] 19:55:41:629 Kernel/(3043:3043): Se crea el proceso 0 en NEW
+[INFO] 19:58:11:536 Kernel/(3206:3206): Se estableció la conexión al servidor.
+[INFO] 19:58:11:536 Kernel/(3206:3206): Se estableció la conexión al servidor.
+[INFO] 19:58:11:537 Kernel/(3206:3206): Se estableció la conexión al servidor.
+[INFO] 19:58:11:537 Kernel/(3206:3206): Se estableció la conexión al servidor.
+[INFO] 19:58:18:285 Kernel/(3206:3206): Se crea el proceso 0 en NEW
+[INFO] 20:01:54:729 Kernel/(3369:3369): Se estableció la conexión al servidor.
+[INFO] 20:01:54:729 Kernel/(3369:3369): Se estableció la conexión al servidor.
+[INFO] 20:01:54:729 Kernel/(3369:3369): Se estableció la conexión al servidor.
+[INFO] 20:01:54:729 Kernel/(3369:3369): Se estableció la conexión al servidor.
+[INFO] 20:02:04:780 Kernel/(3369:3369): Se crea el proceso 0 en NEW
+[INFO] 20:10:23:404 Kernel/(3741:3741): Se estableció la conexión al servidor.
+[INFO] 20:10:23:404 Kernel/(3741:3741): Se estableció la conexión al servidor.
+[INFO] 20:10:23:404 Kernel/(3741:3741): Se estableció la conexión al servidor.
+[INFO] 20:10:23:405 Kernel/(3741:3741): Se estableció la conexión al servidor.
+[INFO] 20:13:51:706 Kernel/(4054:4054): Se estableció la conexión al servidor.
+[INFO] 20:13:51:706 Kernel/(4054:4054): Se estableció la conexión al servidor.
+[INFO] 20:13:51:707 Kernel/(4054:4054): Se estableció la conexión al servidor.
+[INFO] 20:13:51:707 Kernel/(4054:4054): Se estableció la conexión al servidor.
+[INFO] 20:14:45:135 Kernel/(4208:4208): Se estableció la conexión al servidor.
+[INFO] 20:14:45:136 Kernel/(4208:4208): Se estableció la conexión al servidor.
+[INFO] 20:14:45:136 Kernel/(4208:4208): Se estableció la conexión al servidor.
+[ERROR] 20:14:45:136 Kernel/(4208:4208): Error al conectarse al servidor.
+[INFO] 20:27:11:316 Kernel/(4474:4474): Se estableció la conexión al servidor.
+[INFO] 20:27:11:316 Kernel/(4474:4474): Se estableció la conexión al servidor.
+[INFO] 20:27:11:316 Kernel/(4474:4474): Se estableció la conexión al servidor.
+[INFO] 20:27:11:317 Kernel/(4474:4474): Se estableció la conexión al servidor.
+[INFO] 20:29:19:900 Kernel/(4704:4704): Se estableció la conexión al servidor.
+[INFO] 20:29:19:900 Kernel/(4704:4704): Se estableció la conexión al servidor.
+[INFO] 20:29:19:900 Kernel/(4704:4704): Se estableció la conexión al servidor.
+[INFO] 20:29:19:901 Kernel/(4704:4704): Se estableció la conexión al servidor.
+[INFO] 20:29:19:901 Kernel/(4704:4704): Creé los hilos
+[INFO] 20:35:14:143 Kernel/(4896:4896): Se estableció la conexión al servidor.
+[INFO] 20:35:14:143 Kernel/(4896:4896): Se estableció la conexión al servidor.
+[INFO] 20:35:14:143 Kernel/(4896:4896): Se estableció la conexión al servidor.
+[INFO] 20:35:14:143 Kernel/(4896:4896): Se estableció la conexión al servidor.
+[INFO] 20:35:14:144 Kernel/(4896:4896): Creé los hilos
+[INFO] 20:37:55:481 Kernel/(5142:5142): Se estableció la conexión al servidor.
+[INFO] 20:37:55:481 Kernel/(5142:5142): Se estableció la conexión al servidor.
+[INFO] 20:37:55:482 Kernel/(5142:5142): Se estableció la conexión al servidor.
+[INFO] 20:37:55:482 Kernel/(5142:5142): Se estableció la conexión al servidor.
+[INFO] 20:37:55:482 Kernel/(5142:5142): Creé los hilos
+[INFO] 20:40:40:006 Kernel/(5360:5360): Se estableció la conexión al servidor.
+[INFO] 20:40:40:007 Kernel/(5360:5360): Se estableció la conexión al servidor.
+[INFO] 20:40:40:007 Kernel/(5360:5360): Se estableció la conexión al servidor.
+[INFO] 20:40:40:008 Kernel/(5360:5360): Se estableció la conexión al servidor.
+[INFO] 20:40:40:011 Kernel/(5360:5360): Creé los hilos
+[WARNING] 20:46:05:742 Kernel/(5360:5360): La función make no existe.
+[ERROR] 20:46:09:009 Kernel/(5725:5725): Error al conectarse al servidor.
+[ERROR] 20:46:09:009 Kernel/(5725:5725): Error al conectarse al servidor.
+[INFO] 20:46:09:009 Kernel/(5725:5725): Se estableció la conexión al servidor.
+[INFO] 20:46:09:010 Kernel/(5725:5725): Se estableció la conexión al servidor.
+[INFO] 20:46:09:010 Kernel/(5725:5725): Creé los hilos
+[INFO] 20:47:40:148 Kernel/(5910:5910): Se estableció la conexión al servidor.
+[INFO] 20:47:40:148 Kernel/(5910:5910): Se estableció la conexión al servidor.
+[INFO] 20:47:40:149 Kernel/(5910:5910): Se estableció la conexión al servidor.
+[INFO] 20:47:40:149 Kernel/(5910:5910): Se estableció la conexión al servidor.
+[INFO] 20:47:40:149 Kernel/(5910:5910): Creé los hilos
+[INFO] 20:49:26:117 Kernel/(6029:6029): Se estableció la conexión al servidor.
+[INFO] 20:49:26:117 Kernel/(6029:6029): Se estableció la conexión al servidor.
+[INFO] 20:49:26:118 Kernel/(6029:6029): Se estableció la conexión al servidor.
+[INFO] 20:49:26:118 Kernel/(6029:6029): Se estableció la conexión al servidor.
+[INFO] 20:49:26:118 Kernel/(6029:6029): Creé los hilos
+[INFO] 20:51:42:498 Kernel/(6190:6190): Se estableció la conexión al servidor.
+[INFO] 20:51:42:498 Kernel/(6190:6190): Se estableció la conexión al servidor.
+[INFO] 20:51:42:499 Kernel/(6190:6190): Se estableció la conexión al servidor.
+[INFO] 20:51:42:500 Kernel/(6190:6190): Se estableció la conexión al servidor.
+[INFO] 20:51:42:500 Kernel/(6190:6190): Creé los hilos
+[INFO] 20:53:20:788 Kernel/(6521:6521): Se estableció la conexión al servidor.
+[INFO] 20:53:20:788 Kernel/(6521:6521): Se estableció la conexión al servidor.
+[INFO] 20:53:20:788 Kernel/(6521:6521): Se estableció la conexión al servidor.
+[INFO] 20:53:20:788 Kernel/(6521:6521): Se estableció la conexión al servidor.
+[INFO] 20:53:20:788 Kernel/(6521:6521): Creé los hilos
+[INFO] 20:54:46:817 Kernel/(6585:6585): Se estableció la conexión al servidor.
+[INFO] 20:54:46:817 Kernel/(6585:6585): Se estableció la conexión al servidor.
+[INFO] 20:54:46:817 Kernel/(6585:6585): Se estableció la conexión al servidor.
+[INFO] 20:54:46:818 Kernel/(6585:6585): Se estableció la conexión al servidor.
+[INFO] 20:54:46:818 Kernel/(6585:6585): Creé los hilos
+[INFO] 20:54:57:999 Kernel/(6585:6585): Se crea el proceso 1 en NEW
+[INFO] 21:01:42:421 Kernel/(6907:6907): Se estableció la conexión al servidor.
+[INFO] 21:01:42:422 Kernel/(6907:6907): Se estableció la conexión al servidor.
+[INFO] 21:01:42:422 Kernel/(6907:6907): Se estableció la conexión al servidor.
+[INFO] 21:01:42:423 Kernel/(6907:6907): Se estableció la conexión al servidor.
+[INFO] 21:01:42:423 Kernel/(6907:6907): Creé los hilos
+[INFO] 21:03:10:892 Kernel/(6948:6948): Se estableció la conexión al servidor.
+[INFO] 21:03:10:892 Kernel/(6948:6948): Se estableció la conexión al servidor.
+[INFO] 21:03:10:892 Kernel/(6948:6948): Se estableció la conexión al servidor.
+[INFO] 21:03:10:893 Kernel/(6948:6948): Se estableció la conexión al servidor.
+[INFO] 21:03:10:893 Kernel/(6948:6948): Creé los hilos
+[INFO] 21:06:53:732 Kernel/(7005:7005): Se estableció la conexión al servidor.
+[INFO] 21:06:53:733 Kernel/(7005:7005): Se estableció la conexión al servidor.
+[INFO] 21:06:53:733 Kernel/(7005:7005): Se estableció la conexión al servidor.
+[INFO] 21:06:53:733 Kernel/(7005:7005): Se estableció la conexión al servidor.
+[INFO] 21:06:53:733 Kernel/(7005:7005): Creé los hilos
+[INFO] 21:08:29:742 Kernel/(7187:7187): Se estableció la conexión al servidor.
+[INFO] 21:08:29:742 Kernel/(7187:7187): Se estableció la conexión al servidor.
+[INFO] 21:08:29:743 Kernel/(7187:7187): Se estableció la conexión al servidor.
+[INFO] 21:08:29:743 Kernel/(7187:7187): Se estableció la conexión al servidor.
+[INFO] 21:08:29:743 Kernel/(7187:7187): Creé los hilos
+[INFO] 21:09:50:016 Kernel/(7432:7432): Se estableció la conexión al servidor.
+[INFO] 21:09:50:016 Kernel/(7432:7432): Se estableció la conexión al servidor.
+[INFO] 21:09:50:017 Kernel/(7432:7432): Se estableció la conexión al servidor.
+[INFO] 21:09:50:017 Kernel/(7432:7432): Se estableció la conexión al servidor.
+[INFO] 21:09:50:017 Kernel/(7432:7432): Creé los hilos
+[INFO] 21:11:51:111 Kernel/(7470:7470): Se estableció la conexión al servidor.
+[INFO] 21:11:51:112 Kernel/(7470:7470): Se estableció la conexión al servidor.
+[INFO] 21:11:51:112 Kernel/(7470:7470): Se estableció la conexión al servidor.
+[INFO] 21:11:51:113 Kernel/(7470:7470): Se estableció la conexión al servidor.
+[INFO] 21:11:51:113 Kernel/(7470:7470): Creé los hilos
+[INFO] 21:14:21:198 Kernel/(7696:7696): Se estableció la conexión al servidor.
+[INFO] 21:14:21:198 Kernel/(7696:7696): Se estableció la conexión al servidor.
+[INFO] 21:14:21:199 Kernel/(7696:7696): Se estableció la conexión al servidor.
+[INFO] 21:14:21:199 Kernel/(7696:7696): Se estableció la conexión al servidor.
+[INFO] 21:14:21:199 Kernel/(7696:7696): Creé los hilos
+[INFO] 21:18:15:575 Kernel/(7908:7908): Se estableció la conexión al servidor.
+[INFO] 21:18:15:575 Kernel/(7908:7908): Se estableció la conexión al servidor.
+[INFO] 21:18:15:575 Kernel/(7908:7908): Se estableció la conexión al servidor.
+[INFO] 21:18:15:575 Kernel/(7908:7908): Se estableció la conexión al servidor.
+[INFO] 21:18:15:575 Kernel/(7908:7908): Creé los hilos
+[INFO] 21:23:35:346 Kernel/(8196:8196): Se estableció la conexión al servidor.
+[INFO] 21:23:35:347 Kernel/(8196:8196): Se estableció la conexión al servidor.
+[INFO] 21:23:35:348 Kernel/(8196:8196): Se estableció la conexión al servidor.
+[INFO] 21:23:35:349 Kernel/(8196:8196): Se estableció la conexión al servidor.
+[INFO] 21:23:35:349 Kernel/(8196:8196): Creé los hilos
+[INFO] 21:23:35:349 Kernel/(8196:8196): AX: 1

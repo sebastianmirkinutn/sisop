@@ -50,10 +50,16 @@ void planificador_corto_plazo(void* arg)
 {
     t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
+    log_info(logger_hilo, "Empieza el planificador fifo");
     while(1)
     {
         sem_wait(&procesos_en_ready);
+        log_info(logger_hilo, "hice wait procesos_en_ready");
         sem_wait(&mutex_cola_ready);
+        log_info(logger_hilo, "hice wait mutex_cola_ready");
+        t_pcb* pcb2;
+        pcb2->pid = 12;
+        queue_push(cola_ready, pcb2);
         t_pcb* pcb = queue_pop(cola_ready);
         sem_post(&mutex_cola_ready);
         log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", pcb->pid);
@@ -72,6 +78,7 @@ void planificador_corto_plazo(void* arg)
         liberar_pcb(pcb);
     }
 }
+
 
 int main(int argc, char* argv[]){
    
@@ -105,15 +112,37 @@ int main(int argc, char* argv[]){
 
     t_args_hilo args_conexion_memoria;
     args_conexion_memoria.socket = conexion_memoria;
+
+    t_args_hilo args_conexion_cpu;
+    args_conexion_cpu.socket = conexion_cpu_dispatch;
     
     pthread_t hilo_planificador_de_largo_plazo;
     pthread_create(&hilo_planificador_de_largo_plazo, NULL, &planificador_largo_plazo, (void*)&args_conexion_memoria);
     pthread_detach(&hilo_planificador_de_largo_plazo);
 
     pthread_t hilo_planificador_de_corto_plazo;
-    pthread_create(&hilo_planificador_de_corto_plazo, NULL, &planificador_corto_plazo, (void*)&args_conexion_memoria);
+    pthread_create(&hilo_planificador_de_corto_plazo, NULL, &planificador_corto_plazo, (void*)&args_conexion_cpu);
     pthread_detach(&hilo_planificador_de_corto_plazo);
+    log_info(logger,"Creé los hilos");
 
+
+    t_pcb* pcb_prueba = crear_pcb(1, "");
+    pcb_prueba->contexto->AX = 1;
+    pcb_prueba->contexto->BX = 2;
+    pcb_prueba->contexto->CX = 3;
+    pcb_prueba->contexto->DX = 4;
+    pcb_prueba->contexto->PC = 0;
+
+    t_registros* a_serializar = pcb_prueba->contexto;
+    void* serializado = serializar_contexto(a_serializar);
+    t_registros* deserializados = deserializar_contexto(serializado);
+    log_info(logger, "AX: %i", deserializados->AX);
+
+    printf("Voy a enviar el contexto\n");
+    getchar();
+    enviar_mensaje("MENSAJE", conexion_cpu_dispatch);
+    enviar_contexto(pcb_prueba->contexto,conexion_cpu_dispatch);
+    printf("Envié el contexto\n");
     while(1){
         t_mensaje mensaje;
         char* leido = readline("> ");
@@ -183,6 +212,7 @@ int main(int argc, char* argv[]){
     liberar_conexion(conexion_cpu_dispatch);
     
 }
+
 /*
 void planificador_corto_plazo(void* arg)
 {

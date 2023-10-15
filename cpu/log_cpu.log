@@ -70,3 +70,498 @@
 [INFO] 00:35:09:520 CPU/(86075:86075): Se conectó kernel al puerto dispatch
 [INFO] 00:35:09:520 CPU/(86075:86075): Se conecto un cliente!
 [INFO] 00:35:09:520 CPU/(86075:86075): Se conectó kernel al puerto interrupt
+[INFO] 19:51:32:916 CPU/(2862:2862): Se estableció la conexión al servidor.
+[INFO] 19:51:32:917 CPU/(2862:2862): Listo para escuchar a mi cliente
+[INFO] 19:51:32:917 CPU/(2862:2862): Listo para escuchar a mi cliente
+[INFO] 19:51:42:654 CPU/(2862:2862): Se conecto un cliente!
+[INFO] 19:51:42:654 CPU/(2862:2862): Se conectó kernel al puerto dispatch
+[INFO] 19:51:42:655 CPU/(2862:2862): Se conecto un cliente!
+[INFO] 19:51:42:655 CPU/(2862:2862): Se conectó kernel al puerto interrupt
+[INFO] 19:53:05:700 CPU/(2862:2862): recibí pid 0
+[INFO] 19:55:29:041 CPU/(3002:3002): Se estableció la conexión al servidor.
+[INFO] 19:55:29:043 CPU/(3002:3002): Listo para escuchar a mi cliente
+[INFO] 19:55:29:043 CPU/(3002:3002): Listo para escuchar a mi cliente
+[INFO] 19:55:32:294 CPU/(3002:3002): Se conecto un cliente!
+[INFO] 19:55:32:295 CPU/(3002:3002): Se conectó kernel al puerto dispatch
+[INFO] 19:55:32:295 CPU/(3002:3002): Se conecto un cliente!
+[INFO] 19:55:32:295 CPU/(3002:3002): Se conectó kernel al puerto interrupt
+[INFO] 19:55:41:779 CPU/(3002:3002): recibí pid 0
+[INFO] 19:55:41:780 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:41:782 CPU/(3002:3002): SET AX 1
+[INFO] 19:55:41:782 CPU/(3002:3002): SET
+[INFO] 19:55:41:782 CPU/(3002:3002): AX
+[INFO] 19:55:41:782 CPU/(3002:3002): 1
+[INFO] 19:55:41:782 CPU/(3002:3002): SET AX 1
+[INFO] 19:55:41:782 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:41:874 CPU/(3002:3002): SET BX 1
+[INFO] 19:55:41:874 CPU/(3002:3002): SET
+[INFO] 19:55:41:874 CPU/(3002:3002): BX
+[INFO] 19:55:41:874 CPU/(3002:3002): 1
+[INFO] 19:55:41:874 CPU/(3002:3002): SET BX 1
+[INFO] 19:55:41:874 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:41:966 CPU/(3002:3002): SUM AX BX
+[INFO] 19:55:41:969 CPU/(3002:3002): SUM
+[INFO] 19:55:41:969 CPU/(3002:3002): AX
+[INFO] 19:55:41:969 CPU/(3002:3002): BX
+[INFO] 19:55:41:969 CPU/(3002:3002): SUM AX BX
+[INFO] 19:55:41:969 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:42:060 CPU/(3002:3002): SUB AX BX
+[INFO] 19:55:42:060 CPU/(3002:3002): SUB
+[INFO] 19:55:42:060 CPU/(3002:3002): AX
+[INFO] 19:55:42:060 CPU/(3002:3002): BX
+[INFO] 19:55:42:060 CPU/(3002:3002): SUB AX BX
+[INFO] 19:55:42:060 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:42:155 CPU/(3002:3002): MOV_IN DX 0
+[INFO] 19:55:42:156 CPU/(3002:3002): MOV_IN
+[INFO] 19:55:42:156 CPU/(3002:3002): DX
+[INFO] 19:55:42:156 CPU/(3002:3002): 0
+[INFO] 19:55:42:156 CPU/(3002:3002): MOV_IN DX 0
+[INFO] 19:55:42:156 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:42:242 CPU/(3002:3002): MOV_OUT 0 CX
+[INFO] 19:55:42:242 CPU/(3002:3002): MOV_OUT
+[INFO] 19:55:42:242 CPU/(3002:3002): 0
+[INFO] 19:55:42:242 CPU/(3002:3002): CX
+[INFO] 19:55:42:242 CPU/(3002:3002): MOV_OUT 0 CX
+[INFO] 19:55:42:242 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:42:334 CPU/(3002:3002): SLEEP 10
+[INFO] 19:55:42:334 CPU/(3002:3002): SLEEP
+[INFO] 19:55:42:334 CPU/(3002:3002): 10
+[INFO] 19:55:42:334 CPU/(3002:3002): CX
+[INFO] 19:55:42:334 CPU/(3002:3002): SLEEP 10 CX
+[INFO] 19:55:42:334 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:42:422 CPU/(3002:3002): JNZ AX 4
+[INFO] 19:55:42:422 CPU/(3002:3002): JNZ
+[INFO] 19:55:42:422 CPU/(3002:3002): AX
+[INFO] 19:55:42:422 CPU/(3002:3002): 4
+[INFO] 19:55:42:423 CPU/(3002:3002): JNZ AX 4
+[INFO] 19:55:42:423 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:42:510 CPU/(3002:3002): WAIT RECURSO_1
+[INFO] 19:55:42:510 CPU/(3002:3002): WAIT
+[INFO] 19:55:42:510 CPU/(3002:3002): RECURSO_1
+[INFO] 19:55:42:510 CPU/(3002:3002): 4
+[INFO] 19:55:42:510 CPU/(3002:3002): WAIT RECURSO_1 4
+[INFO] 19:55:42:510 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:42:611 CPU/(3002:3002): SIGNAL RECURSO_1
+[INFO] 19:55:42:611 CPU/(3002:3002): SIGNAL
+[INFO] 19:55:42:611 CPU/(3002:3002): RECURSO_1
+[INFO] 19:55:42:611 CPU/(3002:3002): 4
+[INFO] 19:55:42:611 CPU/(3002:3002): SIGNAL RECURSO_1 4
+[INFO] 19:55:42:611 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:42:702 CPU/(3002:3002): F_OPEN ARCHIVO W
+[INFO] 19:55:42:702 CPU/(3002:3002): F_OPEN
+[INFO] 19:55:42:702 CPU/(3002:3002): ARCHIVO
+[INFO] 19:55:42:702 CPU/(3002:3002): W
+[INFO] 19:55:42:702 CPU/(3002:3002): F_OPEN ARCHIVO W
+[INFO] 19:55:42:702 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:42:790 CPU/(3002:3002): F_TRUNCATE ARCHIVO 64
+[INFO] 19:55:42:790 CPU/(3002:3002): F_TRUNCATE
+[INFO] 19:55:42:790 CPU/(3002:3002): ARCHIVO
+[INFO] 19:55:42:790 CPU/(3002:3002): 64
+[INFO] 19:55:42:790 CPU/(3002:3002): F_TRUNCATE ARCHIVO 64
+[INFO] 19:55:42:790 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:42:890 CPU/(3002:3002): F_SEEK ARCHIVO 8
+[INFO] 19:55:42:890 CPU/(3002:3002): F_SEEK
+[INFO] 19:55:42:890 CPU/(3002:3002): ARCHIVO
+[INFO] 19:55:42:890 CPU/(3002:3002): 8
+[INFO] 19:55:42:890 CPU/(3002:3002): F_SEEK ARCHIVO 8
+[INFO] 19:55:42:890 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:42:983 CPU/(3002:3002): F_WRITE ARCHIVO 0
+[INFO] 19:55:42:985 CPU/(3002:3002): F_WRITE
+[INFO] 19:55:42:985 CPU/(3002:3002): ARCHIVO
+[INFO] 19:55:42:985 CPU/(3002:3002): 0
+[INFO] 19:55:42:985 CPU/(3002:3002): F_WRITE ARCHIVO 0
+[INFO] 19:55:42:985 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:43:070 CPU/(3002:3002): F_READ ARCHIVO 0
+[INFO] 19:55:43:070 CPU/(3002:3002): F_READ
+[INFO] 19:55:43:070 CPU/(3002:3002): ARCHIVO
+[INFO] 19:55:43:070 CPU/(3002:3002): 0
+[INFO] 19:55:43:070 CPU/(3002:3002): F_READ ARCHIVO 0
+[INFO] 19:55:43:070 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:43:158 CPU/(3002:3002): F_CLOSE ARCHIVO
+[INFO] 19:55:43:158 CPU/(3002:3002): F_CLOSE
+[INFO] 19:55:43:158 CPU/(3002:3002): ARCHIVO
+[INFO] 19:55:43:158 CPU/(3002:3002): 0
+[INFO] 19:55:43:158 CPU/(3002:3002): F_CLOSE ARCHIVO 0
+[INFO] 19:55:43:158 CPU/(3002:3002): Envié el pedido
+[INFO] 19:55:43:247 CPU/(3002:3002): EXIT
+[INFO] 19:55:43:247 CPU/(3002:3002): EXIT
+[INFO] 19:55:43:247 CPU/(3002:3002): ARCHIVO
+[INFO] 19:55:43:247 CPU/(3002:3002): 0
+[INFO] 19:55:43:247 CPU/(3002:3002): EXIT ARCHIVO 0
+[INFO] 19:58:08:599 CPU/(3174:3174): Se estableció la conexión al servidor.
+[INFO] 19:58:08:599 CPU/(3174:3174): Listo para escuchar a mi cliente
+[INFO] 19:58:08:599 CPU/(3174:3174): Listo para escuchar a mi cliente
+[INFO] 19:58:11:536 CPU/(3174:3174): Se conecto un cliente!
+[INFO] 19:58:11:536 CPU/(3174:3174): Se conectó kernel al puerto dispatch
+[INFO] 19:58:11:538 CPU/(3174:3174): Se conecto un cliente!
+[INFO] 19:58:11:538 CPU/(3174:3174): Se conectó kernel al puerto interrupt
+[INFO] 19:58:18:419 CPU/(3174:3174): recibí pid 0
+[INFO] 19:58:18:420 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:18:420 CPU/(3174:3174): SET AX 1
+[INFO] 19:58:18:421 CPU/(3174:3174): SET
+[INFO] 19:58:18:421 CPU/(3174:3174): AX
+[INFO] 19:58:18:421 CPU/(3174:3174): 1
+[INFO] 19:58:18:421 CPU/(3174:3174): SET AX 1
+[INFO] 19:58:18:421 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:18:514 CPU/(3174:3174): SET BX 1
+[INFO] 19:58:18:514 CPU/(3174:3174): SET
+[INFO] 19:58:18:514 CPU/(3174:3174): BX
+[INFO] 19:58:18:514 CPU/(3174:3174): 1
+[INFO] 19:58:18:514 CPU/(3174:3174): SET BX 1
+[INFO] 19:58:18:515 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:18:608 CPU/(3174:3174): SUM AX BX
+[INFO] 19:58:18:608 CPU/(3174:3174): SUM
+[INFO] 19:58:18:608 CPU/(3174:3174): AX
+[INFO] 19:58:18:608 CPU/(3174:3174): BX
+[INFO] 19:58:18:608 CPU/(3174:3174): SUM AX BX
+[INFO] 19:58:18:608 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:18:694 CPU/(3174:3174): SUB AX BX
+[INFO] 19:58:18:694 CPU/(3174:3174): SUB
+[INFO] 19:58:18:694 CPU/(3174:3174): AX
+[INFO] 19:58:18:694 CPU/(3174:3174): BX
+[INFO] 19:58:18:694 CPU/(3174:3174): SUB AX BX
+[INFO] 19:58:18:694 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:18:790 CPU/(3174:3174): MOV_IN DX 0
+[INFO] 19:58:18:790 CPU/(3174:3174): MOV_IN
+[INFO] 19:58:18:790 CPU/(3174:3174): DX
+[INFO] 19:58:18:790 CPU/(3174:3174): 0
+[INFO] 19:58:18:790 CPU/(3174:3174): MOV_IN DX 0
+[INFO] 19:58:18:790 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:18:882 CPU/(3174:3174): MOV_OUT 0 CX
+[INFO] 19:58:18:882 CPU/(3174:3174): MOV_OUT
+[INFO] 19:58:18:882 CPU/(3174:3174): 0
+[INFO] 19:58:18:882 CPU/(3174:3174): CX
+[INFO] 19:58:18:882 CPU/(3174:3174): MOV_OUT 0 CX
+[INFO] 19:58:18:882 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:18:974 CPU/(3174:3174): SLEEP 10
+[INFO] 19:58:18:974 CPU/(3174:3174): SLEEP
+[INFO] 19:58:18:974 CPU/(3174:3174): 10
+[INFO] 19:58:18:974 CPU/(3174:3174): CX
+[INFO] 19:58:18:974 CPU/(3174:3174): SLEEP 10 CX
+[INFO] 19:58:18:974 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:19:070 CPU/(3174:3174): JNZ AX 4
+[INFO] 19:58:19:070 CPU/(3174:3174): JNZ
+[INFO] 19:58:19:070 CPU/(3174:3174): AX
+[INFO] 19:58:19:070 CPU/(3174:3174): 4
+[INFO] 19:58:19:070 CPU/(3174:3174): JNZ AX 4
+[INFO] 19:58:19:070 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:19:206 CPU/(3174:3174): WAIT RECURSO_1
+[INFO] 19:58:19:206 CPU/(3174:3174): WAIT
+[INFO] 19:58:19:206 CPU/(3174:3174): RECURSO_1
+[INFO] 19:58:19:206 CPU/(3174:3174): 4
+[INFO] 19:58:19:206 CPU/(3174:3174): WAIT RECURSO_1 4
+[INFO] 19:58:19:206 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:19:294 CPU/(3174:3174): SIGNAL RECURSO_1
+[INFO] 19:58:19:295 CPU/(3174:3174): SIGNAL
+[INFO] 19:58:19:295 CPU/(3174:3174): RECURSO_1
+[INFO] 19:58:19:295 CPU/(3174:3174): 4
+[INFO] 19:58:19:295 CPU/(3174:3174): SIGNAL RECURSO_1 4
+[INFO] 19:58:19:295 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:19:382 CPU/(3174:3174): F_OPEN ARCHIVO W
+[INFO] 19:58:19:382 CPU/(3174:3174): F_OPEN
+[INFO] 19:58:19:382 CPU/(3174:3174): ARCHIVO
+[INFO] 19:58:19:382 CPU/(3174:3174): W
+[INFO] 19:58:19:382 CPU/(3174:3174): F_OPEN ARCHIVO W
+[INFO] 19:58:19:382 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:19:470 CPU/(3174:3174): F_TRUNCATE ARCHIVO 64
+[INFO] 19:58:19:470 CPU/(3174:3174): F_TRUNCATE
+[INFO] 19:58:19:470 CPU/(3174:3174): ARCHIVO
+[INFO] 19:58:19:470 CPU/(3174:3174): 64
+[INFO] 19:58:19:470 CPU/(3174:3174): F_TRUNCATE ARCHIVO 64
+[INFO] 19:58:19:470 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:19:558 CPU/(3174:3174): F_SEEK ARCHIVO 8
+[INFO] 19:58:19:558 CPU/(3174:3174): F_SEEK
+[INFO] 19:58:19:558 CPU/(3174:3174): ARCHIVO
+[INFO] 19:58:19:558 CPU/(3174:3174): 8
+[INFO] 19:58:19:558 CPU/(3174:3174): F_SEEK ARCHIVO 8
+[INFO] 19:58:19:558 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:19:646 CPU/(3174:3174): F_WRITE ARCHIVO 0
+[INFO] 19:58:19:646 CPU/(3174:3174): F_WRITE
+[INFO] 19:58:19:646 CPU/(3174:3174): ARCHIVO
+[INFO] 19:58:19:646 CPU/(3174:3174): 0
+[INFO] 19:58:19:646 CPU/(3174:3174): F_WRITE ARCHIVO 0
+[INFO] 19:58:19:646 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:19:735 CPU/(3174:3174): F_READ ARCHIVO 0
+[INFO] 19:58:19:735 CPU/(3174:3174): F_READ
+[INFO] 19:58:19:735 CPU/(3174:3174): ARCHIVO
+[INFO] 19:58:19:735 CPU/(3174:3174): 0
+[INFO] 19:58:19:735 CPU/(3174:3174): F_READ ARCHIVO 0
+[INFO] 19:58:19:735 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:19:822 CPU/(3174:3174): F_CLOSE ARCHIVO
+[INFO] 19:58:19:822 CPU/(3174:3174): F_CLOSE
+[INFO] 19:58:19:822 CPU/(3174:3174): ARCHIVO
+[INFO] 19:58:19:822 CPU/(3174:3174): 0
+[INFO] 19:58:19:822 CPU/(3174:3174): F_CLOSE ARCHIVO 0
+[INFO] 19:58:19:822 CPU/(3174:3174): Envié el pedido
+[INFO] 19:58:19:910 CPU/(3174:3174): EXIT
+[INFO] 19:58:19:910 CPU/(3174:3174): EXIT
+[INFO] 19:58:19:910 CPU/(3174:3174): ARCHIVO
+[INFO] 19:58:19:910 CPU/(3174:3174): 0
+[INFO] 19:58:19:910 CPU/(3174:3174): EXIT ARCHIVO 0
+[INFO] 20:01:51:112 CPU/(3328:3328): Se estableció la conexión al servidor.
+[INFO] 20:01:51:113 CPU/(3328:3328): Listo para escuchar a mi cliente
+[INFO] 20:01:51:113 CPU/(3328:3328): Listo para escuchar a mi cliente
+[INFO] 20:01:54:728 CPU/(3328:3328): Se conecto un cliente!
+[INFO] 20:01:54:728 CPU/(3328:3328): Se conectó kernel al puerto dispatch
+[INFO] 20:01:54:729 CPU/(3328:3328): Se conecto un cliente!
+[INFO] 20:01:54:729 CPU/(3328:3328): Se conectó kernel al puerto interrupt
+[INFO] 20:02:04:974 CPU/(3328:3328): recibí pid 0
+[INFO] 20:02:04:974 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:04:983 CPU/(3328:3328): SET AX 1
+[INFO] 20:02:04:983 CPU/(3328:3328): SET
+[INFO] 20:02:04:983 CPU/(3328:3328): AX
+[INFO] 20:02:04:983 CPU/(3328:3328): 1
+[INFO] 20:02:04:983 CPU/(3328:3328): SET AX 1
+[INFO] 20:02:04:983 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:05:070 CPU/(3328:3328): SET BX 1
+[INFO] 20:02:05:070 CPU/(3328:3328): SET
+[INFO] 20:02:05:070 CPU/(3328:3328): BX
+[INFO] 20:02:05:070 CPU/(3328:3328): 1
+[INFO] 20:02:05:070 CPU/(3328:3328): SET BX 1
+[INFO] 20:02:05:070 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:05:162 CPU/(3328:3328): SUM AX BX
+[INFO] 20:02:05:162 CPU/(3328:3328): SUM
+[INFO] 20:02:05:162 CPU/(3328:3328): AX
+[INFO] 20:02:05:162 CPU/(3328:3328): BX
+[INFO] 20:02:05:162 CPU/(3328:3328): SUM AX BX
+[INFO] 20:02:05:162 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:05:252 CPU/(3328:3328): SUB AX BX
+[INFO] 20:02:05:253 CPU/(3328:3328): SUB
+[INFO] 20:02:05:253 CPU/(3328:3328): AX
+[INFO] 20:02:05:253 CPU/(3328:3328): BX
+[INFO] 20:02:05:253 CPU/(3328:3328): SUB AX BX
+[INFO] 20:02:05:253 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:05:379 CPU/(3328:3328): MOV_IN DX 0
+[INFO] 20:02:05:379 CPU/(3328:3328): MOV_IN
+[INFO] 20:02:05:379 CPU/(3328:3328): DX
+[INFO] 20:02:05:379 CPU/(3328:3328): 0
+[INFO] 20:02:05:379 CPU/(3328:3328): MOV_IN DX 0
+[INFO] 20:02:05:379 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:05:466 CPU/(3328:3328): MOV_OUT 0 CX
+[INFO] 20:02:05:466 CPU/(3328:3328): MOV_OUT
+[INFO] 20:02:05:466 CPU/(3328:3328): 0
+[INFO] 20:02:05:466 CPU/(3328:3328): CX
+[INFO] 20:02:05:466 CPU/(3328:3328): MOV_OUT 0 CX
+[INFO] 20:02:05:466 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:05:586 CPU/(3328:3328): SLEEP 10
+[INFO] 20:02:05:589 CPU/(3328:3328): SLEEP
+[INFO] 20:02:05:593 CPU/(3328:3328): 10
+[INFO] 20:02:05:595 CPU/(3328:3328): CX
+[INFO] 20:02:05:595 CPU/(3328:3328): SLEEP 10 CX
+[INFO] 20:02:05:595 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:05:682 CPU/(3328:3328): JNZ AX 4
+[INFO] 20:02:05:683 CPU/(3328:3328): JNZ
+[INFO] 20:02:05:683 CPU/(3328:3328): AX
+[INFO] 20:02:05:683 CPU/(3328:3328): 4
+[INFO] 20:02:05:683 CPU/(3328:3328): JNZ AX 4
+[INFO] 20:02:05:683 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:05:787 CPU/(3328:3328): WAIT RECURSO_1
+[INFO] 20:02:05:787 CPU/(3328:3328): WAIT
+[INFO] 20:02:05:787 CPU/(3328:3328): RECURSO_1
+[INFO] 20:02:05:787 CPU/(3328:3328): 4
+[INFO] 20:02:05:787 CPU/(3328:3328): WAIT RECURSO_1 4
+[INFO] 20:02:05:787 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:05:878 CPU/(3328:3328): SIGNAL RECURSO_1
+[INFO] 20:02:05:879 CPU/(3328:3328): SIGNAL
+[INFO] 20:02:05:879 CPU/(3328:3328): RECURSO_1
+[INFO] 20:02:05:879 CPU/(3328:3328): 4
+[INFO] 20:02:05:879 CPU/(3328:3328): SIGNAL RECURSO_1 4
+[INFO] 20:02:05:879 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:05:974 CPU/(3328:3328): F_OPEN ARCHIVO W
+[INFO] 20:02:05:975 CPU/(3328:3328): F_OPEN
+[INFO] 20:02:05:976 CPU/(3328:3328): ARCHIVO
+[INFO] 20:02:05:976 CPU/(3328:3328): W
+[INFO] 20:02:05:976 CPU/(3328:3328): F_OPEN ARCHIVO W
+[INFO] 20:02:05:976 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:06:062 CPU/(3328:3328): F_TRUNCATE ARCHIVO 64
+[INFO] 20:02:06:063 CPU/(3328:3328): F_TRUNCATE
+[INFO] 20:02:06:063 CPU/(3328:3328): ARCHIVO
+[INFO] 20:02:06:064 CPU/(3328:3328): 64
+[INFO] 20:02:06:064 CPU/(3328:3328): F_TRUNCATE ARCHIVO 64
+[INFO] 20:02:06:065 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:06:154 CPU/(3328:3328): F_SEEK ARCHIVO 8
+[INFO] 20:02:06:154 CPU/(3328:3328): F_SEEK
+[INFO] 20:02:06:154 CPU/(3328:3328): ARCHIVO
+[INFO] 20:02:06:154 CPU/(3328:3328): 8
+[INFO] 20:02:06:154 CPU/(3328:3328): F_SEEK ARCHIVO 8
+[INFO] 20:02:06:154 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:06:246 CPU/(3328:3328): F_WRITE ARCHIVO 0
+[INFO] 20:02:06:246 CPU/(3328:3328): F_WRITE
+[INFO] 20:02:06:246 CPU/(3328:3328): ARCHIVO
+[INFO] 20:02:06:246 CPU/(3328:3328): 0
+[INFO] 20:02:06:246 CPU/(3328:3328): F_WRITE ARCHIVO 0
+[INFO] 20:02:06:246 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:06:339 CPU/(3328:3328): F_READ ARCHIVO 0
+[INFO] 20:02:06:340 CPU/(3328:3328): F_READ
+[INFO] 20:02:06:340 CPU/(3328:3328): ARCHIVO
+[INFO] 20:02:06:340 CPU/(3328:3328): 0
+[INFO] 20:02:06:341 CPU/(3328:3328): F_READ ARCHIVO 0
+[INFO] 20:02:06:341 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:06:430 CPU/(3328:3328): F_CLOSE ARCHIVO
+[INFO] 20:02:06:430 CPU/(3328:3328): F_CLOSE
+[INFO] 20:02:06:431 CPU/(3328:3328): ARCHIVO
+[INFO] 20:02:06:431 CPU/(3328:3328): 0
+[INFO] 20:02:06:431 CPU/(3328:3328): F_CLOSE ARCHIVO 0
+[INFO] 20:02:06:431 CPU/(3328:3328): Envié el pedido
+[INFO] 20:02:06:519 CPU/(3328:3328): EXIT
+[INFO] 20:02:06:520 CPU/(3328:3328): EXIT
+[INFO] 20:02:06:520 CPU/(3328:3328): ARCHIVO
+[INFO] 20:02:06:521 CPU/(3328:3328): 0
+[INFO] 20:02:06:521 CPU/(3328:3328): EXIT ARCHIVO 0
+[INFO] 20:10:19:397 CPU/(3696:3696): Se estableció la conexión al servidor.
+[INFO] 20:10:19:397 CPU/(3696:3696): Listo para escuchar a mi cliente
+[INFO] 20:10:19:397 CPU/(3696:3696): Listo para escuchar a mi cliente
+[INFO] 20:10:23:404 CPU/(3696:3696): Se conecto un cliente!
+[INFO] 20:10:23:404 CPU/(3696:3696): Se conectó kernel al puerto dispatch
+[INFO] 20:10:23:404 CPU/(3696:3696): Se conecto un cliente!
+[INFO] 20:10:23:404 CPU/(3696:3696): Se conectó kernel al puerto interrupt
+[INFO] 20:13:48:037 CPU/(4009:4009): Se estableció la conexión al servidor.
+[INFO] 20:13:48:038 CPU/(4009:4009): Listo para escuchar a mi cliente
+[INFO] 20:13:48:038 CPU/(4009:4009): Listo para escuchar a mi cliente
+[INFO] 20:13:51:706 CPU/(4009:4009): Se conecto un cliente!
+[INFO] 20:13:51:706 CPU/(4009:4009): Se conectó kernel al puerto dispatch
+[INFO] 20:13:51:706 CPU/(4009:4009): Se conecto un cliente!
+[INFO] 20:13:51:706 CPU/(4009:4009): Se conectó kernel al puerto interrupt
+[INFO] 20:14:41:955 CPU/(4163:4163): Se estableció la conexión al servidor.
+[INFO] 20:14:41:956 CPU/(4163:4163): Listo para escuchar a mi cliente
+[INFO] 20:14:41:956 CPU/(4163:4163): Listo para escuchar a mi cliente
+[INFO] 20:14:45:135 CPU/(4163:4163): Se conecto un cliente!
+[INFO] 20:14:45:135 CPU/(4163:4163): Se conectó kernel al puerto dispatch
+[INFO] 20:14:45:135 CPU/(4163:4163): Se conecto un cliente!
+[INFO] 20:14:45:135 CPU/(4163:4163): Se conectó kernel al puerto interrupt
+[INFO] 20:27:05:303 CPU/(4392:4392): Se estableció la conexión al servidor.
+[INFO] 20:27:05:303 CPU/(4392:4392): Listo para escuchar a mi cliente
+[INFO] 20:27:05:303 CPU/(4392:4392): Listo para escuchar a mi cliente
+[INFO] 20:27:11:315 CPU/(4392:4392): Se conecto un cliente!
+[INFO] 20:27:11:316 CPU/(4392:4392): Se conectó kernel al puerto dispatch
+[INFO] 20:27:11:316 CPU/(4392:4392): Se conecto un cliente!
+[INFO] 20:27:11:316 CPU/(4392:4392): Se conectó kernel al puerto interrupt
+[INFO] 20:29:17:677 CPU/(4703:4703): Se estableció la conexión al servidor.
+[INFO] 20:29:17:678 CPU/(4703:4703): Listo para escuchar a mi cliente
+[INFO] 20:29:17:678 CPU/(4703:4703): Listo para escuchar a mi cliente
+[INFO] 20:29:19:900 CPU/(4703:4703): Se conecto un cliente!
+[INFO] 20:29:19:900 CPU/(4703:4703): Se conectó kernel al puerto dispatch
+[INFO] 20:29:19:900 CPU/(4703:4703): Se conecto un cliente!
+[INFO] 20:29:19:900 CPU/(4703:4703): Se conectó kernel al puerto interrupt
+[INFO] 20:35:11:134 CPU/(4855:4855): Se estableció la conexión al servidor.
+[INFO] 20:35:11:134 CPU/(4855:4855): Listo para escuchar a mi cliente
+[INFO] 20:35:11:134 CPU/(4855:4855): Listo para escuchar a mi cliente
+[INFO] 20:35:14:143 CPU/(4855:4855): Se conecto un cliente!
+[INFO] 20:35:14:144 CPU/(4855:4855): Se conectó kernel al puerto dispatch
+[INFO] 20:35:14:144 CPU/(4855:4855): Se conecto un cliente!
+[INFO] 20:35:14:144 CPU/(4855:4855): Se conectó kernel al puerto interrupt
+[INFO] 20:37:52:390 CPU/(5101:5101): Se estableció la conexión al servidor.
+[INFO] 20:37:52:390 CPU/(5101:5101): Listo para escuchar a mi cliente
+[INFO] 20:37:52:391 CPU/(5101:5101): Listo para escuchar a mi cliente
+[INFO] 20:37:55:481 CPU/(5101:5101): Se conecto un cliente!
+[INFO] 20:37:55:481 CPU/(5101:5101): Se conectó kernel al puerto dispatch
+[INFO] 20:37:55:481 CPU/(5101:5101): Se conecto un cliente!
+[INFO] 20:37:55:481 CPU/(5101:5101): Se conectó kernel al puerto interrupt
+[INFO] 20:40:36:865 CPU/(5315:5315): Se estableció la conexión al servidor.
+[INFO] 20:40:36:865 CPU/(5315:5315): Listo para escuchar a mi cliente
+[INFO] 20:40:36:865 CPU/(5315:5315): Listo para escuchar a mi cliente
+[INFO] 20:40:40:006 CPU/(5315:5315): Se conecto un cliente!
+[INFO] 20:40:40:006 CPU/(5315:5315): Se conectó kernel al puerto dispatch
+[INFO] 20:40:40:007 CPU/(5315:5315): Se conecto un cliente!
+[INFO] 20:40:40:007 CPU/(5315:5315): Se conectó kernel al puerto interrupt
+[INFO] 20:46:03:834 CPU/(5680:5680): Se estableció la conexión al servidor.
+[INFO] 20:46:03:835 CPU/(5680:5680): Listo para escuchar a mi cliente
+[INFO] 20:46:03:835 CPU/(5680:5680): Listo para escuchar a mi cliente
+[INFO] 20:47:37:243 CPU/(5909:5909): Se estableció la conexión al servidor.
+[INFO] 20:47:37:244 CPU/(5909:5909): Listo para escuchar a mi cliente
+[INFO] 20:47:37:244 CPU/(5909:5909): Listo para escuchar a mi cliente
+[INFO] 20:47:40:147 CPU/(5909:5909): Se conecto un cliente!
+[INFO] 20:47:40:147 CPU/(5909:5909): Se conectó kernel al puerto dispatch
+[INFO] 20:47:40:148 CPU/(5909:5909): Se conecto un cliente!
+[INFO] 20:47:40:148 CPU/(5909:5909): Se conectó kernel al puerto interrupt
+[INFO] 20:49:22:750 CPU/(5997:5997): Se estableció la conexión al servidor.
+[INFO] 20:49:22:751 CPU/(5997:5997): Listo para escuchar a mi cliente
+[INFO] 20:49:22:751 CPU/(5997:5997): Listo para escuchar a mi cliente
+[INFO] 20:49:26:117 CPU/(5997:5997): Se conecto un cliente!
+[INFO] 20:49:26:117 CPU/(5997:5997): Se conectó kernel al puerto dispatch
+[INFO] 20:49:26:117 CPU/(5997:5997): Se conecto un cliente!
+[INFO] 20:49:26:117 CPU/(5997:5997): Se conectó kernel al puerto interrupt
+[INFO] 20:51:38:536 CPU/(6145:6145): Se estableció la conexión al servidor.
+[INFO] 20:51:38:536 CPU/(6145:6145): Listo para escuchar a mi cliente
+[INFO] 20:51:38:536 CPU/(6145:6145): Listo para escuchar a mi cliente
+[INFO] 20:51:42:498 CPU/(6145:6145): Se conecto un cliente!
+[INFO] 20:51:42:498 CPU/(6145:6145): Se conectó kernel al puerto dispatch
+[INFO] 20:51:42:498 CPU/(6145:6145): Se conecto un cliente!
+[INFO] 20:51:42:498 CPU/(6145:6145): Se conectó kernel al puerto interrupt
+[INFO] 20:53:17:493 CPU/(6476:6476): Se estableció la conexión al servidor.
+[INFO] 20:53:17:494 CPU/(6476:6476): Listo para escuchar a mi cliente
+[INFO] 20:53:17:494 CPU/(6476:6476): Listo para escuchar a mi cliente
+[INFO] 20:53:20:787 CPU/(6476:6476): Se conecto un cliente!
+[INFO] 20:53:20:788 CPU/(6476:6476): Se conectó kernel al puerto dispatch
+[INFO] 20:53:20:788 CPU/(6476:6476): Se conecto un cliente!
+[INFO] 20:53:20:788 CPU/(6476:6476): Se conectó kernel al puerto interrupt
+[INFO] 20:54:44:677 CPU/(6584:6584): Se estableció la conexión al servidor.
+[INFO] 20:54:44:677 CPU/(6584:6584): Listo para escuchar a mi cliente
+[INFO] 20:54:44:677 CPU/(6584:6584): Listo para escuchar a mi cliente
+[INFO] 20:54:46:817 CPU/(6584:6584): Se conecto un cliente!
+[INFO] 20:54:46:817 CPU/(6584:6584): Se conectó kernel al puerto dispatch
+[INFO] 20:54:46:817 CPU/(6584:6584): Se conecto un cliente!
+[INFO] 20:54:46:818 CPU/(6584:6584): Se conectó kernel al puerto interrupt
+[INFO] 21:01:39:496 CPU/(6862:6862): Se estableció la conexión al servidor.
+[INFO] 21:01:39:498 CPU/(6862:6862): Listo para escuchar a mi cliente
+[INFO] 21:01:39:498 CPU/(6862:6862): Listo para escuchar a mi cliente
+[INFO] 21:01:42:420 CPU/(6862:6862): Se conecto un cliente!
+[INFO] 21:01:42:420 CPU/(6862:6862): Se conectó kernel al puerto dispatch
+[INFO] 21:01:42:422 CPU/(6862:6862): Se conecto un cliente!
+[INFO] 21:01:42:422 CPU/(6862:6862): Se conectó kernel al puerto interrupt
+[INFO] 21:03:09:178 CPU/(6947:6947): Se estableció la conexión al servidor.
+[INFO] 21:03:09:178 CPU/(6947:6947): Listo para escuchar a mi cliente
+[INFO] 21:03:09:179 CPU/(6947:6947): Listo para escuchar a mi cliente
+[INFO] 21:03:10:891 CPU/(6947:6947): Se conecto un cliente!
+[INFO] 21:03:10:892 CPU/(6947:6947): Se conectó kernel al puerto dispatch
+[INFO] 21:03:10:892 CPU/(6947:6947): Se conecto un cliente!
+[INFO] 21:03:10:892 CPU/(6947:6947): Se conectó kernel al puerto interrupt
+[INFO] 21:06:51:914 CPU/(7004:7004): Se estableció la conexión al servidor.
+[INFO] 21:06:51:914 CPU/(7004:7004): Listo para escuchar a mi cliente
+[INFO] 21:06:51:914 CPU/(7004:7004): Listo para escuchar a mi cliente
+[INFO] 21:06:53:732 CPU/(7004:7004): Se conecto un cliente!
+[INFO] 21:06:53:732 CPU/(7004:7004): Se conectó kernel al puerto dispatch
+[INFO] 21:06:53:733 CPU/(7004:7004): Se conecto un cliente!
+[INFO] 21:06:53:733 CPU/(7004:7004): Se conectó kernel al puerto interrupt
+[INFO] 21:08:25:416 CPU/(7142:7142): Se estableció la conexión al servidor.
+[INFO] 21:08:25:417 CPU/(7142:7142): Listo para escuchar a mi cliente
+[INFO] 21:08:25:418 CPU/(7142:7142): Listo para escuchar a mi cliente
+[INFO] 21:08:29:742 CPU/(7142:7142): Se conecto un cliente!
+[INFO] 21:08:29:742 CPU/(7142:7142): Se conectó kernel al puerto dispatch
+[INFO] 21:08:29:742 CPU/(7142:7142): Se conecto un cliente!
+[INFO] 21:08:29:742 CPU/(7142:7142): Se conectó kernel al puerto interrupt
+[INFO] 21:09:48:112 CPU/(7431:7431): Se estableció la conexión al servidor.
+[INFO] 21:09:48:112 CPU/(7431:7431): Listo para escuchar a mi cliente
+[INFO] 21:09:48:113 CPU/(7431:7431): Listo para escuchar a mi cliente
+[INFO] 21:09:50:016 CPU/(7431:7431): Se conecto un cliente!
+[INFO] 21:09:50:016 CPU/(7431:7431): Se conectó kernel al puerto dispatch
+[INFO] 21:09:50:016 CPU/(7431:7431): Se conecto un cliente!
+[INFO] 21:09:50:016 CPU/(7431:7431): Se conectó kernel al puerto interrupt
+[INFO] 21:11:48:751 CPU/(7469:7469): Se estableció la conexión al servidor.
+[INFO] 21:11:48:751 CPU/(7469:7469): Listo para escuchar a mi cliente
+[INFO] 21:11:48:752 CPU/(7469:7469): Listo para escuchar a mi cliente
+[INFO] 21:11:51:111 CPU/(7469:7469): Se conecto un cliente!
+[INFO] 21:11:51:111 CPU/(7469:7469): Se conectó kernel al puerto dispatch
+[INFO] 21:11:51:111 CPU/(7469:7469): Se conecto un cliente!
+[INFO] 21:11:51:111 CPU/(7469:7469): Se conectó kernel al puerto interrupt
+[INFO] 21:14:17:653 CPU/(7695:7695): Se estableció la conexión al servidor.
+[INFO] 21:14:17:654 CPU/(7695:7695): Listo para escuchar a mi cliente
+[INFO] 21:14:17:654 CPU/(7695:7695): Listo para escuchar a mi cliente
+[INFO] 21:14:21:198 CPU/(7695:7695): Se conecto un cliente!
+[INFO] 21:14:21:199 CPU/(7695:7695): Se conectó kernel al puerto dispatch
+[INFO] 21:14:21:199 CPU/(7695:7695): Se conecto un cliente!
+[INFO] 21:14:21:199 CPU/(7695:7695): Se conectó kernel al puerto interrupt
+[INFO] 21:18:13:149 CPU/(7900:7900): Se estableció la conexión al servidor.
+[INFO] 21:18:13:149 CPU/(7900:7900): Listo para escuchar a mi cliente
+[INFO] 21:18:13:150 CPU/(7900:7900): Listo para escuchar a mi cliente
+[INFO] 21:18:15:575 CPU/(7900:7900): Se conecto un cliente!
+[INFO] 21:18:15:576 CPU/(7900:7900): Se conectó kernel al puerto dispatch
+[INFO] 21:18:15:576 CPU/(7900:7900): Se conecto un cliente!
+[INFO] 21:18:15:576 CPU/(7900:7900): Se conectó kernel al puerto interrupt
+[INFO] 21:23:29:821 CPU/(8117:8117): Se estableció la conexión al servidor.
+[INFO] 21:23:29:821 CPU/(8117:8117): Listo para escuchar a mi cliente
+[INFO] 21:23:29:822 CPU/(8117:8117): Listo para escuchar a mi cliente
+[INFO] 21:23:35:346 CPU/(8117:8117): Se conecto un cliente!
+[INFO] 21:23:35:346 CPU/(8117:8117): Se conectó kernel al puerto dispatch
+[INFO] 21:23:35:346 CPU/(8117:8117): Se conecto un cliente!
+[INFO] 21:23:35:347 CPU/(8117:8117): Se conectó kernel al puerto interrupt
