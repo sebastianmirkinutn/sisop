@@ -1,0 +1,10 @@
+[INFO] 00:21:41:460 CPU/(85325:85325): Listo para escuchar a mi cliente
+[INFO] 00:21:47:592 CPU/(85325:85325): Se conecto un cliente!
+[INFO] 00:21:47:592 CPU/(85325:85325): Se conectó filesystem
+[INFO] 00:21:55:460 CPU/(85325:85325): Se conecto un cliente!
+[INFO] 00:21:55:460 CPU/(85325:85325): Se conectó cpu
+[INFO] 00:22:02:925 CPU/(85325:85325): Se conecto un cliente!
+[INFO] 00:22:02:925 CPU/(85325:85325): Se conectó kernel
+[INFO] 00:22:02:925 CPU/(85325:85325): Declaré el hilo.
+[INFO] 00:22:02:925 CPU/(85325:85325): socket: 7
+[INFO] 00:22:02:925 CPU/(85325:85325): Creé el hilo.

@@ -1,0 +1,3 @@
+[INFO] 00:23:00:052 HILO/(85328:85331): Hice wait del gdmp
+[INFO] 00:23:00:052 HILO/(85328:85331): Hice wait de la cola de new: -2037880048
+[INFO] 00:23:00:052 HILO/(85328:85331): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
