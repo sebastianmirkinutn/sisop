@@ -183,3 +183,53 @@ int main(int argc, char* argv[]){
     liberar_conexion(conexion_cpu_dispatch);
     
 }
+/*
+void planificador_corto_plazo(void* arg)
+{
+    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
+    t_args_hilo* arg_h = (t_args_hilo*) arg;
+
+    t_pcb* pcb; 
+    while(1)
+    {   
+        char* algoritmo = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
+
+        if(!strcmp(algoritmo, "FIFO")) {
+			pcb = algoritmo_fifo();
+		} else if (!strcmp(algoritmo, "RR")){
+			pcb = algoritmo_rr();
+		} else if (!strcmp(algoritmo, "Prioridades")){
+			pcb = algoritmo_prioridades();
+		} else {
+            log_error(logger_hilo, "El algoritmo de planificacion ingresado no existe\n");
+        }
+
+        
+        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", pcb->pid);
+        pcb->estado = EXEC; 
+        execute = pcb;
+        send(arg_h->socket, pcb->pid, sizeof(uint32_t), 0);
+        enviar_contexto(pcb->contexto, arg_h->socket);
+        log_info(logger_hilo, "mandé el contexto");
+
+        pcb->contexto = recibir_contexto_de_ejecucion(arg_h->socket);
+        t_motivo_desalojo motivo = recibir_desalojo(arg_h->socket);
+        log_info(logger_hilo, "Fin de proceso %i motivo %i", pcb->pid, motivo);
+        sem_wait(&mutex_cola_ready);
+        queue_push(cola_ready, pcb);
+        sem_post(&mutex_cola_ready);
+        liberar_pcb(pcb);
+    }
+}
+
+
+t_pcb* algoritmo_fifo(){
+
+    sem_wait(&procesos_en_ready);
+        sem_wait(&mutex_cola_ready);
+        t_pcb* pcb = queue_pop(cola_ready);
+        sem_post(&mutex_cola_ready);
+
+}
+
+*/

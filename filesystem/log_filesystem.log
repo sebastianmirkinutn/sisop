@@ -44,3 +44,7 @@
 [INFO] 14:08:05:471 FILESYSTEM/(7233:7233): Listo para escuchar a mi cliente
 [INFO] 14:08:10:464 FILESYSTEM/(7233:7233): Se conecto un cliente!
 [INFO] 14:08:10:464 FILESYSTEM/(7233:7233): Se conectó kernel
+[INFO] 00:34:55:479 FILESYSTEM/(86074:86074): Se estableció la conexión al servidor.
+[INFO] 00:34:55:479 FILESYSTEM/(86074:86074): Listo para escuchar a mi cliente
+[INFO] 00:35:09:521 FILESYSTEM/(86074:86074): Se conecto un cliente!
+[INFO] 00:35:09:521 FILESYSTEM/(86074:86074): Se conectó kernel

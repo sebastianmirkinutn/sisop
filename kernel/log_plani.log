@@ -44,3 +44,7 @@
 [INFO] 14:09:22:046 HILO/(7235:7239): PID: 139096713 - Estado Anterior: READY - Estado Actual: EXEC
 [INFO] 14:09:22:046 HILO/(7235:7239): mandé el contexto
 [INFO] 14:09:52:854 HILO/(7235:7239): Fin de proceso 139096713 motivo -1
+[INFO] 00:35:30:934 HILO/(86076:86079): Hice wait del gdmp
+[INFO] 00:35:30:934 HILO/(86076:86079): Hice wait de la cola de new: -1190630640
+[INFO] 00:35:30:934 HILO/(86076:86079): PID:0 - Estado:0
+[INFO] 00:35:30:934 HILO/(86076:86079): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
