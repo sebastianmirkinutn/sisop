@@ -20,5 +20,4 @@ typedef struct
     int socket;
 }t_args_hilo;
 
-
 #endif 

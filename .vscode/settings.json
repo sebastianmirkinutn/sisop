@@ -12,6 +12,8 @@
         "queue.h": "c",
         "server_utils.h": "c",
         "sockets.h": "c",
-        "log.h": "c"
+        "log.h": "c",
+        "stdlib.h": "c",
+        "list.h": "c"
     }
 }
