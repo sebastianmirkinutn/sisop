@@ -8,6 +8,23 @@
 #include "utils_filesystem.h"
 #include "utils_bloques.h"
 
+#define RESET_COLOR    "\x1b[0m"
+#define NEGRO_T        "\x1b[30m"
+#define NEGRO_F        "\x1b[40m"
+#define ROJO_T         "\x1b[31m"
+#define ROJO_F         "\x1b[41m"
+#define VERDE_T        "\x1b[32m"
+#define VERDE_F        "\x1b[42m"
+#define AMARILLO_T     "\x1b[33m"
+#define AMARILLO_F     "\x1b[43m"
+#define AZUL_T         "\x1b[34m"
+#define AZUL_F         "\x1b[44m"
+#define MAGENTA_T      "\x1b[35m"
+#define MAGENTA_F      "\x1b[45m"
+#define CYAN_T         "\x1b[36m"
+#define CYAN_F         "\x1b[46m"
+#define BLANCO_T       "\x1b[37m"
+#define BLANCO_F       "\x1b[47m"
 /*-------------------------------------------*/
 #define PATH_FAT "fat.dat"
 #define PATH_BLOQUES "bloques.dat"
@@ -143,15 +160,23 @@ int abrirDocumento(char *nombreArchivo) {
     fclose(f);
     return(tamArchivo);
 }
-/*---------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------------*/
 /* Emulacion de peticiones del modulo Kernel
 /*-----------------------------------------------------------------------------------*/
 /* 1) ABRIR_ARCHIVO-----------------------------*/
-int abrir_archivo(char *nombreArchivo) {
+uint32_t abrir_archivo(char *nombreArchivo) {
+    FILE *f_arch_fcb;
+    char direccionArchivo[100]="./fcbs/";
 
-
-
+    strcat(direccionArchivo,nombreArchivo);
+    strcat(direccionArchivo,".fcb");
+    f_arch_fcb=fopen(direccionArchivo,"r");
+    if (f_arch_fcb==NULL) {
+        printf("Nombre de archivo incorrecto o no existe");
+        exit(1);
+    }
+    return(tamanio_Archivo_fcb(nombreArchivo));
 }
 
 /* 2) CREAR_ARCHIVO-----------------------------*/
@@ -164,13 +189,21 @@ int crear_archivo(char *nombreArchivo) {
 int truncar_archivo(char *nombreArchivo,uint32_t ui32_longMen_datos) {
     FILE *arch_fcb;
     uint32_t ui32_entrada_inicial;
+    uint32_t ui32_entrada_FAT;
+    uint32_t ui32_entrada_FAT_siguiente;
     uint32_t ui32_cant_bloques_necesitados;
+    uint32_t ui32_cant_bloques_asignados;
     uint32_t ui32_cant_bloques_libres;
+    uint32_t ui32_cant_bloques_adionales;
+    uint32_t ui32_data_entrada;
+    uint32_t indice;
 
 
     printf("OP:TRUNCAR_ARCHIVO\n");
     ui32_entrada_inicial=bloqueInicial_Archivo_fcb(nombreArchivo);
+    
     if (ui32_entrada_inicial==9999) {
+        /* Caso (1): Asignacion de entradas a la tabla FAT a un archivo recientemente creado*/ 
         /*El archivo fcb NO tiene una entrada inicial asignada en la tabla FAT*/
         ui32_cant_bloques_necesitados=cantBloques_FAT_necesitados(ui32_longMen_datos,TAM_BLOQUE);
         ui32_cant_bloques_libres=cantidadBloques_FAT_libres(fat,MAX_ENTRADAS_FAT);
@@ -182,15 +215,82 @@ int truncar_archivo(char *nombreArchivo,uint32_t ui32_longMen_datos) {
             actualizar_Archivo_fcb(nombreArchivo,ui32_longMen_datos,ui32_entrada_inicial);
         }
         else {
+            /*El archivo fcb NO tiene una entrada inicial asignada en la tabla FAT, pero NO hay mas
+            entradas disponibles en la tabla FAT*/
             printf ("No hay espacio sufienciente en Disco para guardar el archivo\n");
         }
     }
     else {
-        /*El archivo fcb SI tiene una entrada inicial asignada en la tabla FAT*/
-
+        printf("--- Caso (2) de TRUNCADO, el archivo ya existe -----\n");
+        /* Caso (2): El archivo ya tiene entradas en la tabla FAT asignadas*/
+        //- Calcula la cantidad de entradas que requeriran los datos de memoria a almacenar
+        ui32_cant_bloques_necesitados=cantBloques_FAT_necesitados(ui32_longMen_datos,TAM_BLOQUE);
+        //- Calcula la cantidad de entradas que ya tiene el archivo asignados previamente
+        ui32_cant_bloques_asignados=cantBloques_FAT_necesitados(tamanio_Archivo_fcb(nombreArchivo),TAM_BLOQUE);
+        
+        if (ui32_cant_bloques_necesitados<=ui32_cant_bloques_asignados) {
+            printf("La cantidad de bloques necesitados por la memoria son:%u\n",ui32_cant_bloques_necesitados);
+            printf("La cantidad de ya asignados son:%u\n",ui32_cant_bloques_asignados);
+            /*Caso 2A - La cantidad de entradas necesitadas es menor o igual a las que tiene
+            ya asignadas el archivo*/
+            ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo); //Entrada inicial a la tabla FAT
+            
+            //Recorre la lista enlazada mientras que cuenta las entradas que necesita la version en memoria del archivo
+            for (indice=0;indice<ui32_cant_bloques_necesitados;indice++) {
+                if (indice==0) ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo); //Entrada inicial a la tabla FAT
+                else ui32_entrada_FAT=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
+            }
+            printf("La entrada hasta la que necesita la version nueva es:%u\n",ui32_entrada_FAT);
+            //Si la ultima entrada que necesita la version actualizada es distinto a 9999 es poque debe liberar entradas
+            if ((ui32_entrada_FAT!=9999) && (ui32_entrada_FAT!=2499)){
+                ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
+                printf("La siguiente entrada detectada es:%u\n",ui32_entrada_FAT_siguiente);
+                ui32_data_entrada=9999;
+                actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
+                ui32_entrada_FAT=ui32_entrada_FAT_siguiente;
+                printf("La entrada actual a actualizar es:%u\n",ui32_entrada_FAT);
+                while ((ui32_entrada_FAT!=9999) && (ui32_entrada_FAT!=2499)) {
+                    ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
+                    printf("La siguiente entrada detectada es:%u\n",ui32_entrada_FAT_siguiente);
+                    ui32_data_entrada=0;
+                    actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
+                    ui32_entrada_FAT=ui32_entrada_FAT_siguiente;
+                }
+                ui32_data_entrada=0;
+                actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
+                
+            }
+        }
+        else {
+            /*Caso 2B - La cantidad de entradas necesitadas es mayot a las que tiene
+            ya asignadas el archivo almacendo*/
+            ui32_cant_bloques_necesitados=cantBloques_FAT_necesitados(ui32_longMen_datos,TAM_BLOQUE);
+            ui32_cant_bloques_libres=cantidadBloques_FAT_libres(fat,MAX_ENTRADAS_FAT);
+            ui32_cant_bloques_asignados=cantBloques_FAT_necesitados(tamanio_Archivo_fcb(nombreArchivo),TAM_BLOQUE);
+            ui32_cant_bloques_adionales=ui32_cant_bloques_necesitados-ui32_cant_bloques_asignados;
+            printf("Cantidad de entradas FAT que necesita el documento en memoria son:%u\n",ui32_cant_bloques_necesitados);
+            printf("Cantidad de entradas FAT ya asignadas al documento almacenado:%u\n",ui32_cant_bloques_asignados);
+            printf("Cantidad de entradas FAT adicionales necesitadas:%u\n",ui32_cant_bloques_adionales);
+            printf("Cantidad de entradas FAT libres en la tabla FAT:%u\n",ui32_cant_bloques_libres);
+            
+            //Recorre la lista de entradas ya asignadas al archivo, en busqueda de la ultima entrada
+            ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo); //Entrada inicial a la tabla FAT
+            ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
+            //printf("entrada_FAT:%u\n",ui32_entrada_FAT);
+            //printf("entrada_FAT_siguiente:%u\n",ui32_entrada_FAT_siguiente);
+            while ((ui32_entrada_FAT_siguiente!=9999) && (ui32_entrada_FAT_siguiente!=2499)) {
+                ui32_entrada_FAT=ui32_entrada_FAT_siguiente;
+                ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
+                //printf("entrada_FAT:%u\n",ui32_entrada_FAT);
+                //printf("entrada_FAT_siguiente:%u\n",ui32_entrada_FAT_siguiente);
+            }
+            ui32_data_entrada=asignarBloquesFAT(fat,ui32_cant_bloques_adionales,MAX_ENTRADAS_FAT)*4;
+            actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
+        }
     }
-  
-}
+} 
+
+
 
 
 /* 4) LEER_ARCHIVO-----------------------------*/
@@ -213,11 +313,11 @@ int leer_archivo(char *nombreArchivo) {
     }
     printf("---------------------------------------------------------------------------------\n");
     printf("El documento leido desde el arhivo: %s es:...\n\n",nombreArchivo);
-    printf("%s\n",buffer_documento);
+    //printf("%s\n",buffer_documento);
     printf("---------------------------------------------------------------------------------\n");
     printf ("El tamanio del archivo es:%ld bytes\n",strlen(buffer_documento));
     printf("---------------------------------------------------------------------------------\n");
-
+    return(1);
 }
 
 /* 5) ESCRIBIR_ARCHIVO-----------------------------*/
@@ -286,8 +386,52 @@ int main(int argc, char *argv[]) {
     truncar_archivo("documento4",ui32_tam_de_archivo);
     escribir_archivo("documento4",documentoArchivo);
     leer_archivo("documento4");
-
+    printf("-----------------------------------------------------------------------\n");
+    printf("CASO 1 - Muestra tabla FAT - con las entradas asignadas a 4 archivos\n");
     mostrar_tabla_FAT(fat,MAX_ENTRADAS_FAT);
+
+    printf("---------------------------------------------------------------------------\n\n");
+    printf("--- Caso especial para probar la reduccion de entradas en la tabla FAT ----\n\n");
+    ui32_tam_de_archivo=abrirDocumento("documento2v2.txt"); /*Variante de documento2.txt con menos byte
+    para probar que se liberan entradas FAT cuando se libera espacio*/
+    printf("El tamanio del archivo de texto - documento2v2.txt - es:%u bytes\n",ui32_tam_de_archivo);
+    //crear_archivo("documento2"); El archivo ya fue creado
+    truncar_archivo("documento2",ui32_tam_de_archivo);
+    //escribir_archivo("documento2",documentoArchivo);
+    //leer_archivo("documento2");
+    printf("-----------------------------------------------------------------------\n");
+    printf("CASO 2A - Muestra tabla FAT - con 2 entradas liberadas 14 y 15\n");
+    printf("...debido a que documeto2.txt fue actualizado borrandole informacion\n");
+    mostrar_tabla_FAT(fat,MAX_ENTRADAS_FAT);
+
+    printf("-----------------------------------------------------------------------\n");
+    ui32_tam_de_archivo=abrirDocumento("documento5.txt");
+    printf("El tamanio del archivo de texto es:%u bytes\n",ui32_tam_de_archivo);
+    crear_archivo("documento5");
+    truncar_archivo("documento5",ui32_tam_de_archivo);
+    escribir_archivo("documento5",documentoArchivo);
+    leer_archivo("documento5");
+    printf("-----------------------------------------------------------------------\n");
+    printf("Muestra tabla FAT - con un nuevo documento documento5.txt - consume 3 entradas\n");
+    printf("Usa las dos entradas liberadas 14 y 15, y la 20\n");
+    mostrar_tabla_FAT(fat,MAX_ENTRADAS_FAT);
+    printf("-----------------------------------------------------------------------\n");
+
+    printf("---------------------------------------------------------------------------\n\n");
+    printf("--- Caso especial para probar la ampliacion de entradas en la tabla FAT ----\n\n");
+    ui32_tam_de_archivo=abrirDocumento("documento1v2.txt"); /*Variante de documento2.txt con menos byte
+    para probar que se liberan entradas FAT cuando se libera espacio*/
+    printf("El tamanio del archivo de texto - documento1v2.txt - es:%u bytes\n",ui32_tam_de_archivo);
+    //crear_archivo("documento1"); El archivo ya fue creado
+    truncar_archivo("documento1",ui32_tam_de_archivo);
+    //escribir_archivo("documento1",documentoArchivo);
+    //leer_archivo("documento1");
+    printf("-----------------------------------------------------------------------\n");
+    printf("CASO 2B - Muestra tabla FAT - con la ampliacion de la lista enlazada\n");
+    printf("...debido a que documeto1.txt fue actualizado aniadiendo informacion\n");
+    mostrar_tabla_FAT(fat,MAX_ENTRADAS_FAT);
+
+
     fclose(fat);
     fclose(filesystem);
     
