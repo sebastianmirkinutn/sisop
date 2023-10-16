@@ -1,0 +1,329 @@
+[INFO] 01:59:54:445 HILO/(21595:21597): Empieza el planificador fifo
+[INFO] 02:00:09:780 HILO/(21595:21596): Hice wait del gdmp
+[INFO] 02:00:09:780 HILO/(21595:21596): Hice wait de la cola de new: -655185136
+[INFO] 02:00:09:780 HILO/(21595:21596): PID:1 - Estado:0
+[INFO] 02:00:09:780 HILO/(21595:21596): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 02:00:09:781 HILO/(21595:21597): Hice wait del gdmp
+[INFO] 02:00:09:781 HILO/(21595:21597): Hice wait de la cola de new: -655185136
+[INFO] 02:00:09:781 HILO/(21595:21597): PID:1525526185 - Estado:2
+[INFO] 02:00:09:781 HILO/(21595:21597): PID: 1525526185 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 02:02:57:232 HILO/(21714:21716): Empieza el planificador fifo
+[INFO] 02:03:07:925 HILO/(21714:21715): Hice wait del gdmp
+[INFO] 02:03:07:925 HILO/(21714:21715): Hice wait de la cola de new: -1702761712
+[INFO] 02:03:07:925 HILO/(21714:21715): PID:1 - Estado:0
+[INFO] 02:03:07:925 HILO/(21714:21715): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 02:03:07:925 HILO/(21714:21716): Hice wait del gdmp
+[INFO] 02:03:07:925 HILO/(21714:21716): Hice wait de la cola de new: -1702761712
+[INFO] 02:03:07:925 HILO/(21714:21716): PID:265914749 - Estado:2
+[INFO] 02:03:07:925 HILO/(21714:21716): PID: 265914749 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 02:03:11:338 HILO/(21714:21715): Hice wait del gdmp
+[INFO] 02:03:11:338 HILO/(21714:21715): Hice wait de la cola de new: -1702761712
+[INFO] 02:03:11:338 HILO/(21714:21715): PID:3 - Estado:0
+[INFO] 02:03:11:338 HILO/(21714:21715): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 02:03:11:338 HILO/(21714:21716): Hice wait del gdmp
+[INFO] 02:03:11:338 HILO/(21714:21716): Hice wait de la cola de new: -1702761712
+[INFO] 02:03:11:338 HILO/(21714:21716): PID:2 - Estado:2
+[INFO] 02:03:11:338 HILO/(21714:21716): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 02:03:12:966 HILO/(21714:21715): Hice wait del gdmp
+[INFO] 02:03:12:967 HILO/(21714:21715): Hice wait de la cola de new: -1702761712
+[INFO] 02:03:12:967 HILO/(21714:21715): PID:5 - Estado:0
+[INFO] 02:03:12:967 HILO/(21714:21715): PID: 5 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 02:03:12:967 HILO/(21714:21716): Hice wait del gdmp
+[INFO] 02:03:12:967 HILO/(21714:21716): Hice wait de la cola de new: -1702761712
+[INFO] 02:03:12:967 HILO/(21714:21716): PID:-1050870115 - Estado:2
+[INFO] 02:03:12:967 HILO/(21714:21716): PID: -1050870115 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 02:05:41:066 HILO/(21853:21857): Empieza el planificador fifo
+[INFO] 02:05:52:388 HILO/(21853:21856): Hice wait del gdmp
+[INFO] 02:05:52:388 HILO/(21853:21856): Hice wait de la cola de new: -1926796528
+[INFO] 02:05:52:389 HILO/(21853:21856): PID:1 - Estado:0
+[INFO] 02:05:52:389 HILO/(21853:21856): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 02:05:52:390 HILO/(21853:21857): Hice wait del gdmp
+[INFO] 02:05:52:390 HILO/(21853:21857): Hice wait de la cola de new: -1926796528
+[INFO] 02:05:52:390 HILO/(21853:21857): PID:943256341 - Estado:2
+[INFO] 02:05:52:390 HILO/(21853:21857): PID: 943256341 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 02:05:56:194 HILO/(21853:21856): Hice wait del gdmp
+[INFO] 02:05:56:194 HILO/(21853:21856): Hice wait de la cola de new: -1926796528
+[INFO] 02:05:56:194 HILO/(21853:21856): PID:3 - Estado:0
+[INFO] 02:05:56:194 HILO/(21853:21856): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 02:05:56:194 HILO/(21853:21857): Hice wait del gdmp
+[INFO] 02:05:56:194 HILO/(21853:21857): Hice wait de la cola de new: -1926796528
+[INFO] 02:05:56:194 HILO/(21853:21857): PID:2 - Estado:2
+[INFO] 02:05:56:194 HILO/(21853:21857): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 02:05:57:693 HILO/(21853:21856): Hice wait del gdmp
+[INFO] 02:05:57:693 HILO/(21853:21856): Hice wait de la cola de new: -1926796528
+[INFO] 02:05:57:693 HILO/(21853:21856): PID:5 - Estado:0
+[INFO] 02:05:57:693 HILO/(21853:21856): PID: 5 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 02:05:57:693 HILO/(21853:21857): Hice wait del gdmp
+[INFO] 02:05:57:693 HILO/(21853:21857): Hice wait de la cola de new: -1926796528
+[INFO] 02:05:57:693 HILO/(21853:21857): PID:-317586187 - Estado:2
+[INFO] 02:05:57:693 HILO/(21853:21857): PID: -317586187 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 02:09:48:294 HILO/(21995:21997): Empieza el planificador fifo
+[INFO] 02:09:57:331 HILO/(21995:21996): Hice wait del gdmp
+[INFO] 02:09:57:331 HILO/(21995:21996): Hice wait de la cola de new: -1729463536
+[INFO] 02:09:57:331 HILO/(21995:21996): PID:1 - Estado:0
+[INFO] 02:09:57:331 HILO/(21995:21996): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 02:09:57:331 HILO/(21995:21997): Hice wait del gdmp
+[INFO] 02:09:57:331 HILO/(21995:21997): Hice wait de la cola de new: -1729463536
+[INFO] 02:09:57:331 HILO/(21995:21997): PID:-1750487098 - Estado:2
+[INFO] 02:09:57:331 HILO/(21995:21997): PID: -1750487098 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 02:10:09:280 HILO/(21995:21996): Hice wait del gdmp
+[INFO] 02:10:09:281 HILO/(21995:21996): Hice wait de la cola de new: -1729463536
+[INFO] 02:10:09:281 HILO/(21995:21996): PID:3 - Estado:0
+[INFO] 02:10:09:281 HILO/(21995:21996): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 02:10:09:281 HILO/(21995:21997): Hice wait del gdmp
+[INFO] 02:10:09:281 HILO/(21995:21997): Hice wait de la cola de new: -1729463536
+[INFO] 02:10:09:281 HILO/(21995:21997): PID:2 - Estado:2
+[INFO] 02:10:09:281 HILO/(21995:21997): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 02:10:10:211 HILO/(21995:21996): Hice wait del gdmp
+[INFO] 02:10:10:211 HILO/(21995:21996): Hice wait de la cola de new: -1729463536
+[INFO] 02:10:10:211 HILO/(21995:21996): PID:5 - Estado:0
+[INFO] 02:10:10:211 HILO/(21995:21996): PID: 5 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 02:10:10:211 HILO/(21995:21997): Hice wait del gdmp
+[INFO] 02:10:10:211 HILO/(21995:21997): Hice wait de la cola de new: -1729463536
+[INFO] 02:10:10:211 HILO/(21995:21997): PID:-79402970 - Estado:2
+[INFO] 02:10:10:211 HILO/(21995:21997): PID: -79402970 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 02:12:50:335 HILO/(22165:22169): Empieza el planificador fifo
+[INFO] 02:13:09:098 HILO/(22165:22168): Hice wait del gdmp
+[INFO] 02:13:09:098 HILO/(22165:22168): Hice wait de la cola de new: 1507748624
+[INFO] 02:13:09:098 HILO/(22165:22168): PID:1 - Estado:0
+[INFO] 02:13:09:098 HILO/(22165:22168): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 02:13:09:099 HILO/(22165:22169): Hice wait del gdmp
+[INFO] 02:13:09:099 HILO/(22165:22169): Hice wait de la cola de new: 1507748624
+[INFO] 02:13:09:099 HILO/(22165:22169): PID:396737637 - Estado:2
+[INFO] 02:13:09:099 HILO/(22165:22169): PID: 396737637 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 02:13:10:893 HILO/(22165:22168): Hice wait del gdmp
+[INFO] 02:13:10:894 HILO/(22165:22168): Hice wait de la cola de new: 1507748624
+[INFO] 02:13:10:894 HILO/(22165:22168): PID:3 - Estado:0
+[INFO] 02:13:10:894 HILO/(22165:22168): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 02:13:10:895 HILO/(22165:22169): Hice wait del gdmp
+[INFO] 02:13:10:895 HILO/(22165:22169): Hice wait de la cola de new: 1507748624
+[INFO] 02:13:10:895 HILO/(22165:22169): PID:2 - Estado:2
+[INFO] 02:13:10:895 HILO/(22165:22169): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 02:13:11:663 HILO/(22165:22168): Hice wait del gdmp
+[INFO] 02:13:11:663 HILO/(22165:22168): Hice wait de la cola de new: 1507748624
+[INFO] 02:13:11:663 HILO/(22165:22168): PID:5 - Estado:0
+[INFO] 02:13:11:663 HILO/(22165:22168): PID: 5 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 02:13:11:663 HILO/(22165:22169): Hice wait del gdmp
+[INFO] 02:13:11:663 HILO/(22165:22169): Hice wait de la cola de new: 1507748624
+[INFO] 02:13:11:663 HILO/(22165:22169): PID:105139093 - Estado:2
+[INFO] 02:13:11:663 HILO/(22165:22169): PID: 105139093 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 02:14:05:556 HILO/(22325:22329): Empieza el planificador fifo
+[INFO] 02:14:16:920 HILO/(22325:22329): Hice wait del gdmp
+[INFO] 02:14:16:920 HILO/(22325:22329): Hice wait de la cola de new: 1393548048
+[INFO] 02:14:20:159 HILO/(22325:22329): Hice wait del gdmp
+[INFO] 02:14:20:159 HILO/(22325:22329): Hice wait de la cola de new: 1393548048
+[INFO] 02:14:20:862 HILO/(22325:22329): Hice wait del gdmp
+[INFO] 02:14:20:862 HILO/(22325:22329): Hice wait de la cola de new: 1393548048
+[INFO] 02:14:21:700 HILO/(22325:22329): Hice wait del gdmp
+[INFO] 02:14:21:701 HILO/(22325:22329): Hice wait de la cola de new: 1393548048
+[INFO] 02:14:22:418 HILO/(22325:22329): Hice wait del gdmp
+[INFO] 02:14:22:418 HILO/(22325:22329): Hice wait de la cola de new: 1393548048
+[INFO] 02:14:23:322 HILO/(22325:22329): Hice wait del gdmp
+[INFO] 02:14:23:322 HILO/(22325:22329): Hice wait de la cola de new: 1393548048
+[INFO] 02:14:23:918 HILO/(22325:22329): Hice wait del gdmp
+[INFO] 02:14:23:918 HILO/(22325:22329): Hice wait de la cola de new: 1393548048
+[INFO] 02:14:24:533 HILO/(22325:22329): Hice wait del gdmp
+[INFO] 02:14:24:533 HILO/(22325:22329): Hice wait de la cola de new: 1393548048
+[INFO] 02:14:25:156 HILO/(22325:22329): Hice wait del gdmp
+[INFO] 02:14:25:156 HILO/(22325:22329): Hice wait de la cola de new: 1393548048
+[INFO] 02:14:25:872 HILO/(22325:22329): Hice wait del gdmp
+[INFO] 02:14:25:872 HILO/(22325:22329): Hice wait de la cola de new: 1393548048
+[INFO] 02:15:57:557 HILO/(22347:22351): Empieza el planificador fifo
+[INFO] 02:16:08:102 HILO/(22347:22351): Hice wait del gdmp
+[INFO] 02:16:08:103 HILO/(22347:22351): Hice wait de la cola de new: 1251920656
+[INFO] 02:16:13:249 HILO/(22347:22351): Hice wait del gdmp
+[INFO] 02:16:13:250 HILO/(22347:22351): Hice wait de la cola de new: 1251920656
+[INFO] 02:16:14:015 HILO/(22347:22351): Hice wait del gdmp
+[INFO] 02:16:14:015 HILO/(22347:22351): Hice wait de la cola de new: 1251920656
+[INFO] 02:16:14:368 HILO/(22347:22351): Hice wait del gdmp
+[INFO] 02:16:14:368 HILO/(22347:22351): Hice wait de la cola de new: 1251920656
+[INFO] 02:17:36:497 HILO/(23167:23171): Empieza el planificador fifo
+[INFO] 02:17:48:467 HILO/(23167:23171): Hice wait del gdmp
+[INFO] 02:17:48:468 HILO/(23167:23171): Hice wait de la cola de new: -1254573296
+[INFO] 02:19:15:419 HILO/(23266:23270): Empieza el planificador fifo
+[INFO] 02:19:28:604 HILO/(23266:23270): Hice wait del gdmp
+[INFO] 02:19:28:604 HILO/(23266:23270): Hice wait de la cola de new: 558619408
+[INFO] 02:19:30:118 HILO/(23266:23270): Hice wait del gdmp
+[INFO] 02:19:30:118 HILO/(23266:23270): Hice wait de la cola de new: 558619408
+[INFO] 02:19:30:716 HILO/(23266:23270): Hice wait del gdmp
+[INFO] 02:19:30:716 HILO/(23266:23270): Hice wait de la cola de new: 558619408
+[INFO] 02:19:32:034 HILO/(23266:23270): Hice wait del gdmp
+[INFO] 02:19:32:034 HILO/(23266:23270): Hice wait de la cola de new: 558619408
+[INFO] 02:21:21:342 HILO/(23401:23403): Empieza el planificador fifo
+[INFO] 02:21:29:531 HILO/(23401:23403): Hice wait del gdmp
+[INFO] 02:21:29:531 HILO/(23401:23403): Hice wait de la cola de new: 326216464
+[INFO] 02:21:29:531 HILO/(23401:23403): Envié 0 a 4
+[INFO] 02:21:31:604 HILO/(23401:23403): Hice wait del gdmp
+[INFO] 02:21:31:604 HILO/(23401:23403): Hice wait de la cola de new: 326216464
+[INFO] 02:21:31:604 HILO/(23401:23403): Envié 0 a 4
+[INFO] 02:21:32:243 HILO/(23401:23403): Hice wait del gdmp
+[INFO] 02:21:32:244 HILO/(23401:23403): Hice wait de la cola de new: 326216464
+[INFO] 02:21:32:244 HILO/(23401:23403): Envié 0 a 4
+[INFO] 02:21:32:832 HILO/(23401:23403): Hice wait del gdmp
+[INFO] 02:21:32:832 HILO/(23401:23403): Hice wait de la cola de new: 326216464
+[INFO] 02:21:32:832 HILO/(23401:23403): Envié 0 a 4
+[INFO] 02:21:33:649 HILO/(23401:23403): Hice wait del gdmp
+[INFO] 02:21:33:650 HILO/(23401:23403): Hice wait de la cola de new: 326216464
+[INFO] 02:21:33:650 HILO/(23401:23403): Envié 0 a 4
+[INFO] 02:21:34:566 HILO/(23401:23403): Hice wait del gdmp
+[INFO] 02:21:34:566 HILO/(23401:23403): Hice wait de la cola de new: 326216464
+[INFO] 02:21:34:566 HILO/(23401:23403): Envié 0 a 4
+[INFO] 02:21:35:238 HILO/(23401:23403): Hice wait del gdmp
+[INFO] 02:21:35:238 HILO/(23401:23403): Hice wait de la cola de new: 326216464
+[INFO] 02:21:35:239 HILO/(23401:23403): Envié 0 a 4
+[INFO] 02:21:36:080 HILO/(23401:23403): Hice wait del gdmp
+[INFO] 02:21:36:080 HILO/(23401:23403): Hice wait de la cola de new: 326216464
+[INFO] 02:21:36:081 HILO/(23401:23403): Envié 0 a 4
+[INFO] 02:21:37:887 HILO/(23401:23403): Hice wait del gdmp
+[INFO] 02:21:37:888 HILO/(23401:23403): Hice wait de la cola de new: 326216464
+[INFO] 02:21:37:888 HILO/(23401:23403): Envié 0 a 4
+[INFO] 02:21:38:749 HILO/(23401:23403): Hice wait del gdmp
+[INFO] 02:21:38:749 HILO/(23401:23403): Hice wait de la cola de new: 326216464
+[INFO] 02:21:38:749 HILO/(23401:23403): Envié 0 a 4
+[INFO] 02:24:26:951 HILO/(23551:23553): Empieza el planificador fifo
+[INFO] 02:24:36:021 HILO/(23551:23553): Hice wait del gdmp
+[INFO] 02:24:36:021 HILO/(23551:23553): Hice wait de la cola de new: -728237296
+[INFO] 02:24:36:021 HILO/(23551:23553): Envié 0 a 4
+[INFO] 02:24:38:190 HILO/(23551:23553): Hice wait del gdmp
+[INFO] 02:24:38:190 HILO/(23551:23553): Hice wait de la cola de new: -728237296
+[INFO] 02:24:38:190 HILO/(23551:23553): Envié 0 a 4
+[INFO] 02:24:38:980 HILO/(23551:23553): Hice wait del gdmp
+[INFO] 02:24:38:980 HILO/(23551:23553): Hice wait de la cola de new: -728237296
+[INFO] 02:24:38:980 HILO/(23551:23553): Envié 0 a 4
+[INFO] 02:24:39:608 HILO/(23551:23553): Hice wait del gdmp
+[INFO] 02:24:39:608 HILO/(23551:23553): Hice wait de la cola de new: -728237296
+[INFO] 02:24:39:608 HILO/(23551:23553): Envié 0 a 4
+[INFO] 02:24:41:991 HILO/(23551:23553): Hice wait del gdmp
+[INFO] 02:24:41:991 HILO/(23551:23553): Hice wait de la cola de new: -728237296
+[INFO] 02:24:41:991 HILO/(23551:23553): Envié 0 a 4
+[INFO] 02:26:26:764 HILO/(23713:23715): Empieza el planificador fifo
+[INFO] 02:26:39:607 HILO/(23713:23715): Hice wait del gdmp
+[INFO] 02:26:39:607 HILO/(23713:23715): Hice wait de la cola de new: 1779170064
+[INFO] 02:26:39:607 HILO/(23713:23715): Envié 0 a 4
+[INFO] 02:26:40:835 HILO/(23713:23715): Hice wait del gdmp
+[INFO] 02:26:40:835 HILO/(23713:23715): Hice wait de la cola de new: 1779170064
+[INFO] 02:26:40:836 HILO/(23713:23715): Envié 0 a 4
+[INFO] 02:27:54:614 HILO/(23791:23793): Empieza el planificador fifo
+[INFO] 02:28:00:672 HILO/(23791:23793): Hice wait del gdmp
+[INFO] 02:28:00:672 HILO/(23791:23793): Hice wait de la cola de new: -1205081328
+[INFO] 02:28:00:672 HILO/(23791:23793): Envié 0 a 4
+[INFO] 02:28:02:553 HILO/(23791:23793): Hice wait del gdmp
+[INFO] 02:28:02:553 HILO/(23791:23793): Hice wait de la cola de new: -1205081328
+[INFO] 02:28:02:553 HILO/(23791:23793): Envié 0 a 4
+[INFO] 02:30:09:974 HILO/(23895:23899): Empieza el planificador fifo
+[INFO] 02:30:17:327 HILO/(23895:23899): Hice wait del gdmp
+[INFO] 02:30:17:327 HILO/(23895:23899): Hice wait de la cola de new: 1757322000
+[INFO] 02:30:17:328 HILO/(23895:23899): Envié 0 a 4
+[INFO] 02:30:18:842 HILO/(23895:23899): Hice wait del gdmp
+[INFO] 02:30:18:842 HILO/(23895:23899): Hice wait de la cola de new: 1757322000
+[INFO] 02:30:18:843 HILO/(23895:23899): Envié 0 a 4
+[INFO] 02:30:21:016 HILO/(23895:23899): Hice wait del gdmp
+[INFO] 02:30:21:016 HILO/(23895:23899): Hice wait de la cola de new: 1757322000
+[INFO] 02:30:21:016 HILO/(23895:23899): Envié 0 a 4
+[INFO] 02:30:24:089 HILO/(23895:23899): Hice wait del gdmp
+[INFO] 02:30:24:089 HILO/(23895:23899): Hice wait de la cola de new: 1757322000
+[INFO] 02:30:24:089 HILO/(23895:23899): Envié 0 a 4
+[INFO] 02:32:16:401 HILO/(24131:24133): Empieza el planificador fifo
+[INFO] 02:32:26:670 HILO/(24131:24133): Hice wait del gdmp
+[INFO] 02:32:26:670 HILO/(24131:24133): Hice wait de la cola de new: -234497264
+[INFO] 02:32:26:671 HILO/(24131:24133): Envié 0 a 4
+[INFO] 02:32:28:364 HILO/(24131:24133): Hice wait del gdmp
+[INFO] 02:32:28:364 HILO/(24131:24133): Hice wait de la cola de new: -234497264
+[INFO] 02:32:28:364 HILO/(24131:24133): Envié 0 a 4
+[INFO] 02:32:34:549 HILO/(24131:24133): Hice wait del gdmp
+[INFO] 02:32:34:549 HILO/(24131:24133): Hice wait de la cola de new: -234497264
+[INFO] 02:32:34:549 HILO/(24131:24133): Envié 0 a 4
+[INFO] 02:33:44:511 HILO/(24398:24402): Empieza el planificador fifo
+[INFO] 02:33:54:536 HILO/(24398:24402): Hice wait del gdmp
+[INFO] 02:33:54:536 HILO/(24398:24402): Hice wait de la cola de new: -1696752880
+[INFO] 02:33:54:536 HILO/(24398:24402): Envié 0 a 4
+[INFO] 02:33:57:105 HILO/(24398:24402): Hice wait del gdmp
+[INFO] 02:33:57:106 HILO/(24398:24402): Hice wait de la cola de new: -1696752880
+[INFO] 02:33:57:106 HILO/(24398:24402): Envié 0 a 4
+[INFO] 02:33:57:912 HILO/(24398:24402): Hice wait del gdmp
+[INFO] 02:33:57:912 HILO/(24398:24402): Hice wait de la cola de new: -1696752880
+[INFO] 02:33:57:912 HILO/(24398:24402): Envié 0 a 4
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               [INFO] 02:46:00:281 HILO/(2435:2439): Empieza el planificador fifo
+[INFO] 02:46:11:855 HILO/(2435:2439): Hice wait del gdmp
+[INFO] 02:46:11:855 HILO/(2435:2439): Hice wait de la cola de new: -934929648
+[INFO] 02:46:11:856 HILO/(2435:2439): Envié 0 a 4
+[INFO] 02:46:13:922 HILO/(2435:2439): Hice wait del gdmp
+[INFO] 02:46:13:922 HILO/(2435:2439): Hice wait de la cola de new: -934929648
+[INFO] 02:46:13:923 HILO/(2435:2439): Envié 0 a 4
+[INFO] 02:46:48:875 HILO/(2435:2439): Hice wait del gdmp
+[INFO] 02:46:48:875 HILO/(2435:2439): Hice wait de la cola de new: -934929648
+[INFO] 02:46:48:876 HILO/(2435:2439): Envié 0 a 4
+[INFO] 02:46:54:404 HILO/(2435:2439): Hice wait del gdmp
+[INFO] 02:46:54:404 HILO/(2435:2439): Hice wait de la cola de new: -934929648
+[INFO] 02:46:54:404 HILO/(2435:2439): Envié 0 a 4
+[INFO] 02:50:47:978 HILO/(2680:2684): Empieza el planificador fifo
+[INFO] 02:50:59:741 HILO/(2680:2684): Hice wait del gdmp
+[INFO] 02:50:59:741 HILO/(2680:2684): Hice wait de la cola de new: 1420213008
+[INFO] 02:50:59:741 HILO/(2680:2684): Envié 0 a 4
+[INFO] 02:51:02:569 HILO/(2680:2684): Hice wait del gdmp
+[INFO] 02:51:02:570 HILO/(2680:2684): Hice wait de la cola de new: 1420213008
+[INFO] 02:51:02:570 HILO/(2680:2684): Envié 0 a 4
+[INFO] 02:51:03:573 HILO/(2680:2684): Hice wait del gdmp
+[INFO] 02:51:03:573 HILO/(2680:2684): Hice wait de la cola de new: 1420213008
+[INFO] 02:51:03:573 HILO/(2680:2684): Envié 0 a 4
+[INFO] 02:51:04:318 HILO/(2680:2684): Hice wait del gdmp
+[INFO] 02:51:04:318 HILO/(2680:2684): Hice wait de la cola de new: 1420213008
+[INFO] 02:51:04:319 HILO/(2680:2684): Envié 0 a 4
+[INFO] 02:51:04:943 HILO/(2680:2684): Hice wait del gdmp
+[INFO] 02:51:04:944 HILO/(2680:2684): Hice wait de la cola de new: 1420213008
+[INFO] 02:51:04:945 HILO/(2680:2684): Envié 0 a 4
+[INFO] 02:51:05:470 HILO/(2680:2684): Hice wait del gdmp
+[INFO] 02:51:05:470 HILO/(2680:2684): Hice wait de la cola de new: 1420213008
+[INFO] 02:51:05:471 HILO/(2680:2684): Envié 0 a 4
+[INFO] 02:51:06:044 HILO/(2680:2684): Hice wait del gdmp
+[INFO] 02:51:06:044 HILO/(2680:2684): Hice wait de la cola de new: 1420213008
+[INFO] 02:51:06:044 HILO/(2680:2684): Envié 0 a 4
+[INFO] 02:51:06:783 HILO/(2680:2684): Hice wait del gdmp
+[INFO] 02:51:06:783 HILO/(2680:2684): Hice wait de la cola de new: 1420213008
+[INFO] 02:51:06:784 HILO/(2680:2684): Envié 0 a 4
+[INFO] 02:51:07:361 HILO/(2680:2684): Hice wait del gdmp
+[INFO] 02:51:07:361 HILO/(2680:2684): Hice wait de la cola de new: 1420213008
+[INFO] 02:51:07:362 HILO/(2680:2684): Envié 0 a 4
+[INFO] 02:53:53:433 HILO/(2831:2835): Empieza el planificador fifo
+[INFO] 02:54:06:688 HILO/(2831:2835): Hice wait del gdmp
+[INFO] 02:54:06:688 HILO/(2831:2835): Hice wait de la cola de new: -1299285232
+[INFO] 02:54:06:688 HILO/(2831:2835): Envié 0 a 4
+[INFO] 02:54:12:713 HILO/(2831:2835): Hice wait del gdmp
+[INFO] 02:54:12:714 HILO/(2831:2835): Hice wait de la cola de new: -1299285232
+[INFO] 02:54:12:714 HILO/(2831:2835): Envié 0 a 4
+[INFO] 02:54:13:671 HILO/(2831:2835): Hice wait del gdmp
+[INFO] 02:54:13:672 HILO/(2831:2835): Hice wait de la cola de new: -1299285232
+[INFO] 02:54:13:673 HILO/(2831:2835): Envié 0 a 4
+[INFO] 02:55:59:082 HILO/(3007:3011): Empieza el planificador fifo
+[INFO] 02:56:06:921 HILO/(3007:3011): Hice wait del gdmp
+[INFO] 02:56:06:922 HILO/(3007:3011): Hice wait de la cola de new: 1024920336
+[INFO] 02:56:06:922 HILO/(3007:3011): Envié 0 a 4
+[INFO] 02:57:51:221 HILO/(3182:3186): Empieza el planificador fifo
+[INFO] 02:57:59:723 HILO/(3182:3186): Hice wait del gdmp
+[INFO] 02:57:59:723 HILO/(3182:3186): Hice wait de la cola de new: 1042533136
+[INFO] 02:57:59:723 HILO/(3182:3186): Envié 0 a 4
+[INFO] 02:58:11:618 HILO/(3182:3186): Hice wait del gdmp
+[INFO] 02:58:11:618 HILO/(3182:3186): Hice wait de la cola de new: 1042533136
+[INFO] 02:58:11:619 HILO/(3182:3186): Envié 0 a 4
+[INFO] 02:59:53:702 HILO/(3215:3217): Empieza el planificador fifo
+[INFO] 03:00:00:896 HILO/(3215:3217): Hice wait del gdmp
+[INFO] 03:00:00:896 HILO/(3215:3217): Hice wait de la cola de new: -1833972976
+[INFO] 03:00:00:896 HILO/(3215:3217): Envié 0 a 4
+[INFO] 03:00:03:104 HILO/(3215:3217): Hice wait del gdmp
+[INFO] 03:00:03:104 HILO/(3215:3217): Hice wait de la cola de new: -1833972976
+[INFO] 03:00:03:105 HILO/(3215:3217): Envié 0 a 4
+[INFO] 03:02:44:601 HILO/(3459:3462): Empieza el planificador fifo
+[INFO] 03:02:55:802 HILO/(3459:3462): Hice wait del gdmp
+[INFO] 03:02:55:803 HILO/(3459:3462): Hice wait de la cola de new: -1757979888
+[INFO] 03:02:55:803 HILO/(3459:3462): Envié 0 a 4
+[INFO] 03:03:05:935 HILO/(3459:3462): Hice wait del gdmp
+[INFO] 03:03:05:935 HILO/(3459:3462): Hice wait de la cola de new: -1757979888
+[INFO] 03:03:05:935 HILO/(3459:3462): Envié 0 a 4
+[INFO] 03:05:15:906 HILO/(3709:3711): Empieza el planificador fifo
+[INFO] 03:05:24:214 HILO/(3709:3711): Hice wait del gdmp
+[INFO] 03:05:24:214 HILO/(3709:3711): Hice wait de la cola de new: 1302014736
+[INFO] 03:05:24:214 HILO/(3709:3711): Envié 0 a 4
+[INFO] 03:07:02:831 HILO/(3849:3852): Empieza el planificador fifo
+[INFO] 03:07:12:207 HILO/(3849:3852): Hice wait del gdmp
+[INFO] 03:07:12:208 HILO/(3849:3852): Hice wait de la cola de new: 1544735504
+[INFO] 03:07:12:208 HILO/(3849:3852): Envié 0 a 4

@@ -107,8 +107,8 @@ void conexion_kernel(void* arg)
             sem_wait(&mutex_lista_procesos);
             list_add(procesos_en_memoria, proceso);
             sem_post(&mutex_lista_procesos);
+            sem_post(&cantidad_de_procesos);
             log_info(logger_hilo, "SIGNAL cantidad_de_procesos");
-            if (proceso != NULL) sem_post(&cantidad_de_procesos);
             break;
         
         default:
@@ -146,7 +146,7 @@ void conexion_cpu(void* arg)
     log_info(logger_hilo, "HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     log_info(logger_hilo,"Socket: %i", arg_h->socket);
-    enviar_mensaje("LISTO_PARA_RECIBIR_PEDIDOS",arg_h->socket);
+    //enviar_mensaje("LISTO_PARA_RECIBIR_PEDIDOS",arg_h->socket);
     while(1)
     {
         op_code codigo = recibir_operacion(arg_h->socket);

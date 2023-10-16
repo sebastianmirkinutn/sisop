@@ -16,83 +16,80 @@ t_pcb* execute;
 
 void planificador_largo_plazo(void* arg)
 {
-    t_log* logger_hilo = iniciar_logger("log_planil.log","HILO");
+    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
 
     while(1)
     {
         sem_wait(&procesos_en_new);
         sem_wait(&grado_de_multiprogramacion);
-        log_info(logger_hilo,"Hice wait del gdmp");
+        //log_info(logger_hilo,"Hice wait del gdmp");
         sem_wait(&mutex_cola_new);
-        log_info(logger_hilo,"Hice wait de la cola de new: %i",cola_new);
-        t_pcb* pcb = queue_pop(cola_new);
+        //log_info(logger_hilo,"Hice wait de la cola de new: %i",cola_new);
+        //t_pcb* pcb = queue_pop(cola_new);
         sem_post(&mutex_cola_new);
         sem_wait(&mutex_cola_ready);
-        queue_push(cola_ready, pcb);
-
+        //queue_push(cola_ready, pcb);
         sem_post(&mutex_cola_ready);
-        log_info(logger_hilo, "PID:%i - Estado:%i", pcb->pid, pcb->estado);
-        log_info(logger_hilo, "PID: %i - Estado Anterior: NEW - Estado Actual: READY", pcb->pid);
+        //log_info(logger_hilo, "PID:%i - Estado:%i", pcb->pid, pcb->estado);
+        //log_info(logger_hilo, "PID: %i - Estado Anterior: NEW - Estado Actual: READY", pcb->pid);
 
-        op_code operacion = INICIAR_PROCESO;
-        send(arg_h->socket, &operacion, sizeof(op_code), 0);
-        send(arg_h->socket, &pcb->pid, sizeof(int), 0);
-        enviar_mensaje(pcb->archivo_de_pseudocodigo, arg_h->socket);     
+        //op_code operacion = INICIAR_PROCESO;
+        //send(arg_h->socket, &operacion, sizeof(op_code), 0);
+        //send(arg_h->socket, &pcb->pid, sizeof(int), 0);
+        //enviar_mensaje(pcb->archivo_de_pseudocodigo, arg_h->socket);     
         sem_post(&procesos_en_ready);
 
 
 
-        liberar_pcb(pcb);
+        //liberar_pcb(pcb);
     }
 }
+
 
 void planificador_corto_plazo(void* arg)
 {
-    t_log* logger_hilo = iniciar_logger("log_planic.log","HILO");
+    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
-
-    t_pcb* pcb; 
+    log_info(logger_hilo, "Empieza el planificador fifo");
     while(1)
-    {   
-        //char* algoritmo = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
-//
-        //if(!strcmp(algoritmo, "FIFO")) {
-		//	pcb = algoritmo_fifo();
-		//} else if (!strcmp(algoritmo, "RR")){
-		//	pcb = algoritmo_rr();
-		//} else if (!strcmp(algoritmo, "Prioridades")){
-		//	pcb = algoritmo_prioridades();
-		//} else {
-        //    log_error(logger_hilo, "El algoritmo de planificacion ingresado no existe\n");
-        //}
+    {
         sem_wait(&procesos_en_ready);
+        log_info(logger_hilo,"Hice wait del gdmp");
         sem_wait(&mutex_cola_ready);
-        execute = queue_pop(cola_ready);
+        log_info(logger_hilo,"Hice wait de la cola de new: %i",cola_new);
+
+        //Hardcodeo para probar
+        //t_pcb* pcb_prueba = crear_pcb(1,"");
+        //queue_push(cola_ready,pcb_prueba);
+
+        //t_pcb* pcb = queue_pop(cola_ready);
         sem_post(&mutex_cola_ready);
+        //pcb->estado = EXEC;
+        //sem_wait(&mutex_cola_ready);
+        //queue_push(cola_ready, pcb);
+        //sem_post(&mutex_cola_ready);
+        //log_info(logger_hilo, "PID:%i - Estado:%i", pcb->pid, pcb->estado);
+        //log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", pcb->pid);
+        enviar_mensaje("PRUEBA_HILO", arg_h->socket);
+        send(arg_h->socket, &(execute->pid), sizeof(uint32_t), 0);
+        log_info(logger_hilo, "Envié %i a %i", execute->pid, arg_h->socket);
+        send(arg_h->socket, &(execute->contexto->AX), sizeof(uint32_t), 0);
+        send(arg_h->socket, &(execute->contexto->BX), sizeof(uint32_t), 0);
+        send(arg_h->socket, &(execute->contexto->CX), sizeof(uint32_t), 0);
+        send(arg_h->socket, &(execute->contexto->DX), sizeof(uint32_t), 0);
+        send(arg_h->socket, &(execute->program_counter), sizeof(uint32_t), 0);
 
-
-        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute);
-        pcb->estado = EXEC; 
-        execute = pcb;
-        send(arg_h->socket, pcb->pid, sizeof(uint32_t), 0);
-        send(arg_h->socket, pcb->contexto->AX, sizeof(uint32_t), 0);
-        send(arg_h->socket, pcb->contexto->BX, sizeof(uint32_t), 0);
-        send(arg_h->socket, pcb->contexto->CX, sizeof(uint32_t), 0);
-        send(arg_h->socket, pcb->contexto->DX, sizeof(uint32_t), 0);
-        send(arg_h->socket, pcb->contexto->PC, sizeof(uint32_t), 0);
-        //enviar_contexto(pcb->contexto, arg_h->socket);
-        log_info(logger_hilo, "mandé el contexto");
-
-        pcb->contexto = recibir_contexto_de_ejecucion(arg_h->socket);
-        t_motivo_desalojo motivo = recibir_desalojo(arg_h->socket);
-        log_info(logger_hilo, "Fin de proceso %i motivo %i", pcb->pid, motivo);
-        sem_wait(&mutex_cola_ready);
-        queue_push(cola_ready, pcb);
-        sem_post(&mutex_cola_ready);
-        liberar_pcb(pcb);
+        //pcb->contexto = recibir_contexto_de_ejecucion(arg_h->socket);
+        //t_motivo_desalojo motivo = recibir_desalojo(arg_h->socket);
+        //log_info(logger_hilo, "Fin de proceso %i motivo %i", pcb->pid, motivo);
+        //sem_wait(&mutex_cola_ready);
+        //queue_push(cola_ready, pcb);
+        //sem_post(&mutex_cola_ready);
+        //liberar_pcb(pcb);
     }
 }
+
 
 int main(int argc, char* argv[]){
    
@@ -124,6 +121,11 @@ int main(int argc, char* argv[]){
 	cola_blocked = queue_create();
 	cola_exit = queue_create();
 
+    execute = crear_pcb(1, "");
+
+    //enviar_mensaje("PRUEBA_HILO", conexion_cpu_dispatch);
+    log_info(logger, "Socket cpu dispatch:%i",conexion_cpu_dispatch);
+
     t_args_hilo args_conexion_memoria;
     args_conexion_memoria.socket = conexion_memoria;
 
@@ -141,11 +143,11 @@ int main(int argc, char* argv[]){
 
 
     //t_pcb* pcb_prueba = crear_pcb(1, "");
-    //pcb_prueba->contexto->AX = 1;
-    //pcb_prueba->contexto->BX = 2;
-    //pcb_prueba->contexto->CX = 3;
-    //pcb_prueba->contexto->DX = 4;
-    //pcb_prueba->contexto->PC = 0;
+    execute->contexto->AX = 1;
+    execute->contexto->BX = 2;
+    execute->contexto->CX = 3;
+    execute->contexto->DX = 4;
+    execute->contexto->PC = 0;
 //
     //t_registros* a_serializar = pcb_prueba->contexto;
     //void* serializado = serializar_contexto(a_serializar);
