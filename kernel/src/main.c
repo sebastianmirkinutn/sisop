@@ -82,8 +82,8 @@ void planificador_corto_plazo(void* arg)
         send(arg_h->socket, &(execute->contexto->PC), sizeof(uint32_t), 0);
 
         //pcb->contexto = recibir_contexto_de_ejecucion(arg_h->socket);
-        //t_motivo_desalojo motivo = recibir_desalojo(arg_h->socket);
-        //log_info(logger_hilo, "Fin de proceso %i motivo %i", pcb->pid, motivo);
+        t_motivo_desalojo motivo = recibir_desalojo(arg_h->socket);
+        log_info(logger_hilo, "Fin de proceso %i motivo %i", pcb->pid, motivo);
         //sem_wait(&mutex_cola_ready);
         //queue_push(cola_ready, pcb);
         //sem_post(&mutex_cola_ready);

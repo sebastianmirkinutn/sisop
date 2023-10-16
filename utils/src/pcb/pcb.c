@@ -1,6 +1,6 @@
 # include "pcb.h"
 
-uint32_t contador_pid;
+uint32_t contador_pid = 0;
 
 t_pcb* crear_pcb(uint32_t prioridad, char* pseudocodigo)
 {

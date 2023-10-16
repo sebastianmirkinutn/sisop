@@ -109,7 +109,8 @@ int main(int argc, char* argv[]){
             {
                 execute = 0;
                 //enviar_contexto(registros, socket_kernel_dispatch);
-                //enviar_desalojo(socket_kernel_dispatch, SUCCESS);
+                program_counter = 0;
+                enviar_desalojo(socket_kernel_dispatch, SUCCESS);
             }
 
             program_counter++;
