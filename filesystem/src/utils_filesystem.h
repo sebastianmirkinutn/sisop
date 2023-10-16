@@ -194,6 +194,14 @@ uint32_t siguiente_entrada_tabla_FAT(FILE *fat,uint32_t ui32_entrada_FAT) {
     return(ui32_data_bloque_tabla_FAT/4);
 }
 
+/*Actualiza una entrada de la tabla FAT con un valor específico*/
+int actualizar_entrada_FAT(FILE *fat,uint32_t ui32_entrada,uint32_t ui32_data_entrada) {
+    fseek(fat,ui32_entrada*4,SEEK_SET);
+    fwrite (&ui32_data_entrada,sizeof(ui32_data_entrada),1,fat);
+    return(1);
+}
+
+
 /*Muestrar el contenido del archivo de la tabla FAT - Limitado a primeros 40 bloques*/
 void mostrar_tabla_FAT(FILE *fat,uint32_t MAX_ENTRADAS_FAT) {
     uint32_t ui32_bloqueFAT=0;
@@ -203,10 +211,10 @@ void mostrar_tabla_FAT(FILE *fat,uint32_t MAX_ENTRADAS_FAT) {
     printf ("---------------------------------------\n");
     printf ("---------Contenido de la FAT-----------\n");
     printf ("---------------------------------------\n");
-    for (ui32_indice=0;ui32_indice<40;ui32_indice++) { 
+    for (ui32_indice=0;ui32_indice<35;ui32_indice++) { 
         fread (&ui32_bloqueFAT,sizeof(ui32_bloqueFAT),1,fat);
-        if (ui32_bloqueFAT!=9999) printf ("Bloque:%u tiene el dato:%u\n",ui32_indice,ui32_bloqueFAT/4);
-        else printf ("Bloque:%u tiene el dato:%u\n",ui32_indice,ui32_bloqueFAT);
+        if (ui32_bloqueFAT!=9999) printf ("Entrada:(%u) se enlaza con:(%u)\n",ui32_indice,ui32_bloqueFAT/4);
+        else printf ("Entrada:(%u) Fin de archivo con: (%u)\n",ui32_indice,ui32_bloqueFAT);
     }
     printf ("---------------------------------------\n");
     rewind(fat);
@@ -231,4 +239,5 @@ int main() {
     actualizar_Archivo_fcb("prueba1",13000,5);
     mostrar_tabla_FAT(fat,1024,64);
     fclose(fat);
+}*/
 }*/
