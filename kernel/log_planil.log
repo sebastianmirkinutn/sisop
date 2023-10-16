@@ -1,8 +1,0 @@
-[INFO] 01:54:26:723 HILO/(20962:20965): Hice wait del gdmp
-[INFO] 01:54:26:723 HILO/(20962:20965): Hice wait de la cola de new: -781829360
-[INFO] 01:54:26:723 HILO/(20962:20965): PID:0 - Estado:0
-[INFO] 01:54:26:724 HILO/(20962:20965): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
-[INFO] 01:57:30:552 HILO/(21458:21459): Hice wait del gdmp
-[INFO] 01:57:30:552 HILO/(21458:21459): Hice wait de la cola de new: 1823193872
-[INFO] 01:57:30:552 HILO/(21458:21459): PID:0 - Estado:0
-[INFO] 01:57:30:552 HILO/(21458:21459): PID: 0 - Estado Anterior: NEW - Estado Actual: READY

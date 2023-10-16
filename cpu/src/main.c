@@ -46,24 +46,25 @@ int main(int argc, char* argv[]){
     //log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
     int execute;
     registros = malloc(sizeof(t_registros));
-    char* mensaje = recibir_mensaje(socket_kernel_dispatch);
-    printf("%s", mensaje);
-    recv(socket_kernel_dispatch, &pid, sizeof(uint32_t), MSG_WAITALL);
-    log_info(logger, "recibí pid %i", pid);
-    recv(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), MSG_WAITALL);
-    recv(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), MSG_WAITALL);
-    recv(socket_kernel_dispatch, &(registros->CX), sizeof(uint32_t), MSG_WAITALL);
-    recv(socket_kernel_dispatch, &(registros->DX), sizeof(uint32_t), MSG_WAITALL);
-    recv(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), MSG_WAITALL);
-    t_pcb* pcb_prueba = crear_pcb(1,"");
-    pcb_prueba->contexto = registros;
-    log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
+    //char* mensaje = recibir_mensaje(socket_kernel_dispatch);
+    //printf("%s", mensaje);
+    //recv(socket_kernel_dispatch, &pid, sizeof(uint32_t), MSG_WAITALL);
+    //log_info(logger, "recibí pid %i", pid);
+    //recv(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), MSG_WAITALL);
+    //recv(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), MSG_WAITALL);
+    //recv(socket_kernel_dispatch, &(registros->CX), sizeof(uint32_t), MSG_WAITALL);
+    //recv(socket_kernel_dispatch, &(registros->DX), sizeof(uint32_t), MSG_WAITALL);
+    //recv(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), MSG_WAITALL);
+    //t_pcb* pcb_prueba = crear_pcb(1,"");
+    //pcb_prueba->contexto = registros;
+    //log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
         
     while(1)
     {
         execute = 1;
         //getchar();
-        
+        recv(socket_kernel_dispatch, &pid, sizeof(uint32_t), MSG_WAITALL);
+        log_info(logger, "recibí pid %i", pid);
         //registros = recibir_contexto_de_ejecucion(socket_kernel_dispatch);
         recv(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), MSG_WAITALL);
         recv(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), MSG_WAITALL);
