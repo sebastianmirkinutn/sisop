@@ -5,6 +5,8 @@ sem_t mutex_cola_new;
 sem_t mutex_cola_ready;
 sem_t procesos_en_new;
 sem_t procesos_en_ready;
+sem_t planificacion_largo_plazo;
+sem_t planificacion_corto_plazo;
 
 
 t_queue *cola_ready;
@@ -21,6 +23,7 @@ void planificador_largo_plazo(void* arg)
 
     while(1)
     {
+        sem_wait(&planificacion_largo_plazo);
         sem_wait(&procesos_en_new);
         sem_wait(&grado_de_multiprogramacion);
         log_info(logger_hilo,"Hice wait del gdmp");
@@ -39,7 +42,7 @@ void planificador_largo_plazo(void* arg)
         send(arg_h->socket, &(pcb->pid), sizeof(int), 0);
         enviar_mensaje(pcb->archivo_de_pseudocodigo, arg_h->socket);     
         sem_post(&procesos_en_ready);
-
+        sem_post(&planificacion_largo_plazo);
 
 
         //liberar_pcb(pcb);
@@ -54,6 +57,7 @@ void planificador_corto_plazo(void* arg)
     log_info(logger_hilo, "Empieza el planificador fifo");
     while(1)
     {
+        sem_wait(&planificacion_corto_plazo);
         sem_wait(&procesos_en_ready);
         log_info(logger_hilo,"Hice wait del gdmp");
         sem_wait(&mutex_cola_ready);
@@ -88,6 +92,7 @@ void planificador_corto_plazo(void* arg)
         //queue_push(cola_ready, pcb);
         //sem_post(&mutex_cola_ready);
         //liberar_pcb(pcb);
+        sem_post(&planificacion_corto_plazo);
     }
 }
 
@@ -116,6 +121,8 @@ int main(int argc, char* argv[]){
     sem_init(&procesos_en_new, 0, 0);
     sem_init(&procesos_en_ready, 0, 0);
     sem_init(&grado_de_multiprogramacion, 0, atoi(grado_max_de_multiprogramacion));
+    sem_init(&planificacion_largo_plazo, 0, 0);
+    sem_init(&planificacion_corto_plazo, 0, 0);
 
     cola_new = queue_create();
 	cola_ready = queue_create();
@@ -142,7 +149,7 @@ int main(int argc, char* argv[]){
     pthread_detach(&hilo_planificador_de_corto_plazo);
     log_info(logger,"Creé los hilos");
 
-
+    int sem_value_lp, sem_value_cp;
     //t_pcb* pcb_prueba = crear_pcb(1, "");
     execute->contexto->AX = 1;
     execute->contexto->BX = 2;
@@ -164,6 +171,7 @@ int main(int argc, char* argv[]){
     //printf("Envié el contexto\n");
     while(1){
         t_mensaje mensaje;
+        fflush(stdin);
         char* leido = readline("> ");
         add_history(leido);
         //log_info(logger,leido);
@@ -184,7 +192,8 @@ int main(int argc, char* argv[]){
         }
         printf(" Parametros %i",i);
 
-        if(!strcmp(c_argv[0], "INICIAR_PROCESO")){
+        if(!strcmp(c_argv[0], "INICIAR_PROCESO"))
+        {
             /*INICIAR_PROCESO [PATH] [SIZE] [PRIORIDAD]*/
             if (i < 3)
             {
@@ -206,22 +215,44 @@ int main(int argc, char* argv[]){
                 log_info(logger, "Se crea el proceso %i en NEW", pcb->pid);
             }
         }
-        else if(!strcmp(c_argv[0], "FINALIZAR_PROCESO")){
+        else if(!strcmp(c_argv[0], "FINALIZAR_PROCESO"))
+        {
 
         }
-        else if(!strcmp(c_argv[0], "DETENER_PLANIFICACION")){
+        else if(!strcmp(c_argv[0], "DETENER_PLANIFICACION"))
+        {
+            //sem_getvalue(&planificacion_largo_plazo,&sem_value_lp);
+            //sem_getvalue(&planificacion_corto_plazo,&sem_value_cp);
+            //if(!sem_value_lp) sem_wait(&planificacion_largo_plazo);
+            //if(!sem_value_cp) sem_wait(&planificacion_corto_plazo);
+            log_info(logger, "Detener");
+            sem_wait(&planificacion_largo_plazo);
+            sem_wait(&planificacion_corto_plazo);
+            log_info(logger, "Se detuvo");
 
         }
-        else if(!strcmp(c_argv[0], "INICIAR_PLANIFICACION")){
+        else if(!strcmp(c_argv[0], "INICIAR_PLANIFICACION"))
+        {
+            //sem_getvalue(&planificacion_largo_plazo,&sem_value_lp);
+            //sem_getvalue(&planificacion_corto_plazo,&sem_value_cp);
+            //if(!sem_value_lp) sem_post(&planificacion_largo_plazo);
+            //if(!sem_value_cp) sem_post(&planificacion_corto_plazo);
+            log_info(logger, "Iniciar");
+            sem_post(&planificacion_largo_plazo);
+            sem_post(&planificacion_corto_plazo);
+            log_info(logger, "Se inició");
+        
+        }
+        else if(!strcmp(c_argv[0], "MULTIPROGRAMACION"))
+        {
 
         }
-        else if(!strcmp(c_argv[0], "MULTIPROGRAMACION")){
+        else if(!strcmp(c_argv[0], "PROCESO_ESTADO"))
+        {
 
         }
-        else if(!strcmp(c_argv[0], "PROCESO_ESTADO")){
-
-        }
-        else{
+        else
+        {
             log_warning(logger, "La función %s no existe.", c_argv[0]);
         }
     }
