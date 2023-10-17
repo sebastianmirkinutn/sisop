@@ -10,6 +10,8 @@
 #include <sockets/client_utils.h>
 #include <sockets/server_utils.h>
 #include <pcb/pcb.h>
+#include <semaphore.h>
+#include <pthread.h>
 
 #endif
 

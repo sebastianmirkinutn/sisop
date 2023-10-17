@@ -3,6 +3,31 @@
 t_registros* registros;
 uint32_t program_counter;
 
+sem_t binary_interrupt_handler;
+sem_t binary_main;
+
+typedef struct
+{
+    int socket_interrupt;
+    int socket_dispatch;
+}t_args_hilo;
+
+void interrupt_handler(void* arg)
+{
+    op_code operacion;
+    t_args_hilo* arg_h = (t_args_hilo*) arg;
+    
+    while (1)
+    {
+        operacion = recibir_operacion(arg_h->socket_interrupt);
+        if(operacion == INTERRUPT)
+        {
+            enviar_desalojo(arg_h->socket_dispatch, CLOCK_INTERRUPT); //Acá podemos diferenciar el tipo de interrupción.
+        }
+    }
+    
+}
+
 int main(int argc, char* argv[]){
     t_log* logger = iniciar_logger("log_cpu.log","CPU");
     t_config* config = iniciar_config("./cfg/cpu.config");
@@ -32,37 +57,22 @@ int main(int argc, char* argv[]){
     */
     
     uint32_t pid = 0;
-
-    //t_pcb* pcb_prueba = crear_pcb(1,"");
-    //char* mensaje = recibir_mensaje(socket_kernel_dispatch);
-    //printf("%s",mensaje );
-    //t_registros* deserializado = deserializar_contexto((void*)mensaje);
-    //log_info(logger, "Mensaje: %i", mensaje);
-    //pcb_prueba->contexto = deserializado;
-    //printf("AX: %i\n",deserializado->AX );
-    //printf("%s", );
-    //printf("Voy a recibir el contexto - socket %i\n", socket_kernel_dispatch);
-    //pcb_prueba->contexto = recibir_contexto_de_ejecucion(socket_kernel_dispatch);
-    //log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
+    
     int execute;
     registros = malloc(sizeof(t_registros));
-    //char* mensaje = recibir_mensaje(socket_kernel_dispatch);
-    //printf("%s", mensaje);
-    //recv(socket_kernel_dispatch, &pid, sizeof(uint32_t), MSG_WAITALL);
-    //log_info(logger, "recibí pid %i", pid);
-    //recv(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), MSG_WAITALL);
-    //recv(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), MSG_WAITALL);
-    //recv(socket_kernel_dispatch, &(registros->CX), sizeof(uint32_t), MSG_WAITALL);
-    //recv(socket_kernel_dispatch, &(registros->DX), sizeof(uint32_t), MSG_WAITALL);
-    //recv(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), MSG_WAITALL);
-    //t_pcb* pcb_prueba = crear_pcb(1,"");
-    //pcb_prueba->contexto = registros;
-    //log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
-        
+    sem_init(&binary_interrupt_handler,0, 0);
+    sem_init(&binary_main,0, 1);
+
+    t_args_hilo args_conexion_kernel;
+    args_conexion_kernel.socket_dispatch = socket_kernel_dispatch;
+    args_conexion_kernel.socket_interrupt = socket_kernel_interrupt; 
+    pthread_t hilo_interrupt_handler;
+    pthread_create(&hilo_interrupt_handler, NULL, &interrupt_handler, (void*)&args_conexion_kernel);
+    pthread_detach(&hilo_interrupt_handler);
     while(1)
     {
         execute = 1;
-        //getchar();
+
         recv(socket_kernel_dispatch, &pid, sizeof(uint32_t), MSG_WAITALL);
         log_info(logger, "recibí pid %i", pid);
         //registros = recibir_contexto_de_ejecucion(socket_kernel_dispatch);
@@ -74,6 +84,7 @@ int main(int argc, char* argv[]){
         t_pcb* pcb_prueba = crear_pcb(1,"");
         pcb_prueba->contexto = registros;
         log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
+        
         /*CICLO DE INSTRUCCIÓN*/
         while(execute)
         {
@@ -141,7 +152,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "SLEEP"))
             {
-            
+                sleep(atoi(parametros[1]));
             }
             else if(!strcmp(parametros[0], "WAIT"))
             {
@@ -186,11 +197,10 @@ int main(int argc, char* argv[]){
             else if(!strcmp(parametros[0], "EXIT"))
             {
                 execute = 0;
-                //enviar_contexto(registros, socket_kernel_dispatch);
                 program_counter = 0;
                 enviar_desalojo(socket_kernel_dispatch, SUCCESS);
+                //enviar_contexto(registros, socket_kernel_dispatch);
             }
-
             program_counter++;
         }
     }

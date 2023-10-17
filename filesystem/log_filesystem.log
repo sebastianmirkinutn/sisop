@@ -24,3 +24,7 @@
 [INFO] 13:46:58:751 FILESYSTEM/(9129:9129): Se conectó kernel
 [ERROR] 13:48:02:043 FILESYSTEM/(9207:9207): Error al conectarse al servidor.
 [INFO] 13:48:02:044 FILESYSTEM/(9207:9207): Listo para escuchar a mi cliente
+[INFO] 15:26:31:142 FILESYSTEM/(11872:11872): Se estableció la conexión al servidor.
+[INFO] 15:26:31:142 FILESYSTEM/(11872:11872): Listo para escuchar a mi cliente
+[INFO] 15:26:39:637 FILESYSTEM/(11872:11872): Se conecto un cliente!
+[INFO] 15:26:39:637 FILESYSTEM/(11872:11872): Se conectó kernel

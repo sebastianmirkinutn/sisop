@@ -108,3 +108,13 @@
 [INFO] 13:47:13:337 HILO/(9131:9135): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
 [INFO] 13:47:13:337 HILO/(9131:9135): Envié 1 a 4
 [INFO] 13:47:16:513 HILO/(9131:9135): Fin de proceso 1 motivo EXIT_SUCCESS
+[INFO] 15:26:39:637 HILO/(11974:11979): Empieza el planificador fifo
+[INFO] 15:26:57:020 HILO/(11974:11978): Hice wait del gdmp
+[INFO] 15:26:57:020 HILO/(11974:11978): Hice wait de la cola de new: -863302896
+[INFO] 15:26:57:020 HILO/(11974:11978): PID:1 - Estado:0
+[INFO] 15:26:57:020 HILO/(11974:11978): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 15:26:57:020 HILO/(11974:11979): Hice wait del gdmp
+[INFO] 15:26:57:020 HILO/(11974:11979): Hice wait de la cola de new: -863302896
+[INFO] 15:26:57:020 HILO/(11974:11979): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 15:26:57:021 HILO/(11974:11979): Envié 1 a 4
+[INFO] 15:27:08:407 HILO/(11974:11979): Fin de proceso 1 motivo EXIT_SUCCESS

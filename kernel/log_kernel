@@ -50,3 +50,11 @@
 [INFO] 13:47:09:474 Kernel/(9131:9131): Se crea el proceso 1 en NEW
 [INFO] 13:47:13:335 Kernel/(9131:9131): Iniciar
 [INFO] 13:47:13:336 Kernel/(9131:9131): Se inició
+[INFO] 15:26:39:636 Kernel/(11974:11974): Se estableció la conexión al servidor.
+[INFO] 15:26:39:636 Kernel/(11974:11974): Se estableció la conexión al servidor.
+[INFO] 15:26:39:636 Kernel/(11974:11974): Se estableció la conexión al servidor.
+[INFO] 15:26:39:637 Kernel/(11974:11974): Se estableció la conexión al servidor.
+[INFO] 15:26:39:637 Kernel/(11974:11974): Creé los hilos
+[INFO] 15:26:52:058 Kernel/(11974:11974): Se crea el proceso 1 en NEW
+[INFO] 15:26:57:020 Kernel/(11974:11974): Iniciar
+[INFO] 15:26:57:020 Kernel/(11974:11974): Se inició
