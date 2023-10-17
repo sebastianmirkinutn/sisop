@@ -1,3 +1,110 @@
 [INFO] 00:23:00:052 HILO/(85328:85331): Hice wait del gdmp
 [INFO] 00:23:00:052 HILO/(85328:85331): Hice wait de la cola de new: -2037880048
 [INFO] 00:23:00:052 HILO/(85328:85331): PID: 0 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:27:20:558 HILO/(8072:8076): Empieza el planificador fifo
+[INFO] 13:27:42:148 HILO/(8072:8075): Hice wait del gdmp
+[INFO] 13:27:42:148 HILO/(8072:8075): Hice wait de la cola de new: -1173275888
+[INFO] 13:27:42:148 HILO/(8072:8075): PID:1 - Estado:0
+[INFO] 13:27:42:148 HILO/(8072:8075): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:27:42:148 HILO/(8072:8075): Hice wait del gdmp
+[INFO] 13:27:42:148 HILO/(8072:8076): Hice wait del gdmp
+[INFO] 13:27:42:148 HILO/(8072:8075): Hice wait de la cola de new: -1173275888
+[INFO] 13:27:42:148 HILO/(8072:8075): PID:2 - Estado:0
+[INFO] 13:27:42:149 HILO/(8072:8075): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:27:42:149 HILO/(8072:8075): Hice wait del gdmp
+[INFO] 13:27:42:149 HILO/(8072:8075): Hice wait de la cola de new: -1173275888
+[INFO] 13:27:42:149 HILO/(8072:8075): PID:3 - Estado:0
+[INFO] 13:27:42:149 HILO/(8072:8075): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:27:42:149 HILO/(8072:8076): Hice wait de la cola de new: -1173275888
+[INFO] 13:27:42:149 HILO/(8072:8076): PID:1 - Estado:2
+[INFO] 13:27:42:149 HILO/(8072:8076): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 13:27:42:149 HILO/(8072:8076): Envié 1 a 4
+[INFO] 13:27:45:234 HILO/(8072:8076): Fin de proceso 1 motivo 0
+[INFO] 13:27:45:234 HILO/(8072:8076): Hice wait del gdmp
+[INFO] 13:27:45:234 HILO/(8072:8076): Hice wait de la cola de new: -1173275888
+[INFO] 13:27:45:234 HILO/(8072:8076): PID:2 - Estado:2
+[INFO] 13:27:45:234 HILO/(8072:8076): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 13:27:45:234 HILO/(8072:8076): Envié 2 a 4
+[INFO] 13:27:46:841 HILO/(8072:8076): Fin de proceso 2 motivo 0
+[INFO] 13:27:46:841 HILO/(8072:8076): Hice wait del gdmp
+[INFO] 13:27:46:841 HILO/(8072:8076): Hice wait de la cola de new: -1173275888
+[INFO] 13:27:46:841 HILO/(8072:8076): PID:3 - Estado:2
+[INFO] 13:27:46:841 HILO/(8072:8076): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 13:27:46:841 HILO/(8072:8076): Envié 3 a 4
+[INFO] 13:27:47:418 HILO/(8072:8076): Fin de proceso 3 motivo 0
+[INFO] 13:31:39:718 HILO/(8317:8319): Empieza el planificador fifo
+[INFO] 13:31:59:568 HILO/(8317:8318): Hice wait del gdmp
+[INFO] 13:31:59:568 HILO/(8317:8318): Hice wait de la cola de new: 2022451984
+[INFO] 13:31:59:568 HILO/(8317:8318): PID:1 - Estado:0
+[INFO] 13:31:59:568 HILO/(8317:8318): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:31:59:568 HILO/(8317:8318): Hice wait del gdmp
+[INFO] 13:31:59:568 HILO/(8317:8318): Hice wait de la cola de new: 2022451984
+[INFO] 13:31:59:568 HILO/(8317:8318): PID:2 - Estado:0
+[INFO] 13:31:59:568 HILO/(8317:8318): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:31:59:568 HILO/(8317:8318): Hice wait del gdmp
+[INFO] 13:31:59:568 HILO/(8317:8318): Hice wait de la cola de new: 2022451984
+[INFO] 13:31:59:568 HILO/(8317:8318): PID:3 - Estado:0
+[INFO] 13:31:59:569 HILO/(8317:8318): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:31:59:569 HILO/(8317:8319): Hice wait del gdmp
+[INFO] 13:31:59:569 HILO/(8317:8319): Hice wait de la cola de new: 2022451984
+[INFO] 13:31:59:569 HILO/(8317:8319): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 13:31:59:569 HILO/(8317:8319): Envié 1 a 4
+[INFO] 13:32:02:665 HILO/(8317:8319): Fin de proceso 1 motivo EXIT_SUCCESS
+[INFO] 13:32:02:665 HILO/(8317:8319): Hice wait del gdmp
+[INFO] 13:32:02:665 HILO/(8317:8319): Hice wait de la cola de new: 2022451984
+[INFO] 13:32:02:665 HILO/(8317:8319): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 13:32:02:665 HILO/(8317:8319): Envié 2 a 4
+[INFO] 13:32:04:313 HILO/(8317:8319): Fin de proceso 2 motivo EXIT_SUCCESS
+[INFO] 13:32:04:313 HILO/(8317:8319): Hice wait del gdmp
+[INFO] 13:32:04:313 HILO/(8317:8319): Hice wait de la cola de new: 2022451984
+[INFO] 13:32:04:313 HILO/(8317:8319): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 13:32:04:314 HILO/(8317:8319): Envié 3 a 4
+[INFO] 13:32:04:957 HILO/(8317:8319): Fin de proceso 3 motivo EXIT_SUCCESS
+[INFO] 13:33:50:522 HILO/(8603:8607): Empieza el planificador fifo
+[INFO] 13:34:17:045 HILO/(8603:8606): Hice wait del gdmp
+[INFO] 13:34:17:045 HILO/(8603:8606): Hice wait de la cola de new: 2093894416
+[INFO] 13:34:17:045 HILO/(8603:8606): PID:1 - Estado:0
+[INFO] 13:34:17:045 HILO/(8603:8606): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:34:17:045 HILO/(8603:8606): Hice wait del gdmp
+[INFO] 13:34:17:045 HILO/(8603:8607): Hice wait del gdmp
+[INFO] 13:34:17:045 HILO/(8603:8606): Hice wait de la cola de new: 2093894416
+[INFO] 13:34:17:045 HILO/(8603:8606): PID:2 - Estado:0
+[INFO] 13:34:17:045 HILO/(8603:8606): PID: 2 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:34:17:045 HILO/(8603:8606): Hice wait del gdmp
+[INFO] 13:34:17:045 HILO/(8603:8606): Hice wait de la cola de new: 2093894416
+[INFO] 13:34:17:045 HILO/(8603:8606): PID:3 - Estado:0
+[INFO] 13:34:17:045 HILO/(8603:8606): PID: 3 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:34:17:046 HILO/(8603:8607): Hice wait de la cola de new: 2093894416
+[INFO] 13:34:17:046 HILO/(8603:8607): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 13:34:17:046 HILO/(8603:8607): Envié 1 a 4
+[INFO] 13:34:20:142 HILO/(8603:8607): Fin de proceso 1 motivo EXIT_SUCCESS
+[INFO] 13:34:20:142 HILO/(8603:8607): Hice wait del gdmp
+[INFO] 13:34:20:142 HILO/(8603:8607): Hice wait de la cola de new: 2093894416
+[INFO] 13:34:20:142 HILO/(8603:8607): PID: 2 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 13:34:20:142 HILO/(8603:8607): Envié 2 a 4
+[INFO] 13:34:21:769 HILO/(8603:8607): Fin de proceso 2 motivo EXIT_SUCCESS
+[INFO] 13:34:21:769 HILO/(8603:8607): Hice wait del gdmp
+[INFO] 13:34:21:769 HILO/(8603:8607): Hice wait de la cola de new: 2093894416
+[INFO] 13:34:21:769 HILO/(8603:8607): PID: 3 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 13:34:21:769 HILO/(8603:8607): Envié 3 a 4
+[INFO] 13:34:22:298 HILO/(8603:8607): Fin de proceso 3 motivo EXIT_SUCCESS
+[INFO] 13:44:14:737 HILO/(8889:8893): Empieza el planificador fifo
+[INFO] 13:44:30:441 HILO/(8889:8892): Hice wait del gdmp
+[INFO] 13:44:30:441 HILO/(8889:8892): Hice wait de la cola de new: 821369616
+[INFO] 13:44:30:441 HILO/(8889:8892): PID:1 - Estado:0
+[INFO] 13:44:30:441 HILO/(8889:8892): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:44:30:441 HILO/(8889:8893): Hice wait del gdmp
+[INFO] 13:44:30:442 HILO/(8889:8893): Hice wait de la cola de new: 821369616
+[INFO] 13:44:30:442 HILO/(8889:8893): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 13:44:30:442 HILO/(8889:8893): Envié 1 a 4
+[INFO] 13:44:33:449 HILO/(8889:8893): Fin de proceso 1 motivo EXIT_SUCCESS
+[INFO] 13:46:58:752 HILO/(9131:9135): Empieza el planificador fifo
+[INFO] 13:47:13:336 HILO/(9131:9134): Hice wait del gdmp
+[INFO] 13:47:13:336 HILO/(9131:9134): Hice wait de la cola de new: 814107408
+[INFO] 13:47:13:336 HILO/(9131:9134): PID:1 - Estado:0
+[INFO] 13:47:13:336 HILO/(9131:9134): PID: 1 - Estado Anterior: NEW - Estado Actual: READY
+[INFO] 13:47:13:337 HILO/(9131:9135): Hice wait del gdmp
+[INFO] 13:47:13:337 HILO/(9131:9135): Hice wait de la cola de new: 814107408
+[INFO] 13:47:13:337 HILO/(9131:9135): PID: 1 - Estado Anterior: READY - Estado Actual: EXEC
+[INFO] 13:47:13:337 HILO/(9131:9135): Envié 1 a 4
+[INFO] 13:47:16:513 HILO/(9131:9135): Fin de proceso 1 motivo EXIT_SUCCESS

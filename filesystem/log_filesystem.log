@@ -2,3 +2,25 @@
 [INFO] 00:21:47:592 FILESYSTEM/(85326:85326): Listo para escuchar a mi cliente
 [INFO] 00:22:02:926 FILESYSTEM/(85326:85326): Se conecto un cliente!
 [INFO] 00:22:02:926 FILESYSTEM/(85326:85326): Se conectó kernel
+[INFO] 13:27:14:758 FILESYSTEM/(8067:8067): Se estableció la conexión al servidor.
+[INFO] 13:27:14:759 FILESYSTEM/(8067:8067): Listo para escuchar a mi cliente
+[INFO] 13:27:20:557 FILESYSTEM/(8067:8067): Se conecto un cliente!
+[INFO] 13:27:20:557 FILESYSTEM/(8067:8067): Se conectó kernel
+[INFO] 13:31:31:385 FILESYSTEM/(8175:8175): Se estableció la conexión al servidor.
+[INFO] 13:31:31:385 FILESYSTEM/(8175:8175): Listo para escuchar a mi cliente
+[INFO] 13:31:39:717 FILESYSTEM/(8175:8175): Se conecto un cliente!
+[INFO] 13:31:39:717 FILESYSTEM/(8175:8175): Se conectó kernel
+[INFO] 13:33:45:210 FILESYSTEM/(8601:8601): Se estableció la conexión al servidor.
+[INFO] 13:33:45:211 FILESYSTEM/(8601:8601): Listo para escuchar a mi cliente
+[INFO] 13:33:50:521 FILESYSTEM/(8601:8601): Se conecto un cliente!
+[INFO] 13:33:50:521 FILESYSTEM/(8601:8601): Se conectó kernel
+[INFO] 13:44:08:233 FILESYSTEM/(8844:8844): Se estableció la conexión al servidor.
+[INFO] 13:44:08:233 FILESYSTEM/(8844:8844): Listo para escuchar a mi cliente
+[INFO] 13:44:14:736 FILESYSTEM/(8844:8844): Se conecto un cliente!
+[INFO] 13:44:14:736 FILESYSTEM/(8844:8844): Se conectó kernel
+[INFO] 13:46:53:913 FILESYSTEM/(9129:9129): Se estableció la conexión al servidor.
+[INFO] 13:46:53:916 FILESYSTEM/(9129:9129): Listo para escuchar a mi cliente
+[INFO] 13:46:58:750 FILESYSTEM/(9129:9129): Se conecto un cliente!
+[INFO] 13:46:58:751 FILESYSTEM/(9129:9129): Se conectó kernel
+[ERROR] 13:48:02:043 FILESYSTEM/(9207:9207): Error al conectarse al servidor.
+[INFO] 13:48:02:044 FILESYSTEM/(9207:9207): Listo para escuchar a mi cliente

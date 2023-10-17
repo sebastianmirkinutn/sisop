@@ -16,6 +16,23 @@ t_queue *cola_new;
 
 t_pcb* execute;
 
+char* de_t_motivo_a_string(t_motivo_desalojo motivo)
+{
+    switch (motivo)
+    {
+    case EXIT_SUCCESS:
+        return "EXIT_SUCCESS";
+        break;
+
+    case EXIT_FAILURE:
+        return "EXIT_FAILURE";
+        break;
+    
+    default:
+        break;
+    }
+}
+
 void planificador_largo_plazo(void* arg)
 {
     t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
@@ -73,7 +90,7 @@ void planificador_corto_plazo(void* arg)
         sem_wait(&mutex_cola_ready);
         queue_push(cola_ready, pcb);
         sem_post(&mutex_cola_ready);
-        log_info(logger_hilo, "PID:%i - Estado:%i", pcb->pid, pcb->estado);
+        //log_info(logger_hilo, "PID:%i - Estado:%i", pcb->pid, pcb->estado);
         log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", pcb->pid);
         //enviar_mensaje("PRUEBA_HILO", arg_h->socket);
         execute = pcb;
@@ -87,7 +104,8 @@ void planificador_corto_plazo(void* arg)
 
         //pcb->contexto = recibir_contexto_de_ejecucion(arg_h->socket);
         t_motivo_desalojo motivo = recibir_desalojo(arg_h->socket);
-        log_info(logger_hilo, "Fin de proceso %i motivo %i", pcb->pid, motivo);
+        char* motivo_de_finalizacion = de_t_motivo_a_string(motivo);
+        log_info(logger_hilo, "Fin de proceso %i motivo %s", pcb->pid, motivo_de_finalizacion);
         //sem_wait(&mutex_cola_ready);
         //queue_push(cola_ready, pcb);
         //sem_post(&mutex_cola_ready);
@@ -132,7 +150,7 @@ int main(int argc, char* argv[]){
     execute = crear_pcb(1, "");
 
     //enviar_mensaje("PRUEBA_HILO", conexion_cpu_dispatch);
-    log_info(logger, "Socket cpu dispatch:%i",conexion_cpu_dispatch);
+    //log_info(logger, "Socket cpu dispatch:%i",conexion_cpu_dispatch);
 
     t_args_hilo args_conexion_memoria;
     args_conexion_memoria.socket = conexion_memoria;

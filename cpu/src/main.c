@@ -105,7 +105,85 @@ int main(int argc, char* argv[]){
             log_info(logger, "%s %s %s", parametros[0], parametros[1], parametros[2]);
 
             /*EXECUTE*/
-            if(!strcmp(parametros[0], "EXIT"))
+            /*Uso ifs anidados en lugar de pasar a enum y usar switch porque, independientemente de que
+            usemos un enum, vamos a tener que hacer strcmp en ifs anidados.*/
+            if(!strcmp(parametros[0], "SET"))
+            {
+                if(!strcmp(parametros[1], "AX"))
+                {
+                    registros->AX = atoi(parametros[2]);
+                }
+                else if(!strcmp(parametros[1], "BX"))
+                {
+                    registros->BX = atoi(parametros[2]);
+                }
+                else if(!strcmp(parametros[1], "CX"))
+                {
+                    registros->CX = atoi(parametros[2]);
+                }
+                else if(!strcmp(parametros[1], "DX"))
+                {
+                    registros->DX = atoi(parametros[2]);
+                }
+                log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
+            }
+            else if(!strcmp(parametros[0], "SUM"))
+            {
+            
+            }
+            else if(!strcmp(parametros[0], "SUB"))
+            {
+            
+            }
+            else if(!strcmp(parametros[0], "JNZ"))
+            {
+            
+            }
+            else if(!strcmp(parametros[0], "SLEEP"))
+            {
+            
+            }
+            else if(!strcmp(parametros[0], "WAIT"))
+            {
+            
+            }
+            else if(!strcmp(parametros[0], "SIGNAL"))
+            {
+            
+            }
+            else if(!strcmp(parametros[0], "MOV_IN"))
+            {
+            
+            }
+            else if(!strcmp(parametros[0], "MOV_OUT"))
+            {
+            
+            }
+            else if(!strcmp(parametros[0], "F_OPEN"))
+            {
+            
+            }
+            else if(!strcmp(parametros[0], "F_CLOSE"))
+            {
+            
+            }
+            else if(!strcmp(parametros[0], "F_SEEK"))
+            {
+            
+            }
+            else if(!strcmp(parametros[0], "F_READ"))
+            {
+            
+            }
+            else if(!strcmp(parametros[0], "F_WRITE"))
+            {
+            
+            }
+            else if(!strcmp(parametros[0], "F_TRUNCATE"))
+            {
+            
+            }
+            else if(!strcmp(parametros[0], "EXIT"))
             {
                 execute = 0;
                 //enviar_contexto(registros, socket_kernel_dispatch);

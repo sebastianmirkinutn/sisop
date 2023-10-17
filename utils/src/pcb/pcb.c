@@ -2,16 +2,27 @@
 
 uint32_t contador_pid = 0;
 
+t_registros* crear_registros()
+{
+    t_registros* registros = malloc(sizeof(t_registros));
+    registros->AX = 0;
+    registros->BX = 0;
+    registros->CX = 0;
+    registros->DX = 0;
+    registros->PC = 0;
+    return registros;
+}
+
 t_pcb* crear_pcb(uint32_t prioridad, char* pseudocodigo)
 {
     t_pcb* pcb = malloc(sizeof(t_pcb));
     pcb->prioridad = prioridad;
     pcb->estado = NEW;
     pcb->pid = contador_pid;
-    contador_pid++;
-    pcb->contexto = malloc(sizeof(t_registros));
+    pcb->contexto = crear_registros();
     pcb->tabla_de_archivos_abiertos = list_create();
     pcb->archivo_de_pseudocodigo = strndup(pseudocodigo, strlen(pseudocodigo) + 1);
+    contador_pid++;
     return pcb;
 }
 
@@ -24,7 +35,7 @@ void liberar_pcb(t_pcb* pcb)
 
 void* serializar_contexto(t_registros* registros)
 {
-	void * magic = malloc(sizeof(uint32_t) * 5);
+	void * magic = malloc(sizeof(uint32_t) * 4);
 	int desplazamiento = 0;
 
 	memcpy(magic + desplazamiento, &(registros->AX), sizeof(uint32_t));
@@ -35,7 +46,6 @@ void* serializar_contexto(t_registros* registros)
     desplazamiento+= sizeof(uint32_t);
 	memcpy(magic + desplazamiento, &(registros->DX), sizeof(uint32_t));
 	desplazamiento+= sizeof(uint32_t);
-    memcpy(magic + desplazamiento, &(registros->PC), sizeof(uint32_t));
 
 	return magic;
 }
@@ -53,38 +63,42 @@ t_registros* deserializar_contexto(void* magic)
     desplazamiento+= sizeof(uint32_t);
 	memcpy(&(registros->DX), magic + desplazamiento, sizeof(uint32_t));
 	desplazamiento+= sizeof(uint32_t);
-    memcpy(&(registros->PC), magic + desplazamiento, sizeof(uint32_t));
 
 	return registros;
 }
 
 t_registros* recibir_contexto_de_ejecucion(int socket)
 {
-    printf("recibir_contexto_de_ejecucion\n");
-    op_code operacion;
+	int cod_op, size;
     t_registros* registros;
     void* recibido;
-    uint32_t size;
-    recv(socket, &operacion, sizeof(operacion), MSG_WAITALL);
-    recv(socket, &size, sizeof(uint32_t), MSG_WAITALL);
-    recv(socket, &recibido, size, MSG_WAITALL);
-    registros = deserializar_contexto(recibido);
-    return registros;
+	if(recv(socket, &cod_op, sizeof(int), MSG_WAITALL) > 0)
+		if(cod_op == PAQUETE)
+        {
+            recv(socket, &size, sizeof(int), MSG_WAITALL);
+            recv(socket, &recibido, size, MSG_WAITALL);
+            registros = deserializar_contexto(recibido);
+            return registros;
+        }
+        else
+        {
+            //error
+        }
+	else
+	{
+        //error
+		close(socket);
+	}
 }
 
 void enviar_contexto(t_registros* registros, int socket)
 {
     op_code operacion = PAQUETE;
-    printf("enviar_contexto - operacion=PAQUETE");
     void* a_enviar = serializar_contexto(registros);
-    printf("ya serialice los registros", operacion);
-    int size = sizeof(uint32_t) * 5;
+    int size = sizeof(uint32_t) * 4;
     send(socket, &operacion, sizeof(operacion), 0);
-    printf("enviar_contexto - cod_op: %i", operacion);
     send(socket, &size, sizeof(int), 0);
-    printf("enviar_contexto - size: %i", size);
     send(socket, &a_enviar,sizeof(uint32_t) * 4, 0);
-    printf("enviar_contexto - %i: %i", a_enviar);
 }
 
 t_motivo_desalojo recibir_desalojo(int socket){

@@ -3,3 +3,50 @@
 [INFO] 00:22:02:925 Kernel/(85328:85328): Se estableció la conexión al servidor.
 [INFO] 00:22:02:926 Kernel/(85328:85328): Se estableció la conexión al servidor.
 [INFO] 00:23:00:052 Kernel/(85328:85328): Se crea el proceso 0 en NEW
+[INFO] 13:27:20:556 Kernel/(8072:8072): Se estableció la conexión al servidor.
+[INFO] 13:27:20:556 Kernel/(8072:8072): Se estableció la conexión al servidor.
+[INFO] 13:27:20:557 Kernel/(8072:8072): Se estableció la conexión al servidor.
+[INFO] 13:27:20:557 Kernel/(8072:8072): Se estableció la conexión al servidor.
+[INFO] 13:27:20:557 Kernel/(8072:8072): Socket cpu dispatch:4
+[INFO] 13:27:20:557 Kernel/(8072:8072): Creé los hilos
+[INFO] 13:27:30:806 Kernel/(8072:8072): Se crea el proceso 1 en NEW
+[INFO] 13:27:34:421 Kernel/(8072:8072): Se crea el proceso 2 en NEW
+[INFO] 13:27:37:356 Kernel/(8072:8072): Se crea el proceso 3 en NEW
+[INFO] 13:27:42:148 Kernel/(8072:8072): Iniciar
+[INFO] 13:27:42:148 Kernel/(8072:8072): Se inició
+[INFO] 13:31:39:716 Kernel/(8317:8317): Se estableció la conexión al servidor.
+[INFO] 13:31:39:716 Kernel/(8317:8317): Se estableció la conexión al servidor.
+[INFO] 13:31:39:716 Kernel/(8317:8317): Se estableció la conexión al servidor.
+[INFO] 13:31:39:716 Kernel/(8317:8317): Se estableció la conexión al servidor.
+[INFO] 13:31:39:717 Kernel/(8317:8317): Creé los hilos
+[INFO] 13:31:48:063 Kernel/(8317:8317): Se crea el proceso 1 en NEW
+[INFO] 13:31:51:353 Kernel/(8317:8317): Se crea el proceso 2 en NEW
+[INFO] 13:31:53:925 Kernel/(8317:8317): Se crea el proceso 3 en NEW
+[INFO] 13:31:59:568 Kernel/(8317:8317): Iniciar
+[INFO] 13:31:59:568 Kernel/(8317:8317): Se inició
+[INFO] 13:33:50:520 Kernel/(8603:8603): Se estableció la conexión al servidor.
+[INFO] 13:33:50:520 Kernel/(8603:8603): Se estableció la conexión al servidor.
+[INFO] 13:33:50:521 Kernel/(8603:8603): Se estableció la conexión al servidor.
+[INFO] 13:33:50:521 Kernel/(8603:8603): Se estableció la conexión al servidor.
+[INFO] 13:33:50:521 Kernel/(8603:8603): Creé los hilos
+[INFO] 13:34:05:631 Kernel/(8603:8603): Se crea el proceso 1 en NEW
+[INFO] 13:34:08:620 Kernel/(8603:8603): Se crea el proceso 2 en NEW
+[INFO] 13:34:12:261 Kernel/(8603:8603): Se crea el proceso 3 en NEW
+[INFO] 13:34:17:044 Kernel/(8603:8603): Iniciar
+[INFO] 13:34:17:044 Kernel/(8603:8603): Se inició
+[INFO] 13:44:14:735 Kernel/(8889:8889): Se estableció la conexión al servidor.
+[INFO] 13:44:14:736 Kernel/(8889:8889): Se estableció la conexión al servidor.
+[INFO] 13:44:14:736 Kernel/(8889:8889): Se estableció la conexión al servidor.
+[INFO] 13:44:14:736 Kernel/(8889:8889): Se estableció la conexión al servidor.
+[INFO] 13:44:14:736 Kernel/(8889:8889): Creé los hilos
+[INFO] 13:44:24:378 Kernel/(8889:8889): Se crea el proceso 1 en NEW
+[INFO] 13:44:30:441 Kernel/(8889:8889): Iniciar
+[INFO] 13:44:30:441 Kernel/(8889:8889): Se inició
+[INFO] 13:46:58:750 Kernel/(9131:9131): Se estableció la conexión al servidor.
+[INFO] 13:46:58:750 Kernel/(9131:9131): Se estableció la conexión al servidor.
+[INFO] 13:46:58:750 Kernel/(9131:9131): Se estableció la conexión al servidor.
+[INFO] 13:46:58:751 Kernel/(9131:9131): Se estableció la conexión al servidor.
+[INFO] 13:46:58:751 Kernel/(9131:9131): Creé los hilos
+[INFO] 13:47:09:474 Kernel/(9131:9131): Se crea el proceso 1 en NEW
+[INFO] 13:47:13:335 Kernel/(9131:9131): Iniciar
+[INFO] 13:47:13:336 Kernel/(9131:9131): Se inició
