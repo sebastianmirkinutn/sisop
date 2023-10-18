@@ -16,18 +16,37 @@ t_queue *cola_new;
 
 t_pcb* execute;
 
-extern uint32_t contador_pid;
-
 char* de_t_motivo_a_string(t_motivo_desalojo motivo)
 {
     switch (motivo)
     {
-    case EXIT_SUCCESS:
-        return "EXIT_SUCCESS";
+    case SUCCESS:
+        return "SUCCESS";
         break;
 
-    case EXIT_FAILURE:
-        return "EXIT_FAILURE";
+    case CLOCK_INTERRUPT:
+        return "CLOCK_INTERRUPT";
+        break;
+    
+    default:
+        break;
+    }
+}
+
+void evaluar_motivo_desalojo(t_motivo_desalojo motivo)
+{
+    switch (motivo)
+    {
+    case SUCCESS:
+        /* AGREGO A COLA_EXIT */
+        break;
+
+    case CLOCK_INTERRUPT:
+        sem_wait(&mutex_cola_ready);
+        execute->estado = READY;
+        queue_push(cola_ready, execute);
+        sem_post(&mutex_cola_ready);
+        sem_post(&procesos_en_ready);
         break;
     
     default:
@@ -82,16 +101,12 @@ void planificador_fifo(void* arg)
         sem_wait(&mutex_cola_ready);
         log_info(logger_hilo,"Hice wait de la cola de new: %i",cola_new);
 
-        t_pcb* pcb = queue_pop(cola_ready);
+        execute = queue_pop(cola_ready);
         sem_post(&mutex_cola_ready);
-        pcb->estado = EXEC;
-        sem_wait(&mutex_cola_ready);
-        queue_push(cola_ready, pcb);
-        sem_post(&mutex_cola_ready);
-        //log_info(logger_hilo, "PID:%i - Estado:%i", pcb->pid, pcb->estado);
-        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", pcb->pid);
-        //enviar_mensaje("PRUEBA_HILO", arg_h->socket);
-        execute = pcb;
+        execute->estado = EXEC;
+
+        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute->pid);
+  
         send(arg_h->socket, &(execute->pid), sizeof(uint32_t), 0);
         log_info(logger_hilo, "Envié %i a %i", execute->pid, arg_h->socket);
         send(arg_h->socket, &(execute->contexto->AX), sizeof(uint32_t), 0);
@@ -100,14 +115,70 @@ void planificador_fifo(void* arg)
         send(arg_h->socket, &(execute->contexto->DX), sizeof(uint32_t), 0);
         send(arg_h->socket, &(execute->contexto->PC), sizeof(uint32_t), 0);
 
-        //pcb->contexto = recibir_contexto_de_ejecucion(arg_h->socket);
         t_motivo_desalojo motivo = recibir_desalojo(arg_h->socket);
+        recv(arg_h->socket, &(execute->contexto->BX), sizeof(uint32_t), MSG_WAITALL);
+        recv(arg_h->socket, &(execute->contexto->AX), sizeof(uint32_t), MSG_WAITALL);
+        recv(arg_h->socket, &(execute->contexto->CX), sizeof(uint32_t), MSG_WAITALL);
+        recv(arg_h->socket, &(execute->contexto->DX), sizeof(uint32_t), MSG_WAITALL);
+        recv(arg_h->socket, &(execute->contexto->PC), sizeof(uint32_t), MSG_WAITALL);
         char* motivo_de_finalizacion = de_t_motivo_a_string(motivo);
-        log_info(logger_hilo, "Fin de proceso %i motivo %s", pcb->pid, motivo_de_finalizacion);
-        //sem_wait(&mutex_cola_ready);
-        //queue_push(cola_ready, pcb);
-        //sem_post(&mutex_cola_ready);
-        //liberar_pcb(pcb);
+        log_info(logger_hilo, "Fin de proceso %i motivo %s", execute->pid, motivo_de_finalizacion);
+        evaluar_motivo_desalojo(motivo);
+        sem_post(&planificacion_corto_plazo);
+    }
+}
+
+void ordenar_colas_segun_prioridad(t_queue* queue)
+{
+    bool comparar_prioridad(void* arg1, void* arg2)
+    {
+        t_pcb* pcb1 = (t_pcb*) arg1;
+        t_pcb* pcb2 = (t_pcb*) arg2;
+        return (pcb1->prioridad < pcb2->prioridad);
+    }
+    list_sort(queue->elements, (bool*)&comparar_prioridad);
+}
+
+void planificador_prioridades(void* arg)
+{
+    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
+    t_args_hilo* arg_h = (t_args_hilo*) arg;
+    log_info(logger_hilo, "Empieza el planificador por prioridades");
+    while(1)
+    {
+        sem_wait(&planificacion_corto_plazo);
+        sem_wait(&procesos_en_ready);
+        log_info(logger_hilo,"Hice wait del gdmp");
+        sem_wait(&mutex_cola_ready);
+        log_info(logger_hilo,"Hice wait de la cola de new: %i",cola_new);
+
+        ordenar_colas_segun_prioridad(cola_ready);
+        execute = queue_pop(cola_ready);
+        sem_post(&mutex_cola_ready);
+        execute->estado = EXEC;
+
+        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute->pid);
+
+        send(arg_h->socket, &(execute->pid), sizeof(uint32_t), 0);
+        log_info(logger_hilo, "Envié %i a %i", execute->pid, arg_h->socket);
+        send(arg_h->socket, &(execute->contexto->AX), sizeof(uint32_t), 0);
+        send(arg_h->socket, &(execute->contexto->BX), sizeof(uint32_t), 0);
+        send(arg_h->socket, &(execute->contexto->CX), sizeof(uint32_t), 0);
+        send(arg_h->socket, &(execute->contexto->DX), sizeof(uint32_t), 0);
+        send(arg_h->socket, &(execute->contexto->PC), sizeof(uint32_t), 0);
+
+        t_motivo_desalojo motivo = recibir_desalojo(arg_h->socket);
+        recv(arg_h->socket, &(execute->contexto->BX), sizeof(uint32_t), MSG_WAITALL);
+        recv(arg_h->socket, &(execute->contexto->AX), sizeof(uint32_t), MSG_WAITALL);
+        recv(arg_h->socket, &(execute->contexto->CX), sizeof(uint32_t), MSG_WAITALL);
+        recv(arg_h->socket, &(execute->contexto->DX), sizeof(uint32_t), MSG_WAITALL);
+        recv(arg_h->socket, &(execute->contexto->PC), sizeof(uint32_t), MSG_WAITALL);
+        char* motivo_de_finalizacion = de_t_motivo_a_string(motivo);
+        log_info(logger_hilo, "Fin de proceso %i motivo %s", execute->pid, motivo_de_finalizacion);
+        log_info(logger_hilo, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", execute->contexto->AX, execute->contexto->BX, execute->contexto->CX, execute->contexto->DX, execute->contexto->PC);
+
+        evaluar_motivo_desalojo(motivo);
+
         sem_post(&planificacion_corto_plazo);
     }
 }
@@ -157,31 +228,28 @@ int main(int argc, char* argv[]){
     pthread_detach(&hilo_planificador_de_largo_plazo);
 
     pthread_t hilo_planificador_de_corto_plazo;
-    void (*planificador_corto_plazo)(void*) = NULL;
+
+    void (*planificador_corto_plazo) (void*) = NULL;
     if(!strcmp(algoritmo_planificacion, "FIFO"))
     {
-        planificador_corto_plazo = planificador_fifo;
+        planificador_corto_plazo = &planificador_fifo;
     }
-    else if(!strcmp(algoritmo_planificacion, "FIFO"))
+    if(!strcmp(algoritmo_planificacion, "PRIORIDADES"))
     {
-        planificador_corto_plazo = planificador_fifo;
+        planificador_corto_plazo = &planificador_prioridades;
     }
-    else if(!strcmp(algoritmo_planificacion, "PRIORIDADES"))
-    {
-        planificador_corto_plazo = planificador_fifo;
-    }
+
     pthread_create(&hilo_planificador_de_corto_plazo, NULL, planificador_corto_plazo, (void*)&args_conexion_cpu);
     pthread_detach(&hilo_planificador_de_corto_plazo);
     log_info(logger,"Creé los hilos");
 
     int sem_value_lp, sem_value_cp;
-    
+
     while(1){
         t_mensaje mensaje;
         fflush(stdin);
         char* leido = readline("> ");
         add_history(leido);
-        //log_info(logger,leido);
         char* token = strtok(leido, " ");
         char* c_argv[4]; //Va a haber como máximo 4 tokens.
         int i = 0;
@@ -255,8 +323,13 @@ int main(int argc, char* argv[]){
 
         }
         else if(!strcmp(c_argv[0], "PROCESO_ESTADO"))
-        {
+        {   
 
+        }
+        else if(!strcmp(c_argv[0], "INTERRUPT"))
+        {
+            op_code operacion = INTERRUPT;
+            send(conexion_cpu_interrupt, &operacion, sizeof(op_code), 0);
         }
         else
         {
@@ -269,54 +342,3 @@ int main(int argc, char* argv[]){
     liberar_conexion(conexion_cpu_dispatch);
     
 }
-
-/*
-void planificador_corto_plazo(void* arg)
-{
-    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
-    t_args_hilo* arg_h = (t_args_hilo*) arg;
-
-    t_pcb* pcb; 
-    while(1)
-    {   
-        char* algoritmo = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
-
-        if(!strcmp(algoritmo, "FIFO")) {
-			pcb = algoritmo_fifo();
-		} else if (!strcmp(algoritmo, "RR")){
-			pcb = algoritmo_rr();
-		} else if (!strcmp(algoritmo, "Prioridades")){
-			pcb = algoritmo_prioridades();
-		} else {
-            log_error(logger_hilo, "El algoritmo de planificacion ingresado no existe\n");
-        }
-
-        
-        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", pcb->pid);
-        pcb->estado = EXEC; 
-        execute = pcb;
-        send(arg_h->socket, pcb->pid, sizeof(uint32_t), 0);
-        enviar_contexto(pcb->contexto, arg_h->socket);
-        log_info(logger_hilo, "mandé el contexto");
-
-        pcb->contexto = recibir_contexto_de_ejecucion(arg_h->socket);
-        t_motivo_desalojo motivo = recibir_desalojo(arg_h->socket);
-        log_info(logger_hilo, "Fin de proceso %i motivo %i", pcb->pid, motivo);
-        sem_wait(&mutex_cola_ready);
-        queue_push(cola_ready, pcb);
-        sem_post(&mutex_cola_ready);
-        liberar_pcb(pcb);
-    }
-}
-
-
-t_pcb* algoritmo_fifo(){
-
-    sem_wait(&procesos_en_ready);
-        sem_wait(&mutex_cola_ready);
-        t_pcb* pcb = queue_pop(cola_ready);
-        sem_post(&mutex_cola_ready);
-
-}
-
-*/
