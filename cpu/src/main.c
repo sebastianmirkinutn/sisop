@@ -199,7 +199,11 @@ int main(int argc, char* argv[]){
                 execute = 0;
                 program_counter = 0;
                 enviar_desalojo(socket_kernel_dispatch, SUCCESS);
-                //enviar_contexto(registros, socket_kernel_dispatch);
+                send(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), 0);
+                send(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), 0);
+                send(socket_kernel_dispatch, &(registros->CX), sizeof(uint32_t), 0);
+                send(socket_kernel_dispatch, &(registros->DX), sizeof(uint32_t), 0);
+                send(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), 0);
             }
             program_counter++;
         }
