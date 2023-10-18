@@ -58,3 +58,142 @@
 [INFO] 15:26:52:058 Kernel/(11974:11974): Se crea el proceso 1 en NEW
 [INFO] 15:26:57:020 Kernel/(11974:11974): Iniciar
 [INFO] 15:26:57:020 Kernel/(11974:11974): Se inició
+[INFO] 23:57:10:556 Kernel/(14396:14396): Se estableció la conexión al servidor.
+[INFO] 23:57:10:557 Kernel/(14396:14396): Se estableció la conexión al servidor.
+[INFO] 23:57:10:558 Kernel/(14396:14396): Se estableció la conexión al servidor.
+[INFO] 23:57:10:559 Kernel/(14396:14396): Se estableció la conexión al servidor.
+[INFO] 23:57:10:559 Kernel/(14396:14396): Creé los hilos
+[INFO] 23:57:19:640 Kernel/(14396:14396): Se crea el proceso 1 en NEW
+[INFO] 23:57:25:056 Kernel/(14396:14396): Iniciar
+[INFO] 23:57:25:056 Kernel/(14396:14396): Se inició
+[INFO] 23:59:38:715 Kernel/(14763:14763): Se estableció la conexión al servidor.
+[INFO] 23:59:38:715 Kernel/(14763:14763): Se estableció la conexión al servidor.
+[INFO] 23:59:38:716 Kernel/(14763:14763): Se estableció la conexión al servidor.
+[INFO] 23:59:38:716 Kernel/(14763:14763): Se estableció la conexión al servidor.
+[INFO] 23:59:38:716 Kernel/(14763:14763): Creé los hilos
+[INFO] 23:59:45:889 Kernel/(14763:14763): Se crea el proceso 1 en NEW
+[INFO] 23:59:52:026 Kernel/(14763:14763): Iniciar
+[INFO] 23:59:52:026 Kernel/(14763:14763): Se inició
+[ERROR] 00:01:47:955 Kernel/(15101:15101): Error al conectarse al servidor.
+[ERROR] 00:01:47:958 Kernel/(15101:15101): Error al conectarse al servidor.
+[ERROR] 00:01:47:958 Kernel/(15101:15101): Error al conectarse al servidor.
+[ERROR] 00:01:47:958 Kernel/(15101:15101): Error al conectarse al servidor.
+[INFO] 00:01:47:958 Kernel/(15101:15101): Creé los hilos
+[ERROR] 00:02:16:883 Kernel/(15334:15334): Error al conectarse al servidor.
+[ERROR] 00:02:16:883 Kernel/(15334:15334): Error al conectarse al servidor.
+[ERROR] 00:02:16:883 Kernel/(15334:15334): Error al conectarse al servidor.
+[ERROR] 00:02:16:886 Kernel/(15334:15334): Error al conectarse al servidor.
+[INFO] 00:02:16:886 Kernel/(15334:15334): Creé los hilos
+[INFO] 00:02:24:591 Kernel/(15334:15334): Se crea el proceso 1 en NEW
+[INFO] 00:02:54:677 Kernel/(15334:15334): Iniciar
+[INFO] 00:02:54:677 Kernel/(15334:15334): Se inició
+[ERROR] 00:03:55:977 Kernel/(15719:15719): Error al conectarse al servidor.
+[ERROR] 00:03:55:977 Kernel/(15719:15719): Error al conectarse al servidor.
+[ERROR] 00:03:55:977 Kernel/(15719:15719): Error al conectarse al servidor.
+[ERROR] 00:03:55:977 Kernel/(15719:15719): Error al conectarse al servidor.
+[INFO] 00:03:55:978 Kernel/(15719:15719): Creé los hilos
+[INFO] 00:04:03:451 Kernel/(15719:15719): Se crea el proceso 1 en NEW
+[INFO] 00:04:08:577 Kernel/(15719:15719): Iniciar
+[INFO] 00:04:08:577 Kernel/(15719:15719): Se inició
+[ERROR] 00:05:25:892 Kernel/(15835:15835): Error al conectarse al servidor.
+[ERROR] 00:05:25:893 Kernel/(15835:15835): Error al conectarse al servidor.
+[ERROR] 00:05:25:893 Kernel/(15835:15835): Error al conectarse al servidor.
+[ERROR] 00:05:25:894 Kernel/(15835:15835): Error al conectarse al servidor.
+[INFO] 00:05:25:895 Kernel/(15835:15835): Creé los hilos
+[INFO] 00:05:33:083 Kernel/(15835:15835): Se crea el proceso 1 en NEW
+[ERROR] 00:06:20:199 Kernel/(15971:15971): Error al conectarse al servidor.
+[ERROR] 00:06:20:201 Kernel/(15971:15971): Error al conectarse al servidor.
+[ERROR] 00:06:20:201 Kernel/(15971:15971): Error al conectarse al servidor.
+[ERROR] 00:06:20:201 Kernel/(15971:15971): Error al conectarse al servidor.
+[INFO] 00:06:20:202 Kernel/(15971:15971): Creé los hilos
+[INFO] 00:06:26:829 Kernel/(15971:15971): Se crea el proceso 1 en NEW
+[ERROR] 00:06:59:793 Kernel/(16031:16031): Error al conectarse al servidor.
+[ERROR] 00:06:59:794 Kernel/(16031:16031): Error al conectarse al servidor.
+[ERROR] 00:06:59:794 Kernel/(16031:16031): Error al conectarse al servidor.
+[ERROR] 00:06:59:794 Kernel/(16031:16031): Error al conectarse al servidor.
+[INFO] 00:06:59:794 Kernel/(16031:16031): contador_pid = 0;
+[INFO] 00:06:59:794 Kernel/(16031:16031): Creé los hilos
+[ERROR] 00:07:08:107 Kernel/(16035:16035): Error al conectarse al servidor.
+[ERROR] 00:07:08:108 Kernel/(16035:16035): Error al conectarse al servidor.
+[ERROR] 00:07:08:109 Kernel/(16035:16035): Error al conectarse al servidor.
+[ERROR] 00:07:08:109 Kernel/(16035:16035): Error al conectarse al servidor.
+[INFO] 00:07:08:109 Kernel/(16035:16035): contador_pid = 0;
+[INFO] 00:07:08:109 Kernel/(16035:16035): Creé los hilos
+[ERROR] 00:07:26:035 Kernel/(16050:16050): Error al conectarse al servidor.
+[ERROR] 00:07:26:035 Kernel/(16050:16050): Error al conectarse al servidor.
+[ERROR] 00:07:26:035 Kernel/(16050:16050): Error al conectarse al servidor.
+[ERROR] 00:07:26:035 Kernel/(16050:16050): Error al conectarse al servidor.
+[INFO] 00:07:26:035 Kernel/(16050:16050): contador_pid = 0;
+[INFO] 00:07:26:035 Kernel/(16050:16050): Creé los hilos
+[ERROR] 00:07:54:775 Kernel/(16175:16175): Error al conectarse al servidor.
+[ERROR] 00:07:54:775 Kernel/(16175:16175): Error al conectarse al servidor.
+[ERROR] 00:07:54:775 Kernel/(16175:16175): Error al conectarse al servidor.
+[ERROR] 00:07:54:775 Kernel/(16175:16175): Error al conectarse al servidor.
+[INFO] 00:07:54:775 Kernel/(16175:16175): Creé los hilos
+[ERROR] 00:07:57:426 Kernel/(16179:16179): Error al conectarse al servidor.
+[ERROR] 00:07:57:427 Kernel/(16179:16179): Error al conectarse al servidor.
+[ERROR] 00:07:57:427 Kernel/(16179:16179): Error al conectarse al servidor.
+[ERROR] 00:07:57:427 Kernel/(16179:16179): Error al conectarse al servidor.
+[INFO] 00:07:57:427 Kernel/(16179:16179): Creé los hilos
+[ERROR] 00:07:59:753 Kernel/(16183:16183): Error al conectarse al servidor.
+[ERROR] 00:07:59:753 Kernel/(16183:16183): Error al conectarse al servidor.
+[ERROR] 00:07:59:753 Kernel/(16183:16183): Error al conectarse al servidor.
+[ERROR] 00:07:59:753 Kernel/(16183:16183): Error al conectarse al servidor.
+[INFO] 00:07:59:754 Kernel/(16183:16183): Creé los hilos
+[ERROR] 00:08:23:046 Kernel/(16246:16246): Error al conectarse al servidor.
+[ERROR] 00:08:23:046 Kernel/(16246:16246): Error al conectarse al servidor.
+[ERROR] 00:08:23:046 Kernel/(16246:16246): Error al conectarse al servidor.
+[ERROR] 00:08:23:046 Kernel/(16246:16246): Error al conectarse al servidor.
+[INFO] 00:08:23:046 Kernel/(16246:16246): Creé los hilos
+[ERROR] 00:16:22:686 Kernel/(16498:16498): Error al conectarse al servidor.
+[ERROR] 00:16:22:686 Kernel/(16498:16498): Error al conectarse al servidor.
+[ERROR] 00:16:22:686 Kernel/(16498:16498): Error al conectarse al servidor.
+[ERROR] 00:16:22:686 Kernel/(16498:16498): Error al conectarse al servidor.
+[INFO] 00:16:22:686 Kernel/(16498:16498): Creé los hilos
+[ERROR] 00:16:35:610 Kernel/(16557:16557): Error al conectarse al servidor.
+[ERROR] 00:16:35:610 Kernel/(16557:16557): Error al conectarse al servidor.
+[ERROR] 00:16:35:610 Kernel/(16557:16557): Error al conectarse al servidor.
+[ERROR] 00:16:35:611 Kernel/(16557:16557): Error al conectarse al servidor.
+[ERROR] 00:16:54:311 Kernel/(16620:16620): Error al conectarse al servidor.
+[ERROR] 00:16:54:311 Kernel/(16620:16620): Error al conectarse al servidor.
+[ERROR] 00:16:54:312 Kernel/(16620:16620): Error al conectarse al servidor.
+[ERROR] 00:16:54:312 Kernel/(16620:16620): Error al conectarse al servidor.
+[INFO] 00:16:54:312 Kernel/(16620:16620): Creé los hilos
+[ERROR] 00:19:53:943 Kernel/(16915:16915): Error al conectarse al servidor.
+[ERROR] 00:19:53:943 Kernel/(16915:16915): Error al conectarse al servidor.
+[ERROR] 00:19:53:943 Kernel/(16915:16915): Error al conectarse al servidor.
+[ERROR] 00:19:53:943 Kernel/(16915:16915): Error al conectarse al servidor.
+[INFO] 00:19:53:943 Kernel/(16915:16915): Creé los hilos
+[ERROR] 00:20:06:125 Kernel/(16935:16935): Error al conectarse al servidor.
+[ERROR] 00:20:06:126 Kernel/(16935:16935): Error al conectarse al servidor.
+[ERROR] 00:20:06:126 Kernel/(16935:16935): Error al conectarse al servidor.
+[ERROR] 00:20:06:126 Kernel/(16935:16935): Error al conectarse al servidor.
+[INFO] 00:20:06:126 Kernel/(16935:16935): Creé los hilos
+[ERROR] 00:20:08:162 Kernel/(16979:16979): Error al conectarse al servidor.
+[ERROR] 00:20:08:164 Kernel/(16979:16979): Error al conectarse al servidor.
+[ERROR] 00:20:08:164 Kernel/(16979:16979): Error al conectarse al servidor.
+[ERROR] 00:20:08:164 Kernel/(16979:16979): Error al conectarse al servidor.
+[INFO] 00:20:08:165 Kernel/(16979:16979): Creé los hilos
+[ERROR] 00:20:57:862 Kernel/(17032:17032): Error al conectarse al servidor.
+[ERROR] 00:20:57:863 Kernel/(17032:17032): Error al conectarse al servidor.
+[ERROR] 00:20:57:863 Kernel/(17032:17032): Error al conectarse al servidor.
+[ERROR] 00:20:57:863 Kernel/(17032:17032): Error al conectarse al servidor.
+[INFO] 00:20:57:865 Kernel/(17032:17032): Creé los hilos
+[ERROR] 00:21:07:341 Kernel/(17088:17088): Error al conectarse al servidor.
+[ERROR] 00:21:07:341 Kernel/(17088:17088): Error al conectarse al servidor.
+[ERROR] 00:21:07:341 Kernel/(17088:17088): Error al conectarse al servidor.
+[ERROR] 00:21:07:342 Kernel/(17088:17088): Error al conectarse al servidor.
+[INFO] 00:21:07:342 Kernel/(17088:17088): Creé los hilos
+[ERROR] 00:21:16:604 Kernel/(17140:17140): Error al conectarse al servidor.
+[ERROR] 00:21:16:604 Kernel/(17140:17140): Error al conectarse al servidor.
+[ERROR] 00:21:16:604 Kernel/(17140:17140): Error al conectarse al servidor.
+[ERROR] 00:21:16:604 Kernel/(17140:17140): Error al conectarse al servidor.
+[INFO] 00:21:16:604 Kernel/(17140:17140): Creé los hilos
+[ERROR] 00:22:28:442 Kernel/(17231:17231): Error al conectarse al servidor.
+[ERROR] 00:22:28:442 Kernel/(17231:17231): Error al conectarse al servidor.
+[ERROR] 00:22:28:442 Kernel/(17231:17231): Error al conectarse al servidor.
+[ERROR] 00:22:28:443 Kernel/(17231:17231): Error al conectarse al servidor.
+[INFO] 00:22:28:443 Kernel/(17231:17231): Creé los hilos
+[INFO] 00:22:37:062 Kernel/(17231:17231): Se crea el proceso 0 en NEW
+[INFO] 00:22:43:739 Kernel/(17231:17231): Iniciar
+[INFO] 00:22:43:739 Kernel/(17231:17231): Se inició
