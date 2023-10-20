@@ -17,7 +17,9 @@
 
 typedef struct
 {
-    int socket;
+    int socket_dispatch;
+    int socket_interrupt;
+    int socket_memoria;
 }t_args_hilo;
 
 #endif 
