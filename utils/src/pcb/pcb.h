@@ -39,7 +39,15 @@ typedef struct
 	uint32_t cant_instrucciones;
 	uint32_t size;
 	char* archivo_de_pseudocodigo;
+	t_list* recursos_asignados;
 } t_pcb;
+
+typedef struct
+{
+	char* recurso;
+	uint32_t instancias;
+}t_recurso;
+
 
 typedef enum
 {
