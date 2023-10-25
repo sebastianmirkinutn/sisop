@@ -51,6 +51,49 @@ void atender_interrupciones(int socket_kernel_dispatch)
     }
 }
 
+void sumar_a_registro(char* registro, uint32_t numero)
+{
+    if(!strcmp(registro, "AX"))
+    {
+        registros->AX += numero;
+    }
+    else if(!strcmp(registro, "BX"))
+    {
+        registros->BX += numero;
+    }
+    else if(!strcmp(registro, "CX"))
+    {
+        registros->BX += numero;
+    }
+    else if(!strcmp(registro, "CX"))
+    {
+        registros->CX += numero;
+    }
+    else if(!strcmp(registro, "DX"))
+    {
+        registros->DX += numero;
+    }
+}
+
+void sum(char* destino, char* origen){
+    if(!strcmp(origen, "AX"))
+    {
+        sumar_a_registro(destino, registros->AX);
+    }
+    else if(!strcmp(origen, "BX"))
+    {
+        sumar_a_registro(destino, registros->BX);
+    }
+    else if(!strcmp(origen, "CX"))
+    {
+        sumar_a_registro(destino, registros->CX);
+    }
+    else if(!strcmp(origen, "DX"))
+    {
+        sumar_a_registro(destino, registros->DX);
+    }
+}
+
 int main(int argc, char* argv[]){
     t_log* logger = iniciar_logger("log_cpu.log","CPU");
     t_config* config = iniciar_config("./cfg/cpu.config");
@@ -158,11 +201,11 @@ int main(int argc, char* argv[]){
                 {
                     registros->DX = atoi(parametros[2]);
                 }
-                log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
+                //log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
             }
             else if(!strcmp(parametros[0], "SUM"))
             {
-            
+                sum(parametros[1], parametros[2]);
             }
             else if(!strcmp(parametros[0], "SUB"))
             {
