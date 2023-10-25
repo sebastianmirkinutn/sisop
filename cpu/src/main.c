@@ -228,7 +228,7 @@ int main(int argc, char* argv[]){
                 send(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), 0);
             }
             registros->PC++;
-            atender_interrupciones(socket_servidor_dispatch);
+            atender_interrupciones(socket_kernel_dispatch);
         }
     }
 }
