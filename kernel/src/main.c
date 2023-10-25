@@ -28,12 +28,12 @@ char* de_t_motivo_a_string(t_motivo_desalojo motivo)
         return "INVALID_RESOURCE";
         break;
 
-    case INVALID_WRITE:
-        return "INVALID_WRITE";
-        break;
-
     case CLOCK_INTERRUPT:
         return "CLOCK_INTERRUPT";
+        break;
+
+    case INVALID_WRITE:
+        return "INVALID_WRITE";
         break;
     
     default:
@@ -155,8 +155,8 @@ void planificador_rr(void* arg)
         sem_post(&start_interrupts);
         log_info(logger_hilo, "Pasé el sem_post");
         t_motivo_desalojo motivo = recibir_desalojo(arg_h->socket_dispatch);
-        recv(arg_h->socket_dispatch, &(execute->contexto->BX), sizeof(uint32_t), MSG_WAITALL);
         recv(arg_h->socket_dispatch, &(execute->contexto->AX), sizeof(uint32_t), MSG_WAITALL);
+        recv(arg_h->socket_dispatch, &(execute->contexto->BX), sizeof(uint32_t), MSG_WAITALL);
         recv(arg_h->socket_dispatch, &(execute->contexto->CX), sizeof(uint32_t), MSG_WAITALL);
         recv(arg_h->socket_dispatch, &(execute->contexto->DX), sizeof(uint32_t), MSG_WAITALL);
         recv(arg_h->socket_dispatch, &(execute->contexto->PC), sizeof(uint32_t), MSG_WAITALL);
@@ -165,7 +165,7 @@ void planificador_rr(void* arg)
         sem_post(&mutex_flag_p_finished);
         log_info(logger_hilo, "Recibí el desalojo y el contexto");
         int* a = execute->pid;
-        log_info(logger_hilo, "Fin de proceso %i motivo %s", execute->pid, de_t_motivo_a_string(motivo));
+        log_info(logger_hilo, "Fin de proceso %i motivo %s (%i)", execute->pid, de_t_motivo_a_string(motivo), motivo);
         evaluar_motivo_desalojo(motivo);
         sem_post(&planificacion_corto_plazo);
     }
