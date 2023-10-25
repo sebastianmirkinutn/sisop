@@ -6,7 +6,9 @@ typedef enum
 	PAQUETE,
 	INICIAR_PROCESO,
 	FETCH_INSTRUCCION,
-	INTERRUPT
+	INTERRUPT,
+	WAIT,
+	SIGNAL
 }op_code;
 
 typedef struct
