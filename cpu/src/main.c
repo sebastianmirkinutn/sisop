@@ -1,10 +1,8 @@
 #include "../include/main.h"
 
 t_registros* registros;
-uint32_t program_counter;
 
-sem_t binary_interrupt_handler;
-sem_t binary_main;
+sem_t mutex_flag_interrupciones;
 
 typedef struct
 {
@@ -12,7 +10,10 @@ typedef struct
     int socket_dispatch;
 }t_args_hilo;
 
-void interrupt_handler(void* arg)
+int flag_interrupciones;
+int execute;
+
+void recibir_interrupciones(void* arg)
 {
     op_code operacion;
     t_args_hilo* arg_h = (t_args_hilo*) arg;
@@ -20,12 +21,34 @@ void interrupt_handler(void* arg)
     while (1)
     {
         operacion = recibir_operacion(arg_h->socket_interrupt);
-        if(operacion == INTERRUPT)
+        if(operacion == INTERRUPT) //Acá podemos diferenciar el tipo de interrupción.
         {
-            enviar_desalojo(arg_h->socket_dispatch, CLOCK_INTERRUPT); //Acá podemos diferenciar el tipo de interrupción.
+            sem_wait(&mutex_flag_interrupciones);
+            flag_interrupciones = 1; 
+            sem_post(&mutex_flag_interrupciones);
         }
     }
-    
+}
+
+void atender_interrupciones(int socket_kernel_dispatch)
+{
+    sem_wait(&mutex_flag_interrupciones);
+    if(flag_interrupciones)
+    {
+        flag_interrupciones = 0; 
+        sem_post(&mutex_flag_interrupciones);
+        enviar_desalojo(socket_kernel_dispatch, CLOCK_INTERRUPT);
+        send(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), 0);
+        send(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), 0);
+        send(socket_kernel_dispatch, &(registros->CX), sizeof(uint32_t), 0);
+        send(socket_kernel_dispatch, &(registros->DX), sizeof(uint32_t), 0);
+        send(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), 0);
+        execute = 0;
+    }
+    else
+    {
+        sem_post(&mutex_flag_interrupciones);
+    }
 }
 
 int main(int argc, char* argv[]){
@@ -58,16 +81,15 @@ int main(int argc, char* argv[]){
     
     uint32_t pid = 0;
     
-    int execute;
     registros = malloc(sizeof(t_registros));
-    sem_init(&binary_interrupt_handler,0, 0);
-    sem_init(&binary_main,0, 1);
+    flag_interrupciones = 0;
+    sem_init(&mutex_flag_interrupciones, 0, 1);
 
     t_args_hilo args_conexion_kernel;
     args_conexion_kernel.socket_dispatch = socket_kernel_dispatch;
     args_conexion_kernel.socket_interrupt = socket_kernel_interrupt; 
     pthread_t hilo_interrupt_handler;
-    pthread_create(&hilo_interrupt_handler, NULL, &interrupt_handler, (void*)&args_conexion_kernel);
+    pthread_create(&hilo_interrupt_handler, NULL, &recibir_interrupciones, (void*)&args_conexion_kernel);
     pthread_detach(&hilo_interrupt_handler);
     while(1)
     {
@@ -92,7 +114,7 @@ int main(int argc, char* argv[]){
             op_code codigo = FETCH_INSTRUCCION;
             send(conexion_memoria, &codigo, sizeof(op_code), 0);
             send(conexion_memoria, &pid, sizeof(uint32_t), 0);
-            send(conexion_memoria, &program_counter, sizeof(uint32_t), 0) ;  
+            send(conexion_memoria, &(registros->PC), sizeof(uint32_t), 0) ;  
             log_info(logger, "Envié el pedido");     
             char* instruccion = recibir_mensaje(conexion_memoria);
             log_info(logger, "%s", instruccion);
@@ -197,7 +219,7 @@ int main(int argc, char* argv[]){
             else if(!strcmp(parametros[0], "EXIT"))
             {
                 execute = 0;
-                program_counter = 0;
+                registros->PC = 0;
                 enviar_desalojo(socket_kernel_dispatch, SUCCESS);
                 send(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), 0);
                 send(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), 0);
@@ -205,7 +227,8 @@ int main(int argc, char* argv[]){
                 send(socket_kernel_dispatch, &(registros->DX), sizeof(uint32_t), 0);
                 send(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), 0);
             }
-            program_counter++;
+            registros->PC++;
+            atender_interrupciones(socket_kernel_dispatch);
         }
     }
 }
