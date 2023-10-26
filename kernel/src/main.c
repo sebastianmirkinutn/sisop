@@ -77,6 +77,8 @@ int main(int argc, char* argv[]){
 	cola_blocked = queue_create();
 	cola_exit = queue_create();
 
+    recursos_disponibles = list_create();
+
     t_args_hilo args_hilo;
     args_hilo.socket_dispatch = conexion_cpu_dispatch;
     args_hilo.socket_interrupt = conexion_cpu_interrupt;

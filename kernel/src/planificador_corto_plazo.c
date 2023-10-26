@@ -151,17 +151,19 @@ t_recurso* crear_recurso(char* nombre, uint32_t instancias)
 
 void wait(char* recurso_buscado, int conexion_cpu_dispatch)
 {
-    t_recurso* recurso;
+    printf("FUNCIÓN WAIT\n");
+    t_recurso* recurso = NULL;
     bool buscar_recurso(void* arg)
     {
         t_recurso* elemento = (t_recurso*) arg;
         return (!strcmp(elemento->nombre, recurso_buscado));
     }
     recurso = (t_recurso*) list_find(recursos_disponibles, (bool*)&recurso_buscado);
-    
+    printf("recurso = %i\n", recurso);
     if(recurso == NULL)
     {
         /*El recurso no existe*/
+        printf("El recurso no existe\n");
         enviar_operacion(conexion_cpu_dispatch, NO_ASIGNADO);
     }
     else
