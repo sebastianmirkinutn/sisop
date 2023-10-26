@@ -62,8 +62,8 @@ void liberar_pcb(t_pcb* pcb);
 void* serializar_contexto(t_registros* registros);
 t_registros* deserializar_contexto(void* magic);
 t_registros* recibir_contexto_de_ejecucion(int socket);
-void enviar_contexto(t_registros* registros, int socket);
-t_motivo_desalojo recibir_desalojo(int socket);
-void enviar_desalojo(int socket, t_motivo_desalojo motivo);
+void enviar_contexto_de_ejecucion(t_registros* registros, int socket);
+t_motivo_desalojo recibir_motivo_desalojo(int socket);
+void enviar_motivo_desalojo(int socket, t_motivo_desalojo motivo);
 
 #endif

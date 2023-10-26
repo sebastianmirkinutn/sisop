@@ -35,76 +35,10 @@ uint32_t* instancias_recursos(char** instancias)
     return rec_instancias;
 }
 
-t_recurso* crear_recurso(char* nombre, uint32_t instancias)
-{
-    t_recurso* recurso = malloc(sizeof(t_recurso));
-    recurso->nombre = nombre;
-    recurso->instancias = instancias;
-}
-
-void wait(char* recurso_buscado, int conexion_cpu_dispatch)
-{
-    t_recurso* recurso;
-    bool buscar_recurso(void* arg)
-    {
-        t_recurso* elemento = (t_recurso*) arg;
-        return (!strcmp(elemento->nombre, recurso_buscado));
-    }
-    recurso = (t_recurso*) list_find(recursos_disponibles, &recurso_buscado);
-    
-    if(recurso == NULL)
-    {
-        /*El recurso no existe*/
-        enviar_operacion(conexion_cpu_dispatch, NO_ASIGNADO);
-    }
-    else
-    {
-        if(recurso->instancias > 0)
-        {
-            recurso->instancias--;
-            recurso = (t_recurso*) list_find(execute->recursos_asignados, &recurso_buscado);
-            if(recurso != NULL)
-            {
-                recurso->instancias++;
-            }
-            else
-            {
-                t_recurso* recurso = crear_recurso(recurso_buscado, 1); //Creo el recurso con una instancia porque es la instancia que le asigno
-                list_add(execute->recursos_asignados, (void*) recurso);
-            }
-            enviar_operacion(conexion_cpu_dispatch, ASIGNADO);
-        }
-        else
-        {
-            sem_wait(&mutex_cola_blocked);
-            queue_push(&cola_blocked, execute);
-            sem_post(&mutex_cola_blocked);
-            enviar_operacion(conexion_cpu_dispatch, NO_ASIGNADO);
-        }
-    }
-}
 
 void recibir_ordenes_cpu(void* arg)
 {
-    t_log* logger_hilo_roc = iniciar_logger("log_recibir_de_cpu.log","HILO");
-    t_args_hilo* arg_h = (t_args_hilo*) arg;
-    char* recurso;
-    while (1)
-    {
-        op_code operacion = recibir_operacion(arg_h->socket_dispatch);
-        switch (operacion)
-        {
-            case WAIT:
-                recurso = recibir_mensaje(arg_h->socket_dispatch);
-                wait(recurso, arg_h->socket_dispatch);
-                break;
-            case SIGNAL:
-                recurso = recibir_mensaje(arg_h->socket_dispatch);
-                break;
-            default:
-                break;
-        }
-    }
+    
 }
 
 int main(int argc, char* argv[]){
@@ -123,6 +57,7 @@ int main(int argc, char* argv[]){
     char* algoritmo_planificacion = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
     char** recursos = config_get_array_value(config, "RECURSOS");
     char** intancias_recursos = config_get_array_value(config, "INSTANCIAS_RECURSOS");
+
 
     int conexion_cpu_dispatch = crear_conexion(logger, ip_cpu, puerto_cpu_dispatch);
     int conexion_cpu_interrupt = crear_conexion(logger, ip_cpu, puerto_cpu_interrupt);

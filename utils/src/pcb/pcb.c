@@ -76,7 +76,7 @@ t_registros* recibir_contexto_de_ejecucion(int socket)
 		if(cod_op == PAQUETE)
         {
             recv(socket, &size, sizeof(int), MSG_WAITALL);
-            recv(socket, &recibido, size, MSG_WAITALL);
+            recv(socket, recibido, size, MSG_WAITALL);
             registros = deserializar_contexto(recibido);
             return registros;
         }
@@ -91,17 +91,17 @@ t_registros* recibir_contexto_de_ejecucion(int socket)
 	}
 }
 
-void enviar_contexto(t_registros* registros, int socket)
+void enviar_contexto_de_ejecucion(t_registros* registros, int socket)
 {
     op_code operacion = PAQUETE;
     void* a_enviar = serializar_contexto(registros);
     int size = sizeof(uint32_t) * 4;
     send(socket, &operacion, sizeof(operacion), 0);
     send(socket, &size, sizeof(int), 0);
-    send(socket, &a_enviar,sizeof(uint32_t) * 4, 0);
+    send(socket, a_enviar,sizeof(uint32_t) * 4, 0);
 }
 
-t_motivo_desalojo recibir_desalojo(int socket){
+t_motivo_desalojo recibir_motivo_desalojo(int socket){
     t_motivo_desalojo motivo;
 	if(recv(socket, &motivo, sizeof(t_motivo_desalojo), MSG_WAITALL) > 0)
 		return motivo;
@@ -112,7 +112,7 @@ t_motivo_desalojo recibir_desalojo(int socket){
 	}
 }
 
-void enviar_desalojo(int socket, t_motivo_desalojo motivo)
+void enviar_motivo_desalojo(int socket, t_motivo_desalojo motivo)
 {
     send(socket, &motivo, sizeof(t_motivo_desalojo), 0);
 }

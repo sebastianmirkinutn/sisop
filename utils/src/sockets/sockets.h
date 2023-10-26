@@ -10,7 +10,8 @@ typedef enum
 	WAIT,
 	SIGNAL,
 	ASIGNADO,
-	NO_ASIGNADO
+	NO_ASIGNADO,
+	DESALOJO
 }op_code;
 
 typedef struct
