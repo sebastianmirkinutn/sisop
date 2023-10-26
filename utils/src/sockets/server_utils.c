@@ -15,9 +15,10 @@ int iniciar_servidor(t_log *logger, char *puerto){
 
 	socket_servidor = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol);
 
-	const int enable = 1;
-	if (setsockopt(socket_servidor, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
-    error("setsockopt(SO_REUSEADDR) failed");
+	if (setsockopt(socket_servidor, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) < 0)
+	{
+		log_error(logger, "Error al marcar la IP y puerto como reusables");
+	}
 
 	bind(socket_servidor, servinfo->ai_addr, servinfo->ai_addrlen);
 	listen(socket_servidor, SOMAXCONN);
