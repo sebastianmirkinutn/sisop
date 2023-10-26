@@ -124,3 +124,8 @@ void liberar_conexion(int socket_cliente)
 {
 	close(socket_cliente);
 }
+
+void enviar_operacion (int socket, op_code operacion)
+{
+	send(socket, &operacion, sizeof(op_code), 0);
+}

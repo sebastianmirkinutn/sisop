@@ -16,6 +16,7 @@
 void clock_interrupt(void* arg);
 void planificador_rr(void* arg);
 void planificador_fifo(void* arg);
+t_recurso* crear_recurso(char* nombre, uint32_t instancias);
 void ordenar_colas_segun_prioridad(t_queue* queue);
 void planificador_prioridades(void* arg);
 

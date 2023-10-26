@@ -14,6 +14,12 @@ int iniciar_servidor(t_log *logger, char *puerto){
 	//printf("IP: %s - PUERTO: %s\n", IP, puerto);
 
 	socket_servidor = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol);
+
+	if (setsockopt(socket_servidor, SOL_SOCKET, SO_REUSEADDR, &(int){1}, sizeof(int)) < 0)
+	{
+		log_error(logger, "Error al marcar la IP y puerto como reusables");
+	}
+
 	bind(socket_servidor, servinfo->ai_addr, servinfo->ai_addrlen);
 	listen(socket_servidor, SOMAXCONN);
 

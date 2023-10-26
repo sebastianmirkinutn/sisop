@@ -3,6 +3,7 @@
 sem_t grado_de_multiprogramacion;
 sem_t mutex_cola_new;
 sem_t mutex_cola_ready;
+sem_t mutex_cola_blocked;
 sem_t procesos_en_new;
 sem_t procesos_en_ready;
 sem_t planificacion_largo_plazo;
@@ -17,8 +18,28 @@ t_queue *cola_exit;
 t_queue *cola_new;
 
 t_pcb* execute;
+t_list* recursos_disponibles;
 
 int p_finished;
+
+uint32_t* instancias_recursos(char** instancias)
+{
+    uint32_t* rec_instancias;
+    int i = 0;
+    do{
+
+        rec_instancias[i] = instancias[i];
+        
+    }while(instancias[i] != NULL);
+
+    return rec_instancias;
+}
+
+
+void recibir_ordenes_cpu(void* arg)
+{
+    
+}
 
 int main(int argc, char* argv[]){
    
@@ -34,6 +55,9 @@ int main(int argc, char* argv[]){
 	char* puerto_filesystem = config_get_string_value(config, "PUERTO_FILESYSTEM");
     char* grado_max_de_multiprogramacion = config_get_string_value(config, "GRADO_MULTIPROGRAMACION_INI");
     char* algoritmo_planificacion = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
+    char** recursos = config_get_array_value(config, "RECURSOS");
+    char** intancias_recursos = config_get_array_value(config, "INSTANCIAS_RECURSOS");
+
 
     int conexion_cpu_dispatch = crear_conexion(logger, ip_cpu, puerto_cpu_dispatch);
     int conexion_cpu_interrupt = crear_conexion(logger, ip_cpu, puerto_cpu_interrupt);
@@ -52,6 +76,8 @@ int main(int argc, char* argv[]){
 	cola_ready = queue_create();
 	cola_blocked = queue_create();
 	cola_exit = queue_create();
+
+    recursos_disponibles = list_create();
 
     t_args_hilo args_hilo;
     args_hilo.socket_dispatch = conexion_cpu_dispatch;
