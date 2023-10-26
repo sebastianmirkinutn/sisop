@@ -3,6 +3,7 @@
 sem_t grado_de_multiprogramacion;
 sem_t mutex_cola_new;
 sem_t mutex_cola_ready;
+sem_t mutex_cola_blocked;
 sem_t procesos_en_new;
 sem_t procesos_en_ready;
 sem_t planificacion_largo_plazo;
@@ -34,37 +35,52 @@ uint32_t* instancias_recursos(char** instancias)
     return rec_instancias;
 }
 
-void asignar_recurso(char* recurso_buscado)
+t_recurso* crear_recurso(char* nombre, uint32_t instancias)
 {
-    t_recurso* recurso;
-    bool buscar_recurso(void* arg)
-    {
-        t_recurso* elemento = (t_recurso*) arg;
-        return (!strcmp(elemento->recurso, recurso_buscado));
-    }
-    recurso = (t_recurso*) list_find(recursos_disponibles, &recurso_buscado);
-
-    
+    t_recurso* recurso = malloc(sizeof(t_recurso));
+    recurso->nombre = nombre;
+    recurso->instancias = instancias;
 }
 
-void wait(char* recurso_buscado)
+void wait(char* recurso_buscado, int conexion_cpu_dispatch)
 {
     t_recurso* recurso;
     bool buscar_recurso(void* arg)
     {
         t_recurso* elemento = (t_recurso*) arg;
-        return (!strcmp(elemento->recurso, recurso_buscado));
+        return (!strcmp(elemento->nombre, recurso_buscado));
     }
     recurso = (t_recurso*) list_find(recursos_disponibles, &recurso_buscado);
     
-    if(recurso->instancias > 0)
+    if(recurso == NULL)
     {
-        recurso->instancias--;
-        //agregar_recurso()
+        /*El recurso no existe*/
+        enviar_operacion(conexion_cpu_dispatch, NO_ASIGNADO);
     }
     else
     {
-        //bloquea al proceso
+        if(recurso->instancias > 0)
+        {
+            recurso->instancias--;
+            recurso = (t_recurso*) list_find(execute->recursos_asignados, &recurso_buscado);
+            if(recurso != NULL)
+            {
+                recurso->instancias++;
+            }
+            else
+            {
+                t_recurso* recurso = crear_recurso(recurso_buscado, 1); //Creo el recurso con una instancia porque es la instancia que le asigno
+                list_add(execute->recursos_asignados, (void*) recurso);
+            }
+            enviar_operacion(conexion_cpu_dispatch, ASIGNADO);
+        }
+        else
+        {
+            sem_wait(&mutex_cola_blocked);
+            queue_push(&cola_blocked, execute);
+            sem_post(&mutex_cola_blocked);
+            enviar_operacion(conexion_cpu_dispatch, NO_ASIGNADO);
+        }
     }
 }
 
@@ -80,6 +96,7 @@ void recibir_ordenes_cpu(void* arg)
         {
             case WAIT:
                 recurso = recibir_mensaje(arg_h->socket_dispatch);
+                wait(recurso, arg_h->socket_dispatch);
                 break;
             case SIGNAL:
                 recurso = recibir_mensaje(arg_h->socket_dispatch);

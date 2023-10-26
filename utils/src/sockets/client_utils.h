@@ -21,5 +21,6 @@ t_paquete *crear_paquete();
 void agregar_a_paquete(t_paquete *paquete, void *valor, int tamanio);
 void enviar_paquete(t_paquete *paquete, int socket_cliente);
 void eliminar_paquete(t_paquete *paquete);
+void enviar_operacion (int socket, op_code operacion);
 
 #endif

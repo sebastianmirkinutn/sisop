@@ -221,7 +221,31 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "WAIT"))
             {
-            
+
+                
+                enviar_operacion(socket_kernel_dispatch, WAIT);
+                enviar_mensaje(parametros[1], socket_kernel_dispatch);
+
+                op_code respuesta = recibir_operacion(socket_kernel_dispatch);
+                switch (respuesta)
+                {
+                case ASIGNADO:
+                    /* TODO OK */
+                    break;
+
+                case NO_ASIGNADO:
+                    execute = 0;
+                    enviar_desalojo(socket_kernel_dispatch, INVALID_RESOURCE);
+                    send(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), 0);
+                    send(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), 0);
+                    send(socket_kernel_dispatch, &(registros->CX), sizeof(uint32_t), 0);
+                    send(socket_kernel_dispatch, &(registros->DX), sizeof(uint32_t), 0);
+                    send(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), 0);
+                    break;
+                
+                default:
+                    break;
+                }
             }
             else if(!strcmp(parametros[0], "SIGNAL"))
             {

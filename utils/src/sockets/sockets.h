@@ -8,7 +8,9 @@ typedef enum
 	FETCH_INSTRUCCION,
 	INTERRUPT,
 	WAIT,
-	SIGNAL
+	SIGNAL,
+	ASIGNADO,
+	NO_ASIGNADO
 }op_code;
 
 typedef struct

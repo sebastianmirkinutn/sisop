@@ -44,7 +44,7 @@ typedef struct
 
 typedef struct
 {
-	char* recurso;
+	char* nombre;
 	uint32_t instancias;
 }t_recurso;
 
