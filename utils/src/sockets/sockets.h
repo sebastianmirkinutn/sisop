@@ -11,7 +11,9 @@ typedef enum
 	SIGNAL,
 	ASIGNADO,
 	NO_ASIGNADO,
-	DESALOJO
+	DESALOJO,
+	LIBERADO,
+	NO_LIBERADO
 }op_code;
 
 typedef struct

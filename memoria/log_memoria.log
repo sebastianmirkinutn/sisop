@@ -1,0 +1,457 @@
+[INFO] 14:48:20:537 CPU/(12168:12168): Listo para escuchar a mi cliente
+[INFO] 14:48:38:922 CPU/(12168:12168): Se conecto un cliente!
+[INFO] 14:48:38:922 CPU/(12168:12168): Se conectó filesystem
+[INFO] 14:48:47:738 CPU/(12168:12168): Se conecto un cliente!
+[INFO] 14:48:47:738 CPU/(12168:12168): Se conectó cpu
+[INFO] 14:48:53:697 CPU/(12168:12168): Se conecto un cliente!
+[INFO] 14:48:53:697 CPU/(12168:12168): Se conectó kernel
+[INFO] 14:48:53:697 CPU/(12168:12168): Declaré el hilo.
+[INFO] 14:48:53:697 CPU/(12168:12168): socket: 7
+[INFO] 14:48:53:697 CPU/(12168:12168): Creé el hilo.
+[INFO] 15:08:34:741 CPU/(13342:13342): Listo para escuchar a mi cliente
+[INFO] 15:08:36:462 CPU/(13342:13342): Se conecto un cliente!
+[INFO] 15:08:36:463 CPU/(13342:13342): Se conectó filesystem
+[INFO] 15:08:43:702 CPU/(13342:13342): Se conecto un cliente!
+[INFO] 15:08:43:702 CPU/(13342:13342): Se conectó cpu
+[INFO] 15:11:24:679 CPU/(13643:13643): Listo para escuchar a mi cliente
+[INFO] 15:11:27:974 CPU/(13643:13643): Se conecto un cliente!
+[INFO] 15:11:27:975 CPU/(13643:13643): Se conectó filesystem
+[INFO] 15:11:30:918 CPU/(13643:13643): Se conecto un cliente!
+[INFO] 15:11:30:918 CPU/(13643:13643): Se conectó cpu
+[INFO] 15:11:33:673 CPU/(13643:13643): Se conecto un cliente!
+[INFO] 15:11:33:673 CPU/(13643:13643): Se conectó kernel
+[INFO] 15:11:33:673 CPU/(13643:13643): Declaré el hilo.
+[INFO] 15:11:33:673 CPU/(13643:13643): socket: 7
+[INFO] 15:11:33:674 CPU/(13643:13643): Creé el hilo.
+[INFO] 15:10:13:732 CPU/(3096:3096): Listo para escuchar a mi cliente
+[INFO] 15:10:20:148 CPU/(3096:3096): Se conecto un cliente!
+[INFO] 15:10:20:148 CPU/(3096:3096): Se conectó filesystem
+[INFO] 15:10:27:696 CPU/(3096:3096): Se conecto un cliente!
+[INFO] 15:10:27:696 CPU/(3096:3096): Se conectó cpu
+[INFO] 15:11:18:554 CPU/(3096:3096): Se conecto un cliente!
+[INFO] 15:11:18:554 CPU/(3096:3096): Se conectó kernel
+[INFO] 15:11:18:554 CPU/(3096:3096): Declaré el hilo.
+[INFO] 15:11:18:554 CPU/(3096:3096): socket: 7
+[INFO] 15:11:18:554 CPU/(3096:3096): Creé el hilo.
+[INFO] 15:13:08:126 CPU/(3388:3388): Listo para escuchar a mi cliente
+[INFO] 15:13:38:366 CPU/(3390:3390): Listo para escuchar a mi cliente
+[INFO] 15:14:12:115 CPU/(3408:3408): Listo para escuchar a mi cliente
+[INFO] 15:14:13:894 CPU/(3408:3408): Se conecto un cliente!
+[INFO] 15:14:13:894 CPU/(3408:3408): Se conectó filesystem
+[INFO] 15:14:15:648 CPU/(3408:3408): Se conecto un cliente!
+[INFO] 15:14:15:648 CPU/(3408:3408): Se conectó cpu
+[INFO] 15:14:17:976 CPU/(3408:3408): Se conecto un cliente!
+[INFO] 15:14:17:976 CPU/(3408:3408): Se conectó kernel
+[INFO] 15:14:17:977 CPU/(3408:3408): Declaré el hilo.
+[INFO] 15:14:17:977 CPU/(3408:3408): socket: 7
+[INFO] 15:14:17:977 CPU/(3408:3408): Creé el hilo.
+[INFO] 15:17:51:484 CPU/(3556:3556): Listo para escuchar a mi cliente
+[INFO] 15:17:53:026 CPU/(3556:3556): Se conecto un cliente!
+[INFO] 15:17:53:026 CPU/(3556:3556): Se conectó filesystem
+[INFO] 15:17:54:887 CPU/(3556:3556): Se conecto un cliente!
+[INFO] 15:17:54:887 CPU/(3556:3556): Se conectó cpu
+[INFO] 15:17:57:977 CPU/(3556:3556): Se conecto un cliente!
+[INFO] 15:17:57:977 CPU/(3556:3556): Se conectó kernel
+[INFO] 15:17:57:977 CPU/(3556:3556): Declaré el hilo.
+[INFO] 15:17:57:977 CPU/(3556:3556): socket: 7
+[INFO] 15:17:57:977 CPU/(3556:3556): Creé el hilo.
+[INFO] 16:49:11:625 CPU/(4593:4593): Listo para escuchar a mi cliente
+[INFO] 16:49:17:081 CPU/(4593:4593): Se conecto un cliente!
+[INFO] 16:49:17:082 CPU/(4593:4593): Se conectó filesystem
+[INFO] 16:49:20:602 CPU/(4593:4593): Se conecto un cliente!
+[INFO] 16:49:20:602 CPU/(4593:4593): Se conectó cpu
+[INFO] 16:49:32:994 CPU/(4593:4593): Se conecto un cliente!
+[INFO] 16:49:32:994 CPU/(4593:4593): Se conectó kernel
+[INFO] 16:49:32:994 CPU/(4593:4593): Declaré el hilo.
+[INFO] 16:49:32:995 CPU/(4593:4593): socket: 7
+[INFO] 16:49:32:995 CPU/(4593:4593): Creé el hilo.
+[INFO] 16:50:35:588 CPU/(4793:4793): Listo para escuchar a mi cliente
+[INFO] 16:53:27:984 CPU/(5113:5113): Listo para escuchar a mi cliente
+[INFO] 16:53:29:906 CPU/(5113:5113): Se conecto un cliente!
+[INFO] 16:53:29:907 CPU/(5113:5113): Se conectó filesystem
+[INFO] 16:53:32:809 CPU/(5113:5113): Se conecto un cliente!
+[INFO] 16:53:32:809 CPU/(5113:5113): Se conectó cpu
+[INFO] 16:53:35:796 CPU/(5113:5113): Se conecto un cliente!
+[INFO] 16:53:35:796 CPU/(5113:5113): Se conectó kernel
+[INFO] 16:53:35:796 CPU/(5113:5113): Declaré el hilo.
+[INFO] 16:53:35:796 CPU/(5113:5113): socket: 7
+[INFO] 16:53:35:796 CPU/(5113:5113): Creé el hilo.
+[INFO] 16:55:18:217 CPU/(5264:5264): Listo para escuchar a mi cliente
+[INFO] 16:55:20:905 CPU/(5264:5264): Se conecto un cliente!
+[INFO] 16:55:20:905 CPU/(5264:5264): Se conectó filesystem
+[INFO] 16:55:24:071 CPU/(5264:5264): Se conecto un cliente!
+[INFO] 16:55:24:071 CPU/(5264:5264): Se conectó cpu
+[INFO] 16:55:27:931 CPU/(5264:5264): Se conecto un cliente!
+[INFO] 16:55:27:931 CPU/(5264:5264): Se conectó kernel
+[INFO] 16:55:27:931 CPU/(5264:5264): Declaré el hilo.
+[INFO] 16:55:27:931 CPU/(5264:5264): socket: 7
+[INFO] 16:55:27:931 CPU/(5264:5264): Creé el hilo.
+[INFO] 17:03:42:801 CPU/(5701:5701): Listo para escuchar a mi cliente
+[INFO] 17:03:44:525 CPU/(5701:5701): Se conecto un cliente!
+[INFO] 17:03:44:525 CPU/(5701:5701): Se conectó filesystem
+[INFO] 17:03:47:138 CPU/(5701:5701): Se conecto un cliente!
+[INFO] 17:03:47:138 CPU/(5701:5701): Se conectó cpu
+[INFO] 17:03:53:519 CPU/(5793:5793): Listo para escuchar a mi cliente
+[INFO] 17:03:55:356 CPU/(5793:5793): Se conecto un cliente!
+[INFO] 17:03:55:357 CPU/(5793:5793): Se conectó filesystem
+[INFO] 17:03:57:574 CPU/(5793:5793): Se conecto un cliente!
+[INFO] 17:03:57:575 CPU/(5793:5793): Se conectó cpu
+[INFO] 17:04:48:973 CPU/(5793:5793): Se conecto un cliente!
+[INFO] 17:04:48:973 CPU/(5793:5793): Se conectó kernel
+[INFO] 17:04:48:973 CPU/(5793:5793): Declaré el hilo.
+[INFO] 17:04:48:973 CPU/(5793:5793): socket: 7
+[INFO] 17:04:48:973 CPU/(5793:5793): Creé el hilo.
+[INFO] 17:07:12:612 CPU/(6041:6041): Listo para escuchar a mi cliente
+[INFO] 17:07:15:625 CPU/(6041:6041): Se conecto un cliente!
+[INFO] 17:07:15:625 CPU/(6041:6041): Se conectó filesystem
+[INFO] 17:07:18:822 CPU/(6041:6041): Se conecto un cliente!
+[INFO] 17:07:18:822 CPU/(6041:6041): Se conectó cpu
+[INFO] 17:07:21:270 CPU/(6041:6041): Se conecto un cliente!
+[INFO] 17:07:21:270 CPU/(6041:6041): Se conectó kernel
+[INFO] 17:07:21:270 CPU/(6041:6041): Declaré el hilo.
+[INFO] 17:07:21:270 CPU/(6041:6041): socket: 7
+[INFO] 17:07:21:270 CPU/(6041:6041): Creé el hilo.
+[INFO] 17:15:17:676 CPU/(6685:6685): Listo para escuchar a mi cliente
+[INFO] 17:15:19:539 CPU/(6685:6685): Se conecto un cliente!
+[INFO] 17:15:19:540 CPU/(6685:6685): Se conectó filesystem
+[INFO] 17:15:21:655 CPU/(6685:6685): Se conecto un cliente!
+[INFO] 17:15:21:655 CPU/(6685:6685): Se conectó cpu
+[INFO] 17:15:25:150 CPU/(6685:6685): Se conecto un cliente!
+[INFO] 17:15:25:150 CPU/(6685:6685): Se conectó kernel
+[INFO] 17:15:25:150 CPU/(6685:6685): Declaré el hilo.
+[INFO] 17:15:25:150 CPU/(6685:6685): socket: 7
+[INFO] 17:15:25:150 CPU/(6685:6685): Creé el hilo.
+[INFO] 17:17:53:093 CPU/(6787:6787): Listo para escuchar a mi cliente
+[INFO] 17:17:54:960 CPU/(6787:6787): Se conecto un cliente!
+[INFO] 17:17:54:960 CPU/(6787:6787): Se conectó filesystem
+[INFO] 17:17:57:291 CPU/(6787:6787): Se conecto un cliente!
+[INFO] 17:17:57:291 CPU/(6787:6787): Se conectó cpu
+[INFO] 17:18:01:205 CPU/(6787:6787): Se conecto un cliente!
+[INFO] 17:18:01:205 CPU/(6787:6787): Se conectó kernel
+[INFO] 17:18:01:205 CPU/(6787:6787): Declaré el hilo.
+[INFO] 17:18:01:205 CPU/(6787:6787): socket: 7
+[INFO] 17:18:01:205 CPU/(6787:6787): Creé el hilo.
+[INFO] 17:21:46:456 CPU/(6876:6876): Listo para escuchar a mi cliente
+[INFO] 17:21:48:659 CPU/(6876:6876): Se conecto un cliente!
+[INFO] 17:21:48:660 CPU/(6876:6876): Se conectó filesystem
+[INFO] 17:21:51:384 CPU/(6876:6876): Se conecto un cliente!
+[INFO] 17:21:51:384 CPU/(6876:6876): Se conectó cpu
+[INFO] 17:21:53:576 CPU/(6876:6876): Se conecto un cliente!
+[INFO] 17:21:53:576 CPU/(6876:6876): Se conectó kernel
+[INFO] 17:21:53:576 CPU/(6876:6876): Declaré el hilo.
+[INFO] 17:21:53:576 CPU/(6876:6876): socket: 7
+[INFO] 17:21:53:577 CPU/(6876:6876): Creé el hilo.
+[INFO] 17:29:38:456 CPU/(6981:6981): Listo para escuchar a mi cliente
+[INFO] 17:29:40:610 CPU/(6981:6981): Se conecto un cliente!
+[INFO] 17:29:40:610 CPU/(6981:6981): Se conectó filesystem
+[INFO] 17:29:43:681 CPU/(6981:6981): Se conecto un cliente!
+[INFO] 17:29:43:681 CPU/(6981:6981): Se conectó cpu
+[INFO] 17:30:09:575 CPU/(6981:6981): Se conecto un cliente!
+[INFO] 17:30:09:575 CPU/(6981:6981): Se conectó kernel
+[INFO] 17:30:09:576 CPU/(6981:6981): Declaré el hilo.
+[INFO] 17:30:09:576 CPU/(6981:6981): socket: 7
+[INFO] 17:30:09:576 CPU/(6981:6981): Creé el hilo.
+[INFO] 20:54:04:413 CPU/(2238:2238): Listo para escuchar a mi cliente
+[INFO] 20:54:08:112 CPU/(2238:2238): Se conecto un cliente!
+[INFO] 20:54:08:112 CPU/(2238:2238): Se conectó filesystem
+[INFO] 20:54:12:099 CPU/(2238:2238): Se conecto un cliente!
+[INFO] 20:54:12:099 CPU/(2238:2238): Se conectó cpu
+[INFO] 20:54:18:693 CPU/(2238:2238): Se conecto un cliente!
+[INFO] 20:54:18:693 CPU/(2238:2238): Se conectó kernel
+[INFO] 20:54:18:693 CPU/(2238:2238): Declaré el hilo.
+[INFO] 20:54:18:693 CPU/(2238:2238): socket: 7
+[INFO] 20:54:18:693 CPU/(2238:2238): Creé el hilo.
+[INFO] 20:56:31:184 CPU/(2424:2424): Listo para escuchar a mi cliente
+[INFO] 20:56:32:716 CPU/(2424:2424): Se conecto un cliente!
+[INFO] 20:56:32:716 CPU/(2424:2424): Se conectó filesystem
+[INFO] 20:56:35:181 CPU/(2424:2424): Se conecto un cliente!
+[INFO] 20:56:35:181 CPU/(2424:2424): Se conectó cpu
+[INFO] 20:56:37:168 CPU/(2424:2424): Se conecto un cliente!
+[INFO] 20:56:37:168 CPU/(2424:2424): Se conectó kernel
+[INFO] 20:56:37:168 CPU/(2424:2424): Declaré el hilo.
+[INFO] 20:56:37:168 CPU/(2424:2424): socket: 7
+[INFO] 20:56:37:168 CPU/(2424:2424): Creé el hilo.
+[INFO] 20:58:42:872 CPU/(2581:2581): Listo para escuchar a mi cliente
+[INFO] 20:58:44:880 CPU/(2581:2581): Se conecto un cliente!
+[INFO] 20:58:44:880 CPU/(2581:2581): Se conectó filesystem
+[INFO] 20:58:46:752 CPU/(2581:2581): Se conecto un cliente!
+[INFO] 20:58:46:752 CPU/(2581:2581): Se conectó cpu
+[INFO] 20:58:50:342 CPU/(2581:2581): Se conecto un cliente!
+[INFO] 20:58:50:342 CPU/(2581:2581): Se conectó kernel
+[INFO] 20:58:50:342 CPU/(2581:2581): Declaré el hilo.
+[INFO] 20:58:50:342 CPU/(2581:2581): socket: 7
+[INFO] 20:58:50:342 CPU/(2581:2581): Creé el hilo.
+[INFO] 20:59:52:424 CPU/(2677:2677): Listo para escuchar a mi cliente
+[INFO] 20:59:54:340 CPU/(2677:2677): Se conecto un cliente!
+[INFO] 20:59:54:340 CPU/(2677:2677): Se conectó filesystem
+[INFO] 20:59:58:466 CPU/(2677:2677): Se conecto un cliente!
+[INFO] 20:59:58:466 CPU/(2677:2677): Se conectó cpu
+[INFO] 21:00:01:705 CPU/(2677:2677): Se conecto un cliente!
+[INFO] 21:00:01:705 CPU/(2677:2677): Se conectó kernel
+[INFO] 21:00:01:705 CPU/(2677:2677): Declaré el hilo.
+[INFO] 21:00:01:705 CPU/(2677:2677): socket: 7
+[INFO] 21:00:01:705 CPU/(2677:2677): Creé el hilo.
+[INFO] 21:00:22:648 CPU/(2687:2687): Listo para escuchar a mi cliente
+[INFO] 21:00:43:690 CPU/(2689:2689): Listo para escuchar a mi cliente
+[INFO] 21:01:04:505 CPU/(2705:2705): Listo para escuchar a mi cliente
+[INFO] 21:01:38:369 CPU/(2719:2719): Listo para escuchar a mi cliente
+[INFO] 21:01:40:093 CPU/(2719:2719): Se conecto un cliente!
+[INFO] 21:01:40:093 CPU/(2719:2719): Se conectó filesystem
+[INFO] 21:01:43:902 CPU/(2719:2719): Se conecto un cliente!
+[INFO] 21:01:43:902 CPU/(2719:2719): Se conectó cpu
+[INFO] 21:01:45:832 CPU/(2719:2719): Se conecto un cliente!
+[INFO] 21:01:45:832 CPU/(2719:2719): Se conectó kernel
+[INFO] 21:01:45:832 CPU/(2719:2719): Declaré el hilo.
+[INFO] 21:01:45:832 CPU/(2719:2719): socket: 7
+[INFO] 21:01:45:832 CPU/(2719:2719): Creé el hilo.
+[INFO] 21:02:55:701 CPU/(2876:2876): Listo para escuchar a mi cliente
+[INFO] 21:02:57:500 CPU/(2876:2876): Se conecto un cliente!
+[INFO] 21:02:57:500 CPU/(2876:2876): Se conectó filesystem
+[INFO] 21:02:59:769 CPU/(2876:2876): Se conecto un cliente!
+[INFO] 21:02:59:769 CPU/(2876:2876): Se conectó cpu
+[INFO] 21:03:03:563 CPU/(2876:2876): Se conecto un cliente!
+[INFO] 21:03:03:563 CPU/(2876:2876): Se conectó kernel
+[INFO] 21:03:03:563 CPU/(2876:2876): Declaré el hilo.
+[INFO] 21:03:03:563 CPU/(2876:2876): socket: 7
+[INFO] 21:03:03:563 CPU/(2876:2876): Creé el hilo.
+[INFO] 21:03:48:655 CPU/(2896:2896): Listo para escuchar a mi cliente
+[INFO] 21:05:23:238 CPU/(2912:2912): Listo para escuchar a mi cliente
+[INFO] 21:05:24:814 CPU/(2912:2912): Se conecto un cliente!
+[INFO] 21:05:24:814 CPU/(2912:2912): Se conectó filesystem
+[INFO] 21:05:27:392 CPU/(2912:2912): Se conecto un cliente!
+[INFO] 21:05:27:392 CPU/(2912:2912): Se conectó cpu
+[INFO] 21:05:29:254 CPU/(2912:2912): Se conecto un cliente!
+[INFO] 21:05:29:255 CPU/(2912:2912): Se conectó kernel
+[INFO] 21:05:29:255 CPU/(2912:2912): Declaré el hilo.
+[INFO] 21:05:29:255 CPU/(2912:2912): socket: 7
+[INFO] 21:05:29:255 CPU/(2912:2912): Creé el hilo.
+[INFO] 21:06:32:603 CPU/(2970:2970): Listo para escuchar a mi cliente
+[INFO] 21:06:34:511 CPU/(2970:2970): Se conecto un cliente!
+[INFO] 21:06:34:511 CPU/(2970:2970): Se conectó filesystem
+[INFO] 21:06:36:830 CPU/(2970:2970): Se conecto un cliente!
+[INFO] 21:06:36:830 CPU/(2970:2970): Se conectó cpu
+[INFO] 21:06:43:131 CPU/(2970:2970): Se conecto un cliente!
+[INFO] 21:06:43:131 CPU/(2970:2970): Se conectó kernel
+[INFO] 21:06:43:131 CPU/(2970:2970): Declaré el hilo.
+[INFO] 21:06:43:131 CPU/(2970:2970): socket: 7
+[INFO] 21:06:43:131 CPU/(2970:2970): Creé el hilo.
+[INFO] 21:08:18:882 CPU/(3338:3338): Listo para escuchar a mi cliente
+[INFO] 21:08:21:533 CPU/(3338:3338): Se conecto un cliente!
+[INFO] 21:08:21:533 CPU/(3338:3338): Se conectó filesystem
+[INFO] 21:08:24:359 CPU/(3338:3338): Se conecto un cliente!
+[INFO] 21:08:24:359 CPU/(3338:3338): Se conectó cpu
+[INFO] 21:08:28:685 CPU/(3338:3338): Se conecto un cliente!
+[INFO] 21:08:28:686 CPU/(3338:3338): Se conectó kernel
+[INFO] 21:08:28:686 CPU/(3338:3338): Declaré el hilo.
+[INFO] 21:08:28:686 CPU/(3338:3338): socket: 7
+[INFO] 21:08:28:686 CPU/(3338:3338): Creé el hilo.
+[INFO] 21:10:43:733 CPU/(3564:3564): Listo para escuchar a mi cliente
+[INFO] 21:10:46:005 CPU/(3564:3564): Se conecto un cliente!
+[INFO] 21:10:46:005 CPU/(3564:3564): Se conectó filesystem
+[INFO] 21:10:48:342 CPU/(3564:3564): Se conecto un cliente!
+[INFO] 21:10:48:342 CPU/(3564:3564): Se conectó cpu
+[INFO] 21:10:53:071 CPU/(3564:3564): Se conecto un cliente!
+[INFO] 21:10:53:072 CPU/(3564:3564): Se conectó kernel
+[INFO] 21:10:53:072 CPU/(3564:3564): Declaré el hilo.
+[INFO] 21:10:53:072 CPU/(3564:3564): socket: 7
+[INFO] 21:10:53:072 CPU/(3564:3564): Creé el hilo.
+[INFO] 21:23:27:386 CPU/(4601:4601): Listo para escuchar a mi cliente
+[INFO] 21:23:31:599 CPU/(4601:4601): Se conecto un cliente!
+[INFO] 21:23:31:599 CPU/(4601:4601): Se conectó filesystem
+[INFO] 21:23:54:662 CPU/(4601:4601): Se conecto un cliente!
+[INFO] 21:23:54:662 CPU/(4601:4601): Se conectó cpu
+[INFO] 21:24:00:359 CPU/(4601:4601): Se conecto un cliente!
+[INFO] 21:24:00:360 CPU/(4601:4601): Se conectó kernel
+[INFO] 21:24:00:360 CPU/(4601:4601): Declaré el hilo.
+[INFO] 21:24:00:360 CPU/(4601:4601): socket: 7
+[INFO] 21:24:00:360 CPU/(4601:4601): Creé el hilo.
+[INFO] 21:24:05:893 CPU/(4800:4800): Listo para escuchar a mi cliente
+[INFO] 21:24:07:365 CPU/(4800:4800): Se conecto un cliente!
+[INFO] 21:24:07:366 CPU/(4800:4800): Se conectó filesystem
+[INFO] 21:24:09:208 CPU/(4800:4800): Se conecto un cliente!
+[INFO] 21:24:09:208 CPU/(4800:4800): Se conectó cpu
+[INFO] 21:24:11:869 CPU/(4800:4800): Se conecto un cliente!
+[INFO] 21:24:11:869 CPU/(4800:4800): Se conectó kernel
+[INFO] 21:24:11:870 CPU/(4800:4800): Declaré el hilo.
+[INFO] 21:24:11:870 CPU/(4800:4800): socket: 7
+[INFO] 21:24:11:871 CPU/(4800:4800): Creé el hilo.
+[INFO] 21:25:34:002 CPU/(4934:4934): Listo para escuchar a mi cliente
+[INFO] 21:25:35:933 CPU/(4934:4934): Se conecto un cliente!
+[INFO] 21:25:35:934 CPU/(4934:4934): Se conectó filesystem
+[INFO] 21:25:38:047 CPU/(4934:4934): Se conecto un cliente!
+[INFO] 21:25:38:048 CPU/(4934:4934): Se conectó cpu
+[INFO] 21:25:40:002 CPU/(4934:4934): Se conecto un cliente!
+[INFO] 21:25:40:002 CPU/(4934:4934): Se conectó kernel
+[INFO] 21:25:40:002 CPU/(4934:4934): Declaré el hilo.
+[INFO] 21:25:40:002 CPU/(4934:4934): socket: 7
+[INFO] 21:25:40:003 CPU/(4934:4934): Creé el hilo.
+[INFO] 02:34:06:635 CPU/(2539:2539): Listo para escuchar a mi cliente
+[INFO] 02:34:10:328 CPU/(2539:2539): Se conecto un cliente!
+[INFO] 02:34:10:328 CPU/(2539:2539): Se conectó filesystem
+[INFO] 02:34:15:719 CPU/(2539:2539): Se conecto un cliente!
+[INFO] 02:34:15:719 CPU/(2539:2539): Se conectó cpu
+[INFO] 02:36:12:647 CPU/(2539:2539): Se conecto un cliente!
+[INFO] 02:36:12:648 CPU/(2539:2539): Se conectó kernel
+[INFO] 02:36:12:648 CPU/(2539:2539): Declaré el hilo.
+[INFO] 02:36:12:648 CPU/(2539:2539): socket: 7
+[INFO] 02:36:12:648 CPU/(2539:2539): Creé el hilo.
+[INFO] 02:36:45:180 CPU/(2750:2750): Listo para escuchar a mi cliente
+[INFO] 02:36:46:456 CPU/(2750:2750): Se conecto un cliente!
+[INFO] 02:36:46:456 CPU/(2750:2750): Se conectó filesystem
+[INFO] 02:36:47:893 CPU/(2750:2750): Se conecto un cliente!
+[INFO] 02:36:47:893 CPU/(2750:2750): Se conectó cpu
+[INFO] 02:36:49:353 CPU/(2750:2750): Se conecto un cliente!
+[INFO] 02:36:49:353 CPU/(2750:2750): Se conectó kernel
+[INFO] 02:36:49:354 CPU/(2750:2750): Declaré el hilo.
+[INFO] 02:36:49:354 CPU/(2750:2750): socket: 7
+[INFO] 02:36:49:354 CPU/(2750:2750): Creé el hilo.
+[INFO] 02:37:38:713 CPU/(2779:2779): Listo para escuchar a mi cliente
+[INFO] 02:37:41:423 CPU/(2779:2779): Se conecto un cliente!
+[INFO] 02:37:41:423 CPU/(2779:2779): Se conectó filesystem
+[INFO] 02:37:50:984 CPU/(2779:2779): Se conecto un cliente!
+[INFO] 02:37:50:984 CPU/(2779:2779): Se conectó cpu
+[INFO] 02:37:53:240 CPU/(2779:2779): Se conecto un cliente!
+[INFO] 02:37:53:240 CPU/(2779:2779): Se conectó kernel
+[INFO] 02:37:53:240 CPU/(2779:2779): Declaré el hilo.
+[INFO] 02:37:53:240 CPU/(2779:2779): socket: 7
+[INFO] 02:37:53:240 CPU/(2779:2779): Creé el hilo.
+[INFO] 02:39:52:235 CPU/(2945:2945): Listo para escuchar a mi cliente
+[INFO] 02:39:54:401 CPU/(2945:2945): Se conecto un cliente!
+[INFO] 02:39:54:401 CPU/(2945:2945): Se conectó filesystem
+[INFO] 02:39:57:272 CPU/(2945:2945): Se conecto un cliente!
+[INFO] 02:39:57:272 CPU/(2945:2945): Se conectó cpu
+[INFO] 02:40:03:082 CPU/(2945:2945): Se conecto un cliente!
+[INFO] 02:40:03:082 CPU/(2945:2945): Se conectó kernel
+[INFO] 02:40:03:082 CPU/(2945:2945): Declaré el hilo.
+[INFO] 02:40:03:082 CPU/(2945:2945): socket: 7
+[INFO] 02:40:03:082 CPU/(2945:2945): Creé el hilo.
+[INFO] 02:41:44:052 CPU/(3054:3054): Listo para escuchar a mi cliente
+[INFO] 02:41:45:863 CPU/(3054:3054): Se conecto un cliente!
+[INFO] 02:41:45:863 CPU/(3054:3054): Se conectó filesystem
+[INFO] 02:41:48:351 CPU/(3054:3054): Se conecto un cliente!
+[INFO] 02:41:48:351 CPU/(3054:3054): Se conectó cpu
+[INFO] 02:41:50:363 CPU/(3054:3054): Se conecto un cliente!
+[INFO] 02:41:50:363 CPU/(3054:3054): Se conectó kernel
+[INFO] 02:41:50:363 CPU/(3054:3054): Declaré el hilo.
+[INFO] 02:41:50:363 CPU/(3054:3054): socket: 7
+[INFO] 02:41:50:363 CPU/(3054:3054): Creé el hilo.
+[INFO] 02:43:13:389 CPU/(3126:3126): Listo para escuchar a mi cliente
+[INFO] 02:43:15:774 CPU/(3126:3126): Se conecto un cliente!
+[INFO] 02:43:15:775 CPU/(3126:3126): Se conectó filesystem
+[INFO] 02:43:17:770 CPU/(3126:3126): Se conecto un cliente!
+[INFO] 02:43:17:770 CPU/(3126:3126): Se conectó cpu
+[INFO] 02:43:19:656 CPU/(3126:3126): Se conecto un cliente!
+[INFO] 02:43:19:657 CPU/(3126:3126): Se conectó kernel
+[INFO] 02:43:19:658 CPU/(3126:3126): Declaré el hilo.
+[INFO] 02:43:19:659 CPU/(3126:3126): socket: 7
+[INFO] 02:43:19:659 CPU/(3126:3126): Creé el hilo.
+[INFO] 02:44:50:287 CPU/(3180:3180): Listo para escuchar a mi cliente
+[INFO] 02:44:52:076 CPU/(3180:3180): Se conecto un cliente!
+[INFO] 02:44:52:076 CPU/(3180:3180): Se conectó filesystem
+[INFO] 02:44:54:338 CPU/(3180:3180): Se conecto un cliente!
+[INFO] 02:44:54:338 CPU/(3180:3180): Se conectó cpu
+[INFO] 02:44:56:680 CPU/(3180:3180): Se conecto un cliente!
+[INFO] 02:44:56:680 CPU/(3180:3180): Se conectó kernel
+[INFO] 02:44:56:681 CPU/(3180:3180): Declaré el hilo.
+[INFO] 02:44:56:682 CPU/(3180:3180): socket: 7
+[INFO] 02:44:56:682 CPU/(3180:3180): Creé el hilo.
+[INFO] 02:46:07:865 CPU/(3234:3234): Listo para escuchar a mi cliente
+[INFO] 02:46:09:691 CPU/(3234:3234): Se conecto un cliente!
+[INFO] 02:46:09:691 CPU/(3234:3234): Se conectó filesystem
+[INFO] 02:46:11:335 CPU/(3234:3234): Se conecto un cliente!
+[INFO] 02:46:11:335 CPU/(3234:3234): Se conectó cpu
+[INFO] 02:46:13:380 CPU/(3234:3234): Se conecto un cliente!
+[INFO] 02:46:13:380 CPU/(3234:3234): Se conectó kernel
+[INFO] 02:46:13:380 CPU/(3234:3234): Declaré el hilo.
+[INFO] 02:46:13:380 CPU/(3234:3234): socket: 7
+[INFO] 02:46:13:380 CPU/(3234:3234): Creé el hilo.
+[INFO] 02:46:33:893 CPU/(3243:3243): Listo para escuchar a mi cliente
+[INFO] 02:46:35:365 CPU/(3243:3243): Se conecto un cliente!
+[INFO] 02:46:35:366 CPU/(3243:3243): Se conectó filesystem
+[INFO] 02:46:37:297 CPU/(3243:3243): Se conecto un cliente!
+[INFO] 02:46:37:298 CPU/(3243:3243): Se conectó cpu
+[INFO] 02:46:39:279 CPU/(3243:3243): Se conecto un cliente!
+[INFO] 02:46:39:279 CPU/(3243:3243): Se conectó kernel
+[INFO] 02:46:39:279 CPU/(3243:3243): Declaré el hilo.
+[INFO] 02:46:39:279 CPU/(3243:3243): socket: 7
+[INFO] 02:46:39:279 CPU/(3243:3243): Creé el hilo.
+[INFO] 02:50:13:248 CPU/(3385:3385): Listo para escuchar a mi cliente
+[INFO] 02:50:14:566 CPU/(3385:3385): Se conecto un cliente!
+[INFO] 02:50:14:567 CPU/(3385:3385): Se conectó filesystem
+[INFO] 02:50:18:517 CPU/(3385:3385): Se conecto un cliente!
+[INFO] 02:50:18:517 CPU/(3385:3385): Se conectó cpu
+[INFO] 02:50:21:400 CPU/(3385:3385): Se conecto un cliente!
+[INFO] 02:50:21:400 CPU/(3385:3385): Se conectó kernel
+[INFO] 02:50:21:400 CPU/(3385:3385): Declaré el hilo.
+[INFO] 02:50:21:400 CPU/(3385:3385): socket: 7
+[INFO] 02:50:21:400 CPU/(3385:3385): Creé el hilo.
+[INFO] 02:52:26:698 CPU/(3484:3484): Listo para escuchar a mi cliente
+[INFO] 02:52:28:381 CPU/(3484:3484): Se conecto un cliente!
+[INFO] 02:52:28:382 CPU/(3484:3484): Se conectó filesystem
+[INFO] 02:52:30:449 CPU/(3484:3484): Se conecto un cliente!
+[INFO] 02:52:30:450 CPU/(3484:3484): Se conectó cpu
+[INFO] 02:52:31:924 CPU/(3484:3484): Se conecto un cliente!
+[INFO] 02:52:31:924 CPU/(3484:3484): Se conectó kernel
+[INFO] 02:52:31:924 CPU/(3484:3484): Declaré el hilo.
+[INFO] 02:52:31:924 CPU/(3484:3484): socket: 7
+[INFO] 02:52:31:925 CPU/(3484:3484): Creé el hilo.
+[INFO] 02:54:58:626 CPU/(3614:3614): Listo para escuchar a mi cliente
+[INFO] 02:54:59:840 CPU/(3614:3614): Se conecto un cliente!
+[INFO] 02:54:59:840 CPU/(3614:3614): Se conectó filesystem
+[INFO] 02:55:02:931 CPU/(3614:3614): Se conecto un cliente!
+[INFO] 02:55:02:931 CPU/(3614:3614): Se conectó cpu
+[INFO] 02:55:07:584 CPU/(3614:3614): Se conecto un cliente!
+[INFO] 02:55:07:584 CPU/(3614:3614): Se conectó kernel
+[INFO] 02:55:07:585 CPU/(3614:3614): Declaré el hilo.
+[INFO] 02:55:07:585 CPU/(3614:3614): socket: 7
+[INFO] 02:55:07:585 CPU/(3614:3614): Creé el hilo.
+[INFO] 02:58:48:181 CPU/(3777:3777): Listo para escuchar a mi cliente
+[INFO] 02:58:49:642 CPU/(3777:3777): Se conecto un cliente!
+[INFO] 02:58:49:643 CPU/(3777:3777): Se conectó filesystem
+[INFO] 02:58:51:362 CPU/(3777:3777): Se conecto un cliente!
+[INFO] 02:58:51:362 CPU/(3777:3777): Se conectó cpu
+[INFO] 02:58:53:765 CPU/(3777:3777): Se conecto un cliente!
+[INFO] 02:58:53:765 CPU/(3777:3777): Se conectó kernel
+[INFO] 02:58:53:765 CPU/(3777:3777): Declaré el hilo.
+[INFO] 02:58:53:765 CPU/(3777:3777): socket: 7
+[INFO] 02:58:53:765 CPU/(3777:3777): Creé el hilo.
+[INFO] 03:00:54:496 CPU/(3913:3913): Listo para escuchar a mi cliente
+[INFO] 03:00:56:143 CPU/(3913:3913): Se conecto un cliente!
+[INFO] 03:00:56:143 CPU/(3913:3913): Se conectó filesystem
+[INFO] 03:00:58:011 CPU/(3913:3913): Se conecto un cliente!
+[INFO] 03:00:58:011 CPU/(3913:3913): Se conectó cpu
+[INFO] 03:00:59:593 CPU/(3913:3913): Se conecto un cliente!
+[INFO] 03:00:59:593 CPU/(3913:3913): Se conectó kernel
+[INFO] 03:00:59:593 CPU/(3913:3913): Declaré el hilo.
+[INFO] 03:00:59:593 CPU/(3913:3913): socket: 7
+[INFO] 03:00:59:594 CPU/(3913:3913): Creé el hilo.
+[INFO] 03:02:23:277 CPU/(3990:3990): Listo para escuchar a mi cliente
+[INFO] 03:02:25:148 CPU/(3990:3990): Se conecto un cliente!
+[INFO] 03:02:25:148 CPU/(3990:3990): Se conectó filesystem
+[INFO] 03:02:27:037 CPU/(3990:3990): Se conecto un cliente!
+[INFO] 03:02:27:037 CPU/(3990:3990): Se conectó cpu
+[INFO] 03:02:29:714 CPU/(3990:3990): Se conecto un cliente!
+[INFO] 03:02:29:714 CPU/(3990:3990): Se conectó kernel
+[INFO] 03:02:29:714 CPU/(3990:3990): Declaré el hilo.
+[INFO] 03:02:29:714 CPU/(3990:3990): socket: 7
+[INFO] 03:02:29:715 CPU/(3990:3990): Creé el hilo.
+[INFO] 03:02:57:709 CPU/(4032:4032): Listo para escuchar a mi cliente
+[INFO] 03:02:59:400 CPU/(4032:4032): Se conecto un cliente!
+[INFO] 03:02:59:400 CPU/(4032:4032): Se conectó filesystem
+[INFO] 03:03:02:026 CPU/(4032:4032): Se conecto un cliente!
+[INFO] 03:03:02:026 CPU/(4032:4032): Se conectó cpu
+[INFO] 03:03:08:297 CPU/(4032:4032): Se conecto un cliente!
+[INFO] 03:03:08:297 CPU/(4032:4032): Se conectó kernel
+[INFO] 03:03:08:297 CPU/(4032:4032): Declaré el hilo.
+[INFO] 03:03:08:297 CPU/(4032:4032): socket: 7
+[INFO] 03:03:08:297 CPU/(4032:4032): Creé el hilo.
+[INFO] 03:04:46:514 CPU/(4226:4226): Listo para escuchar a mi cliente
+[INFO] 03:04:50:900 CPU/(4226:4226): Se conecto un cliente!
+[INFO] 03:04:50:901 CPU/(4226:4226): Se conectó filesystem
+[INFO] 03:04:52:729 CPU/(4226:4226): Se conecto un cliente!
+[INFO] 03:04:52:729 CPU/(4226:4226): Se conectó cpu
+[INFO] 03:05:13:890 CPU/(4226:4226): Se conecto un cliente!
+[INFO] 03:05:13:890 CPU/(4226:4226): Se conectó kernel
+[INFO] 03:05:13:890 CPU/(4226:4226): Declaré el hilo.
+[INFO] 03:05:13:890 CPU/(4226:4226): socket: 7
+[INFO] 03:05:13:891 CPU/(4226:4226): Creé el hilo.

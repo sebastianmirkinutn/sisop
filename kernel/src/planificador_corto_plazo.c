@@ -150,12 +150,13 @@ void planificador_rr(void* arg)
 
                 case WAIT:
                     recurso = recibir_mensaje(arg_h->socket_dispatch);
-                    wait(recurso, arg_h->socket_dispatch);
+                    wait_recurso(recurso, arg_h->socket_dispatch);
                     break;
 
 
                 case SIGNAL:
                     recurso = recibir_mensaje(arg_h->socket_dispatch);
+                    signal_recurso(recurso, arg_h->socket_dispatch);
                     break;
 
             default:
@@ -178,7 +179,7 @@ t_recurso* crear_recurso(char* nombre, uint32_t instancias)
     recurso->instancias = instancias;
 }
 
-void wait(char* recurso_buscado, int conexion_cpu_dispatch)
+void wait_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
 {
     printf("FUNCIÓN WAIT\n");
     t_recurso* recurso = NULL;
@@ -222,6 +223,46 @@ void wait(char* recurso_buscado, int conexion_cpu_dispatch)
     }
 }
 
+void signal_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
+{
+    printf("FUNCIÓN SIGNAL\n");
+    t_recurso* recurso = NULL;
+    bool buscar_recurso(void* arg)
+    {
+        t_recurso* elemento = (t_recurso*) arg;
+        return (!strcmp(elemento->nombre, recurso_buscado));
+    }
+    recurso = (t_recurso*) list_find(execute->recursos_asignados, (bool*)&recurso_buscado);
+    if(recurso == NULL)
+    {
+        /*El recurso no existe*/
+        printf("El recurso no está asignado\n");
+        enviar_operacion(conexion_cpu_dispatch, NO_LIBERADO);
+    }
+    else
+    {
+        if(recurso->instancias > 0)
+        {
+            recurso->instancias--;
+            recurso = (t_recurso*) list_find(recursos_disponibles, (bool*)&recurso_buscado);
+            if(recurso != NULL)
+            {
+                recurso->instancias++;
+                enviar_operacion(conexion_cpu_dispatch, ASIGNADO);
+            }
+            else
+            {
+                enviar_operacion(conexion_cpu_dispatch, NO_LIBERADO);
+            }
+        }
+        else
+        {
+            enviar_operacion(conexion_cpu_dispatch, NO_LIBERADO);
+        }
+   
+    
+    }
+}
 
 void planificador_fifo(void* arg)
 {
@@ -273,12 +314,13 @@ void planificador_fifo(void* arg)
 
                 case WAIT:
                     recurso = recibir_mensaje(arg_h->socket_dispatch);
-                    wait(recurso, arg_h->socket_dispatch);
+                    wait_recurso(recurso, arg_h->socket_dispatch);
                     break;
 
 
                 case SIGNAL:
                     recurso = recibir_mensaje(arg_h->socket_dispatch);
+                    signal_recurso(recurso, arg_h->socket_dispatch);
                     break;
 
             default:
@@ -354,12 +396,13 @@ void planificador_prioridades(void* arg)
 
                 case WAIT:
                     recurso = recibir_mensaje(arg_h->socket_dispatch);
-                    wait(recurso, arg_h->socket_dispatch);
+                    wait_recurso(recurso, arg_h->socket_dispatch);
                     break;
 
 
                 case SIGNAL:
                     recurso = recibir_mensaje(arg_h->socket_dispatch);
+                    signal_recurso(recurso, arg_h->socket_dispatch);
                     break;
 
             default:
