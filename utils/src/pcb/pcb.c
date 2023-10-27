@@ -22,6 +22,7 @@ t_pcb* crear_pcb(uint32_t prioridad, char* pseudocodigo)
     pcb->contexto = crear_registros();
     pcb->tabla_de_archivos_abiertos = list_create();
     pcb->archivo_de_pseudocodigo = strndup(pseudocodigo, strlen(pseudocodigo) + 1);
+    pcb->recursos_asignados = list_create();
     contador_pid++;
     return pcb;
 }
