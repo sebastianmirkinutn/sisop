@@ -65,5 +65,6 @@ t_registros* recibir_contexto_de_ejecucion(int socket);
 void enviar_contexto_de_ejecucion(t_registros* registros, int socket);
 t_motivo_desalojo recibir_motivo_desalojo(int socket);
 void enviar_motivo_desalojo(int socket, t_motivo_desalojo motivo);
+t_recurso* crear_recurso(char* nombre, uint32_t instancias);
 
 #endif

@@ -21,71 +21,6 @@ extern t_list* recursos_disponibles;
 
 extern int p_finished;
 
-char* de_t_motivo_a_string(t_motivo_desalojo motivo)
-{
-    switch (motivo)
-    {
-    case SUCCESS:
-        return "SUCCESS";
-        break;
-
-    case INVALID_RESOURCE:
-        return "INVALID_RESOURCE";
-        break;
-
-    case CLOCK_INTERRUPT:
-        return "CLOCK_INTERRUPT";
-        break;
-
-    case INVALID_WRITE:
-        return "INVALID_WRITE";
-        break;
-    
-    default:
-        return "OTRO";
-        break;
-    }
-}
-
-void evaluar_motivo_desalojo(t_motivo_desalojo motivo)
-{
-    switch (motivo)
-    {
-    case SUCCESS:
-        /* AGREGO A COLA_EXIT */
-        break;
-
-    case CLOCK_INTERRUPT:
-        sem_wait(&mutex_cola_ready);
-        execute->estado = READY;
-        queue_push(cola_ready, execute);
-        sem_post(&mutex_cola_ready);
-        sem_post(&procesos_en_ready);
-        break;
-    
-    default:
-        break;
-    }
-}
-
-void clock_interrupt(void* arg)
-{
-    t_log* logger_hilo_ci = iniciar_logger("log_plani.log","HILO");
-    t_args_hilo* arg_h = (t_args_hilo*) arg;
-    log_info(logger_hilo_ci, "Empieza clock_interrupt");
-    op_code operacion = INTERRUPT;
-
-    while(1)
-    {
-        sem_wait(&start_interrupts);
-        sleep(2);
-        sem_wait(&mutex_flag_p_finished);
-        if (!p_finished) send(arg_h->socket_interrupt, &operacion, sizeof(op_code), 0);
-        sem_post(&mutex_flag_p_finished);
-
-    }
-}
-
 void planificador_rr(void* arg)
 {
     t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
@@ -172,11 +107,220 @@ void planificador_rr(void* arg)
     }
 }
 
-t_recurso* crear_recurso(char* nombre, uint32_t instancias)
+void planificador_fifo(void* arg)
 {
-    t_recurso* recurso = malloc(sizeof(t_recurso));
-    recurso->nombre = nombre;
-    recurso->instancias = instancias;
+    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
+    t_args_hilo* arg_h = (t_args_hilo*) arg;
+    log_info(logger_hilo, "Empieza el planificador fifo");
+    op_code operacion;
+    char* recurso;
+    while(1)
+    {
+        sem_wait(&planificacion_corto_plazo);
+        sem_wait(&procesos_en_ready);
+        log_info(logger_hilo,"Hice wait del gdmp");
+        sem_wait(&mutex_cola_ready);
+        log_info(logger_hilo,"Hice wait de la cola de new: %i",cola_new);
+
+        execute = queue_pop(cola_ready);
+        sem_post(&mutex_cola_ready);
+        execute->estado = EXEC;
+
+        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute->pid);
+  
+        send(arg_h->socket_dispatch, &(execute->pid), sizeof(uint32_t), 0);
+        //enviar_contexto_de_ejecucion(&(execute->contexto), arg_h->socket_dispatch);
+        
+        log_info(logger_hilo, "Envié %i a %i", execute->pid, arg_h->socket_dispatch);
+        send(arg_h->socket_dispatch, &(execute->contexto->AX), sizeof(uint32_t), 0);
+        send(arg_h->socket_dispatch, &(execute->contexto->BX), sizeof(uint32_t), 0);
+        send(arg_h->socket_dispatch, &(execute->contexto->CX), sizeof(uint32_t), 0);
+        send(arg_h->socket_dispatch, &(execute->contexto->DX), sizeof(uint32_t), 0);
+        send(arg_h->socket_dispatch, &(execute->contexto->PC), sizeof(uint32_t), 0);
+        
+        do{
+            operacion = recibir_operacion(arg_h->socket_dispatch);
+            switch (operacion)
+            {
+
+                case DESALOJO:
+                    t_motivo_desalojo motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
+                    recv(arg_h->socket_dispatch, &(execute->contexto->BX), sizeof(uint32_t), MSG_WAITALL);
+                    recv(arg_h->socket_dispatch, &(execute->contexto->AX), sizeof(uint32_t), MSG_WAITALL);
+                    recv(arg_h->socket_dispatch, &(execute->contexto->CX), sizeof(uint32_t), MSG_WAITALL);
+                    recv(arg_h->socket_dispatch, &(execute->contexto->DX), sizeof(uint32_t), MSG_WAITALL);
+                    recv(arg_h->socket_dispatch, &(execute->contexto->PC), sizeof(uint32_t), MSG_WAITALL);
+                    char* motivo_de_finalizacion = de_t_motivo_a_string(motivo);
+                    log_info(logger_hilo, "Fin de proceso %i motivo %s", execute->pid, motivo_de_finalizacion);
+                    evaluar_motivo_desalojo(motivo);
+                break;
+
+                case WAIT:
+                    recurso = recibir_mensaje(arg_h->socket_dispatch);
+                    wait_recurso(recurso, arg_h->socket_dispatch);
+                    break;
+
+
+                case SIGNAL:
+                    recurso = recibir_mensaje(arg_h->socket_dispatch);
+                    signal_recurso(recurso, arg_h->socket_dispatch);
+                    break;
+
+            default:
+                break;
+            }
+        }
+        while(operacion != DESALOJO);
+        
+        sem_post(&planificacion_corto_plazo);
+    }
+}
+
+void planificador_prioridades(void* arg)
+{
+    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
+    t_args_hilo* arg_h = (t_args_hilo*) arg;
+    log_info(logger_hilo, "Empieza el planificador por prioridades");
+    op_code operacion;
+    char* recurso;
+    while(1)
+    {
+        sem_wait(&planificacion_corto_plazo);
+        sem_wait(&procesos_en_ready);
+        log_info(logger_hilo,"Hice wait del gdmp");
+        sem_wait(&mutex_cola_ready);
+        log_info(logger_hilo,"Hice wait de la cola de new: %i",cola_new);
+
+        ordenar_colas_segun_prioridad(cola_ready);
+        execute = queue_pop(cola_ready);
+        sem_post(&mutex_cola_ready);
+        execute->estado = EXEC;
+
+        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute->pid);
+
+        send(arg_h->socket_dispatch, &(execute->pid), sizeof(uint32_t), 0);
+        log_info(logger_hilo, "Envié %i a %i", execute->pid, arg_h->socket_dispatch);
+        send(arg_h->socket_dispatch, &(execute->contexto->AX), sizeof(uint32_t), 0);
+        send(arg_h->socket_dispatch, &(execute->contexto->BX), sizeof(uint32_t), 0);
+        send(arg_h->socket_dispatch, &(execute->contexto->CX), sizeof(uint32_t), 0);
+        send(arg_h->socket_dispatch, &(execute->contexto->DX), sizeof(uint32_t), 0);
+        send(arg_h->socket_dispatch, &(execute->contexto->PC), sizeof(uint32_t), 0);
+
+
+        do{
+            operacion = recibir_operacion(arg_h->socket_dispatch);
+            switch (operacion)
+            {
+
+                case DESALOJO:
+                    t_motivo_desalojo motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
+                    recv(arg_h->socket_dispatch, &(execute->contexto->BX), sizeof(uint32_t), MSG_WAITALL);
+                    recv(arg_h->socket_dispatch, &(execute->contexto->AX), sizeof(uint32_t), MSG_WAITALL);
+                    recv(arg_h->socket_dispatch, &(execute->contexto->CX), sizeof(uint32_t), MSG_WAITALL);
+                    recv(arg_h->socket_dispatch, &(execute->contexto->DX), sizeof(uint32_t), MSG_WAITALL);
+                    recv(arg_h->socket_dispatch, &(execute->contexto->PC), sizeof(uint32_t), MSG_WAITALL);
+                    char* motivo_de_finalizacion = de_t_motivo_a_string(motivo);
+                    log_info(logger_hilo, "Fin de proceso %i motivo %s", execute->pid, motivo_de_finalizacion);
+                    log_info(logger_hilo, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", execute->contexto->AX, execute->contexto->BX, execute->contexto->CX, execute->contexto->DX, execute->contexto->PC);
+
+                    evaluar_motivo_desalojo(motivo);
+                break;
+
+                case WAIT:
+                    recurso = recibir_mensaje(arg_h->socket_dispatch);
+                    wait_recurso(recurso, arg_h->socket_dispatch);
+                    break;
+
+
+                case SIGNAL:
+                    recurso = recibir_mensaje(arg_h->socket_dispatch);
+                    signal_recurso(recurso, arg_h->socket_dispatch);
+                    break;
+
+            default:
+                break;
+            }
+        }
+        while(operacion != DESALOJO);
+
+        sem_post(&planificacion_corto_plazo);
+    }
+}
+
+void clock_interrupt(void* arg)
+{
+    t_log* logger_hilo_ci = iniciar_logger("log_plani.log","HILO");
+    t_args_hilo* arg_h = (t_args_hilo*) arg;
+    log_info(logger_hilo_ci, "Empieza clock_interrupt");
+    op_code operacion = INTERRUPT;
+
+    while(1)
+    {
+        sem_wait(&start_interrupts);
+        sleep(2);
+        sem_wait(&mutex_flag_p_finished);
+        if (!p_finished) send(arg_h->socket_interrupt, &operacion, sizeof(op_code), 0);
+        sem_post(&mutex_flag_p_finished);
+
+    }
+}
+
+void ordenar_colas_segun_prioridad(t_queue* queue)
+{
+    bool comparar_prioridad(void* arg1, void* arg2)
+    {
+        t_pcb* pcb1 = (t_pcb*) arg1;
+        t_pcb* pcb2 = (t_pcb*) arg2;
+        return (pcb1->prioridad < pcb2->prioridad);
+    }
+    list_sort(queue->elements, (bool*)&comparar_prioridad);
+}
+
+char* de_t_motivo_a_string(t_motivo_desalojo motivo)
+{
+    switch (motivo)
+    {
+    case SUCCESS:
+        return "SUCCESS";
+        break;
+
+    case INVALID_RESOURCE:
+        return "INVALID_RESOURCE";
+        break;
+
+    case CLOCK_INTERRUPT:
+        return "CLOCK_INTERRUPT";
+        break;
+
+    case INVALID_WRITE:
+        return "INVALID_WRITE";
+        break;
+    
+    default:
+        return "OTRO";
+        break;
+    }
+}
+
+void evaluar_motivo_desalojo(t_motivo_desalojo motivo)
+{
+    switch (motivo)
+    {
+    case SUCCESS:
+        /* AGREGO A COLA_EXIT */
+        break;
+
+    case CLOCK_INTERRUPT:
+        sem_wait(&mutex_cola_ready);
+        execute->estado = READY;
+        queue_push(cola_ready, execute);
+        sem_post(&mutex_cola_ready);
+        sem_post(&procesos_en_ready);
+        break;
+    
+    default:
+        break;
+    }
 }
 
 void wait_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
@@ -248,7 +392,7 @@ void signal_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
             if(recurso != NULL)
             {
                 recurso->instancias++;
-                enviar_operacion(conexion_cpu_dispatch, ASIGNADO);
+                enviar_operacion(conexion_cpu_dispatch, LIBERADO);
             }
             else
             {
@@ -259,158 +403,6 @@ void signal_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
         {
             enviar_operacion(conexion_cpu_dispatch, NO_LIBERADO);
         }
-   
     
-    }
-}
-
-void planificador_fifo(void* arg)
-{
-    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
-    t_args_hilo* arg_h = (t_args_hilo*) arg;
-    log_info(logger_hilo, "Empieza el planificador fifo");
-    op_code operacion;
-    char* recurso;
-    while(1)
-    {
-        sem_wait(&planificacion_corto_plazo);
-        sem_wait(&procesos_en_ready);
-        log_info(logger_hilo,"Hice wait del gdmp");
-        sem_wait(&mutex_cola_ready);
-        log_info(logger_hilo,"Hice wait de la cola de new: %i",cola_new);
-
-        execute = queue_pop(cola_ready);
-        sem_post(&mutex_cola_ready);
-        execute->estado = EXEC;
-
-        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute->pid);
-  
-        send(arg_h->socket_dispatch, &(execute->pid), sizeof(uint32_t), 0);
-        //enviar_contexto_de_ejecucion(&(execute->contexto), arg_h->socket_dispatch);
-        
-        log_info(logger_hilo, "Envié %i a %i", execute->pid, arg_h->socket_dispatch);
-        send(arg_h->socket_dispatch, &(execute->contexto->AX), sizeof(uint32_t), 0);
-        send(arg_h->socket_dispatch, &(execute->contexto->BX), sizeof(uint32_t), 0);
-        send(arg_h->socket_dispatch, &(execute->contexto->CX), sizeof(uint32_t), 0);
-        send(arg_h->socket_dispatch, &(execute->contexto->DX), sizeof(uint32_t), 0);
-        send(arg_h->socket_dispatch, &(execute->contexto->PC), sizeof(uint32_t), 0);
-        
-        do{
-            operacion = recibir_operacion(arg_h->socket_dispatch);
-            switch (operacion)
-            {
-
-                case DESALOJO:
-                    t_motivo_desalojo motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->BX), sizeof(uint32_t), MSG_WAITALL);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->AX), sizeof(uint32_t), MSG_WAITALL);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->CX), sizeof(uint32_t), MSG_WAITALL);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->DX), sizeof(uint32_t), MSG_WAITALL);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->PC), sizeof(uint32_t), MSG_WAITALL);
-                    char* motivo_de_finalizacion = de_t_motivo_a_string(motivo);
-                    log_info(logger_hilo, "Fin de proceso %i motivo %s", execute->pid, motivo_de_finalizacion);
-                    evaluar_motivo_desalojo(motivo);
-                break;
-
-                case WAIT:
-                    recurso = recibir_mensaje(arg_h->socket_dispatch);
-                    wait_recurso(recurso, arg_h->socket_dispatch);
-                    break;
-
-
-                case SIGNAL:
-                    recurso = recibir_mensaje(arg_h->socket_dispatch);
-                    signal_recurso(recurso, arg_h->socket_dispatch);
-                    break;
-
-            default:
-                break;
-            }
-        }
-        while(operacion != DESALOJO);
-        
-        sem_post(&planificacion_corto_plazo);
-    }
-}
-
-void ordenar_colas_segun_prioridad(t_queue* queue)
-{
-    bool comparar_prioridad(void* arg1, void* arg2)
-    {
-        t_pcb* pcb1 = (t_pcb*) arg1;
-        t_pcb* pcb2 = (t_pcb*) arg2;
-        return (pcb1->prioridad < pcb2->prioridad);
-    }
-    list_sort(queue->elements, (bool*)&comparar_prioridad);
-}
-
-void planificador_prioridades(void* arg)
-{
-    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
-    t_args_hilo* arg_h = (t_args_hilo*) arg;
-    log_info(logger_hilo, "Empieza el planificador por prioridades");
-    op_code operacion;
-    char* recurso;
-    while(1)
-    {
-        sem_wait(&planificacion_corto_plazo);
-        sem_wait(&procesos_en_ready);
-        log_info(logger_hilo,"Hice wait del gdmp");
-        sem_wait(&mutex_cola_ready);
-        log_info(logger_hilo,"Hice wait de la cola de new: %i",cola_new);
-
-        ordenar_colas_segun_prioridad(cola_ready);
-        execute = queue_pop(cola_ready);
-        sem_post(&mutex_cola_ready);
-        execute->estado = EXEC;
-
-        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute->pid);
-
-        send(arg_h->socket_dispatch, &(execute->pid), sizeof(uint32_t), 0);
-        log_info(logger_hilo, "Envié %i a %i", execute->pid, arg_h->socket_dispatch);
-        send(arg_h->socket_dispatch, &(execute->contexto->AX), sizeof(uint32_t), 0);
-        send(arg_h->socket_dispatch, &(execute->contexto->BX), sizeof(uint32_t), 0);
-        send(arg_h->socket_dispatch, &(execute->contexto->CX), sizeof(uint32_t), 0);
-        send(arg_h->socket_dispatch, &(execute->contexto->DX), sizeof(uint32_t), 0);
-        send(arg_h->socket_dispatch, &(execute->contexto->PC), sizeof(uint32_t), 0);
-
-
-        do{
-            operacion = recibir_operacion(arg_h->socket_dispatch);
-            switch (operacion)
-            {
-
-                case DESALOJO:
-                    t_motivo_desalojo motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->BX), sizeof(uint32_t), MSG_WAITALL);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->AX), sizeof(uint32_t), MSG_WAITALL);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->CX), sizeof(uint32_t), MSG_WAITALL);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->DX), sizeof(uint32_t), MSG_WAITALL);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->PC), sizeof(uint32_t), MSG_WAITALL);
-                    char* motivo_de_finalizacion = de_t_motivo_a_string(motivo);
-                    log_info(logger_hilo, "Fin de proceso %i motivo %s", execute->pid, motivo_de_finalizacion);
-                    log_info(logger_hilo, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", execute->contexto->AX, execute->contexto->BX, execute->contexto->CX, execute->contexto->DX, execute->contexto->PC);
-
-                    evaluar_motivo_desalojo(motivo);
-                break;
-
-                case WAIT:
-                    recurso = recibir_mensaje(arg_h->socket_dispatch);
-                    wait_recurso(recurso, arg_h->socket_dispatch);
-                    break;
-
-
-                case SIGNAL:
-                    recurso = recibir_mensaje(arg_h->socket_dispatch);
-                    signal_recurso(recurso, arg_h->socket_dispatch);
-                    break;
-
-            default:
-                break;
-            }
-        }
-        while(operacion != DESALOJO);
-
-        sem_post(&planificacion_corto_plazo);
     }
 }
