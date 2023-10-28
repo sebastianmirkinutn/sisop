@@ -41,6 +41,19 @@ void recibir_ordenes_cpu(void* arg)
     
 }
 
+
+t_pcb* buscar_proceso_segun_pid(uint32_t pid, t_queue* cola)
+{
+
+    bool tiene_mismo_pid(void* pcb) {
+        return (((t_pcb*)pcb)->pid == pid);
+    }
+
+    t_pcb* pcb = NULL;
+    pcb = list_find(cola, tiene_mismo_pid);
+    return pcb;
+}
+
 int main(int argc, char* argv[]){
    
     t_log* logger = iniciar_logger("log_kernel","Kernel");
@@ -157,7 +170,27 @@ int main(int argc, char* argv[]){
         }
         else if(!strcmp(c_argv[0], "FINALIZAR_PROCESO"))
         {
+            t_pcb* pcb;
+            //buscar el proceso (primero fijarse si esta ejecutando, segundo en la lista de blocked y tercero ready...)
+            if(execute->pid == c_argv[1]){
+                //mandamos interrupcion a cpu 
+            }else
+            {
+                pcb = buscar_proceso_segun_pid(c_argv[1], cola_blocked)
+                if(buscar_proceso_segun_pid(c_argv[1], cola_blocked) != NULL){
+                    //sacar al proceso de la cola de bloqueados
+                }
+                else
+                {
+                    pcb = buscar_proceso_segun_pid(c_argv[1], cola_ready)
 
+                }
+                
+            }
+
+            //send a memoria para liberar espacio
+            liberar_recursos(pcb);
+            
         }
         else if(!strcmp(c_argv[0], "DETENER_PLANIFICACION"))
         {
@@ -207,3 +240,5 @@ int main(int argc, char* argv[]){
     liberar_conexion(conexion_cpu_dispatch);
     
 }
+
+
