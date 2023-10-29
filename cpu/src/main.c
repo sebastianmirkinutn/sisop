@@ -76,6 +76,49 @@ void sumar_a_registro(char* registro, uint32_t numero)
     }
 }
 
+void restar_a_registro(char* registro, uint32_t numero)
+{
+    if(!strcmp(registro, "AX"))
+    {
+        registros->AX -= numero;
+    }
+    else if(!strcmp(registro, "BX"))
+    {
+        registros->BX -= numero;
+    }
+    else if(!strcmp(registro, "CX"))
+    {
+        registros->BX -= numero;
+    }
+    else if(!strcmp(registro, "CX"))
+    {
+        registros->CX -= numero;
+    }
+    else if(!strcmp(registro, "DX"))
+    {
+        registros->DX -= numero;
+    }
+}
+
+void sub(char* destino, char* origen){
+    if(!strcmp(origen, "AX"))
+    {
+        restar_a_registro(destino, registros->AX);
+    }
+    else if(!strcmp(origen, "BX"))
+    {
+        restar_a_registro(destino, registros->BX);
+    }
+    else if(!strcmp(origen, "CX"))
+    {
+        restar_a_registro(destino, registros->CX);
+    }
+    else if(!strcmp(origen, "DX"))
+    {
+        restar_a_registro(destino, registros->DX);
+    }
+}
+
 void sum(char* destino, char* origen){
     if(!strcmp(origen, "AX"))
     {
@@ -94,6 +137,7 @@ void sum(char* destino, char* origen){
         sumar_a_registro(destino, registros->DX);
     }
 }
+
 
 int main(int argc, char* argv[]){
     t_log* logger = iniciar_logger("log_cpu.log","CPU");
@@ -213,7 +257,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "SUB"))
             {
-            
+                sub(parametros[1], parametros[2]);
             }
             else if(!strcmp(parametros[0], "JNZ"))
             {
