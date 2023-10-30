@@ -49,4 +49,3 @@ char *cargar_buffer_escritura(char *buffer_escritura,uint32_t numero_bloque,char
     buffer_escritura[indice_buffer]='\0';
     return(buffer_escritura);
 }
-
