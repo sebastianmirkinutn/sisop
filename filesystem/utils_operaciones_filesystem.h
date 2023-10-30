@@ -151,12 +151,15 @@ int leer_archivo(char *nombreArchivo,t_log *logger,FILE *fat,uint32_t ui32_tamBl
     /*Obtiene la direccion de la entrada inicial de la tabla FAT*/
     ui32_cantBloques_a_leer=cantBloques_FAT_necesitados(tamanio_Archivo_fcb(nombreArchivo,c_directorio_fcb),ui32_tamBloque);
     ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb);
+    printf("La entrada inicial en la FAT del archivo:%s es:%u\n",nombreArchivo,ui32_entrada_FAT);
     for (indice=0;indice<ui32_cantBloques_a_leer;indice++) {
         strcat(buffer_documento,lectura_de_archivo_bloques(filesystem,ui32_entrada_FAT,buffer_lectura,ui32_tamBloque));
         ui32_dataEntrada_FAT=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
+        printf ("---------------------------------------------------\n");
+        printf("La siguiente entrada en la FAT del archivo:%s es:%u\n",nombreArchivo,ui32_entrada_FAT);
         committed_logger_ACCESO_FAT(ui32_entrada_FAT,ui32_dataEntrada_FAT,logger);
         committed_logger_LECTURA_ARCHIVO(nombreArchivo,ui32_entrada_FAT,0,logger);//0 porque falta completar la direccion de memoria
-        committed_logger_ACCESO_BLOQUE_ARCHIVO(nombreArchivo,ui32_numero_bloque,ui32_entrada_FAT,atoi_(ui32_tamBloque),logger);
+        committed_logger_ACCESO_BLOQUE_ARCHIVO(nombreArchivo,ui32_numero_bloque,ui32_entrada_FAT,ui32_tamBloque,logger);
         ui32_entrada_FAT=ui32_dataEntrada_FAT;
         ui32_numero_bloque++;
     }
@@ -189,7 +192,7 @@ int escribir_archivo(char *nombreArchivo,char *documentoArchivo,t_log *logger,FI
         ui32_dataEntrada_FAT=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
         committed_logger_ACCESO_FAT(ui32_entrada_FAT,ui32_dataEntrada_FAT,logger);
         committed_logger_ESCRITURA_ARCHIVO(nombreArchivo,ui32_entrada_FAT,0,logger);//0 porque falta completar la direccion de memoria
-        committed_logger_ACCESO_BLOQUE_ARCHIVO(nombreArchivo,ui32_numero_bloque,ui32_entrada_FAT,atoi_(ui32_tamBloque),logger);
+        committed_logger_ACCESO_BLOQUE_ARCHIVO(nombreArchivo,ui32_numero_bloque,ui32_entrada_FAT,ui32_tamBloque,logger);
         ui32_entrada_FAT=ui32_dataEntrada_FAT;
         ui32_numero_bloque++;
     }
