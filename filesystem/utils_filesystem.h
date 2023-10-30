@@ -11,52 +11,55 @@
 /*---------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------*/
 
-int existeArchivoFilesystem(FILE *filesystem,char *c_path_bloques) {
+FILE *existeArchivoFilesystem(FILE *filesystem,char *c_path_bloques) {
     filesystem=fopen (c_path_bloques,"rb");
-    if (filesystem==NULL) return (0); /*Retorna que el archivo NO existe */
-    return (1); /*Retorna que el archivo existe */
+    if (filesystem==NULL) return (NULL); /*Retorna que el archivo NO existe */
+    return (filesystem); /*Retorna que el archivo existe */
 }
 
-int creacionFilesystem(FILE *filesystem,char *c_path_bloques) {
+FILE *creacionFilesystem(FILE *filesystem,char *c_path_bloques) {
     uint32_t unBloque32Bits=0;
     filesystem=fopen (c_path_bloques,"w+b");
     if (filesystem==NULL) {
         printf("No fue posible crear el archivo bloques.dat\n");
-        return(0);
+        return(NULL);
     }
     else {
         for (int i=0;i<262143;i++) fwrite(&unBloque32Bits,sizeof(unBloque32Bits),1,filesystem);
-        return (1);
+        return (filesystem);
     }
 }
 
-int abrirFilesystem(FILE *filesystem,char *c_path_bloques) {
+FILE *abrirFilesystem(FILE *filesystem,char *c_path_bloques) {
     filesystem=fopen (c_path_bloques,"r+b");
     if (filesystem==NULL) return (0);
-    else return (1);
+    else return (filesystem);
 }
 
-int iniciarArchivoFilesystem(FILE *filesystem,char *c_path_bloques) {
-    if (existeArchivoFilesystem(filesystem,c_path_bloques)) {
-        if (abrirFilesystem(filesystem,c_path_bloques)) {
+FILE *iniciarArchivoFilesystem(FILE *filesystem,char *c_path_bloques) {
+	filesystem=existeArchivoFilesystem(filesystem,c_path_bloques);
+    if (filesystem) {
+    	filesystem=abrirFilesystem(filesystem,c_path_bloques);
+        if (filesystem) {
             printf("filesystem abierto\n");
+            return(filesystem);
         }
         else {
             printf("No se pudo abrir el archivo de Filesystem\n");
-            return (0);
+            return (NULL);
         }
     }
     else {
-        if(creacionFilesystem(filesystem,c_path_bloques)) {
+    	filesystem=creacionFilesystem(filesystem,c_path_bloques);
+        if(filesystem) {
             printf("Archivo de Filesystem creado\n");
-            return (1);
+            return (filesystem);
         }
         else {
             printf("No se pudo crear el archivo de Filesystem\n");
-            return (0);
+            return (NULL);
         };
     }
-    return (1);
 }
 
 /*---------------------------------------------------------------------------------*/
@@ -96,6 +99,7 @@ uint32_t tamanio_Archivo_fcb(char *nombreArchivo,char *c_directorio_fcb) {
 uint32_t bloqueInicial_Archivo_fcb(char *nombreArchivo,char *c_directorio_fcb) {
     FILE *f_arch_fcb;
     char direccionArchivo[100]="";
+
     char cDatoLeido[LONG_BUFFER];
     char cBloqueInicio[4]="";
     int i=0;
@@ -272,12 +276,13 @@ FILE *reiniciar_fat(FILE *fat,uint32_t ui32_max_entradas_fat) {
 /*Retorna la siguiente entrada de la tabla FAT siguiendo la lista enlazada*/
 uint32_t siguiente_entrada_tabla_FAT(FILE *fat,uint32_t ui32_entrada_FAT) {
     uint32_t ui32_data_bloque_tabla_FAT=0;
-
+    printf ("Estoy en siguiente entrada tabla FAT\n");
     rewind(fat);
     ui32_entrada_FAT=ui32_entrada_FAT*4;
     fseek(fat,ui32_entrada_FAT,SEEK_SET);
     fread (&ui32_data_bloque_tabla_FAT,sizeof(ui32_data_bloque_tabla_FAT),1,fat);
     return(ui32_data_bloque_tabla_FAT/4);
+
 }
 
 /*Actualiza una entrada de la tabla FAT con un valor específico*/
