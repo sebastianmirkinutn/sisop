@@ -1,23 +1,9 @@
-#include <string.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-
+#include "utils_adicionales.h"
 
 int strlen_(char *texto){
 	int i=0;
 	while(texto[i++]!='\0');
 	return(i-1);
-}
-
-char *strcpy_(char *texto1,char *texto2) {
-	int i=0;
-	while(texto2[i]!='\0') {
-		texto1[i]=texto2[i];
-		i++;
-	}
-	texto1[i]='\0';
-	return(texto1);
 }
 
 uint32_t potencia(uint32_t num1,uint32_t num2) {

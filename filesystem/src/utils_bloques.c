@@ -1,21 +1,4 @@
-#include <string.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-/*
-int creacionFilesystem(FILE *filesystem,char *nombreArchivo_filesystem) {
-    uint32_t unBloque32Bits=0;
-    filesystem=fopen (nombreArchivo_filesystem,"w+b");
-    if (filesystem==NULL) {
-        printf("No fue posible crear el archivo bloques.dat\n");
-        return(0);
-    }
-    else {
-        for (int i=0;i<262143;i++) fwrite(&unBloque32Bits,sizeof(unBloque32Bits),1,filesystem);
-        return (1);
-    }
-}
-*/
+#include "utils_bloques.h"
 
 char *lectura_de_archivo_bloques(FILE *filesystem,uint32_t ui32_entrada_FAT,char *buffer_lectura,uint32_t tam_bloque) {
     uint32_t ui32_bloque_lectura=0;

@@ -18,6 +18,7 @@
         "stdio.h": "c",
         "pthread.h": "c",
         "planificador_corto_plazo.h": "c",
-        "thread_parameters.h": "c"
+        "thread_parameters.h": "c",
+        "utils_committed_logger.h": "c"
     }
 }

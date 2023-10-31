@@ -13,7 +13,12 @@ typedef enum
 	NO_ASIGNADO,
 	DESALOJO,
 	LIBERADO,
-	NO_LIBERADO
+	NO_LIBERADO,
+	F_READ,
+	F_WRITE,
+	F_SEEK,
+	F_CLOSE,
+	F_OPEN
 }op_code;
 
 typedef struct

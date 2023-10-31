@@ -1,5 +1,4 @@
-
-
+#include "utils_operaciones_filesystem.h"
 /*-----------------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------------*/
 /* Emulacion de peticiones del modulo Kernel*/
@@ -9,7 +8,7 @@ uint32_t abrir_archivo(char *nombreArchivo,char *c_directorio_fcb) {
     FILE *f_arch_fcb;
     char direccionArchivo[100]="";
 
-    strcpy_(direccionArchivo,c_directorio_fcb);
+    strcpy(direccionArchivo,c_directorio_fcb);
 
     strcat(direccionArchivo,nombreArchivo);
     strcat(direccionArchivo,".fcb");

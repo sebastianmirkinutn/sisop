@@ -1,7 +1,4 @@
-#include <string.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "utils_filesystem.h"
 
 #define LONG_BUFFER 50
 
@@ -79,7 +76,7 @@ uint32_t tamanio_Archivo_fcb(char *nombreArchivo,char *c_directorio_fcb) {
     int tope=0;
     uint32_t numeroTamanioArchivo;
 
-    strcpy_(direccionArchivo,c_directorio_fcb);
+    strcpy(direccionArchivo,c_directorio_fcb);
     strcat(direccionArchivo,"/");
     strcat(direccionArchivo,nombreArchivo);
     strcat(direccionArchivo,".fcb");
@@ -108,7 +105,7 @@ uint32_t bloqueInicial_Archivo_fcb(char *nombreArchivo,char *c_directorio_fcb) {
     int numeroBloqueIncial;
 
 
-    strcpy_(direccionArchivo,c_directorio_fcb);
+    strcpy(direccionArchivo,c_directorio_fcb);
     strcat(direccionArchivo,"/");
     strcat(direccionArchivo,nombreArchivo);
     strcat(direccionArchivo,".fcb");
@@ -175,7 +172,7 @@ int actualizar_Archivo_fcb(char *nombreArchivo,uint32_t ui32_longMen_datos,uint3
     char cInfo_a_Almacenar[100]="";
     char cNumero[10];
 
-    strcpy_(direccionArchivo,c_directorio_fcb);
+    strcpy(direccionArchivo,c_directorio_fcb);
     strcat(direccionArchivo,"/");
     /*------------Apertura de archivo fcb--------------------*/
     strcat(direccionArchivo,nombreArchivo);
@@ -369,4 +366,3 @@ int abrirDocumento(char *nombreArchivo,char *documentoArchivo) {
     fclose(f);
     return(tamArchivo);
 }
-
