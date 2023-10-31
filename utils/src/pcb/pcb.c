@@ -1,6 +1,6 @@
 # include "pcb.h"
 
-uint32_t contador_pid = 0;
+uint32_t contador_pid = 1;
 
 t_registros* crear_registros()
 {

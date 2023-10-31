@@ -8,9 +8,6 @@ sem_t procesos_en_new;
 sem_t procesos_en_ready;
 sem_t planificacion_largo_plazo;
 sem_t planificacion_corto_plazo;
-sem_t start_interrupts;
-sem_t mutex_flag_p_finished;
-
 
 t_queue *cola_ready;
 t_queue *cola_blocked;
@@ -19,8 +16,6 @@ t_queue *cola_new;
 
 t_pcb* execute;
 t_list* recursos_disponibles;
-
-int p_finished;
 
 uint32_t* instancias_recursos(char** instancias)
 {
@@ -57,7 +52,7 @@ int main(int argc, char* argv[]){
     char* algoritmo_planificacion = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
     char** recursos = config_get_array_value(config, "RECURSOS");
     char** intancias_recursos = config_get_array_value(config, "INSTANCIAS_RECURSOS");
-
+    int quantum = config_get_int_value(config, "QUANTUM");
 
     int conexion_cpu_dispatch = crear_conexion(logger, ip_cpu, puerto_cpu_dispatch);
     int conexion_cpu_interrupt = crear_conexion(logger, ip_cpu, puerto_cpu_interrupt);
@@ -83,6 +78,7 @@ int main(int argc, char* argv[]){
     args_hilo.socket_dispatch = conexion_cpu_dispatch;
     args_hilo.socket_interrupt = conexion_cpu_interrupt;
     args_hilo.socket_memoria = conexion_memoria;
+    args_hilo.quantum = quantum; 
     
     pthread_t hilo_planificador_de_largo_plazo;
     pthread_create(&hilo_planificador_de_largo_plazo, NULL, &planificador_largo_plazo, (void*)&args_hilo);
