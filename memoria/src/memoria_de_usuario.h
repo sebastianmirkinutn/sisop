@@ -1,5 +1,5 @@
-#ifndef MEMORIA_H
-#define MEMORIA_H
+#ifndef MEMORIA_DE_USUARIO_H
+#define MEMORIA_DE_USUARIO_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,10 +13,7 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <commons/bitarray.h>
-#include <memoria/memoria.h>
 #include <threads/thread_parameters.h>
-
-#include "memoria_de_instrucciones.h"
-#include "memoria_de_usuario.h"
+#include <memoria/memoria.h>
 
 #endif
