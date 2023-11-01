@@ -1,17 +1,11 @@
 #ifndef CPU_H
 #define CPU_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <commons/log.h>
-#include <commons/config.h>
-#include <log/log_utils.h>
-#include <sockets/sockets.h>
 #include <sockets/client_utils.h>
 #include <sockets/server_utils.h>
+#include <threads/thread_parameters.h>
 #include <pcb/pcb.h>
-#include <semaphore.h>
-#include <pthread.h>
+#include "interrupciones.h"
 
 #endif
 

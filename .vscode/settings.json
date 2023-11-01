@@ -20,6 +20,7 @@
         "planificador_corto_plazo.h": "c",
         "thread_parameters.h": "c",
         "utils_committed_logger.h": "c",
-        "stddef.h": "c"
+        "stddef.h": "c",
+        "interrupciones.h": "c"
     }
 }
