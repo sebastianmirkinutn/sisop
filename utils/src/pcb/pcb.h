@@ -40,6 +40,7 @@ typedef struct
 	uint32_t size;
 	char* archivo_de_pseudocodigo;
 	t_list* recursos_asignados;
+	t_list* tabla_de_paginas;
 } t_pcb;
 
 typedef struct

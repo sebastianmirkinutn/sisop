@@ -12,6 +12,8 @@
 #include <pcb/pcb.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <commons/bitarray.h>
+
 typedef struct
 {
     uint32_t pid;

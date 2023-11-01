@@ -1,10 +1,14 @@
-#include "../include/main.h"
+#include "main.h"
 
 /*ESTRUCTURAS PARA MEMORIA DE INSTRUCCIONES*/
 t_list* procesos_en_memoria;
 char* saveptr;
 sem_t mutex_lista_procesos;
 sem_t cantidad_de_procesos;
+
+/*ESTRUCTURAS PARA MEMORIA DE USUARIO*/
+void* memoria_de_usuario;
+t_bitarray* frame_bitarray;
 
 void parsear_instrucciones(t_log* logger,t_proceso* proceso, char* str)
 {
@@ -182,13 +186,23 @@ void conexion_cpu(void* arg)
     }
 }
 
+int mov_in()
+{
+
+}
+
 int main(int argc, char* argv[]){
     t_log* logger = iniciar_logger("log_memoria.log","CPU");
     t_config* config = iniciar_config("./cfg/memoria.config");
-    char* puerto_escucha;
-    puerto_escucha = config_get_string_value(config,"PUERTO_ESCUCHA");
-    printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
 
+    char* puerto_escucha = config_get_string_value(config,"PUERTO_ESCUCHA");
+    int tam_memoria = config_get_int_value(config, "TAM_MEMORIA");
+    int tam_pagina = config_get_int_value(config, "TAM_PAGINA");
+
+    memoria_de_usuario = malloc(tam_memoria);
+    bitarray_create(frame_bitarray, tam_memoria);
+
+    printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
     int socket_servidor = iniciar_servidor(logger,puerto_escucha);
     int socket_filesystem = esperar_cliente(logger, socket_servidor);
     if(socket_filesystem){
@@ -217,10 +231,7 @@ int main(int argc, char* argv[]){
     t_args_hilo args_conexion_cpu;
     args_conexion_cpu.socket = socket_cpu;
     pthread_create(&hilo_conexion_cpu, NULL, &conexion_cpu, (void*)&args_conexion_cpu);
+    pthread_join(&hilo_conexion_kernel, 0);
 
-
-    pthread_join(&hilo_conexion_kernel,NULL);
-    //pthread_detach(&hilo_conexion_kernel);
-    //while(1);
-    
+    free(memoria_de_usuario);
 }

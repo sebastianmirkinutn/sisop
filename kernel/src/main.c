@@ -16,6 +16,7 @@ t_queue *cola_new;
 
 t_pcb* execute;
 t_list* recursos_disponibles;
+t_list* tabla_de_paginas;
 
 uint32_t* instancias_recursos(char** instancias)
 {
