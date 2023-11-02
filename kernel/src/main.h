@@ -17,4 +17,11 @@
 #include "planificador_largo_plazo.h"
 #include "planificador_corto_plazo.h"
 
+typedef struct
+{
+    char* nombre;
+    uint16_t tam_archivo;
+}t_archivo;
+
+
 #endif 

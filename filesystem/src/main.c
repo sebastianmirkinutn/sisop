@@ -1,5 +1,24 @@
 #include "main.h"
 
+uint32_t abrir_archivo(char* path_fcb, char* nombre)
+{
+    t_fcb* fcb = malloc(sizeof(t_fcb));
+    char* ruta = path_fcb;
+	uint32_t tam_archivo;
+    strcat(ruta, nombre);
+    strcat(ruta, ".fcb");
+	FILE* archivo_fcb = open(ruta, O_RDONLY);
+	if(archivo_fcb == -1)
+	{
+		return -1;
+	}
+	fseek(archivo_fcb, 0, SEEK_END);
+	tam_archivo = ftell(archivo_fcb);
+	//El archivo no va estar realmente abierto (o podríamos dejarlo abierto...).
+    fclose(archivo_fcb);
+    return tam_archivo;
+}
+
 int main(int argc, char* argv[]) {
     t_log* logger = iniciar_logger("log_filesystem.log","FILESYSTEM");
     t_config* config = iniciar_config("./cfg/filesystem.config");
@@ -18,29 +37,28 @@ int main(int argc, char* argv[]) {
     }
     op_code operacion;
 
-
     int32_t ui32_tam_de_archivo=0;
     uint32_t ui32_max_entradas_fat;
     uint32_t ui32_cant_bloques_total=0;
 	uint32_t ui32_cant_bloques_swap;
 	uint32_t ui32_tam_bloque;
-    char *c_direccion_ip_filesystem="127.0.0.1";
-
-
-
 
     while(1)
     {
         operacion = recibir_operacion(socket_kernel);
         switch (operacion)
         {
+		case F_OPEN:
+			abrir_archivo("documento1",path_fcb);
+			break;
+		//----------------------------------------------//
         case 1:
 			creacionFilesystem(filesystem,path_bloques);
 			break;
 		case 2:
 			reiniciar_fat(fat,ui32_max_entradas_fat);
 			break;
-		case F_OPEN:
+		case 3:
 			abrir_archivo("documento1",path_fcb);
 			break;
 		case 4:

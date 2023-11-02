@@ -41,6 +41,9 @@ void conexion_cpu(void* arg)
             sem_post(&cantidad_de_procesos);
             break;
         
+        case PEDIDO_DE_FRAME:
+            
+            break;
         default:
             liberar_conexion(arg_h->socket_cpu);
             return;
@@ -172,10 +175,10 @@ t_proceso* buscar_proceso(uint32_t pid)
     }
     printf("EMPIEZA BUCAR_PROCESO\n");
     t_proceso* proceso;
-     printf("EMPIEZA BUCAR_PROCESO\n");
+    printf("EMPIEZA BUCAR_PROCESO\n");
     sem_wait(&mutex_lista_procesos);
-     printf("hice waitss BUCAR_PROCESO\n");
-     //pid_funcion = pid;
+    printf("hice waitss BUCAR_PROCESO\n");
+    //pid_funcion = pid;
     proceso = list_find(procesos_en_memoria, comparar);
     sem_post(&mutex_lista_procesos);
     printf("TERMINA BUCAR_PROCESO\n");

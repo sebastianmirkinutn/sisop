@@ -229,12 +229,13 @@ void wait_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
         t_recurso* elemento = (t_recurso*) arg;
         return (!strcmp(elemento->nombre, recurso_buscado));
     }
-    recurso = (t_recurso*) list_find(recursos_disponibles, (bool*)&recurso_buscado);
-    printf("recurso = %i\n", recurso);
+    recurso = list_find(recursos_disponibles, buscar_recurso);
+    t_recurso* recurso_prueba = list_get(recursos_disponibles, 2);
+    printf("recurso = %s\n", recurso_prueba->nombre);
     if(recurso == NULL)
     {
         /*El recurso no existe*/
-        printf("El recurso no existe\n");
+        printf("El recurso %s no existe\n", recurso_buscado);
         enviar_operacion(conexion_cpu_dispatch, NO_ASIGNADO);
     }
     else
@@ -242,7 +243,7 @@ void wait_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
         if(recurso->instancias > 0)
         {
             recurso->instancias--;
-            recurso = (t_recurso*) list_find(execute->recursos_asignados, (bool*)&recurso_buscado);
+            recurso = (t_recurso*) list_find(execute->recursos_asignados, buscar_recurso);
             if(recurso != NULL)
             {
                 recurso->instancias++;
@@ -273,7 +274,7 @@ void signal_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
         t_recurso* elemento = (t_recurso*) arg;
         return (!strcmp(elemento->nombre, recurso_buscado));
     }
-    recurso = (t_recurso*) list_find(execute->recursos_asignados, (bool*)&recurso_buscado);
+    recurso = (t_recurso*) list_find(execute->recursos_asignados, buscar_recurso);
     if(recurso == NULL)
     {
         /*El recurso no existe*/
@@ -285,7 +286,7 @@ void signal_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
         if(recurso->instancias > 0)
         {
             recurso->instancias--;
-            recurso = (t_recurso*) list_find(recursos_disponibles, (bool*)&recurso_buscado);
+            recurso = (t_recurso*) list_find(recursos_disponibles, buscar_recurso);
             if(recurso != NULL)
             {
                 recurso->instancias++;

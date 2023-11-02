@@ -16,7 +16,7 @@ t_queue *cola_new;
 
 t_pcb* execute;
 t_list* recursos_disponibles;
-t_list* tabla_de_paginas;
+t_list* tabla_globar_de_archivos;
 
 uint32_t* instancias_recursos(char** instancias)
 {
@@ -50,6 +50,23 @@ t_pcb* buscar_proceso_segun_pid(uint32_t pid, t_queue* cola)
     return pcb;
 }
 
+t_list* iniciar_lista_de_recursos(char** a_recursos, char** a_instancias)
+{
+    t_list* recursos = list_create();
+    t_recurso* recurso = malloc(sizeof(t_recurso));
+    int i = 0;
+    do
+    {
+        recurso->nombre = a_recursos[i];
+        recurso->instancias = atoi(a_instancias[i]);
+        printf("Recurso agregado: %s - %i\n", recurso->nombre, recurso->instancias);
+        i++;
+        list_add(recursos, (void*)recurso);
+    } while (a_recursos[i] != NULL);
+
+    return recursos;   
+}
+
 int main(int argc, char* argv[]){
    
     t_log* logger = iniciar_logger("log_kernel","Kernel");
@@ -65,7 +82,7 @@ int main(int argc, char* argv[]){
     char* grado_max_de_multiprogramacion = config_get_string_value(config, "GRADO_MULTIPROGRAMACION_INI");
     char* algoritmo_planificacion = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
     char** recursos = config_get_array_value(config, "RECURSOS");
-    char** intancias_recursos = config_get_array_value(config, "INSTANCIAS_RECURSOS");
+    char** instancias_recursos = config_get_array_value(config, "INSTANCIAS_RECURSOS");
     int quantum = config_get_int_value(config, "QUANTUM");
 
     int conexion_cpu_dispatch = crear_conexion(logger, ip_cpu, puerto_cpu_dispatch);
@@ -86,8 +103,14 @@ int main(int argc, char* argv[]){
 	cola_blocked = queue_create();
 	cola_exit = queue_create();
 
-    recursos_disponibles = list_create();
-
+    recursos_disponibles = iniciar_lista_de_recursos(recursos, instancias_recursos);
+    t_recurso* recurso_prueba = list_get(recursos_disponibles, 0);  //---------------//
+    printf("recurso = %s\n", recurso_prueba->nombre);               //----REVISAR----//
+    recurso_prueba = list_get(recursos_disponibles, 1);             //---------------//
+    printf("recurso = %s\n", recurso_prueba->nombre);
+    recurso_prueba = list_get(recursos_disponibles, 2);
+    printf("recurso = %s\n", recurso_prueba->nombre);
+ 
     t_args_hilo args_hilo;
     args_hilo.socket_dispatch = conexion_cpu_dispatch;
     args_hilo.socket_interrupt = conexion_cpu_interrupt;
@@ -170,8 +193,7 @@ int main(int argc, char* argv[]){
             t_pcb* pcb;
             //buscar el proceso (primero fijarse si esta ejecutando, segundo en la lista de blocked y tercero ready...)
             if(execute->pid == c_argv[1]){
-                op_code operacion = FINALIZAR_PROCESO;
-                send(conexion_cpu_interrupt, &operacion, sizeof(op_code), 0); 
+                enviar_operacion(conexion_cpu_interrupt, FINALIZAR_PROCESO);
             }else
             {
                 if(buscar_proceso_segun_pid(c_argv[1], cola_blocked) != NULL){
@@ -199,6 +221,7 @@ int main(int argc, char* argv[]){
             }
 
             //send a memoria para liberar espacio
+            enviar_operacion(conexion_memoria, FINALIZAR_PROCESO);
             //liberar_recursos(pcb);
             
         }

@@ -31,3 +31,11 @@ int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada)
     t_proceso* proceso = list_find(procesos_en_memoria, es_el_pid);
     t_pagina* pagina = list_find(proceso->tabla_de_paginas, es_la_pagina);
 }
+
+//Envía el número de 
+void enviar_frame (int socket, uint32_t frame)
+{
+    op_code operacion = FRAME;
+    
+    send(socket, &operacion, sizeof(op_code), NULL);
+}

@@ -2,6 +2,8 @@
 #define FILESYSTEM_H
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
 #include <commons/log.h>
 #include <commons/config.h>
 #include <log/log_utils.h>
