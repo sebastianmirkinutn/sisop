@@ -53,7 +53,8 @@ int main(int argc, char* argv[]){
     args_conexion_cpu.socket_cpu = socket_cpu;
     args_conexion_cpu.retardo_memoria = retardo_respuesta;
     pthread_create(&hilo_conexion_cpu, NULL, &conexion_cpu, (void*)&args_conexion_cpu);
-    pthread_join(&hilo_conexion_kernel, 0);
+    pthread_join(&hilo_conexion_kernel, NULL);
+    pthread_join(&hilo_conexion_cpu, NULL);
 
     free(memoria_de_usuario);
 }

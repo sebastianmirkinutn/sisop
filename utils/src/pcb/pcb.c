@@ -72,24 +72,18 @@ t_registros* deserializar_contexto(void* magic)
 	return registros;
 }
 
+/*
 t_registros* recibir_contexto_de_ejecucion(int socket)
 {
 	op_code operacion;
     int size;
     t_registros* registros;
     void* recibido;
-	if(recv(socket, &operacion, sizeof(op_code), MSG_WAITALL) > 0)
-    {
-        recv(socket, &size, sizeof(int), MSG_WAITALL);
-        recv(socket, recibido, size, MSG_WAITALL);
-        registros = deserializar_contexto(recibido);
-        return registros;
-    }
-	else
-	{
-        //error
-		close(socket);
-	}
+	recv(socket, &operacion, sizeof(op_code), MSG_WAITALL);
+    recv(socket, &size, sizeof(int), MSG_WAITALL);
+    recv(socket, recibido, size, MSG_WAITALL);
+    registros = deserializar_contexto(recibido);
+    return registros;
 }
 
 void enviar_contexto_de_ejecucion(t_registros* registros, int socket)
@@ -100,6 +94,27 @@ void enviar_contexto_de_ejecucion(t_registros* registros, int socket)
     send(socket, &operacion, sizeof(op_code), 0);
     send(socket, &size, sizeof(int), 0);
     send(socket, a_enviar, size, 0);
+}
+*/
+
+t_registros* recibir_contexto_de_ejecucion(int socket)
+{
+    t_registros* registros = malloc(sizeof(t_registros));
+	recv(socket, &(registros->BX), sizeof(uint32_t), MSG_WAITALL);
+    recv(socket, &(registros->AX), sizeof(uint32_t), MSG_WAITALL);
+    recv(socket, &(registros->CX), sizeof(uint32_t), MSG_WAITALL);
+    recv(socket, &(registros->DX), sizeof(uint32_t), MSG_WAITALL);
+    recv(socket, &(registros->PC), sizeof(uint32_t), MSG_WAITALL);
+    return registros;
+}
+
+void enviar_contexto_de_ejecucion(t_registros* registros, int socket)
+{
+    send(socket, &(registros->AX), sizeof(uint32_t), 0);
+    send(socket, &(registros->BX), sizeof(uint32_t), 0);
+    send(socket, &(registros->CX), sizeof(uint32_t), 0);
+    send(socket, &(registros->DX), sizeof(uint32_t), 0);
+    send(socket, &(registros->PC), sizeof(uint32_t), 0);
 }
 
 t_motivo_desalojo recibir_motivo_desalojo(int socket){

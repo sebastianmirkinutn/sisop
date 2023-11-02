@@ -135,10 +135,13 @@ int main(int argc, char* argv[]){
     pthread_create(&hilo_interrupt_handler, NULL, &recibir_interrupciones, (void*)&args_conexion_kernel);
     pthread_detach(&hilo_interrupt_handler);
 
-    t_pcb* pcb_prueba = crear_pcb(1,"");
-        void* serializado = serializar_contexto(pcb_prueba->contexto);
+                     t_pcb* pcb_prueba = crear_pcb(1,"");
+                     void* serializado = serializar_contexto(pcb_prueba->contexto);
         pcb_prueba->contexto = deserializar_contexto(serializado);
-    
+        log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
+        
+
+
     while(1)
     {
         execute = 1;
@@ -154,10 +157,10 @@ int main(int argc, char* argv[]){
         //recv(socket_kernel_dispatch, &(registros->DX), sizeof(uint32_t), MSG_WAITALL);
         //recv(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), MSG_WAITALL);
         
-        t_pcb* pcb_prueba = crear_pcb(1,"");
-        pcb_prueba->contexto = registros;
-        log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
-        
+        //t_pcb* pcb_prueba = crear_pcb(1,"");
+        //pcb_prueba->contexto = registros;
+        //log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
+        //
         /*CICLO DE INSTRUCCIÓN*/
         while(execute)
         {
