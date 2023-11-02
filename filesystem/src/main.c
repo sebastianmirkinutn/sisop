@@ -64,7 +64,8 @@ int main(int argc, char* argv[]) {
 		    return EXIT_SUCCESS;
 			break;
 		default:
-			puts("Opción incorrecta");
+			liberar_conexion(socket_kernel);
+			return;
 		break;
         }
     }

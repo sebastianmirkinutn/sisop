@@ -42,7 +42,8 @@ void conexion_cpu(void* arg)
             break;
         
         default:
-            //break;
+            liberar_conexion(arg_h->socket_cpu);
+            return;
         }
 
     }
@@ -154,7 +155,8 @@ void conexion_kernel(void* arg)
             break;
         
         default:
-            break;
+            liberar_conexion(arg_h->socket_kernel);
+            return;
         }
 
     }

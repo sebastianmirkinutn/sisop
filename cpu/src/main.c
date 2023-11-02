@@ -146,7 +146,11 @@ int main(int argc, char* argv[]){
     {
         execute = 1;
 
-        recv(socket_kernel_dispatch, &pid, sizeof(uint32_t), MSG_WAITALL);
+        if(recv(socket_kernel_dispatch, &pid, sizeof(uint32_t), MSG_WAITALL) <= 0)
+        {
+            liberar_conexion(socket_kernel_dispatch);
+            return;
+        }
         log_info(logger, "recibí pid %i", pid);
 
         registros = recibir_contexto_de_ejecucion(socket_kernel_dispatch);
@@ -315,7 +319,6 @@ int main(int argc, char* argv[]){
             else if(!strcmp(parametros[0], "EXIT"))
             {
                 execute = 0;
-                registros->PC = 0;
                 enviar_operacion(socket_kernel_dispatch, DESALOJO);
                 enviar_motivo_desalojo(socket_kernel_dispatch, SUCCESS);
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);

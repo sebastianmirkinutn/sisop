@@ -234,7 +234,7 @@ void ordenar_colas_segun_prioridad(t_queue* queue)
     {
         t_pcb* pcb1 = (t_pcb*) arg1;
         t_pcb* pcb2 = (t_pcb*) arg2;
-        return (pcb1->prioridad < pcb2->prioridad);
+        return (pcb1->prioridad <= pcb2->prioridad);
     }
     list_sort(queue->elements, (bool*)&comparar_prioridad);
 }
