@@ -27,7 +27,7 @@ void conexion_cpu(void* arg)
 
             sem_wait(&cantidad_de_procesos);
             t_proceso* proceso = buscar_proceso(pid);
-            //log_info(logger_hilo,"HAY QUE ENVIAR LA INSTRUCCION");
+            log_info(logger_hilo,"HAY QUE ENVIAR LA INSTRUCCION");
             sem_wait(&mutex_lista_procesos);
 
             if(program_counter >= proceso->instrucciones->elements_count){
@@ -42,7 +42,8 @@ void conexion_cpu(void* arg)
             break;
         
         default:
-            //break;
+            liberar_conexion(arg_h->socket_cpu);
+            return;
         }
 
     }
@@ -154,7 +155,8 @@ void conexion_kernel(void* arg)
             break;
         
         default:
-            //break;
+            liberar_conexion(arg_h->socket_kernel);
+            return;
         }
 
     }
