@@ -117,3 +117,10 @@ void enviar_motivo_desalojo(int socket, t_motivo_desalojo motivo)
 {
     send(socket, &motivo, sizeof(t_motivo_desalojo), 0);
 }
+
+t_recurso* crear_recurso(char* nombre, uint32_t instancias)
+{
+    t_recurso* recurso = malloc(sizeof(t_recurso));
+    recurso->nombre = nombre;
+    recurso->instancias = instancias;
+}

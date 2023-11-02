@@ -54,7 +54,8 @@ typedef enum
     SUCCESS,
     INVALID_RESOURCE,
     INVALID_WRITE,
-	CLOCK_INTERRUPT
+	CLOCK_INTERRUPT,
+	KILL
 }t_motivo_desalojo;
 
 t_pcb* crear_pcb(uint32_t prioridad, char* pseudocodigo);

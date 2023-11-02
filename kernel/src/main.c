@@ -173,23 +173,36 @@ int main(int argc, char* argv[]){
             t_pcb* pcb;
             //buscar el proceso (primero fijarse si esta ejecutando, segundo en la lista de blocked y tercero ready...)
             if(execute->pid == c_argv[1]){
-                //mandamos interrupcion a cpu 
+                op_code operacion = FINALIZAR_PROCESO;
+                send(conexion_cpu_interrupt, &operacion, sizeof(op_code), 0); 
             }else
             {
-                pcb = buscar_proceso_segun_pid(c_argv[1], cola_blocked)
                 if(buscar_proceso_segun_pid(c_argv[1], cola_blocked) != NULL){
-                    //sacar al proceso de la cola de bloqueados
+                    pcb = buscar_proceso_segun_pid(c_argv[1], cola_blocked);
+                    list_remove_element(cola_blocked, pcb);
+                   
+                }
+                else if(buscar_proceso_segun_pid(c_argv[1], cola_ready) != NULL)
+                {
+                    pcb = buscar_proceso_segun_pid(c_argv[1], cola_ready);
+                    list_remove_element(cola_ready, pcb);
+
+                }
+                else if(buscar_proceso_segun_pid(c_argv[1], cola_new) != NULL)
+                {
+                    pcb = buscar_proceso_segun_pid(c_argv[1], cola_new);
+                    list_remove_element(cola_new, pcb);
+
                 }
                 else
                 {
-                    pcb = buscar_proceso_segun_pid(c_argv[1], cola_ready)
-
+                    log_error(logger, "No se encontro el proceso");
                 }
                 
             }
 
             //send a memoria para liberar espacio
-            liberar_recursos(pcb);
+            //liberar_recursos(pcb);
             
         }
         else if(!strcmp(c_argv[0], "DETENER_PLANIFICACION"))

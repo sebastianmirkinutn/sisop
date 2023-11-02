@@ -12,6 +12,7 @@ typedef struct
 
 int flag_interrupciones;
 int execute;
+t_motivo_desalojo motivo_desalojo;
 
 void recibir_interrupciones(void* arg)
 {
@@ -25,7 +26,13 @@ void recibir_interrupciones(void* arg)
         {
             sem_wait(&mutex_flag_interrupciones);
             flag_interrupciones = 1; 
+            motivo_desalojo = CLOCK_INTERRUPT;
             sem_post(&mutex_flag_interrupciones);
+        } else if(operacion == FINALIZAR_PROCESO){
+            sem_wait(&mutex_flag_interrupciones);
+            flag_interrupciones = 1; 
+            sem_post(&mutex_flag_interrupciones);
+            motivo_desalojo = KILL;
         }
     }
 }
@@ -38,7 +45,7 @@ void atender_interrupciones(int socket_kernel_dispatch)
         flag_interrupciones = 0; 
         sem_post(&mutex_flag_interrupciones);
         enviar_operacion(socket_kernel_dispatch, DESALOJO);
-        enviar_motivo_desalojo(socket_kernel_dispatch, CLOCK_INTERRUPT);
+        enviar_motivo_desalojo(socket_kernel_dispatch, motivo_desalojo);
         send(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), 0);
         send(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), 0);
         send(socket_kernel_dispatch, &(registros->CX), sizeof(uint32_t), 0);

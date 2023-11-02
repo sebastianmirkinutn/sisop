@@ -13,7 +13,8 @@ typedef enum
 	NO_ASIGNADO,
 	DESALOJO,
 	LIBERADO,
-	NO_LIBERADO
+	NO_LIBERADO,
+	FINALIZAR_PROCESO
 }op_code;
 
 typedef struct
