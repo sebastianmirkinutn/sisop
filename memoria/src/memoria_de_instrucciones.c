@@ -154,7 +154,7 @@ void conexion_kernel(void* arg)
             break;
         
         default:
-            //break;
+            break;
         }
 
     }

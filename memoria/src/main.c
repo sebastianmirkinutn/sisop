@@ -46,15 +46,18 @@ int main(int argc, char* argv[]){
     log_info(logger, "Declaré el hilo.");
     log_info(logger, "socket: %i", args_conexion_kernel.socket_kernel);
     pthread_create(&hilo_conexion_kernel, NULL, &conexion_kernel, (void*)&args_conexion_kernel);
+    pthread_detach(&conexion_kernel);
     log_info(logger, "Creé el hilo.");
 
     pthread_t hilo_conexion_cpu;
     t_args_hilo args_conexion_cpu;
     args_conexion_cpu.socket_cpu = socket_cpu;
     args_conexion_cpu.retardo_memoria = retardo_respuesta;
-    pthread_create(&hilo_conexion_cpu, NULL, &conexion_cpu, (void*)&args_conexion_cpu);
-    pthread_join(&hilo_conexion_kernel, NULL);
-    pthread_join(&hilo_conexion_cpu, NULL);
+    //pthread_create(&hilo_conexion_cpu, NULL, &conexion_cpu, (void*)&args_conexion_cpu);
+    //pthread_join(&hilo_conexion_kernel, NULL);
+    //pthread_join(&hilo_conexion_cpu, NULL);
+
+    conexion_cpu((void*)&args_conexion_cpu);
 
     free(memoria_de_usuario);
 }
