@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 #include <commons/collections/list.h>
+#include <sockets/sockets.h>
+#include <sockets/client_utils.h>
+#include <sockets/server_utils.h>
 typedef struct
 {
     uint32_t pagina;

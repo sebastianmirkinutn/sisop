@@ -11,7 +11,6 @@
 #include <pcb/pcb.h>
 #include "utils_operaciones_filesystem.h"
 #include "utils_bloques.h"
-#include "utils_adicionales.h"
 #include "utils_committed_logger.h"
 
 #define RESET_COLOR    "\x1b[0m"

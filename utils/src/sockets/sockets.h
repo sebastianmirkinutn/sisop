@@ -18,7 +18,9 @@ typedef enum
 	F_WRITE,
 	F_SEEK,
 	F_CLOSE,
-	F_OPEN
+	F_OPEN,
+	PEDIDO_DE_FRAME,
+	FRAME
 }op_code;
 
 typedef struct

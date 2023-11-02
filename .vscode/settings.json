@@ -25,6 +25,9 @@
         "bitarray.h": "c",
         "memoria_de_usuario.h": "c",
         "memoria_de_instrucciones.h": "c",
-        "memoria.h": "c"
+        "memoria.h": "c",
+        "mmu.h": "c",
+        "utils_operaciones_filesystem.h": "c",
+        "utils_adicionales.h": "c"
     }
 }
