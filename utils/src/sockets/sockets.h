@@ -20,7 +20,8 @@ typedef enum
 	F_CLOSE,
 	F_OPEN,
 	PEDIDO_DE_FRAME,
-	FRAME
+	FRAME,
+	FINALIZAR_PROCESO
 }op_code;
 
 typedef struct
