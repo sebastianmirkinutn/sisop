@@ -37,6 +37,19 @@ void recibir_ordenes_cpu(void* arg)
     
 }
 
+
+t_pcb* buscar_proceso_segun_pid(uint32_t pid, t_queue* cola)
+{
+
+    bool tiene_mismo_pid(void* pcb) {
+        return (((t_pcb*)pcb)->pid == pid);
+    }
+
+    t_pcb* pcb = NULL;
+    pcb = list_find(cola, tiene_mismo_pid);
+    return pcb;
+}
+
 int main(int argc, char* argv[]){
    
     t_log* logger = iniciar_logger("log_kernel","Kernel");
@@ -154,7 +167,40 @@ int main(int argc, char* argv[]){
         }
         else if(!strcmp(c_argv[0], "FINALIZAR_PROCESO"))
         {
+            t_pcb* pcb;
+            //buscar el proceso (primero fijarse si esta ejecutando, segundo en la lista de blocked y tercero ready...)
+            if(execute->pid == c_argv[1]){
+                op_code operacion = FINALIZAR_PROCESO;
+                send(conexion_cpu_interrupt, &operacion, sizeof(op_code), 0); 
+            }else
+            {
+                if(buscar_proceso_segun_pid(c_argv[1], cola_blocked) != NULL){
+                    pcb = buscar_proceso_segun_pid(c_argv[1], cola_blocked);
+                    list_remove_element(cola_blocked, pcb);
+                   
+                }
+                else if(buscar_proceso_segun_pid(c_argv[1], cola_ready) != NULL)
+                {
+                    pcb = buscar_proceso_segun_pid(c_argv[1], cola_ready);
+                    list_remove_element(cola_ready, pcb);
 
+                }
+                else if(buscar_proceso_segun_pid(c_argv[1], cola_new) != NULL)
+                {
+                    pcb = buscar_proceso_segun_pid(c_argv[1], cola_new);
+                    list_remove_element(cola_new, pcb);
+
+                }
+                else
+                {
+                    log_error(logger, "No se encontro el proceso");
+                }
+                
+            }
+
+            //send a memoria para liberar espacio
+            //liberar_recursos(pcb);
+            
         }
         else if(!strcmp(c_argv[0], "DETENER_PLANIFICACION"))
         {
@@ -204,3 +250,5 @@ int main(int argc, char* argv[]){
     liberar_conexion(conexion_cpu_dispatch);
     
 }
+
+
