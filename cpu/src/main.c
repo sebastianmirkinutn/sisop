@@ -155,8 +155,7 @@ int main(int argc, char* argv[]){
         //recv(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), MSG_WAITALL);
         
         t_pcb* pcb_prueba = crear_pcb(1,"");
-        void* serializado = serializar_contexto(registros);
-        pcb_prueba->contexto = deserializar_contexto(serializado);
+        pcb_prueba->contexto = registros;
         log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
         
         /*CICLO DE INSTRUCCIÓN*/

@@ -74,21 +74,17 @@ t_registros* deserializar_contexto(void* magic)
 
 t_registros* recibir_contexto_de_ejecucion(int socket)
 {
-	int cod_op, size;
+	op_code operacion;
+    int size;
     t_registros* registros;
     void* recibido;
-	if(recv(socket, &cod_op, sizeof(op_code), MSG_WAITALL) > 0)
-		if(cod_op == PAQUETE)
-        {
-            recv(socket, &size, sizeof(int), MSG_WAITALL);
-            recv(socket, recibido, size, MSG_WAITALL);
-            registros = deserializar_contexto(recibido);
-            return registros;
-        }
-        else
-        {
-            //error
-        }
+	if(recv(socket, &operacion, sizeof(op_code), MSG_WAITALL) > 0)
+    {
+        recv(socket, &size, sizeof(int), MSG_WAITALL);
+        recv(socket, recibido, size, MSG_WAITALL);
+        registros = deserializar_contexto(recibido);
+        return registros;
+    }
 	else
 	{
         //error
