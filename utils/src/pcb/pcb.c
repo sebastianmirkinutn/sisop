@@ -36,17 +36,19 @@ void liberar_pcb(t_pcb* pcb)
 
 void* serializar_contexto(t_registros* registros)
 {
-	void * magic = malloc(sizeof(uint32_t) * 4);
+	void * magic = malloc(sizeof(uint32_t) * 5);
 	int desplazamiento = 0;
 
 	memcpy(magic + desplazamiento, &(registros->AX), sizeof(uint32_t));
 	desplazamiento+= sizeof(uint32_t);
+    printf("AX = %i\n",registros->AX);
 	memcpy(magic + desplazamiento, &(registros->BX), sizeof(uint32_t));
 	desplazamiento+= sizeof(uint32_t);
 	memcpy(magic + desplazamiento, &(registros->CX), sizeof(uint32_t));
     desplazamiento+= sizeof(uint32_t);
 	memcpy(magic + desplazamiento, &(registros->DX), sizeof(uint32_t));
 	desplazamiento+= sizeof(uint32_t);
+    memcpy(magic + desplazamiento, &(registros->PC), sizeof(uint32_t));
 
 	return magic;
 }
@@ -58,12 +60,14 @@ t_registros* deserializar_contexto(void* magic)
 
 	memcpy(&(registros->AX), magic + desplazamiento, sizeof(uint32_t));
 	desplazamiento+= sizeof(uint32_t);
+    printf("AX = %i\n", registros->AX);
 	memcpy(&(registros->BX), magic + desplazamiento, sizeof(uint32_t));
 	desplazamiento+= sizeof(uint32_t);
 	memcpy(&(registros->CX), magic + desplazamiento, sizeof(uint32_t));
     desplazamiento+= sizeof(uint32_t);
 	memcpy(&(registros->DX), magic + desplazamiento, sizeof(uint32_t));
 	desplazamiento+= sizeof(uint32_t);
+    memcpy(&(registros->PC), magic + desplazamiento, sizeof(uint32_t));
 
 	return registros;
 }
@@ -73,7 +77,7 @@ t_registros* recibir_contexto_de_ejecucion(int socket)
 	int cod_op, size;
     t_registros* registros;
     void* recibido;
-	if(recv(socket, &cod_op, sizeof(int), MSG_WAITALL) > 0)
+	if(recv(socket, &cod_op, sizeof(op_code), MSG_WAITALL) > 0)
 		if(cod_op == PAQUETE)
         {
             recv(socket, &size, sizeof(int), MSG_WAITALL);
@@ -96,10 +100,10 @@ void enviar_contexto_de_ejecucion(t_registros* registros, int socket)
 {
     op_code operacion = PAQUETE;
     void* a_enviar = serializar_contexto(registros);
-    int size = sizeof(uint32_t) * 4;
-    send(socket, &operacion, sizeof(operacion), 0);
+    int size = sizeof(uint32_t) * 5;
+    send(socket, &operacion, sizeof(op_code), 0);
     send(socket, &size, sizeof(int), 0);
-    send(socket, a_enviar,sizeof(uint32_t) * 4, 0);
+    send(socket, a_enviar, size, 0);
 }
 
 t_motivo_desalojo recibir_motivo_desalojo(int socket){

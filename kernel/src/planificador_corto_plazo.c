@@ -116,14 +116,16 @@ void planificador_fifo(void* arg)
         log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute->pid);
   
         send(arg_h->socket_dispatch, &(execute->pid), sizeof(uint32_t), 0);
-        //enviar_contexto_de_ejecucion(&(execute->contexto), arg_h->socket_dispatch);
+        
+        
+        enviar_contexto_de_ejecucion(execute->contexto, arg_h->socket_dispatch);
         
         log_info(logger_hilo, "Envié %i a %i", execute->pid, arg_h->socket_dispatch);
-        send(arg_h->socket_dispatch, &(execute->contexto->AX), sizeof(uint32_t), 0);
-        send(arg_h->socket_dispatch, &(execute->contexto->BX), sizeof(uint32_t), 0);
-        send(arg_h->socket_dispatch, &(execute->contexto->CX), sizeof(uint32_t), 0);
-        send(arg_h->socket_dispatch, &(execute->contexto->DX), sizeof(uint32_t), 0);
-        send(arg_h->socket_dispatch, &(execute->contexto->PC), sizeof(uint32_t), 0);
+        //send(arg_h->socket_dispatch, &(execute->contexto->AX), sizeof(uint32_t), 0);
+        //send(arg_h->socket_dispatch, &(execute->contexto->BX), sizeof(uint32_t), 0);
+        //send(arg_h->socket_dispatch, &(execute->contexto->CX), sizeof(uint32_t), 0);
+        //send(arg_h->socket_dispatch, &(execute->contexto->DX), sizeof(uint32_t), 0);
+        //send(arg_h->socket_dispatch, &(execute->contexto->PC), sizeof(uint32_t), 0);
         
         do{
             operacion = recibir_operacion(arg_h->socket_dispatch);
@@ -132,11 +134,12 @@ void planificador_fifo(void* arg)
 
                 case DESALOJO:
                     t_motivo_desalojo motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->BX), sizeof(uint32_t), MSG_WAITALL);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->AX), sizeof(uint32_t), MSG_WAITALL);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->CX), sizeof(uint32_t), MSG_WAITALL);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->DX), sizeof(uint32_t), MSG_WAITALL);
-                    recv(arg_h->socket_dispatch, &(execute->contexto->PC), sizeof(uint32_t), MSG_WAITALL);
+                    //recv(arg_h->socket_dispatch, &(execute->contexto->BX), sizeof(uint32_t), MSG_WAITALL);
+                    //recv(arg_h->socket_dispatch, &(execute->contexto->AX), sizeof(uint32_t), MSG_WAITALL);
+                    //recv(arg_h->socket_dispatch, &(execute->contexto->CX), sizeof(uint32_t), MSG_WAITALL);
+                    //recv(arg_h->socket_dispatch, &(execute->contexto->DX), sizeof(uint32_t), MSG_WAITALL);
+                    //recv(arg_h->socket_dispatch, &(execute->contexto->PC), sizeof(uint32_t), MSG_WAITALL);
+                    execute->contexto = recibir_contexto_de_ejecucion(arg_h->socket_dispatch);
                     char* motivo_de_finalizacion = de_t_motivo_a_string(motivo);
                     log_info(logger_hilo, "Fin de proceso %i motivo %s", execute->pid, motivo_de_finalizacion);
                     evaluar_motivo_desalojo(motivo);
