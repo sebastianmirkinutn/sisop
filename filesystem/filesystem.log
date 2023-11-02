@@ -1,0 +1,26 @@
+[INFO] 18:21:57:565 filesystem/(12016:12016): Crear Archivo: documento1
+[INFO] 18:21:59:102 filesystem/(12016:12016): Truncar Archivo: documento1 - Tamaño: 13308 bytes
+[INFO] 18:40:37:469 filesystem/(13331:13331): Crear Archivo: documento1
+[INFO] 18:40:38:209 filesystem/(13331:13331): Truncar Archivo: documento1 - Tamaño: 13308 bytes
+[INFO] 18:47:22:640 filesystem/(13797:13797): Crear Archivo: documento1
+[INFO] 18:47:24:022 filesystem/(13797:13797): Truncar Archivo: documento1 - Tamaño: 13308 bytes
+[INFO] 18:52:23:517 filesystem/(14026:14026): Crear Archivo: documento1
+[INFO] 18:52:51:557 filesystem/(14026:14026): Truncar Archivo: documento1 - Tamaño: 13308 bytes
+[INFO] 18:55:40:696 filesystem/(14290:14290): Crear Archivo: documento1
+[INFO] 18:55:59:996 filesystem/(14290:14290): Truncar Archivo: documento1 - Tamaño: 13308 bytes
+[INFO] 18:59:19:680 filesystem/(14555:14555): Crear Archivo: documento1
+[INFO] 18:59:46:171 filesystem/(14555:14555): Truncar Archivo: documento1 - Tamaño: 13308 bytes
+[INFO] 19:24:42:123 filesystem/(16906:16906): Crear Archivo: documento1
+[INFO] 19:24:47:546 filesystem/(16906:16906): Truncar Archivo: documento1 - Tamaño: 13308 bytes
+[INFO] 19:26:22:438 filesystem/(17014:17014): Crear Archivo: documento1
+[INFO] 19:26:40:391 filesystem/(17014:17014): Truncar Archivo: documento1 - Tamaño: 13308 bytes
+[INFO] 19:31:18:945 filesystem/(17460:17460): Crear Archivo: documento1
+[INFO] 19:31:19:456 filesystem/(17460:17460): Truncar Archivo: documento1 - Tamaño: 13308 bytes
+[INFO] 19:34:16:356 filesystem/(17771:17771): Crear Archivo: documento1
+[INFO] 19:34:18:371 filesystem/(17771:17771): Truncar Archivo: documento1 - Tamaño: 13308 bytes
+[INFO] 19:41:14:400 filesystem/(18067:18067): Crear Archivo: documento1
+[INFO] 19:41:19:061 filesystem/(18067:18067): Truncar Archivo: documento1 - Tamaño: 13308 bytes
+[INFO] 19:42:41:234 filesystem/(18153:18153): Crear Archivo: documento1
+[INFO] 19:42:44:422 filesystem/(18153:18153): Truncar Archivo: documento1 - Tamaño: 13308 bytes
+[INFO] 19:48:06:712 filesystem/(18396:18396): Crear Archivo: documento1
+[INFO] 19:48:12:589 filesystem/(18396:18396): Truncar Archivo: documento1 - Tamaño: 13308 bytes

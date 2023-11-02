@@ -12,16 +12,11 @@
 #include <pcb/pcb.h>
 #include <pthread.h>
 #include <semaphore.h>
-typedef struct
-{
-    uint32_t pid;
-    t_list* instrucciones;
-}t_proceso;
+#include <commons/bitarray.h>
+#include <memoria/memoria.h>
+#include <threads/thread_parameters.h>
 
-typedef struct
-{
-    int socket;
-}t_args_hilo;
-
+#include "memoria_de_instrucciones.h"
+#include "memoria_de_usuario.h"
 
 #endif

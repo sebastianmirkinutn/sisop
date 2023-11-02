@@ -1,14 +1,13 @@
-#include <string.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
- 
-char *itoa(uint32_t dividendo,char *cadenaText) {
+#include "utils_adicionales.h"
+
+// Convierte un número de tipo de dato número a una cadena de caracteres
+char *itoa_(uint32_t dividendo,char *cadenaText) {
     uint32_t divisor=10;
     uint32_t resto=0;
     uint32_t cadenaInt[10];
     int i=0;
     int max_numeros;
+
     while (dividendo>=divisor) {
         resto=dividendo % divisor;
         cadenaInt[i++]=resto;
@@ -29,12 +28,5 @@ char *itoa(uint32_t dividendo,char *cadenaText) {
         if (cadenaInt[i]==8) strcat(cadenaText,"8");
         if (cadenaInt[i]==9) strcat(cadenaText,"9");
     }
-    return (cadenaText); 
+    return (cadenaText);
 }
-
-/*int main(void)
-{
-    char cadenaText[10]="";
-    printf ("El numero convertido a texto es:%s\n",itoa(52,cadenaText));
-}
-*/

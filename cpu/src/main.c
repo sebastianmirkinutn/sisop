@@ -1,14 +1,8 @@
-#include "../include/main.h"
+#include "main.h"
 
 t_registros* registros;
 
 sem_t mutex_flag_interrupciones;
-
-typedef struct
-{
-    int socket_interrupt;
-    int socket_dispatch;
-}t_args_hilo;
 
 int flag_interrupciones;
 int execute;
@@ -83,6 +77,49 @@ void sumar_a_registro(char* registro, uint32_t numero)
     }
 }
 
+void restar_a_registro(char* registro, uint32_t numero)
+{
+    if(!strcmp(registro, "AX"))
+    {
+        registros->AX -= numero;
+    }
+    else if(!strcmp(registro, "BX"))
+    {
+        registros->BX -= numero;
+    }
+    else if(!strcmp(registro, "CX"))
+    {
+        registros->BX -= numero;
+    }
+    else if(!strcmp(registro, "CX"))
+    {
+        registros->CX -= numero;
+    }
+    else if(!strcmp(registro, "DX"))
+    {
+        registros->DX -= numero;
+    }
+}
+
+void sub(char* destino, char* origen){
+    if(!strcmp(origen, "AX"))
+    {
+        restar_a_registro(destino, registros->AX);
+    }
+    else if(!strcmp(origen, "BX"))
+    {
+        restar_a_registro(destino, registros->BX);
+    }
+    else if(!strcmp(origen, "CX"))
+    {
+        restar_a_registro(destino, registros->CX);
+    }
+    else if(!strcmp(origen, "DX"))
+    {
+        restar_a_registro(destino, registros->DX);
+    }
+}
+
 void sum(char* destino, char* origen){
     if(!strcmp(origen, "AX"))
     {
@@ -101,6 +138,7 @@ void sum(char* destino, char* origen){
         sumar_a_registro(destino, registros->DX);
     }
 }
+
 
 int main(int argc, char* argv[]){
     t_log* logger = iniciar_logger("log_cpu.log","CPU");
@@ -142,25 +180,37 @@ int main(int argc, char* argv[]){
     pthread_t hilo_interrupt_handler;
     pthread_create(&hilo_interrupt_handler, NULL, &recibir_interrupciones, (void*)&args_conexion_kernel);
     pthread_detach(&hilo_interrupt_handler);
+
+                     t_pcb* pcb_prueba = crear_pcb(1,"");
+                     void* serializado = serializar_contexto(pcb_prueba->contexto);
+        pcb_prueba->contexto = deserializar_contexto(serializado);
+        log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
+        
+
+
     while(1)
     {
         execute = 1;
 
-        recv(socket_kernel_dispatch, &pid, sizeof(uint32_t), MSG_WAITALL);
+        if(recv(socket_kernel_dispatch, &pid, sizeof(uint32_t), MSG_WAITALL) <= 0)
+        {
+            liberar_conexion(socket_kernel_dispatch);
+            return;
+        }
         log_info(logger, "recibí pid %i", pid);
 
-        //registros = recibir_contexto_de_ejecucion(socket_kernel_dispatch);
+        registros = recibir_contexto_de_ejecucion(socket_kernel_dispatch);
         
-        recv(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), MSG_WAITALL);
-        recv(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), MSG_WAITALL);
-        recv(socket_kernel_dispatch, &(registros->CX), sizeof(uint32_t), MSG_WAITALL);
-        recv(socket_kernel_dispatch, &(registros->DX), sizeof(uint32_t), MSG_WAITALL);
-        recv(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), MSG_WAITALL);
+        //recv(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), MSG_WAITALL);
+        //recv(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), MSG_WAITALL);
+        //recv(socket_kernel_dispatch, &(registros->CX), sizeof(uint32_t), MSG_WAITALL);
+        //recv(socket_kernel_dispatch, &(registros->DX), sizeof(uint32_t), MSG_WAITALL);
+        //recv(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), MSG_WAITALL);
         
-        t_pcb* pcb_prueba = crear_pcb(1,"");
-        pcb_prueba->contexto = registros;
-        log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
-        
+        //t_pcb* pcb_prueba = crear_pcb(1,"");
+        //pcb_prueba->contexto = registros;
+        //log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
+        //
         /*CICLO DE INSTRUCCIÓN*/
         while(execute)
         {
@@ -220,7 +270,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "SUB"))
             {
-            
+                sub(parametros[1], parametros[2]);
             }
             else if(!strcmp(parametros[0], "JNZ"))
             {
@@ -248,11 +298,7 @@ int main(int argc, char* argv[]){
                     execute = 0;
                     enviar_operacion(socket_kernel_dispatch, DESALOJO);
                     enviar_motivo_desalojo(socket_kernel_dispatch, INVALID_RESOURCE);
-                    send(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), 0);
-                    send(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), 0);
-                    send(socket_kernel_dispatch, &(registros->CX), sizeof(uint32_t), 0);
-                    send(socket_kernel_dispatch, &(registros->DX), sizeof(uint32_t), 0);
-                    send(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), 0);
+                    enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
                     break;
                 
                 default:
@@ -276,11 +322,7 @@ int main(int argc, char* argv[]){
                     execute = 0;
                     enviar_operacion(socket_kernel_dispatch, DESALOJO);
                     enviar_motivo_desalojo(socket_kernel_dispatch, INVALID_RESOURCE);
-                    send(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), 0);
-                    send(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), 0);
-                    send(socket_kernel_dispatch, &(registros->CX), sizeof(uint32_t), 0);
-                    send(socket_kernel_dispatch, &(registros->DX), sizeof(uint32_t), 0);
-                    send(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), 0);
+                    enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
                     break;
                 
                 default:
@@ -323,14 +365,9 @@ int main(int argc, char* argv[]){
             else if(!strcmp(parametros[0], "EXIT"))
             {
                 execute = 0;
-                registros->PC = 0;
                 enviar_operacion(socket_kernel_dispatch, DESALOJO);
                 enviar_motivo_desalojo(socket_kernel_dispatch, SUCCESS);
-                send(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), 0);
-                send(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), 0);
-                send(socket_kernel_dispatch, &(registros->CX), sizeof(uint32_t), 0);
-                send(socket_kernel_dispatch, &(registros->DX), sizeof(uint32_t), 0);
-                send(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), 0);
+                enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
             }
             registros->PC++;
             atender_interrupciones(socket_kernel_dispatch);

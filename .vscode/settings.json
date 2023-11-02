@@ -18,6 +18,16 @@
         "stdio.h": "c",
         "pthread.h": "c",
         "planificador_corto_plazo.h": "c",
-        "thread_parameters.h": "c"
+        "thread_parameters.h": "c",
+        "utils_committed_logger.h": "c",
+        "stddef.h": "c",
+        "interrupciones.h": "c",
+        "bitarray.h": "c",
+        "memoria_de_usuario.h": "c",
+        "memoria_de_instrucciones.h": "c",
+        "memoria.h": "c",
+        "mmu.h": "c",
+        "utils_operaciones_filesystem.h": "c",
+        "utils_adicionales.h": "c"
     }
 }
