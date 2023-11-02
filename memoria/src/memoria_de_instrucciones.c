@@ -163,7 +163,7 @@ void conexion_kernel(void* arg)
 
 t_proceso* buscar_proceso(uint32_t pid)
 {
-    int comparar(void* arg){
+    bool comparar(void* arg){
         printf("COMPARAR");
         t_proceso* proceso = arg;
         return proceso->pid == pid;
@@ -174,7 +174,7 @@ t_proceso* buscar_proceso(uint32_t pid)
     sem_wait(&mutex_lista_procesos);
      printf("hice waitss BUCAR_PROCESO\n");
      //pid_funcion = pid;
-    proceso = list_find(procesos_en_memoria, (void*)comparar);
+    proceso = list_find(procesos_en_memoria, comparar);
     sem_post(&mutex_lista_procesos);
     printf("TERMINA BUCAR_PROCESO\n");
     return proceso;

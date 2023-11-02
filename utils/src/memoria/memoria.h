@@ -16,6 +16,7 @@ typedef struct
 {
     uint32_t pid;
     t_list* instrucciones;
+	t_list* tabla_de_paginas;
 }t_proceso;
 
 #endif
