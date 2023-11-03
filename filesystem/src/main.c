@@ -25,6 +25,7 @@ int main(int argc, char* argv[]) {
     char* puerto_escucha = config_get_string_value(config,"PUERTO_ESCUCHA");
     char* ip_memoria = config_get_string_value(config,"IP_MEMORIA");
     char* puerto_memoria = config_get_string_value(config,"PUERTO_MEMORIA");
+	char* path_fcb = config_get_string_value(config,"PATH_FCB");
 
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
 
@@ -49,7 +50,8 @@ int main(int argc, char* argv[]) {
         switch (operacion)
         {
 		case F_OPEN:
-			abrir_archivo("documento1",path_fcb);
+			char* nombre = recibir_mensaje(socket_kernel);
+			uint32_t tam_archivo = abrir_archivo(nombre, path_fcb);
 			break;
 		//----------------------------------------------//
         case 1:

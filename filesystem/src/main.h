@@ -14,6 +14,7 @@
 #include "utils_operaciones_filesystem.h"
 #include "utils_bloques.h"
 #include "utils_committed_logger.h"
+#include "fcb.h"
 
 #define RESET_COLOR    "\x1b[0m"
 #define NEGRO_T        "\x1b[30m"
