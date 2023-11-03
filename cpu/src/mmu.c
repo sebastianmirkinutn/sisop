@@ -1,8 +1,11 @@
 #include "mmu.h"
 
-int traducir_direccion(char* direccion_logica, uint32_t tam_pagina)
+t_direccion_fisica traducir_direccion(char* direccion_logica, uint32_t tam_pagina, int socket_memoria)
 {
+    t_direccion_fisica direccion_fisica;
     uint32_t pagina = floor(atof(direccion_logica));
-    uint32_t desplazamiento = atoi(direccion_logica) - pagina * tam_pagina;
-
+    direccion_fisica.offset = atoi(direccion_logica) - pagina * tam_pagina;
+    pedir_frame(socket_memoria);
+    direccion_fisica.frame = recibir_frame(socket_memoria);
+    return direccion_fisica;
 }

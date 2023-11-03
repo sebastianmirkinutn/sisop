@@ -22,4 +22,16 @@ typedef struct
 	t_list* tabla_de_paginas;
 }t_proceso;
 
+typedef struct
+{
+    uint32_t frame;
+    uint32_t offset;
+}t_direccion_fisica;
+
+
+void pedir_frame(int socket);
+int32_t recibir_frame(int socket);
+void enviar_frame (int socket, int32_t frame);
+int32_t recibir_frame(int socket);
+
 #endif

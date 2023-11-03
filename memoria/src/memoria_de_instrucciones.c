@@ -16,10 +16,11 @@ void conexion_cpu(void* arg)
     {
         op_code codigo = recibir_operacion(arg_h->socket_cpu);
         log_info(logger_hilo,"op_code: %i", codigo);
+        uint32_t pid;
         switch (codigo)
         {
         case FETCH_INSTRUCCION:
-            uint32_t pid, program_counter;
+            uint32_t program_counter;
             recv(arg_h->socket_cpu, &pid, sizeof(uint32_t), MSG_WAITALL);
             log_info(logger_hilo,"pid: %i", pid);
             recv(arg_h->socket_cpu, &program_counter, sizeof(uint32_t), MSG_WAITALL);
@@ -42,7 +43,11 @@ void conexion_cpu(void* arg)
             break;
         
         case PEDIDO_DE_FRAME:
-            
+            uint32_t pagina_buscada;
+            recv(arg_h->socket_cpu, &pid, sizeof(uint32_t), MSG_WAITALL);
+            recv(arg_h->socket_cpu, &pagina_buscada, sizeof(uint32_t), MSG_WAITALL);
+            int32_t marco = obtener_numero_de_marco(pid, pagina_buscada);
+            enviar_frame(arg_h->socket_cpu, marco);
             break;
         default:
             liberar_conexion(arg_h->socket_cpu);
