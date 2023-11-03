@@ -16,39 +16,7 @@ extern t_queue *cola_new;
  
 extern t_pcb* execute;
 extern t_list* recursos_disponibles;
-
-void recibir_pedidos_de_cpu(t_log* logger, int socket)
-{
-    op_code operacion;
-    char* recurso;
-    do
-    {
-        operacion = recibir_operacion(socket);
-        switch (operacion)
-        {
-            case DESALOJO:
-                log_info(logger, "Envié todo");
-                log_info(logger, "Pasé el sem_post");
-                t_motivo_desalojo motivo = recibir_motivo_desalojo(socket);
-                execute->contexto = recibir_contexto_de_ejecucion(socket);
-                evaluar_motivo_desalojo(motivo);
-                log_info(logger, "Recibí el desalojo y el contexto");
-                log_info(logger, "Fin de proceso %i motivo %s (%i)", execute->pid, de_t_motivo_a_string(motivo), motivo);
-                break;
-            case WAIT:
-                recurso = recibir_mensaje(socket);
-                wait_recurso(recurso, socket);
-                break;
-            case SIGNAL:
-                recurso = recibir_mensaje(socket);
-                signal_recurso(recurso, socket);
-                break;
-            default:
-                break;
-        }
-    }
-    while(operacion != DESALOJO);
-}
+t_motivo_desalojo motivo;
 
 void planificador_rr(void* arg)
 {
@@ -78,7 +46,10 @@ void planificador_rr(void* arg)
         pthread_create(&generador_de_interrupciones, NULL, &clock_interrupt, (void*)arg_h);
         pthread_detach(&generador_de_interrupciones);
 
-        recibir_pedidos_de_cpu(logger_hilo, arg_h->socket_dispatch);
+        execute->contexto = recibir_contexto_de_ejecucion(arg_h->socket_dispatch);
+        motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
+        evaluar_motivo_desalojo(motivo, arg);
+        log_info(logger_hilo, "Fin de proceso %i motivo %s (%i)", execute->pid, de_t_motivo_a_string(motivo));
 
         sem_post(&planificacion_corto_plazo);
     }
@@ -110,7 +81,10 @@ void planificador_fifo(void* arg)
         
         log_info(logger_hilo, "Envié %i a %i", execute->pid, arg_h->socket_dispatch);
         
-        recibir_pedidos_de_cpu(logger_hilo, arg_h->socket_dispatch);
+        execute->contexto = recibir_contexto_de_ejecucion(arg_h->socket_dispatch);
+        motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
+        evaluar_motivo_desalojo(motivo, arg);
+        log_info(logger_hilo, "Fin de proceso %i motivo %s (%i)", execute->pid, de_t_motivo_a_string(motivo));
         
         sem_post(&planificacion_corto_plazo);
     }
@@ -142,7 +116,10 @@ void planificador_prioridades(void* arg)
         log_info(logger_hilo, "Envié %i a %i", execute->pid, arg_h->socket_dispatch);
         enviar_contexto_de_ejecucion(execute->contexto, arg_h->socket_dispatch);
 
-        recibir_pedidos_de_cpu(logger_hilo, arg_h->socket_dispatch);
+        execute->contexto = recibir_contexto_de_ejecucion(arg_h->socket_dispatch);
+        motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
+        evaluar_motivo_desalojo(motivo, arg);
+        log_info(logger_hilo, "Fin de proceso %i motivo %s (%i)", execute->pid, de_t_motivo_a_string(motivo));
 
         sem_post(&planificacion_corto_plazo);
     }
@@ -191,15 +168,16 @@ char* de_t_motivo_a_string(t_motivo_desalojo motivo)
     case INVALID_WRITE:
         return "INVALID_WRITE";
         break;
-    
+
     default:
         return "OTRO";
         break;
     }
 }
 
-void evaluar_motivo_desalojo(t_motivo_desalojo motivo)
+void evaluar_motivo_desalojo(t_motivo_desalojo motivo, void* arg)
 {
+    t_args_hilo* arg_h = (t_args_hilo*) arg;
     switch (motivo)
     {
     case SUCCESS:
@@ -214,13 +192,27 @@ void evaluar_motivo_desalojo(t_motivo_desalojo motivo)
         sem_post(&mutex_cola_ready);
         sem_post(&procesos_en_ready);
         break;
+
+    case WAIT:
+        printf("Me pidieron WAIT\n");
+        char* recurso = recibir_mensaje(arg_h->socket_dispatch);
+        printf("Me pidieron WAIT de %s\n", recurso);
+        wait_recurso(recurso, arg_h->socket_dispatch);
+        break;
+    case SIGNAL:
+        recurso = recibir_mensaje(arg_h->socket_dispatch);
+        signal_recurso(recurso, arg_h->socket_dispatch);
+        break;
+    case F_OPEN:
+        enviar_operacion(arg_h->socket_filesystem, F_OPEN);
+        break;
     
     default:
         break;
     }
 }
 
-void wait_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
+void wait_recurso(char* recurso_buscado, int socket_cpu_dispatch)
 {
     printf("FUNCIÓN WAIT\n");
     t_recurso* recurso = NULL;
@@ -235,14 +227,19 @@ void wait_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
     {
         /*El recurso no existe*/
         printf("El recurso %s no existe\n", recurso_buscado);
-        enviar_operacion(conexion_cpu_dispatch, NO_ASIGNADO);
+        sem_wait(&mutex_cola_blocked);
+        queue_push(&cola_blocked, execute);
+        sem_post(&mutex_cola_blocked);
     }
     else
     {
+        printf("El recurso existe\n");
         if(recurso->instancias > 0)
         {
             recurso->instancias--;
+            printf("Entro al list_find\n");
             recurso = (t_recurso*) list_find(execute->recursos_asignados, buscar_recurso);
+            printf("Pasé el list_find\n");
             if(recurso != NULL)
             {
                 recurso->instancias++;
@@ -254,20 +251,29 @@ void wait_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
                 list_add(execute->recursos_asignados, (void*) recurso);
                 printf("se asigna el recurso %s\n", recurso->nombre);
             }
-            enviar_operacion(conexion_cpu_dispatch, ASIGNADO);
+            //El recurso se asigna y se devuelve el contexto de ejecución
+            //send(socket_cpu_dispatch, &(execute->pid), sizeof(uint32_t), NULL);
+            //enviar_contexto_de_ejecucion(execute->contexto, socket_cpu_dispatch);
+            sem_wait(&mutex_cola_ready);
+            printf("Hice wait de la cola de ready: %i",cola_ready);
+            queue_push(cola_ready, execute); // Debería ser en la primera posición.
+            sem_post(&mutex_cola_ready);
+            sem_post(&procesos_en_ready);
         }
         else
         {
+            //No se asigna el recurso y se agrega a la cola de bloqueados.
             sem_wait(&mutex_cola_blocked);
-            queue_push(&cola_blocked, execute);
+            queue_push(cola_blocked, execute);
             sem_post(&mutex_cola_blocked);
-            enviar_operacion(conexion_cpu_dispatch, NO_ASIGNADO);
             printf("no se asigna el recurso %s\n", recurso->nombre);
         }
     }
+    printf("Termina wait_recurso\n");
+    return;
 }
 
-void signal_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
+void signal_recurso(char* recurso_buscado, int socket_cpu_dispatch)
 {
     printf("FUNCIÓN SIGNAL\n");
     t_recurso* recurso = NULL;
@@ -281,7 +287,9 @@ void signal_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
     {
         /*El recurso no existe*/
         printf("El recurso no está asignado\n");
-        enviar_operacion(conexion_cpu_dispatch, NO_LIBERADO);
+        sem_wait(&mutex_cola_blocked);
+        queue_push(cola_blocked, execute);
+        sem_post(&mutex_cola_blocked);
     }
     else
     {
@@ -292,16 +300,22 @@ void signal_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
             if(recurso != NULL)
             {
                 recurso->instancias++;
-                enviar_operacion(conexion_cpu_dispatch, LIBERADO);
+                //Se libera el recurso y se devuelve el contexto de ejecución
+                send(socket_cpu_dispatch, &(execute->pid), sizeof(uint32_t), NULL);
+                enviar_contexto_de_ejecucion(execute->contexto, socket_cpu_dispatch);
             }
             else
             {
-                enviar_operacion(conexion_cpu_dispatch, NO_LIBERADO);
+            sem_wait(&mutex_cola_blocked);
+            queue_push(cola_blocked, execute);
+            sem_post(&mutex_cola_blocked);
             }
         }
         else
         {
-            enviar_operacion(conexion_cpu_dispatch, NO_LIBERADO);
+            sem_wait(&mutex_cola_blocked);
+            queue_push(cola_blocked, execute);
+            sem_post(&mutex_cola_blocked);
         }
     
     }

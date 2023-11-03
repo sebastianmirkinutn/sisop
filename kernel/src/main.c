@@ -92,6 +92,7 @@ int main(int argc, char* argv[]){
 
     sem_init(&mutex_cola_new, 0, 1);
     sem_init(&mutex_cola_ready, 0, 1);
+    sem_init(&mutex_cola_blocked, 0, 1);
     sem_init(&procesos_en_new, 0, 0);
     sem_init(&procesos_en_ready, 0, 0);
     sem_init(&grado_de_multiprogramacion, 0, atoi(grado_max_de_multiprogramacion));
@@ -115,6 +116,7 @@ int main(int argc, char* argv[]){
     args_hilo.socket_dispatch = conexion_cpu_dispatch;
     args_hilo.socket_interrupt = conexion_cpu_interrupt;
     args_hilo.socket_memoria = conexion_memoria;
+    args_hilo.socket_filesystem = conexion_filesystem;
     args_hilo.quantum = quantum; 
     
     pthread_t hilo_planificador_de_largo_plazo;

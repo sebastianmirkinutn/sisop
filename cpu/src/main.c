@@ -236,54 +236,18 @@ int main(int argc, char* argv[]){
                 sleep(atoi(parametros[1]));
             }
             else if(!strcmp(parametros[0], "WAIT"))
-            {
-
-                
-                enviar_operacion(socket_kernel_dispatch, WAIT);
-                enviar_mensaje(parametros[1], socket_kernel_dispatch);
-
-                op_code respuesta = recibir_operacion(socket_kernel_dispatch);
-                switch (respuesta)
-                {
-                case ASIGNADO:
-                    /* TODO OK */
-                    break;
-
-                case NO_ASIGNADO:
-                    execute = 0;
-                    enviar_operacion(socket_kernel_dispatch, DESALOJO);
-                    enviar_motivo_desalojo(socket_kernel_dispatch, INVALID_RESOURCE);
-                    enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
-                    break;
-                
-                default:
-                    break;
-                }
+            {    
+            execute = 0;
+            enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+            enviar_motivo_desalojo(socket_kernel_dispatch, WAIT);
+            enviar_mensaje(parametros[1],socket_kernel_dispatch);
             }
             else if(!strcmp(parametros[0], "SIGNAL"))
             {
-            
-                enviar_operacion(socket_kernel_dispatch, SIGNAL);
-                enviar_mensaje(parametros[1], socket_kernel_dispatch);
-
-                op_code respuesta = recibir_operacion(socket_kernel_dispatch);
-                switch (respuesta)
-                {
-                case LIBERADO:
-                    /* TODO OK */
-                    break;
-
-                case NO_LIBERADO:
-                    execute = 0;
-                    enviar_operacion(socket_kernel_dispatch, DESALOJO);
-                    enviar_motivo_desalojo(socket_kernel_dispatch, INVALID_RESOURCE);
-                    enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
-                    break;
-                
-                default:
-                    break;
-                }
-
+            execute = 0;
+            enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+            enviar_motivo_desalojo(socket_kernel_dispatch, SIGNAL);
+            enviar_mensaje(parametros[1],socket_kernel_dispatch);
             }
             else if(!strcmp(parametros[0], "MOV_IN"))
             {
@@ -295,7 +259,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "F_OPEN"))
             {
-            
+
             }
             else if(!strcmp(parametros[0], "F_CLOSE"))
             {
@@ -320,9 +284,8 @@ int main(int argc, char* argv[]){
             else if(!strcmp(parametros[0], "EXIT"))
             {
                 execute = 0;
-                enviar_operacion(socket_kernel_dispatch, DESALOJO);
-                enviar_motivo_desalojo(socket_kernel_dispatch, SUCCESS);
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+                enviar_motivo_desalojo(socket_kernel_dispatch, SUCCESS);
             }
             registros->PC++;
             atender_interrupciones(socket_kernel_dispatch);

@@ -10,6 +10,7 @@ typedef struct
     int socket_memoria;
     int socket_kernel;
     int socket_cpu;
+    int socket_filesystem;
     uint32_t quantum;
     t_pcb* pcb;
     int retardo_memoria;
