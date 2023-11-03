@@ -248,7 +248,7 @@ void wait_recurso(char* recurso_buscado, int socket_cpu_dispatch)
             else
             {
                 t_recurso* recurso = crear_recurso(recurso_buscado, 1); //Creo el recurso con una instancia porque es la instancia que le asigno
-                list_add(execute->recursos_asignados, (void*) recurso);
+                list_add(execute->recursos_asignados, (void*) recurso); 
                 printf("se asigna el recurso %s\n", recurso->nombre);
             }
             //El recurso se asigna y se devuelve el contexto de ejecución
@@ -301,8 +301,12 @@ void signal_recurso(char* recurso_buscado, int socket_cpu_dispatch)
             {
                 recurso->instancias++;
                 //Se libera el recurso y se devuelve el contexto de ejecución
-                send(socket_cpu_dispatch, &(execute->pid), sizeof(uint32_t), NULL);
-                enviar_contexto_de_ejecucion(execute->contexto, socket_cpu_dispatch);
+                sem_wait(&mutex_cola_ready);
+                printf("Hice wait de la cola de ready: %i",cola_ready);
+                queue_push(cola_ready, execute); // Debería ser en la primera posición.
+                sem_post(&mutex_cola_ready);
+                sem_post(&procesos_en_ready);
+                printf("Se liberó el recurso\n");
             }
             else
             {
