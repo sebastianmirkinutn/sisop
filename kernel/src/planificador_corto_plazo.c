@@ -222,7 +222,6 @@ void wait_recurso(char* recurso_buscado, int socket_cpu_dispatch)
         return (!strcmp(elemento->nombre, recurso_buscado));
     }
     recurso = list_find(recursos_disponibles, buscar_recurso);
-    printf("recurso = %s\n", recurso->nombre);
     if(recurso == NULL)
     {
         /*El recurso no existe*/

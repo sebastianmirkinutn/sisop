@@ -18,7 +18,5 @@
 #include <stdint.h>
 
 int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada);
-void enviar_frame (int socket, int32_t frame);
-int32_t recibir_frame (int socket);
 
 #endif
