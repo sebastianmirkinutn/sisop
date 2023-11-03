@@ -92,6 +92,7 @@ int main(int argc, char* argv[]){
 
     sem_init(&mutex_cola_new, 0, 1);
     sem_init(&mutex_cola_ready, 0, 1);
+    sem_init(&mutex_cola_blocked, 0, 1);
     sem_init(&procesos_en_new, 0, 0);
     sem_init(&procesos_en_ready, 0, 0);
     sem_init(&grado_de_multiprogramacion, 0, atoi(grado_max_de_multiprogramacion));

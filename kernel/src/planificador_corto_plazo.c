@@ -233,10 +233,13 @@ void wait_recurso(char* recurso_buscado, int socket_cpu_dispatch)
     }
     else
     {
+        printf("El recurso existe\n");
         if(recurso->instancias > 0)
         {
             recurso->instancias--;
+            printf("Entro al list_find\n");
             recurso = (t_recurso*) list_find(execute->recursos_asignados, buscar_recurso);
+            printf("Pasé el list_find\n");
             if(recurso != NULL)
             {
                 recurso->instancias++;
@@ -252,8 +255,10 @@ void wait_recurso(char* recurso_buscado, int socket_cpu_dispatch)
             //send(socket_cpu_dispatch, &(execute->pid), sizeof(uint32_t), NULL);
             //enviar_contexto_de_ejecucion(execute->contexto, socket_cpu_dispatch);
             sem_wait(&mutex_cola_ready);
+            printf("Hice wait de la cola de ready: %i",cola_ready);
             queue_push(cola_ready, execute); // Debería ser en la primera posición.
-            sem_wait(&mutex_cola_ready);
+            sem_post(&mutex_cola_ready);
+            sem_post(&procesos_en_ready);
         }
         else
         {
@@ -264,6 +269,8 @@ void wait_recurso(char* recurso_buscado, int socket_cpu_dispatch)
             printf("no se asigna el recurso %s\n", recurso->nombre);
         }
     }
+    printf("Termina wait_recurso\n");
+    return;
 }
 
 void signal_recurso(char* recurso_buscado, int socket_cpu_dispatch)

@@ -237,12 +237,14 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "WAIT"))
             {    
+            execute = 0;
             enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
             enviar_motivo_desalojo(socket_kernel_dispatch, WAIT);
             enviar_mensaje(parametros[1],socket_kernel_dispatch);
             }
             else if(!strcmp(parametros[0], "SIGNAL"))
             {
+            execute = 0;
             enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
             enviar_motivo_desalojo(socket_kernel_dispatch, SIGNAL);
             enviar_mensaje(parametros[1],socket_kernel_dispatch);
