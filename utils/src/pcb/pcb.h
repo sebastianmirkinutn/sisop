@@ -55,6 +55,14 @@ typedef enum
     INVALID_RESOURCE,
     INVALID_WRITE,
 	CLOCK_INTERRUPT,
+	WAIT,
+	SIGNAL,
+	ASIGNADO,
+	F_READ,
+	F_WRITE,
+	F_SEEK,
+	F_CLOSE,
+	F_OPEN,
 	KILL
 }t_motivo_desalojo;
 

@@ -115,6 +115,7 @@ int main(int argc, char* argv[]){
     args_hilo.socket_dispatch = conexion_cpu_dispatch;
     args_hilo.socket_interrupt = conexion_cpu_interrupt;
     args_hilo.socket_memoria = conexion_memoria;
+    args_hilo.socket_filesystem = conexion_filesystem;
     args_hilo.quantum = quantum; 
     
     pthread_t hilo_planificador_de_largo_plazo;

@@ -31,13 +31,8 @@ void atender_interrupciones(int socket_kernel_dispatch)
     {
         flag_interrupciones = 0; 
         sem_post(&mutex_flag_interrupciones);
-        enviar_operacion(socket_kernel_dispatch, DESALOJO);
+        enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
         enviar_motivo_desalojo(socket_kernel_dispatch, CLOCK_INTERRUPT);
-        send(socket_kernel_dispatch, &(registros->AX), sizeof(uint32_t), 0);
-        send(socket_kernel_dispatch, &(registros->BX), sizeof(uint32_t), 0);
-        send(socket_kernel_dispatch, &(registros->CX), sizeof(uint32_t), 0);
-        send(socket_kernel_dispatch, &(registros->DX), sizeof(uint32_t), 0);
-        send(socket_kernel_dispatch, &(registros->PC), sizeof(uint32_t), 0);
         execute = 0;
     }
     else
