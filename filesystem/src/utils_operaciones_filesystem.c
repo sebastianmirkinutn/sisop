@@ -4,7 +4,7 @@
 /* Emulacion de peticiones del modulo Kernel*/
 /*-----------------------------------------------------------------------------------*/
 /* 1) ABRIR_ARCHIVO-----------------------------*/
-uint32_t abrir_archivo(char *nombreArchivo,char *c_directorio_fcb) {
+uint32_t d_abrir_archivo(char *nombreArchivo,char *c_directorio_fcb) {
     FILE *f_arch_fcb;
     char direccionArchivo[100]="";
 

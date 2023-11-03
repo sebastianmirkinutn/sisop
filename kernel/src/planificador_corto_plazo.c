@@ -230,8 +230,7 @@ void wait_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
         return (!strcmp(elemento->nombre, recurso_buscado));
     }
     recurso = list_find(recursos_disponibles, buscar_recurso);
-    t_recurso* recurso_prueba = list_get(recursos_disponibles, 2);
-    printf("recurso = %s\n", recurso_prueba->nombre);
+    printf("recurso = %s\n", recurso->nombre);
     if(recurso == NULL)
     {
         /*El recurso no existe*/
@@ -247,11 +246,13 @@ void wait_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
             if(recurso != NULL)
             {
                 recurso->instancias++;
+                printf("se asigna el recurso %s\n", recurso->nombre);
             }
             else
             {
                 t_recurso* recurso = crear_recurso(recurso_buscado, 1); //Creo el recurso con una instancia porque es la instancia que le asigno
                 list_add(execute->recursos_asignados, (void*) recurso);
+                printf("se asigna el recurso %s\n", recurso->nombre);
             }
             enviar_operacion(conexion_cpu_dispatch, ASIGNADO);
         }
@@ -261,6 +262,7 @@ void wait_recurso(char* recurso_buscado, int conexion_cpu_dispatch)
             queue_push(&cola_blocked, execute);
             sem_post(&mutex_cola_blocked);
             enviar_operacion(conexion_cpu_dispatch, NO_ASIGNADO);
+            printf("no se asigna el recurso %s\n", recurso->nombre);
         }
     }
 }

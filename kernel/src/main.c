@@ -53,15 +53,15 @@ t_pcb* buscar_proceso_segun_pid(uint32_t pid, t_queue* cola)
 t_list* iniciar_lista_de_recursos(char** a_recursos, char** a_instancias)
 {
     t_list* recursos = list_create();
-    t_recurso* recurso = malloc(sizeof(t_recurso));
     int i = 0;
     do
     {
+        t_recurso* recurso = malloc(sizeof(t_recurso));
         recurso->nombre = a_recursos[i];
         recurso->instancias = atoi(a_instancias[i]);
         printf("Recurso agregado: %s - %i\n", recurso->nombre, recurso->instancias);
         i++;
-        list_add(recursos, (void*)recurso);
+        list_add(recursos, recurso);
     } while (a_recursos[i] != NULL);
 
     return recursos;   
