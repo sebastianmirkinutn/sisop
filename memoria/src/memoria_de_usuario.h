@@ -15,5 +15,8 @@
 #include <commons/bitarray.h>
 #include <threads/thread_parameters.h>
 #include <memoria/memoria.h>
+#include <stdint.h>
+
+int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada);
 
 #endif
