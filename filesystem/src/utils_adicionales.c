@@ -30,3 +30,4 @@ char *itoa_(uint32_t dividendo,char *cadenaText) {
     }
     return (cadenaText);
 }
+/* By Pablo Lavezzi */
