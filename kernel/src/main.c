@@ -50,6 +50,33 @@ void recibir_ordenes_cpu(void* arg)
     
 }
 
+void* liberar_t_recurso()
+{
+
+}
+
+void liberar_recursos(t_pcb* pcb)
+{
+    bool buscar_recurso(void* arg)
+    {
+        t_recurso* elemento = (t_recurso) arg;
+        return (!strcmp(elemento->nombre, recurso->nombre));
+    }
+
+    int i = 0;
+    int cantidad_de_recursos = list_size(pcb->recursos_asignados);
+
+    while(i < cantidad_de_recursos){
+
+
+        t_recurso* recurso = list_remove(pcb->recursos_asignados, i);
+        t_recurso* recurso_lista_disponibles = (t_recurso*) list_find(recursos_disponibles, buscar_recurso);
+        recurso_lista_disponibles->instancias += recurso->instancias;
+        //me falta liberar todo
+    }
+    
+}
+
 
 t_pcb* buscar_proceso_segun_pid(uint32_t pid, t_queue* cola)
 {
