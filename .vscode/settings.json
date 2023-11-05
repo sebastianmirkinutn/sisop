@@ -28,6 +28,7 @@
         "memoria.h": "c",
         "mmu.h": "c",
         "utils_operaciones_filesystem.h": "c",
-        "utils_adicionales.h": "c"
+        "utils_adicionales.h": "c",
+        "temp.h": "c"
     }
 }
