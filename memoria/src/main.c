@@ -21,7 +21,8 @@ int main(int argc, char* argv[]){
     int retardo_respuesta = config_get_int_value(config, "RETARDO_RESPUESTA");
 
     memoria_de_usuario = malloc(tam_memoria);
-    bitarray_create(frame_bitarray, tam_memoria);
+    char* c_bitarray = malloc(tam_memoria / 8);
+    frame_bitarray = bitarray_create_with_mode(c_bitarray, sizeof(c_bitarray), LSB_FIRST);
 
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
     int socket_servidor = iniciar_servidor(logger,puerto_escucha);
