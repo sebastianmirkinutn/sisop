@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <commons/log.h>
 #include <commons/config.h>
-#include <sockets/client_utils.c>
+#include <sockets/client_utils.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <pcb/pcb.h>
@@ -14,6 +14,7 @@
 #include <pcb/pcb.h>
 #include <pthread.h>
 
+#include "temp.h"
 #include "planificador_largo_plazo.h"
 #include "planificador_corto_plazo.h"
 
