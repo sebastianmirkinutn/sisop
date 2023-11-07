@@ -138,4 +138,5 @@ t_recurso* crear_recurso(char* nombre, uint32_t instancias)
     t_recurso* recurso = malloc(sizeof(t_recurso));
     recurso->nombre = nombre;
     recurso->instancias = instancias;
+    recurso->cola_blocked = queue_create();
 }

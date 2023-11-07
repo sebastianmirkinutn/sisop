@@ -9,6 +9,7 @@
 #include <sockets/sockets.h>
 #include <sockets/client_utils.h>
 #include <sockets/server_utils.h>
+#include <commons/collections/queue.h>
 
 typedef struct
 {
@@ -46,6 +47,7 @@ typedef struct
 {
 	char* nombre;
 	uint32_t instancias;
+	t_queue* cola_blocked;
 }t_recurso;
 
 
