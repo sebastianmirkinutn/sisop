@@ -24,18 +24,27 @@ t_recurso* buscar_recurso(char* recurso_buscado)
         t_recurso* elemento = (t_recurso*) arg;
         return (!strcmp(elemento->nombre, recurso_buscado));
     }
-    t_recurso* recurso = list_find(recursos_disponibles, recurso_buscado);
+    t_recurso* recurso = list_find(recursos_disponibles, es_el_recurso);
     return recurso;
 }
 
 void desbloquear_procesos(char* recurso_buscado)
 {
+    t_pcb* pcb;
     t_recurso* recurso = buscar_recurso(recurso_buscado);
     if(recurso != NULL)
     {
         sem_wait(&mutex_cola_blocked);
-        t_pcb* pcb = queue_pop(recurso->cola_blocked);
+        printf("Queue = %i",recurso->cola_blocked);
+        if(list_size(recurso->cola_blocked->elements) > 0)
+        {
+            pcb = queue_pop(recurso->cola_blocked);
+        }
         sem_post(&mutex_cola_blocked);
+
+        sem_wait(&mutex_cola_ready);
+        queue_push(cola_ready,pcb);
+        sem_post(&mutex_cola_ready);
     }
     else
     {

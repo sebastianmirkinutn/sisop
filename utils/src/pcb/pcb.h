@@ -1,6 +1,7 @@
 #ifndef PCB_H
 #define PCB_H
 #include <stdlib.h>
+#include <stdio.h>
 #include <commons/collections/list.h>
 #include <ctype.h>
 #include <stdint.h>
@@ -10,6 +11,7 @@
 #include <sockets/client_utils.h>
 #include <sockets/server_utils.h>
 #include <commons/collections/queue.h>
+#include <string.h>
 
 typedef struct
 {
