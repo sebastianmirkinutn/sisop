@@ -1,6 +1,7 @@
 #ifndef PCB_H
 #define PCB_H
 #include <stdlib.h>
+#include <stdio.h>
 #include <commons/collections/list.h>
 #include <ctype.h>
 #include <stdint.h>
@@ -9,6 +10,8 @@
 #include <sockets/sockets.h>
 #include <sockets/client_utils.h>
 #include <sockets/server_utils.h>
+#include <commons/collections/queue.h>
+#include <string.h>
 
 typedef struct
 {
@@ -46,6 +49,7 @@ typedef struct
 {
 	char* nombre;
 	uint32_t instancias;
+	t_queue* cola_blocked;
 }t_recurso;
 
 

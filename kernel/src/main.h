@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <commons/log.h>
 #include <commons/config.h>
+#include <sockets/sockets.h>
 #include <sockets/client_utils.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -17,6 +18,7 @@
 #include "temp.h"
 #include "planificador_largo_plazo.h"
 #include "planificador_corto_plazo.h"
+
 
 typedef struct
 {

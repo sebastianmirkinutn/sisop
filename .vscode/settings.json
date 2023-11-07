@@ -29,6 +29,7 @@
         "mmu.h": "c",
         "utils_operaciones_filesystem.h": "c",
         "utils_adicionales.h": "c",
-        "temp.h": "c"
+        "temp.h": "c",
+        "planificador_mediano_plazo.h": "c"
     }
 }

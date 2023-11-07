@@ -13,10 +13,10 @@
 #include <threads/thread_parameters.h>
 #include <pthread.h>
 
+
+
 char* de_t_motivo_a_string(t_motivo_desalojo motivo);
 void evaluar_motivo_desalojo(t_motivo_desalojo motivo, void* arg);
-void wait_recurso(char* recurso_buscado, int conexion_cpu_dispatch);
-void signal_recurso(char* recurso_buscado, int conexion_cpu_dispatch);
 void clock_interrupt(void* arg);
 void planificador_rr(void* arg);
 void planificador_fifo(void* arg);

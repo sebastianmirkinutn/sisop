@@ -82,9 +82,7 @@ t_list* iniciar_lista_de_recursos(char** a_recursos, char** a_instancias)
     int i = 0;
     do
     {
-        t_recurso* recurso = malloc(sizeof(t_recurso));
-        recurso->nombre = a_recursos[i];
-        recurso->instancias = atoi(a_instancias[i]);
+        t_recurso* recurso = crear_recurso(a_recursos[i], atoi(a_instancias[i]));
         printf("Recurso agregado: %s - %i\n", recurso->nombre, recurso->instancias);
         i++;
         list_add(recursos, recurso);
@@ -283,6 +281,7 @@ int main(int argc, char* argv[]){
         }
         else if(!strcmp(c_argv[0], "PROCESO_ESTADO"))
         {   
+            /*
             //mostramos los pid de NEW 
             t_list* lista_para_iterar = list_iterator_create(cola_new);
             char* pids = string_new();
@@ -330,7 +329,7 @@ int main(int argc, char* argv[]){
             //mostramos el pid de running
 
             log_info(logger, "Estado: RUNNING - PID: %i", execute->pid);
-
+        */
         }
         else if(!strcmp(c_argv[0], "INTERRUPT"))
         {
