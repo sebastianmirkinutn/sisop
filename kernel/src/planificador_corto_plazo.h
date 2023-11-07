@@ -16,7 +16,7 @@
 
 
 char* de_t_motivo_a_string(t_motivo_desalojo motivo);
-void evaluar_motivo_desalojo(t_motivo_desalojo motivo, void* arg);
+void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void* arg);
 void clock_interrupt(void* arg);
 void planificador_rr(void* arg);
 void planificador_fifo(void* arg);

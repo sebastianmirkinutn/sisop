@@ -3,14 +3,13 @@
 extern sem_t grado_de_multiprogramacion;
 extern sem_t mutex_cola_new;
 extern sem_t mutex_cola_ready;
-extern sem_t mutex_cola_blocked;
+extern sem_t mutex_cola_exit;
 extern sem_t procesos_en_new;
 extern sem_t procesos_en_ready;
 extern sem_t planificacion_largo_plazo;
 extern sem_t planificacion_corto_plazo;
   
 extern t_queue *cola_ready;
-extern t_queue *cola_blocked;
 extern t_queue *cola_exit;
 extern t_queue *cola_new;
  
@@ -48,9 +47,8 @@ void planificador_rr(void* arg)
 
         execute->contexto = recibir_contexto_de_ejecucion(arg_h->socket_dispatch);
         motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
-        evaluar_motivo_desalojo(motivo, arg);
-        log_info(logger_hilo, "Fin de proceso %i motivo %s (%i)", execute->pid, de_t_motivo_a_string(motivo));
-
+        evaluar_motivo_desalojo(logger_hilo, motivo, arg);
+        
         sem_post(&planificacion_corto_plazo);
     }
 }
@@ -83,8 +81,7 @@ void planificador_fifo(void* arg)
         
         execute->contexto = recibir_contexto_de_ejecucion(arg_h->socket_dispatch);
         motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
-        evaluar_motivo_desalojo(motivo, arg);
-        log_info(logger_hilo, "Fin de proceso %i motivo %s (%i)", execute->pid, de_t_motivo_a_string(motivo));
+        evaluar_motivo_desalojo(logger_hilo, motivo, arg);
         
         sem_post(&planificacion_corto_plazo);
     }
@@ -118,8 +115,7 @@ void planificador_prioridades(void* arg)
 
         execute->contexto = recibir_contexto_de_ejecucion(arg_h->socket_dispatch);
         motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
-        evaluar_motivo_desalojo(motivo, arg);
-        log_info(logger_hilo, "Fin de proceso %i motivo %s (%i)", execute->pid, de_t_motivo_a_string(motivo));
+        evaluar_motivo_desalojo(logger_hilo, motivo, arg);
 
         sem_post(&planificacion_corto_plazo);
     }
@@ -175,14 +171,17 @@ char* de_t_motivo_a_string(t_motivo_desalojo motivo)
     }
 }
 
-void evaluar_motivo_desalojo(t_motivo_desalojo motivo, void* arg)
+void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void* arg)
 {
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     switch (motivo)
     {
     case SUCCESS:
         execute->estado = EXIT;
-        /* AGREGO A COLA_EXIT */
+        sem_wait(&mutex_cola_exit);
+        queue_push(cola_exit, execute);
+        sem_post(&mutex_cola_exit);
+        log_info(logger_hilo, "Fin de proceso %i motivo %s (%i)", execute->pid, de_t_motivo_a_string(motivo));
         break;
 
     case CLOCK_INTERRUPT:
@@ -197,11 +196,11 @@ void evaluar_motivo_desalojo(t_motivo_desalojo motivo, void* arg)
         printf("Me pidieron WAIT\n");
         char* recurso = recibir_mensaje(arg_h->socket_dispatch);
         printf("Me pidieron WAIT de %s\n", recurso);
-        wait_recurso(recurso, arg_h->socket_dispatch);
+        wait_recurso(logger_hilo, recurso, arg_h->socket_dispatch);
         break;
     case SIGNAL:
         recurso = recibir_mensaje(arg_h->socket_dispatch);
-        signal_recurso(recurso, arg_h->socket_dispatch);
+        signal_recurso(logger_hilo, recurso, arg_h->socket_dispatch);
         break;
     case F_OPEN:
         enviar_operacion(arg_h->socket_filesystem, F_OPEN);

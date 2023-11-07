@@ -3,16 +3,15 @@
 sem_t grado_de_multiprogramacion;
 sem_t mutex_cola_new;
 sem_t mutex_cola_ready;
-sem_t mutex_cola_blocked;
+sem_t mutex_cola_exit;
 sem_t procesos_en_new;
 sem_t procesos_en_ready;
 sem_t planificacion_largo_plazo;
 sem_t planificacion_corto_plazo;
 
-t_queue *cola_ready;
-t_queue *cola_blocked;
-t_queue *cola_exit;
 t_queue *cola_new;
+t_queue *cola_ready;
+t_queue *cola_exit;
 
 t_pcb* execute;
 t_list* recursos_disponibles;
@@ -97,12 +96,12 @@ int main(int argc, char* argv[]){
     t_config* config = iniciar_config("./cfg/kernel.config");
     
     char* ip_cpu = config_get_string_value(config, "IP_CPU");
-	char* puerto_cpu_dispatch = config_get_string_value(config, "PUERTO_CPU_DISPATCH");
+    char* puerto_cpu_dispatch = config_get_string_value(config, "PUERTO_CPU_DISPATCH");
     char* puerto_cpu_interrupt = config_get_string_value(config, "PUERTO_CPU_INTERRUPT");
     char* ip_memoria = config_get_string_value(config, "IP_MEMORIA");
-	char* puerto_memoria = config_get_string_value(config, "PUERTO_MEMORIA");
+    char* puerto_memoria = config_get_string_value(config, "PUERTO_MEMORIA");
     char* ip_filesystem = config_get_string_value(config, "IP_FILESYSTEM");
-	char* puerto_filesystem = config_get_string_value(config, "PUERTO_FILESYSTEM");
+    char* puerto_filesystem = config_get_string_value(config, "PUERTO_FILESYSTEM");
     char* grado_max_de_multiprogramacion = config_get_string_value(config, "GRADO_MULTIPROGRAMACION_INI");
     char* algoritmo_planificacion = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
     char** recursos = config_get_array_value(config, "RECURSOS");
@@ -116,7 +115,7 @@ int main(int argc, char* argv[]){
 
     sem_init(&mutex_cola_new, 0, 1);
     sem_init(&mutex_cola_ready, 0, 1);
-    sem_init(&mutex_cola_blocked, 0, 1);
+    sem_init(&mutex_cola_exit, 0, 1);
     sem_init(&procesos_en_new, 0, 0);
     sem_init(&procesos_en_ready, 0, 0);
     sem_init(&grado_de_multiprogramacion, 0, atoi(grado_max_de_multiprogramacion));
@@ -125,7 +124,6 @@ int main(int argc, char* argv[]){
 
     cola_new = queue_create();
 	cola_ready = queue_create();
-	cola_blocked = queue_create();
 	cola_exit = queue_create();
 
     recursos_disponibles = iniciar_lista_de_recursos(recursos, instancias_recursos);
@@ -222,12 +220,14 @@ int main(int argc, char* argv[]){
                 enviar_operacion(conexion_cpu_interrupt, FINALIZAR_PROCESO);
             }else
             {
+                /*
                 if(buscar_proceso_segun_pid(c_argv[1], cola_blocked) != NULL){
                     pcb = buscar_proceso_segun_pid(c_argv[1], cola_blocked);
                     list_remove_element(cola_blocked, pcb);
                    
                 }
-                else if(buscar_proceso_segun_pid(c_argv[1], cola_ready) != NULL)
+                */      //Vamos a tener que buscar en la cola de bloqueados de cada recurso
+                if(buscar_proceso_segun_pid(c_argv[1], cola_ready) != NULL)
                 {
                     pcb = buscar_proceso_segun_pid(c_argv[1], cola_ready);
                     list_remove_element(cola_ready, pcb);
