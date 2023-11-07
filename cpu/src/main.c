@@ -8,6 +8,29 @@ int flag_interrupciones;
 int execute;
 t_motivo_desalojo motivo_desalojo;
 
+uint32_t valor_de_registro(char* registro)
+{
+    uint32_t valor = 0;
+     if(!strcmp(registro, "AX"))
+    {
+        registros->AX = valor;
+    }
+    else if(!strcmp(registro, "BX"))
+    {
+        registros->BX = valor;
+    }
+    else if(!strcmp(registro, "CX"))
+    {
+        registros->CX = valor;
+    }
+    else if(!strcmp(registro, "DX"))
+    {
+        registros->DX = valor;
+    }
+
+    return valor;
+}
+
 void sumar_a_registro(char* registro, uint32_t numero)
 {
     if(!strcmp(registro, "AX"))
@@ -21,10 +44,6 @@ void sumar_a_registro(char* registro, uint32_t numero)
     else if(!strcmp(registro, "CX"))
     {
         registros->BX += numero;
-    }
-    else if(!strcmp(registro, "CX"))
-    {
-        registros->CX += numero;
     }
     else if(!strcmp(registro, "DX"))
     {
@@ -229,7 +248,12 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "JNZ"))
             {
-            
+                uint32_t valor = valor_de_registro(parametros[1]);
+
+                if(valor != 0)
+                {
+                    registros->PC = atoi(parametros[2]);
+                }
             }
             else if(!strcmp(parametros[0], "SLEEP"))
             {

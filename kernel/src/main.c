@@ -279,10 +279,57 @@ int main(int argc, char* argv[]){
         }
         else if(!strcmp(c_argv[0], "MULTIPROGRAMACION"))
         {
-
+            //solo seria cambiar el valor del semaforo?     
         }
         else if(!strcmp(c_argv[0], "PROCESO_ESTADO"))
         {   
+            //mostramos los pid de NEW 
+            t_list* lista_para_iterar = list_iterator_create(cola_new);
+            char* pids = string_new();
+            while(list_iterator_has_next(lista_para_iterar))
+            {
+                t_pcb* proceso = list_iterator_next(lista_para_iterar);
+                strcat(pids,string_itoa(proceso->pid));
+                strcat(pids, ", ");
+            }
+            char* log = string_new();
+            strcat(log, "Estado: NEW - Procesos: ");
+            strcat(log, pids);
+            log_info(logger, log);
+
+            //mostramos los pids de READY
+
+            lista_para_iterar = list_iterator_create(cola_ready);
+            pids = string_new();
+            while(list_iterator_has_next(lista_para_iterar))
+            {
+                t_pcb* proceso = list_iterator_next(lista_para_iterar);
+                strcat(pids,string_itoa(proceso->pid));
+                strcat(pids, ", ");
+            }
+            char* log = string_new();
+            strcat(log, "Estado: READY - Procesos: ");
+            strcat(log, pids);
+            log_info(logger, log);
+
+            //mostramos los pids de bloqueado 
+
+            lista_para_iterar = list_iterator_create(cola_blocked);
+            pids = string_new();
+            while(list_iterator_has_next(lista_para_iterar))
+            {
+                t_pcb* proceso = list_iterator_next(lista_para_iterar);
+                strcat(pids,string_itoa(proceso->pid));
+                strcat(pids, ", ");
+            }
+            char* log = string_new();
+            strcat(log, "Estado: BLOCKED - Procesos: ");
+            strcat(log, pids);
+            log_info(logger, log);
+
+            //mostramos el pid de running
+
+            log_info(logger, "Estado: RUNNING - PID: %i", execute->pid);
 
         }
         else if(!strcmp(c_argv[0], "INTERRUPT"))
