@@ -143,3 +143,15 @@ t_recurso* crear_recurso(char* nombre, uint32_t instancias)
     sem_init(&(recurso->mutex_cola_blocked), 0, 1);
     return recurso;
 }
+
+t_pcb* buscar_proceso_segun_pid(uint32_t pid, t_queue* cola)
+{
+
+    bool tiene_mismo_pid(void* pcb) {
+        return (((t_pcb*)pcb)->pid == pid);
+    }
+
+    t_pcb* pcb = NULL;
+    pcb = list_find(cola, tiene_mismo_pid);
+    return pcb;
+}
