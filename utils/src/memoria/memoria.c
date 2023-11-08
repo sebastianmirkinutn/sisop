@@ -29,3 +29,17 @@ int32_t recibir_frame(int socket)
     }
     return frame;
 }
+
+void enviar_direccion(int socket, t_direccion_fisica* direccion)
+{
+    send(socket, &(direccion->frame), sizeof(uint32_t), NULL);
+    send(socket, &(direccion->offset), sizeof(uint32_t), NULL);
+}
+
+t_direccion_fisica* recibir_direccion(int socket)
+{
+    t_direccion_fisica* direccion = malloc(sizeof(t_direccion_fisica));
+    recv(socket, &(direccion->frame), sizeof(uint32_t), MSG_WAITALL);
+    recv(socket, &(direccion->offset), sizeof(uint32_t), MSG_WAITALL);
+    return direccion;
+}

@@ -15,6 +15,7 @@
 #include <commons/bitarray.h>
 #include <threads/thread_parameters.h>
 #include <memoria/memoria.h>
+
 #include "memoria_de_usuario.h"
 
 void conexion_cpu(void* arg);

@@ -4,6 +4,7 @@ extern t_list* procesos_en_memoria;
 extern char* saveptr;
 extern sem_t mutex_lista_procesos;
 extern sem_t cantidad_de_procesos;
+extern int tam_pagina;
 
 void conexion_cpu(void* arg)
 {
@@ -16,7 +17,7 @@ void conexion_cpu(void* arg)
     {
         op_code codigo = recibir_operacion(arg_h->socket_cpu);
         log_info(logger_hilo,"op_code: %i", codigo);
-        uint32_t pid;
+        uint32_t pid, direccion;
         switch (codigo)
         {
         case FETCH_INSTRUCCION:
@@ -49,6 +50,25 @@ void conexion_cpu(void* arg)
             int32_t marco = obtener_numero_de_marco(pid, pagina_buscada);
             enviar_frame(arg_h->socket_cpu, marco);
             break;
+
+        case PEDIDO_LECTURA:
+            recv(arg_h->socket_cpu, &direccion, sizeof(uint32_t), MSG_WAITALL);
+            uint32_t lectura = leer_de_memoria(direccion);
+            send(arg_h->socket_cpu, &direccion, sizeof(uint32_t), NULL);
+            break;
+
+        case PEDIDO_ESCRITURA:
+            uint32_t a_escribir;
+            recv(arg_h->socket_cpu, &a_escribir, sizeof(uint32_t), MSG_WAITALL);
+            recv(arg_h->socket_cpu, &direccion, sizeof(uint32_t), MSG_WAITALL);
+            escribir_en_memoria(direccion, a_escribir);
+            send(arg_h->socket_cpu, &direccion, sizeof(uint32_t), NULL);
+            break;
+
+        case PEDIDO_SIZE_PAGINA:
+            send(conexion_cpu, &tam_pagina, sizeof(int), NULL);
+            break;
+
         default:
             liberar_conexion(arg_h->socket_cpu);
             return;

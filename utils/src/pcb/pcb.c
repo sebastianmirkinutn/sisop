@@ -140,5 +140,6 @@ t_recurso* crear_recurso(char* nombre, uint32_t instancias)
     recurso->nombre = nombre;                   /*Habría que usar strdup(). Además, de esta forma*/
     recurso->instancias = instancias;           /*podemos liberar la lista de char* iniciar, a la */
     recurso->cola_blocked = queue_create();     /*que apuntan los punteros.*/
+    sem_init(&(recurso->mutex_cola_blocked), 0, 1);
     return recurso;
 }

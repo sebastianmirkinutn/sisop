@@ -17,6 +17,8 @@
 #include <memoria/memoria.h>
 #include <stdint.h>
 
+uint8_t leer_de_memoria(uint32_t direccion);
+void escribir_en_memoria(uint32_t direccion, uint8_t byte);
 int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada);
 
 #endif

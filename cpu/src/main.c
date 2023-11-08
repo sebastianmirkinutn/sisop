@@ -121,10 +121,11 @@ int main(int argc, char* argv[]){
     char* puerto_escucha_interrupt = config_get_string_value(config,"PUERTO_ESCUCHA_INTERRUPT");
     char* ip_memoria = config_get_string_value(config,"IP_MEMORIA");
     char* puerto_memoria = config_get_string_value(config,"PUERTO_MEMORIA");
-    printf("PUERTO_ESCUCHA=%s\n",puerto_escucha_dispatch);
+    int tam_pagina;
 
+    printf("PUERTO_ESCUCHA=%s\n",puerto_escucha_dispatch);  
     int conexion_memoria = crear_conexion(logger, ip_memoria, puerto_memoria);
-
+    
     int socket_servidor_dispatch = iniciar_servidor(logger,puerto_escucha_dispatch);
     int socket_servidor_interrupt = iniciar_servidor(logger,puerto_escucha_interrupt);
     int socket_kernel_dispatch = esperar_cliente(logger, socket_servidor_dispatch);
@@ -141,6 +142,9 @@ int main(int argc, char* argv[]){
         log_error(logger, "No se pudo establecer la conexión con Memoria");
     }
     */
+   
+ 
+
     
     uint32_t pid = 0;
     
@@ -160,6 +164,12 @@ int main(int argc, char* argv[]){
         pcb_prueba->contexto = deserializar_contexto(serializado);
         log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", pcb_prueba->contexto->AX, pcb_prueba->contexto->BX, pcb_prueba->contexto->CX, pcb_prueba->contexto->DX, pcb_prueba->contexto->PC);
         
+/*
+          enviar_operacion(conexion_memoria, PEDIDO_SIZE_PAGINA);
+    recv(conexion_memoria, &tam_pagina, sizeof(int), MSG_WAITALL);
+    */
+   /*HABRÍA QUE HACER UN HANDSHAKE*/
+   tam_pagina = 16;
 
 
     while(1)
@@ -277,6 +287,11 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "MOV_IN"))
             {
+                enviar_operacion(conexion_memoria, PEDIDO_ESCRITURA);
+                t_direccion_fisica* direccion = traducir_direccion(parametros[2], tam_pagina, conexion_memoria);
+                uint32_t a_enviar = valor_de_registro(parametros[1]);
+                send(conexion_memoria, &a_enviar, sizeof(uint32_t), NULL);
+                enviar_direccion(conexion_memoria, direccion);
             
             }
             else if(!strcmp(parametros[0], "MOV_OUT"))

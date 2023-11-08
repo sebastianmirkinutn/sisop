@@ -15,7 +15,7 @@
 
 t_recurso* buscar_recurso(char* recurso_buscado);
 void desbloquear_procesos(char* recurso_buscado);
-void wait_recurso(char* recurso_buscado, int conexion_cpu_dispatch);
-void signal_recurso(char* recurso_buscado, int conexion_cpu_dispatch);
+void wait_recurso(t_log* logger, char* recurso_buscado, int conexion_cpu_dispatch);
+void signal_recurso(t_log* logger, char* recurso_buscado, int conexion_cpu_dispatch);
 
 #endif

@@ -3,6 +3,7 @@
 extern sem_t grado_de_multiprogramacion;
 extern sem_t mutex_cola_new;
 extern sem_t mutex_cola_ready;
+extern sem_t mutex_cola_exit;
 extern sem_t procesos_en_new;
 extern sem_t procesos_en_ready;
 extern sem_t planificacion_largo_plazo;
@@ -11,7 +12,6 @@ extern sem_t start_interrupts;
 extern sem_t mutex_flag_p_finished;
   
 extern t_queue *cola_ready;
-extern t_queue *cola_blocked;
 extern t_queue *cola_exit;
 extern t_queue *cola_new;
  
