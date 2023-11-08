@@ -63,17 +63,6 @@ void liberar_recursos(t_pcb* pcb)
     
 }
 */
-t_pcb* buscar_proceso_segun_pid(uint32_t pid, t_queue* cola)
-{
-
-    bool tiene_mismo_pid(void* pcb) {
-        return (((t_pcb*)pcb)->pid == pid);
-    }
-
-    t_pcb* pcb = NULL;
-    pcb = list_find(cola, tiene_mismo_pid);
-    return pcb;
-}
 
 t_list* iniciar_lista_de_recursos(char** a_recursos, char** a_instancias)
 {
@@ -202,6 +191,7 @@ int main(int argc, char* argv[]){
             }
             else{
                 t_pcb* pcb = crear_pcb(atoi(c_argv[3]), c_argv[1]);
+                pcb->size = atoi(c_argv[2]);
                 sem_wait(&mutex_cola_new);
                 //log_info(logger,"Hice wait");
                 queue_push(cola_new, pcb);

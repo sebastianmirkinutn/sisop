@@ -41,7 +41,8 @@ void planificador_largo_plazo(void* arg)
         op_code operacion = INICIAR_PROCESO;
         send(arg_h->socket_memoria, &operacion, sizeof(op_code), 0);
         send(arg_h->socket_memoria, &(pcb->pid), sizeof(int), 0);
-        enviar_mensaje(pcb->archivo_de_pseudocodigo, arg_h->socket_memoria);     
+        enviar_mensaje(pcb->archivo_de_pseudocodigo, arg_h->socket_memoria); 
+        send(arg_h->socket_memoria, &(pcb->size), sizeof(uint32_t), 0);    
         sem_post(&procesos_en_ready);
         sem_post(&planificacion_largo_plazo);
     }

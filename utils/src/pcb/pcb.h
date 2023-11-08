@@ -81,5 +81,6 @@ void enviar_contexto_de_ejecucion(t_registros* registros, int socket);
 t_motivo_desalojo recibir_motivo_desalojo(int socket);
 void enviar_motivo_desalojo(int socket, t_motivo_desalojo motivo);
 t_recurso* crear_recurso(char* nombre, uint32_t instancias);
+t_pcb* buscar_proceso_segun_pid(uint32_t pid, t_queue* cola);
 
 #endif

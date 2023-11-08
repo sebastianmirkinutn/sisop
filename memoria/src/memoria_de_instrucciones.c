@@ -168,11 +168,12 @@ void conexion_kernel(void* arg)
         switch (codigo)
         {
         case INICIAR_PROCESO:
-            uint32_t pid;
+            uint32_t pid, size;
             recv(arg_h->socket_kernel, &pid, sizeof(uint32_t), MSG_WAITALL);
             t_proceso* proceso = crear_proceso(pid);
             log_info(logger_hilo,"pid: %i", pid);
             char* ruta = recibir_mensaje(arg_h->socket_kernel);
+            recv(arg_h->socket_kernel, &size, sizeof(uint32_t), MSG_WAITALL);
             log_info(logger_hilo, "%s", ruta);
             parsear_instrucciones(logger_hilo, proceso, leer_pseudocodigo(logger_hilo, ruta));
             sem_wait(&mutex_lista_procesos);
@@ -180,6 +181,10 @@ void conexion_kernel(void* arg)
             sem_post(&mutex_lista_procesos);
             sem_post(&cantidad_de_procesos);
             log_info(logger_hilo, "SIGNAL cantidad_de_procesos");
+
+            log_info(logger_hilo, "Se asignó %i bytes al proceso %i", size, pid);
+            //asignar_memoria(pid, size, reemplazo_fifo);
+
             break;
         
         default:

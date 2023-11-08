@@ -7,5 +7,6 @@ t_direccion_fisica* traducir_direccion(char* direccion_logica, uint32_t tam_pagi
     direccion_fisica->offset = atoi(direccion_logica) - pagina * tam_pagina;
     pedir_frame(socket_memoria);
     direccion_fisica->frame = recibir_frame(socket_memoria);
+    printf("Traducción de %s a %i %i\n", direccion_logica, direccion_fisica->frame, direccion_fisica->offset);
     return direccion_fisica;
 }

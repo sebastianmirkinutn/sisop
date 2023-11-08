@@ -43,3 +43,11 @@ t_direccion_fisica* recibir_direccion(int socket)
     recv(socket, &(direccion->offset), sizeof(uint32_t), MSG_WAITALL);
     return direccion;
 }
+
+t_pagina* crear_pagina(uint32_t nro_pagina, uint32_t frame)
+{
+    t_pagina* pagina = malloc(sizeof(t_pagina));
+    pagina->pagina = nro_pagina;
+    pagina->frame = frame;
+    return pagina;
+}
