@@ -29,10 +29,9 @@ typedef struct
 }t_direccion_fisica;
 
 
-void pedir_frame(int socket);
-int32_t recibir_frame(int socket);
+void pedir_frame(int socket, uint32_t pid, uint32_t pagina);
+uint32_t recibir_frame(int socket);
 void enviar_frame (int socket, int32_t frame);
-int32_t recibir_frame(int socket);
 void enviar_direccion(int socket, t_direccion_fisica* direccion);
 t_direccion_fisica* recibir_direccion(int socket);
 t_pagina* crear_pagina(uint32_t pagina, uint32_t frame);

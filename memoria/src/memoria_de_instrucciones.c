@@ -59,10 +59,10 @@ void conexion_cpu(void* arg)
 
         case PEDIDO_ESCRITURA:
             uint32_t a_escribir;
-            recv(arg_h->socket_cpu, &a_escribir, sizeof(uint32_t), MSG_WAITALL);
             recv(arg_h->socket_cpu, &direccion, sizeof(uint32_t), MSG_WAITALL);
+            recv(arg_h->socket_cpu, &a_escribir, sizeof(uint32_t), MSG_WAITALL);
             escribir_en_memoria(direccion, a_escribir);
-            send(arg_h->socket_cpu, &direccion, sizeof(uint32_t), NULL);
+            //send(arg_h->socket_cpu, &direccion, sizeof(uint32_t), NULL);
             break;
 
         case PEDIDO_SIZE_PAGINA:
@@ -152,6 +152,7 @@ t_proceso* crear_proceso(uint32_t pid)
     t_proceso* proceso = malloc(sizeof(t_proceso));
     proceso->pid = pid;
     proceso->instrucciones = list_create();
+    proceso->tabla_de_paginas = malloc(sizeof(t_pagina));
     return proceso;
 }
 
@@ -183,7 +184,10 @@ void conexion_kernel(void* arg)
             log_info(logger_hilo, "SIGNAL cantidad_de_procesos");
 
             log_info(logger_hilo, "Se asignó %i bytes al proceso %i", size, pid);
-            //asignar_memoria(pid, size, reemplazo_fifo);
+
+            uint32_t (*algoritmo)(void);
+            algoritmo = reemplazo_fifo;
+            asignar_memoria(pid, size, algoritmo);
 
             break;
         

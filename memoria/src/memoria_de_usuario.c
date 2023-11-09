@@ -52,20 +52,36 @@ int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada)
 void asignar_memoria(uint32_t pid, uint32_t size, uint32_t (*algoritmo)(void))
 {
     uint32_t frame;
-    /*
-    for(int nro_pagina = 0; nro_pagina < size / tam_pagina; nro_pagina++)
+    for(int nro_pagina = 0; nro_pagina < size / tam_pagina /*Habría que redondear hacia arriba*/; nro_pagina++)
     {
         frame = algoritmo();
+        printf("Se asigna el frame %i\n", frame);
         agregar_pagina(pid, nro_pagina, frame);
+        printf("Se asigna el frame %i al proceso %i para la página %i\n", frame, pid, nro_pagina);
     }
-    */
 }
 
 void agregar_pagina(uint32_t pid, uint32_t nro_pagina, uint32_t nro_frame)
 {
+    bool tiene_mismo_pid(void* proceso) {
+        return (((t_proceso*)proceso)->pid == pid);
+    }
+
     t_proceso* proceso;
-    t_pagina* pagina = crear_pagina(nro_pagina, nro_frame);
-    list_add(proceso->tabla_de_paginas, pagina);
+    proceso = list_find(procesos_en_memoria, tiene_mismo_pid);
+    
+    if(proceso != NULL)
+    {
+        printf("Se crea una página\n");
+        t_pagina* pagina = crear_pagina(nro_pagina, nro_frame);
+        printf("Se creó una página\n");
+        list_add(proceso->tabla_de_paginas, pagina);
+        printf("Se insertó la página\n");
+    }
+    else
+    {
+        /*NO EXISTE EL PROCESO*/
+    }
 }
 
 /*ALGORTMOS DE REEMPLAZO*/
