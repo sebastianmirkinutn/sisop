@@ -3,12 +3,14 @@
 extern void* memoria_de_usuario;
 extern t_bitarray* frame_bitarray;
 extern t_list* procesos_en_memoria;
+extern sem_t mutex_lista_procesos;
+extern sem_t cantidad_de_procesos;
 extern int tam_pagina;
 
-uint8_t leer_de_memoria(uint32_t direccion)
+uint8_t leer_de_memoria(t_direccion_fisica* direccion)
 {
     uint8_t leido;
-    memcpy(&leido, memoria_de_usuario + direccion, sizeof(uint8_t));
+    memcpy(&leido, memoria_de_usuario + (direccion->frame * tam_pagina) + direccion->offset, sizeof(uint8_t));
     return leido;
 }
 
@@ -19,18 +21,18 @@ void escribir_en_memoria(uint32_t direccion, uint8_t byte)
 
 int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada)
 {
+/*
     printf("obtener_numero_de_marco\n");
     bool es_el_pid(void* arg){
         t_proceso* proceso = (t_proceso*)arg;
         return proceso->pid == pid;
     }
-
+*/
     bool es_la_pagina(void* arg){
-        t_proceso* proceso = (t_proceso*)arg;
-        return proceso->tabla_de_paginas == pagina_buscada;
+        t_pagina* pagina = (t_pagina*)arg;
+        return pagina->pagina == pagina_buscada;
     }
-
-    t_proceso* proceso = list_find(procesos_en_memoria, es_el_pid);
+    t_proceso* proceso = buscar_proceso(pid);
     if(proceso != NULL)
     {
         printf("Existe el proceso del que se busca el marco\n");
@@ -90,9 +92,29 @@ void agregar_pagina(uint32_t pid, uint32_t nro_pagina, uint32_t nro_frame)
 
 /*ALGORTMOS DE REEMPLAZO*/
 
-uint32_t contador_frame;
+uint32_t contador_frame = 0;
 uint32_t reemplazo_fifo(void)
 {
-    contador_frame++;
     return contador_frame;
+    contador_frame++;
+}
+
+
+t_proceso* buscar_proceso(uint32_t pid)
+{
+    bool comparar(void* arg){
+        printf("COMPARAR");
+        t_proceso* proceso = arg;
+        return proceso->pid == pid;
+    }
+    printf("EMPIEZA BUCAR_PROCESO\n");
+    t_proceso* proceso;
+    printf("EMPIEZA BUCAR_PROCESO\n");
+    sem_wait(&mutex_lista_procesos);
+    printf("hice waitss BUCAR_PROCESO\n");
+    //pid_funcion = pid;
+    proceso = list_find(procesos_en_memoria, comparar);
+    sem_post(&mutex_lista_procesos);
+    printf("TERMINA BUCAR_PROCESO\n");
+    return proceso;
 }

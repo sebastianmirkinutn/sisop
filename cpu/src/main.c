@@ -312,6 +312,7 @@ int main(int argc, char* argv[]){
                 enviar_direccion(conexion_memoria, direccion);
                 uint32_t a_escribir;
                 recv(conexion_memoria, &a_escribir, sizeof(uint32_t), NULL);
+                printf("Recibí %i de memoria\n", a_escribir);
                 escribir_registro(parametros[2], a_escribir);
             
             }
