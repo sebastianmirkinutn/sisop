@@ -44,9 +44,12 @@ void conexion_cpu(void* arg)
             break;
         
         case PEDIDO_DE_FRAME:
+            printf("PEDIDO_DE_FRAME\n");
             uint32_t pagina_buscada;
             recv(arg_h->socket_cpu, &pid, sizeof(uint32_t), MSG_WAITALL);
+            printf("Recibí pid\n");
             recv(arg_h->socket_cpu, &pagina_buscada, sizeof(uint32_t), MSG_WAITALL);
+            printf("RECIBI PAGINA\n");
             int32_t marco = obtener_numero_de_marco(pid, pagina_buscada);
             enviar_frame(arg_h->socket_cpu, marco);
             break;
