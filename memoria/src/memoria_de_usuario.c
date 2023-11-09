@@ -16,7 +16,7 @@ uint8_t leer_de_memoria(t_direccion_fisica* direccion)
 
 void escribir_en_memoria(t_direccion_fisica* direccion, uint8_t a_escribir)
 {
-    memcpy(memoria_de_usuario + (direccion->frame * tam_pagina) + direccion->offset, &a_escribir,sizeof(uint8_t));
+    memcpy(memoria_de_usuario + (direccion->frame * tam_pagina) + direccion->offset, &a_escribir, sizeof(uint8_t));
 }
 
 int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada)
@@ -81,8 +81,11 @@ void agregar_pagina(uint32_t pid, uint32_t nro_pagina, uint32_t nro_frame)
         printf("Se crea una página\n");
         t_pagina* pagina = crear_pagina(nro_pagina, nro_frame);
         printf("Se creó una página (p = %i - f = %i)\n", pagina->pagina, pagina->frame);
-        list_add(proceso->tabla_de_paginas, pagina);
-        printf("Se insertó la página\n");
+        if(pagina != NULL)
+        {
+            list_add(proceso->tabla_de_paginas, pagina);
+            printf("Se insertó la página\n");
+        }
     }
     else
     {
