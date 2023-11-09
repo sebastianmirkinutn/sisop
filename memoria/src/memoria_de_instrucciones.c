@@ -18,7 +18,7 @@ void conexion_cpu(void* arg)
     {
         op_code codigo = recibir_operacion(arg_h->socket_cpu);
         log_info(logger_hilo,"op_code: %i", codigo);
-        uint32_t pid, direccion;
+        uint32_t pid;
         switch (codigo)
         {
         case FETCH_INSTRUCCION:
@@ -65,6 +65,7 @@ void conexion_cpu(void* arg)
             uint32_t a_escribir;
             direccion = recibir_direccion(arg_h->socket_cpu);
             recv(arg_h->socket_cpu, &a_escribir, sizeof(uint32_t), MSG_WAITALL);
+            printf("Voy a escribir en memoria\n");
             escribir_en_memoria(direccion, a_escribir);
             //send(arg_h->socket_cpu, &direccion, sizeof(uint32_t), NULL);
             break;
