@@ -13,19 +13,19 @@ uint32_t valor_de_registro(char* registro)
     uint32_t valor = 0;
      if(!strcmp(registro, "AX"))
     {
-        registros->AX = valor;
+        valor = registros->AX;
     }
     else if(!strcmp(registro, "BX"))
     {
-        registros->BX = valor;
+        valor = registros->BX;
     }
     else if(!strcmp(registro, "CX"))
     {
-        registros->CX = valor;
+        valor = registros->CX;
     }
     else if(!strcmp(registro, "DX"))
     {
-        registros->DX = valor;
+        valor = registros->DX;
     }
 
     return valor;
@@ -78,10 +78,6 @@ void restar_a_registro(char* registro, uint32_t numero)
         registros->AX -= numero;
     }
     else if(!strcmp(registro, "BX"))
-    {
-        registros->BX -= numero;
-    }
-    else if(!strcmp(registro, "CX"))
     {
         registros->BX -= numero;
     }

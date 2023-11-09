@@ -18,7 +18,7 @@
 #include <stdint.h>
 
 uint8_t leer_de_memoria(t_direccion_fisica* direccion);
-void escribir_en_memoria(uint32_t direccion, uint8_t byte);
+void escribir_en_memoria(t_direccion_fisica* direccion, uint8_t a_escribir);
 int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada);
 void asignar_memoria(uint32_t pid, uint32_t size, uint32_t (*algoritmo)(void));
 uint32_t reemplazo_fifo(void);
