@@ -307,18 +307,19 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "MOV_IN"))
             {
-                enviar_operacion(conexion_memoria, PEDIDO_LECTURA);
                 t_direccion_fisica* direccion = traducir_direccion(parametros[2], tam_pagina, conexion_memoria, pid);
+                enviar_operacion(conexion_memoria, PEDIDO_LECTURA);
                 enviar_direccion(conexion_memoria, direccion);
                 uint32_t a_escribir;
                 recv(conexion_memoria, &a_escribir, sizeof(uint32_t), NULL);
+                printf("Recibí %i de memoria\n", a_escribir);
                 escribir_registro(parametros[2], a_escribir);
             
             }
             else if(!strcmp(parametros[0], "MOV_OUT"))
             {
-                enviar_operacion(conexion_memoria, PEDIDO_ESCRITURA);
                 t_direccion_fisica* direccion = traducir_direccion(parametros[2], tam_pagina, conexion_memoria, pid);
+                enviar_operacion(conexion_memoria, PEDIDO_ESCRITURA);
                 uint32_t a_enviar = valor_de_registro(parametros[1]);
                 enviar_direccion(conexion_memoria, direccion);
                 send(conexion_memoria, &a_enviar, sizeof(uint32_t), NULL);

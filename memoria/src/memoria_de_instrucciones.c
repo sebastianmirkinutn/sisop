@@ -44,17 +44,20 @@ void conexion_cpu(void* arg)
             break;
         
         case PEDIDO_DE_FRAME:
+            printf("PEDIDO_DE_FRAME\n");
             uint32_t pagina_buscada;
             recv(arg_h->socket_cpu, &pid, sizeof(uint32_t), MSG_WAITALL);
+            printf("Recibí pid\n");
             recv(arg_h->socket_cpu, &pagina_buscada, sizeof(uint32_t), MSG_WAITALL);
+            printf("RECIBI PAGINA\n");
             int32_t marco = obtener_numero_de_marco(pid, pagina_buscada);
             enviar_frame(arg_h->socket_cpu, marco);
             break;
 
         case PEDIDO_LECTURA:
-            recv(arg_h->socket_cpu, &direccion, sizeof(uint32_t), MSG_WAITALL);
+            t_direccion_fisica* direccion = recibir_direccion(arg_h->socket_cpu);
             uint32_t lectura = leer_de_memoria(direccion);
-            send(arg_h->socket_cpu, &direccion, sizeof(uint32_t), NULL);
+            send(arg_h->socket_cpu, &lectura, sizeof(uint32_t), NULL);
             break;
 
         case PEDIDO_ESCRITURA:
@@ -198,23 +201,4 @@ void conexion_kernel(void* arg)
 
     }
     
-}
-
-t_proceso* buscar_proceso(uint32_t pid)
-{
-    bool comparar(void* arg){
-        printf("COMPARAR");
-        t_proceso* proceso = arg;
-        return proceso->pid == pid;
-    }
-    printf("EMPIEZA BUCAR_PROCESO\n");
-    t_proceso* proceso;
-    printf("EMPIEZA BUCAR_PROCESO\n");
-    sem_wait(&mutex_lista_procesos);
-    printf("hice waitss BUCAR_PROCESO\n");
-    //pid_funcion = pid;
-    proceso = list_find(procesos_en_memoria, comparar);
-    sem_post(&mutex_lista_procesos);
-    printf("TERMINA BUCAR_PROCESO\n");
-    return proceso;
 }
