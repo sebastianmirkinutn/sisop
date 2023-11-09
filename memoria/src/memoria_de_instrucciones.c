@@ -12,6 +12,7 @@ void conexion_cpu(void* arg)
     log_info(logger_hilo, "HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     log_info(logger_hilo,"Socket: %i", arg_h->socket_cpu);
+    t_direccion_fisica* direccion;
     //enviar_mensaje("LISTO_PARA_RECIBIR_PEDIDOS",arg_h->socket_cpu);
     while(1)
     {
@@ -55,14 +56,14 @@ void conexion_cpu(void* arg)
             break;
 
         case PEDIDO_LECTURA:
-            t_direccion_fisica* direccion = recibir_direccion(arg_h->socket_cpu);
+            direccion = recibir_direccion(arg_h->socket_cpu);
             uint32_t lectura = leer_de_memoria(direccion);
             send(arg_h->socket_cpu, &lectura, sizeof(uint32_t), NULL);
             break;
 
         case PEDIDO_ESCRITURA:
             uint32_t a_escribir;
-            recv(arg_h->socket_cpu, &direccion, sizeof(uint32_t), MSG_WAITALL);
+            direccion = recibir_direccion(arg_h->socket_cpu);
             recv(arg_h->socket_cpu, &a_escribir, sizeof(uint32_t), MSG_WAITALL);
             escribir_en_memoria(direccion, a_escribir);
             //send(arg_h->socket_cpu, &direccion, sizeof(uint32_t), NULL);
