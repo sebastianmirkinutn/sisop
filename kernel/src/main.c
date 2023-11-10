@@ -332,6 +332,11 @@ int main(int argc, char* argv[]){
             operacionesFilesSystem(conexion_filesystem);
         }
         /*----------------------------------------------------*/
+        //Código temporal para probar interaccion instrucciones
+        else if(!strcmp(c_argv[0], "INSTR_FILE")) {
+            operacionesInstrucciones(conexion_filesystem);
+        }
+        /*----------------------------------------------------*/
         else
         {
             log_warning(logger, "La función %s no existe.", c_argv[0]);
