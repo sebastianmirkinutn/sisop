@@ -28,5 +28,8 @@ char *itoa_(uint32_t dividendo,char *cadenaText) {
         if (cadenaInt[i]==8) strcat(cadenaText,"8");
         if (cadenaInt[i]==9) strcat(cadenaText,"9");
     }
+    cadenaText[max_numeros]='\0';
     return (cadenaText);
 }
+
+

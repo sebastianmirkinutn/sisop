@@ -49,9 +49,7 @@ int truncar_archivo(char *nombreArchivo,uint32_t ui32_longMen_datos,t_log *logge
         ui32_cant_bloques_libres=cantidadBloques_FAT_libres(fat,ui32_max_entradas_fat);
         /*Evalua si la cantidad de entradas en la Tabla FAT son suficientes*/
         if(ui32_cant_bloques_necesitados<=ui32_cant_bloques_libres) {
-            printf("Se asignaran las entradas en la tabla FAT\n");
             ui32_entrada_inicial=asignarBloquesFAT(fat,ui32_cant_bloques_necesitados,ui32_max_entradas_fat);
-            printf("La entrada_ui32_entrada_inicial es:%u\n",ui32_entrada_inicial);
             actualizar_Archivo_fcb(nombreArchivo,ui32_longMen_datos,ui32_entrada_inicial,c_directorio_fcb);
         }
         else {
@@ -69,8 +67,6 @@ int truncar_archivo(char *nombreArchivo,uint32_t ui32_longMen_datos,t_log *logge
         ui32_cant_bloques_asignados=cantBloques_FAT_necesitados(tamanio_Archivo_fcb(nombreArchivo,c_directorio_fcb),ui32_tamBloque);
 
         if (ui32_cant_bloques_necesitados<=ui32_cant_bloques_asignados) {
-            printf("La cantidad de bloques necesitados por la memoria son:%u\n",ui32_cant_bloques_necesitados);
-            printf("La cantidad de ya asignados son:%u\n",ui32_cant_bloques_asignados);
             /*Caso 2A - La cantidad de entradas necesitadas es menor o igual a las que tiene
             ya asignadas el archivo*/
             ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb); //Entrada inicial a la tabla FAT
@@ -80,18 +76,14 @@ int truncar_archivo(char *nombreArchivo,uint32_t ui32_longMen_datos,t_log *logge
                 if (indice==0) ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb); //Entrada inicial a la tabla FAT
                 else ui32_entrada_FAT=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
             }
-            printf("La entrada hasta la que necesita la version nueva es:%u\n",ui32_entrada_FAT);
             //Si la ultima entrada que necesita la version actualizada es distinto a 9999 es poque debe liberar entradas
             if ((ui32_entrada_FAT!=9999) && (ui32_entrada_FAT!=2499)){
                 ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
-                printf("La siguiente entrada detectada es:%u\n",ui32_entrada_FAT_siguiente);
                 ui32_data_entrada=9999;
                 actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
                 ui32_entrada_FAT=ui32_entrada_FAT_siguiente;
-                printf("La entrada actual a actualizar es:%u\n",ui32_entrada_FAT);
                 while ((ui32_entrada_FAT!=9999) && (ui32_entrada_FAT!=2499)) {
                     ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
-                    printf("La siguiente entrada detectada es:%u\n",ui32_entrada_FAT_siguiente);
                     ui32_data_entrada=0;
                     actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
                     ui32_entrada_FAT=ui32_entrada_FAT_siguiente;
@@ -108,32 +100,22 @@ int truncar_archivo(char *nombreArchivo,uint32_t ui32_longMen_datos,t_log *logge
             ui32_cant_bloques_libres=cantidadBloques_FAT_libres(fat,ui32_max_entradas_fat);
             ui32_cant_bloques_asignados=cantBloques_FAT_necesitados(tamanio_Archivo_fcb(nombreArchivo,c_directorio_fcb),ui32_tamBloque);
             ui32_cant_bloques_adionales=ui32_cant_bloques_necesitados-ui32_cant_bloques_asignados;
-            printf("Cantidad de entradas FAT que necesita el documento en memoria son:%u\n",ui32_cant_bloques_necesitados);
-            printf("Cantidad de entradas FAT ya asignadas al documento almacenado:%u\n",ui32_cant_bloques_asignados);
-            printf("Cantidad de entradas FAT adicionales necesitadas:%u\n",ui32_cant_bloques_adionales);
-            printf("Cantidad de entradas FAT libres en la tabla FAT:%u\n",ui32_cant_bloques_libres);
 
             //Recorre la lista de entradas ya asignadas al archivo, en busqueda de la ultima entrada
             ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb); //Entrada inicial a la tabla FAT
             ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
-            //printf("entrada_FAT:%u\n",ui32_entrada_FAT);
-            //printf("entrada_FAT_siguiente:%u\n",ui32_entrada_FAT_siguiente);
             while ((ui32_entrada_FAT_siguiente!=9999) && (ui32_entrada_FAT_siguiente!=2499)) {
                 ui32_entrada_FAT=ui32_entrada_FAT_siguiente;
                 ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
-                //printf("entrada_FAT:%u\n",ui32_entrada_FAT);
-                //printf("entrada_FAT_siguiente:%u\n",ui32_entrada_FAT_siguiente);
             }
             ui32_data_entrada=asignarBloquesFAT(fat,ui32_cant_bloques_adionales,ui32_max_entradas_fat)*4;
             actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
         }
     }
     committed_logger_TRUNCAR(nombreArchivo,logger,c_directorio_fcb);
+    
     return(1);
 }
-
-
-
 
 /* 4) LEER_ARCHIVO-----------------------------*/
 int leer_archivo(char *nombreArchivo,t_log *logger,FILE *fat,uint32_t ui32_tamBloque,FILE *filesystem,char *c_directorio_fcb) {
@@ -150,12 +132,9 @@ int leer_archivo(char *nombreArchivo,t_log *logger,FILE *fat,uint32_t ui32_tamBl
     /*Obtiene la direccion de la entrada inicial de la tabla FAT*/
     ui32_cantBloques_a_leer=cantBloques_FAT_necesitados(tamanio_Archivo_fcb(nombreArchivo,c_directorio_fcb),ui32_tamBloque);
     ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb);
-    printf("La entrada inicial en la FAT del archivo:%s es:%u\n",nombreArchivo,ui32_entrada_FAT);
     for (indice=0;indice<ui32_cantBloques_a_leer;indice++) {
         strcat(buffer_documento,lectura_de_archivo_bloques(filesystem,ui32_entrada_FAT,buffer_lectura,ui32_tamBloque));
         ui32_dataEntrada_FAT=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
-        printf ("---------------------------------------------------\n");
-        printf("La siguiente entrada en la FAT del archivo:%s es:%u\n",nombreArchivo,ui32_entrada_FAT);
         committed_logger_ACCESO_FAT(ui32_entrada_FAT,ui32_dataEntrada_FAT,logger);
         committed_logger_LECTURA_ARCHIVO(nombreArchivo,ui32_entrada_FAT,0,logger);//0 porque falta completar la direccion de memoria
         committed_logger_ACCESO_BLOQUE_ARCHIVO(nombreArchivo,ui32_numero_bloque,ui32_entrada_FAT,ui32_tamBloque,logger);

@@ -1,4 +1,5 @@
 #include "utils_committed_logger.h"
+
 int committed_logger_CREAR_ARCHIVO(char *nombreArchivo,t_log *logger){
 	char mensajeLog[100]="";
     strcpy(mensajeLog,"Crear Archivo: ");

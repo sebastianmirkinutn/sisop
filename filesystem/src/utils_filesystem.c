@@ -18,7 +18,6 @@ FILE *creacionFilesystem(FILE *filesystem,char *c_path_bloques) {
     uint32_t unBloque32Bits=0;
     filesystem=fopen (c_path_bloques,"w+b");
     if (filesystem==NULL) {
-        printf("No fue posible crear el archivo bloques.dat\n");
         return(NULL);
     }
     else {
@@ -38,7 +37,6 @@ FILE *iniciarArchivoFilesystem(FILE *filesystem,char *c_path_bloques) {
     if (filesystem) {
     	filesystem=abrirFilesystem(filesystem,c_path_bloques);
         if (filesystem) {
-            printf("filesystem abierto\n");
             return(filesystem);
         }
         else {
@@ -49,7 +47,6 @@ FILE *iniciarArchivoFilesystem(FILE *filesystem,char *c_path_bloques) {
     else {
     	filesystem=creacionFilesystem(filesystem,c_path_bloques);
         if(filesystem) {
-            printf("Archivo de Filesystem creado\n");
             return (filesystem);
         }
         else {
@@ -170,8 +167,7 @@ int actualizar_Archivo_fcb(char *nombreArchivo,uint32_t ui32_longMen_datos,uint3
     FILE *f_arch_fcb;
     char direccionArchivo[100]="";
     char cInfo_a_Almacenar[100]="";
-    char cNumero[10];
-
+    char cNumero[10]="";
     strcpy(direccionArchivo,c_directorio_fcb);
     strcat(direccionArchivo,"/");
     /*------------Apertura de archivo fcb--------------------*/
@@ -183,12 +179,12 @@ int actualizar_Archivo_fcb(char *nombreArchivo,uint32_t ui32_longMen_datos,uint3
     strcat(cInfo_a_Almacenar,nombreArchivo);
     strcat(cInfo_a_Almacenar,"\n");
     fwrite(cInfo_a_Almacenar,strlen(cInfo_a_Almacenar),1,f_arch_fcb);
-
+        
     strcpy(cInfo_a_Almacenar,"TAMANIO_ARCHIVO=");
     strcat(cInfo_a_Almacenar,itoa_(ui32_longMen_datos,cNumero));
     strcat(cInfo_a_Almacenar,"\n");
     fwrite(cInfo_a_Almacenar,strlen(cInfo_a_Almacenar),1,f_arch_fcb);
-
+    
     strcpy(cNumero,"");
     strcpy(cInfo_a_Almacenar,"BLOQUE_INICIAL=");
     strcat(cInfo_a_Almacenar,itoa_(ui32_entrada_inicial,cNumero));
@@ -206,10 +202,14 @@ int actualizar_Archivo_fcb(char *nombreArchivo,uint32_t ui32_longMen_datos,uint3
 /*---------------------------------------------------------------------------------*/
 
 /*Determina la existencia del archivo de tabla FAT*/
-FILE *existeArchivoFAT(FILE *fat,char *c_path_fat) {
+int existeArchivoFAT(char *c_path_fat) {
+    FILE *fat;
     fat=fopen (c_path_fat,"rb");
-    if (fat==NULL) return (NULL); /*Retorn NULL si el archivo no exite*/
-    return (fat); /*Retorna el puntero de archivo si este exite*/
+    if (fat==NULL) {
+        return (0); /*Retorn NULL si el archivo no exite*/
+    }
+    fclose(fat);
+    return (1); /*Retorna el puntero de archivo si este exite*/
 }
 
 /*Crea el archivo de tabla FAT*/
@@ -218,11 +218,12 @@ FILE *creacionFAT(FILE *fat,char *c_path_fat,uint32_t ui32_tamanio_fat) {
     fat=fopen (c_path_fat,"w+b");
     if (fat==NULL) {
         printf("No fue posible crear el archivo fat.dat\n");
-        return(NULL);
+        return(0);
     }
     else {
         for (int i=0;i<ui32_tamanio_fat;i++) fwrite(&unBloque32Bits,sizeof(unBloque32Bits),1,fat);
-        return (fat);
+        fclose(fat);
+        return (1);
     }
 }
 
@@ -235,22 +236,23 @@ FILE *abrirFAT(FILE *fat,char *c_path_fat) {
 
 /*Busca si hay un archivo fat.dat creado, si es así lo abre. De otro modo lo crea y lo abre*/
 FILE *iniciarArchivoFAT(FILE *fat,char *c_path_fat,uint32_t ui32_tamanio_fat) {
-    if (existeArchivoFAT(fat,c_path_fat)) {
+    if (existeArchivoFAT(c_path_fat)) {
     	fat=abrirFAT(fat,c_path_fat);
         if (fat!=NULL) {
-            printf("--> Archivo tabla FAT abierto\n");
             return(fat);
         }
         else {
-            printf("--> No se pudo abrir el archivo tabla FAT\n");
+            printf("---> No se pudo abrir el archivo tabla FAT\n");
             return (NULL);
         }
     }
     else {
-    	fat=creacionFAT(fat,c_path_fat,ui32_tamanio_fat);
-        if(fat!=NULL) {
-            printf("--> Archivo de tabla FAT creado\n");
-            return (fat);
+        if(creacionFAT(fat,c_path_fat,ui32_tamanio_fat)) {
+            fat=abrirFAT(fat,c_path_fat);
+            if (fat!=NULL) {
+                return(fat);
+            }
+            return (NULL);
         }
         else {
             printf("--> No se pudo crear el archivo de tabla FAT\n");
@@ -263,7 +265,6 @@ FILE *iniciarArchivoFAT(FILE *fat,char *c_path_fat,uint32_t ui32_tamanio_fat) {
 FILE *reiniciar_fat(FILE *fat,uint32_t ui32_max_entradas_fat) {
 	uint32_t i;
     uint32_t unBloque32Bits=0;
-
     rewind(fat);
     for (i=0;i<ui32_max_entradas_fat;i++) fwrite(&unBloque32Bits,sizeof(unBloque32Bits),1,fat);
     rewind(fat);
@@ -273,7 +274,6 @@ FILE *reiniciar_fat(FILE *fat,uint32_t ui32_max_entradas_fat) {
 /*Retorna la siguiente entrada de la tabla FAT siguiendo la lista enlazada*/
 uint32_t siguiente_entrada_tabla_FAT(FILE *fat,uint32_t ui32_entrada_FAT) {
     uint32_t ui32_data_bloque_tabla_FAT=0;
-    printf ("Estoy en siguiente entrada tabla FAT\n");
     rewind(fat);
     ui32_entrada_FAT=ui32_entrada_FAT*4;
     fseek(fat,ui32_entrada_FAT,SEEK_SET);
@@ -321,7 +321,7 @@ uint32_t asignarBloquesFAT(FILE *fat,uint32_t cant_entradas_FAT_requeridas,uint3
 void mostrar_tabla_FAT(FILE *fat,uint32_t MAX_ENTRADAS_FAT) {
     uint32_t ui32_bloqueFAT=0;
     uint32_t ui32_indice=0;
-
+    
     rewind(fat);
     printf ("---------------------------------------\n");
     printf ("---------Contenido de la FAT-----------\n");
@@ -343,20 +343,22 @@ void mostrar_tabla_FAT(FILE *fat,uint32_t MAX_ENTRADAS_FAT) {
 /*Función axiliar: Obtiene el tamanio del archivo*/
 uint32_t tamanioArchivo (char *nombreArchivo) {
     FILE *f;
-    long tamArchivo;
-    f=fopen(nombreArchivo,"r");
+    uint32_t tamArchivo;
+
+    f=fopen(nombreArchivo,"r");;
     fseek(f, 0L, SEEK_END);
     tamArchivo = ftell(f);
     fclose(f);
-    return(tamArchivo );
+    return((uint32_t) tamArchivo);
 }
 
 /*Función axiliar: Obtiene el tamanio del archivo*/
-int abrirDocumento(char *nombreArchivo,char *documentoArchivo) {
+uint32_t abrirDocumento(char *nombreArchivo,char *documentoArchivo) {
     FILE *f;
     int i=0;
     char caracter;
-    long tamArchivo = tamanioArchivo(nombreArchivo);
+    uint32_t tamArchivo = tamanioArchivo(nombreArchivo);
+    
     f=fopen(nombreArchivo,"r");
     for (i=0;i<tamArchivo;i++) {
         fread(&caracter,sizeof(caracter),1,f);

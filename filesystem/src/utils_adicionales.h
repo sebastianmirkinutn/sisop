@@ -6,4 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Convierte un número de tipo de dato número a una cadena de caracteres
+char *itoa_(uint32_t dividendo,char *cadenaText);
+
 #endif
