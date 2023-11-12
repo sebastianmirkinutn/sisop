@@ -81,7 +81,7 @@ void operacionesFilesSystem(int conexion) {
 				enviar_operacion(conexion,operacion);
 				break;
 			case 9:
-				printf ("\nFIN DEL EMULADOR FILESYSTEM\n\n");
+				printf ("\nSALE DEL MENU FILESYSTEM\n\n");
                 operacion = FIN_DEL_PROGRAMA;
 				enviar_operacion(conexion,operacion);
 				break;
@@ -96,7 +96,9 @@ void operacionesFilesSystem(int conexion) {
 void operacionesInstrucciones(int conexion) {
     op_code operacion;
     int opc=0;
-	while (opc!=7) {
+	char datosInstruccion[128]="";
+	char *valor;
+	while (opc!=8) {
 		printf("\n--------------------------------------------------------------\n");
 		printf ("--- Emulador de instrucciones de archivos ---\n");
 		printf ("1) F_OPEN\n");
@@ -105,7 +107,8 @@ void operacionesInstrucciones(int conexion) {
 		printf ("4) F_READ\n");
 		printf ("5) F_WRITE\n");
 		printf ("6) F_TRUNCATE\n");
-		printf ("7) Salir - Terminar\n");
+		printf ("7) EMULAR_crear/truncar/escribir/leer/ver FAT un archivo\n");
+		printf ("8) Salir - Terminar\n");
 		printf ("Ingrese la opcion-> \n");
 		scanf("%d",&opc);
 		switch (opc) {
@@ -121,18 +124,29 @@ void operacionesInstrucciones(int conexion) {
 				break;
 			case 3:
 				printf ("Opcion elegida - 3) F_SEEK\n");
-                operacion = F_SEEK;
-				enviar_operacion(conexion,operacion);
+				printf("No tiene implemetacion para FILESYSTEM es una opercion de actualización del Kernel\n");
 				break;
 			case 4:
 				printf ("Opcion elegida - 4) F_READ\n");
-                op_code operacion = F_READ;
+                operacion = F_READ;
 				enviar_operacion(conexion,operacion);
+				strcpy(datosInstruccion,"archivo:documento1-posicion:10-cantBytes:9-direccion:12324");
+				enviar_mensaje(datosInstruccion,conexion);
+				//--- Espera respuesta de operacion F_READ finalizada
+				valor=recibir_mensaje(conexion);
+				if (atoi(valor)==1) printf("F_READ: Verificador de op CORRECTO");
+				else printf("F_READ: Verificador de op INCORRECTO");
 				break;
 			case 5:
 				printf ("Opcion elegida - 5) F_WRITE\n");
                 operacion = F_WRITE;
 				enviar_operacion(conexion,operacion);
+				strcpy(datosInstruccion,"archivo:documento1-posicion:20-cantBytes:14-direccion:20");
+				enviar_mensaje(datosInstruccion,conexion);
+				//--- Espera respuesta de operacion F_WRITE finalizada
+				valor=recibir_mensaje(conexion);
+				if (atoi(valor)==1) printf("F_WRITE: Verificador de op CORRECTO");
+				else printf("F_WRITE: Verificador de op INCORRECTO");
 				break;
 			case 6:
 				printf ("Opcion elegida - 6) F_TRUNCATE\n");
@@ -140,7 +154,30 @@ void operacionesInstrucciones(int conexion) {
 				enviar_operacion(conexion,operacion);
 				break;
 			case 7:
-				printf ("\nFIN DEL EMULADOR DE INSTRUCCIONES\n\n");
+				//---------------------------------------------------
+				printf ("Opcion elegida - 4) CREAR_ARCHIVO\n");
+                op_code operacion = CREAR_ARCHIVO;
+				enviar_operacion(conexion,operacion);
+				//---------------------------------------------------
+				printf ("Opcion elegida - 5) TRUNCAR_ARCHIVO\n");
+                operacion = TRUNCAR_ARCHIVO;
+				enviar_operacion(conexion,operacion);
+				//---------------------------------------------------
+				printf ("Opcion elegida - 7) ESCRIBIR ARCHIVO\n");
+                operacion = ESCRIBIR_ARCHIVO;
+				enviar_operacion(conexion,operacion);
+				//---------------------------------------------------
+				printf ("Opcion elegida - 6) LEER_ARCHIVO\n");
+                operacion = LEER_ARCHIVO;
+				enviar_operacion(conexion,operacion);
+				//---------------------------------------------------
+				printf ("Opcion elegida - 8) MOSTRAR_TABLA_FAT\n");
+                operacion = MOSTRAR_TABLA_FAT;
+				enviar_operacion(conexion,operacion);
+				//---------------------------------------------------
+				break;
+			case 8:
+				printf ("\nSALE DEL MENU DE OPERACIONES CON ARCHIVOS\n\n");
                 operacion = FIN_DEL_PROGRAMA;
 				enviar_operacion(conexion,operacion);
 				break;
