@@ -1,5 +1,6 @@
 #include "main.h"
 
+
 uint32_t abrir_archivo(char* path_fcb, char* nombre)
 {
     t_fcb* fcb = malloc(sizeof(t_fcb));
@@ -27,8 +28,9 @@ int main(int argc, char* argv[]) {
 	uint32_t ui32_cant_bloques_swap=0;
 	uint32_t ui32_tam_bloque=0;
 
-	
-
+	//Usados para operaciones de lectura y escritura
+	char buffer_data[1024+1]="";   
+	char valorParametro[128]="";
 
 	//------------------------------------------------------------------------
     t_log* logger = iniciar_logger("log_filesystem.log","FILESYSTEM");
@@ -78,48 +80,117 @@ int main(int argc, char* argv[]) {
     ui32_tam_de_archivo=abrirDocumento("../filesystem/archivo_datos/documento1.txt",documentoArchivo);
 	printf("----------------------------------------------------------\n");
     op_code operacion;
-
+	t_list* lista;
     while(1)
     {
 		operacion = recibir_operacion(socket_kernel);
 		printf ("\nSe recibe operacion:%d\n",operacion);
-		if (operacion==0) {
-			//char* nombre = recibir_mensaje(socket_kernel);
-			//uint32_t tam_archivo = abrir_archivo(nombre, path_fcb);
-		}
-		else if (operacion==5000){
-			creacionFilesystem(filesystem,path_bloques);
-		}
-		else if (operacion==5001){
-			reiniciar_fat(fat,ui32_max_entradas_fat);
-		}
-		else if (operacion==5002){
-			abrir_archivo("../filesystem/archivo_datos/documento1",path_fcb);
-		}
-		else if (operacion==5003){
-			crear_archivo("documento1",logger,path_fcb);
-		}
-		else if (operacion==5004){
-			truncar_archivo("documento1",ui32_tam_de_archivo,logger,fat,ui32_tam_bloque,ui32_max_entradas_fat,path_fcb);
-		}
-		else if (operacion==5005){
-			leer_archivo("documento1",logger,fat,ui32_tam_bloque,filesystem,path_fcb);
-		}
-		else if (operacion==5006){
-			escribir_archivo("documento1",documentoArchivo,logger,fat,ui32_tam_bloque,filesystem,path_fcb);
-		}
-		else if (operacion==5007){
-			mostrar_tabla_FAT(fat,ui32_max_entradas_fat);
-		}
-		else if (operacion==5008){
-		    fclose(fat);
-		    fclose(filesystem);
-		    return EXIT_SUCCESS;
+		if (operacion<6000) {
+			if (operacion==0) {
+				//char* nombre = recibir_mensaje(socket_kernel);
+				//uint32_t tam_archivo = abrir_archivo(nombre, path_fcb);
+			}
+			else if (operacion==RESET_FILE_SYSTEM){
+				creacionFilesystem(filesystem,path_bloques);
+			}
+			else if (operacion==RESET_FAT){
+				reiniciar_fat(fat,ui32_max_entradas_fat);
+			}
+			else if (operacion==ABRIR_ARCHIVO){
+				abrir_archivo("../filesystem/archivo_datos/documento1",path_fcb);
+			}
+			else if (operacion==CREAR_ARCHIVO){
+				crear_archivo("documento1",logger,path_fcb);
+			}
+			else if (operacion==TRUNCAR_ARCHIVO){
+				truncar_archivo("documento1",ui32_tam_de_archivo,logger,fat,ui32_tam_bloque,ui32_max_entradas_fat,path_fcb);
+			}
+			else if (operacion==LEER_ARCHIVO){
+				leer_archivo("documento1",logger,fat,ui32_tam_bloque,filesystem,path_fcb);
+			}
+			else if (operacion==ESCRIBIR_ARCHIVO){
+				escribir_archivo("documento1",documentoArchivo,logger,fat,ui32_tam_bloque,filesystem,path_fcb);
+			}
+			else if (operacion==MOSTRAR_TABLA_FAT){
+				mostrar_tabla_FAT(fat,ui32_max_entradas_fat);
+			}
+			else if (operacion==FIN_DEL_PROGRAMA){
+				fclose(fat);
+				fclose(filesystem);
+				return EXIT_SUCCESS;
+			}
+			else {
+				liberar_conexion(socket_kernel);
+				return;
+			}
 		}
 		else {
-			liberar_conexion(socket_kernel);
-			return;
-        }
+			if (operacion==F_READ) {
+				
+
+				printf("La operacion recibida es F_READ\n");
+				char *valor=recibir_mensaje(socket_kernel);
+				printf("El valor recibido es:%s\n",valor);
+				//-------------------------------------------------------
+				//--- Nombre de archivo
+				buscaDatoEnMensaje(valor,valorParametro,1);
+				printf ("Nombre del archivo recibido:%s\n",valorParametro);
+				//-------------------------------------------------------
+				//--- Posicion del puntero
+				uint32_t ui32_posicionPuntero=(uint32_t) atoi(buscaDatoEnMensaje(valor,valorParametro,2));
+				printf ("Posición del puntero en archivo:%u\n",ui32_posicionPuntero);
+				//-------------------------------------------------------
+				//--- Cantidad de bytes a leer
+				uint32_t ui32_cantBytes=(uint32_t) atoi(buscaDatoEnMensaje(valor,valorParametro,3));
+				printf ("Cantidad d Bytes a leer:%u\n",ui32_cantBytes);				
+				//-------------------------------------------------------
+				//--- Direccion de memoria a volvar los datos
+				uint32_t ui32_direccionDeMemoria=(uint32_t) atoi(buscaDatoEnMensaje(valor,valorParametro,4));
+				printf ("Direccion de memoria:%u\n",ui32_direccionDeMemoria);	
+				//-------------------------------------------------------
+				//--- Direccion de memoria a volvar los datos
+				printf("Datos del bloque:%s\n",leer_archivo_bloque_n("documento1",logger,fat,ui32_tam_bloque,filesystem,path_fcb,ui32_posicionPuntero,ui32_cantBytes,buffer_data));
+				//-------------------------------------------------------
+				//--- Envía mensaje de operarcion finalizada
+				enviar_mensaje("1",socket_kernel);
+			}
+			else if (operacion==F_WRITE) {
+				char valorParametro[128]="";
+
+				printf("La operacion recibida es F_WRITE\n");
+				char *valor=recibir_mensaje(socket_kernel);
+				printf("El valor recibido es:%s\n",valor);
+				//-------------------------------------------------------
+				//--- Nombre de archivo
+				buscaDatoEnMensaje(valor,valorParametro,1);
+				printf ("Nombre del archivo recibido:%s\n",valorParametro);
+				//-------------------------------------------------------
+				//--- Posicion del puntero
+				uint32_t ui32_posicionPuntero=(uint32_t) atoi(buscaDatoEnMensaje(valor,valorParametro,2));
+				printf ("Posición del puntero en archivo:%u\n",ui32_posicionPuntero);
+				//-------------------------------------------------------
+				//--- Cantidad de bytes a leer
+				uint32_t ui32_cantBytes=(uint32_t) atoi(buscaDatoEnMensaje(valor,valorParametro,3));
+				printf ("Cantidad d Bytes a leer:%u\n",ui32_cantBytes);				
+				//-------------------------------------------------------
+				//--- Direccion de memoria a volvar los datos
+				uint32_t ui32_direccionDeMemoria=(uint32_t) atoi(buscaDatoEnMensaje(valor,valorParametro,4));
+				printf ("Direccion de memoria:%u\n",ui32_direccionDeMemoria);	
+				//-------------------------------------------------------
+				//--- Direccion de memoria a volvar los datos
+				char buffer_data[1024+1]="";
+				//-- Emulación de pedidos de datos a la memoria para escribir en el archivo
+				char paginaDeMemoria[1024+1]="";
+				solicitarPaginaMemoria(paginaDeMemoria);
+				printf ("El contenido de la página de memoria es:%s\n",paginaDeMemoria);
+				determinaDatosEnPagina(paginaDeMemoria,ui32_direccionDeMemoria,ui32_cantBytes,buffer_data);
+				printf ("Los datos a almacenar son:%s\n",buffer_data);
+				escribir_archivo_n("documento1",logger,fat,ui32_tam_bloque,filesystem,path_fcb,ui32_posicionPuntero,ui32_cantBytes,buffer_data);
+				//-------------------------------------------------------
+				//--- Envía mensaje de operarcion finalizada
+				enviar_mensaje("1",socket_kernel);
+			}
+		}
     }
     return 0;
 }

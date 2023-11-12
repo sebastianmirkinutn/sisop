@@ -17,6 +17,7 @@
 #include "utils_bloques.h"
 #include "utils_committed_logger.h"
 #include "utils_filesystem.h"
+#include "utils_file_op.h"
 #include "fcb.h"
 
 #define RESET_COLOR    "\x1b[0m"
@@ -50,9 +51,31 @@ char *tam_bloque;
 char *retardo_acceso_bloque;
 char *retardo_acceso_fat;
 
+#define RESET_FILE_SYSTEM 5000
+#define RESET_FAT 5001
+#define ABRIR_ARCHIVO 5002
+#define CREAR_ARCHIVO 5003
+#define TRUNCAR_ARCHIVO 5004
+#define LEER_ARCHIVO 5005
+#define ESCRIBIR_ARCHIVO 5006
+#define MOSTRAR_TABLA_FAT 5007
+#define FIN_DEL_PROGRAMA 5008
+//--------------------------------------
+// - Directivas de instrucciones ------
+#define F_OPEN 6000
+#define F_CLOSE 6001
+#define F_SEEK 6002
+#define F_READ 6003
+#define F_WRITE 6004
+#define F_TRUNCATE 6005
+
+
+
+
 FILE *filesystem;
 FILE *fcb;
 FILE *fat;
+
 
 char documentoArchivo[30000]="";
 

@@ -13,6 +13,7 @@ FILE *existeArchivoFilesystem(FILE *filesystem,char *c_path_bloques);
 FILE *creacionFilesystem(FILE *filesystem,char *c_path_bloques);
 FILE *abrirFilesystem(FILE *filesystem,char *c_path_bloques);
 FILE *iniciarArchivoFilesystem(FILE *filesystem,char *c_path_bloques);
+char *obtenerLectura(char *bufferData,char *buffer_bloque,uint32_t posicionPunteroRelativa,uint32_t cantBytes);
 
 /*---------------- OPERACIONES RELACIONADAS CON ARCHIVO FCB -----------------------*/
 uint32_t tamanio_Archivo_fcb(char *nombreArchivo,char *c_directorio_fcb);
@@ -36,4 +37,6 @@ void mostrar_tabla_FAT(FILE *fat,uint32_t MAX_ENTRADAS_FAT);
 /*-------------------- OPERACIONES AUXILIARES CON ARCHIVOS ------------------------*/
 uint32_t tamanioArchivo (char *nombreArchivo);
 uint32_t abrirDocumento(char *nombreArchivo,char *documentoArchivo);
+char *solicitarPaginaMemoria(char *paginaDeMemoria);
+char *determinaDatosEnPagina(char *paginaDeMemoria,uint32_t ui32_direccionDeMemoria,uint32_t ui32_cantBytes,char *buffer_data);
 #endif

@@ -56,6 +56,18 @@ FILE *iniciarArchivoFilesystem(FILE *filesystem,char *c_path_bloques) {
     }
 }
 
+char *obtenerLectura(char *buffer_bloque,char *buffer_data,uint32_t posicionPunteroRelativa,uint32_t cantBytes) {
+    int i=0;
+    int j=0;
+    for (i=posicionPunteroRelativa;i<posicionPunteroRelativa+cantBytes;i++) {
+        buffer_data[j]=buffer_bloque[i];
+        j++;
+    }
+    j++;
+    buffer_data[j]='\0';
+    return(buffer_data);
+}
+
 /*---------------------------------------------------------------------------------*/
 /*---------------------------------------------------------------------------------*/
 /*---------------- OPERACIONES RELACIONADAS CON ARCHIVO FCB -----------------------*/
@@ -223,7 +235,7 @@ FILE *creacionFAT(FILE *fat,char *c_path_fat,uint32_t ui32_tamanio_fat) {
     else {
         for (int i=0;i<ui32_tamanio_fat;i++) fwrite(&unBloque32Bits,sizeof(unBloque32Bits),1,fat);
         fclose(fat);
-        return (1);
+        return (fat);
     }
 }
 
@@ -368,3 +380,23 @@ uint32_t abrirDocumento(char *nombreArchivo,char *documentoArchivo) {
     fclose(f);
     return(tamArchivo);
 }
+
+char *solicitarPaginaMemoria(char *paginaDeMemoria) {
+    //La emulación de la página tiene 20 espacios y luego tiene la info a guardar
+    char contenidoPagina[1024+1]="                    LOS-OPERATIVOS";
+    strcpy(paginaDeMemoria,contenidoPagina);
+    return(paginaDeMemoria);
+}
+
+char *determinaDatosEnPagina(char *paginaDeMemoria,uint32_t ui32_direccionDeMemoria,uint32_t ui32_cantBytes,char *buffer_data) {
+    uint32_t i=0;
+    uint32_t j=0;
+    for (i=ui32_direccionDeMemoria;i<ui32_direccionDeMemoria+ui32_cantBytes;i++) {
+        buffer_data[j]=paginaDeMemoria[i];
+        j++;
+    }
+    j++;
+    buffer_data[j]='\0';
+    return(buffer_data);
+}
+int escribir_en_archivo_fisico(FILE *filesystem,uint32_t ui32_entrada_FAT,uint32_t ui32_tamBloque,char *buffer_data,uint32_t posicionPunteroRelativa,uint32_t cantBytes);

@@ -118,6 +118,7 @@ int truncar_archivo(char *nombreArchivo,uint32_t ui32_longMen_datos,t_log *logge
 }
 
 /* 4) LEER_ARCHIVO-----------------------------*/
+//FUNCION TEMPORAL PARA HACER PRUEBAS DE LECTURA COMPLETAS DE UN ARCHIVO
 int leer_archivo(char *nombreArchivo,t_log *logger,FILE *fat,uint32_t ui32_tamBloque,FILE *filesystem,char *c_directorio_fcb) {
     uint32_t ui32_cantBloques_a_leer=0;
     uint32_t ui32_entrada_FAT;
@@ -150,7 +151,39 @@ int leer_archivo(char *nombreArchivo,t_log *logger,FILE *fat,uint32_t ui32_tamBl
     return(1);
 }
 
+//Lectura de archivo redefinido para leer en un lugar en particular
+char *leer_archivo_bloque_n(char *nombreArchivo,t_log *logger,FILE *fat,uint32_t ui32_tamBloque,FILE *filesystem,char *c_directorio_fcb,uint32_t posicionPuntero,uint32_t cantBytes,char *buffer_data) {
+    uint32_t ui32_cantBloques_a_leer=0;
+    uint32_t ui32_entrada_FAT;
+    uint32_t ui32_dataEntrada_FAT;
+    uint32_t ui32_numero_bloque=0;
+    uint32_t indice=0;
+    uint32_t ui32_bloque_a_leer;
+    uint32_t posicionPunteroRelativa;
+    char buffer_lectura[1024+1]=""; //Ver como incializar si el tamaño del bloque cambia
+    char buffer_bloque[1024+1]=""; //Ver como incializar si el tamaño del bloque cambia
+    
+    printf("OP:LEER_ARCHIVO\n");
+    /*Calcula la cantidad de bloques a escribir en el archivo bloques.dat*/
+    /*Obtiene la direccion de la entrada inicial de la tabla FAT*/
+    //ui32_cantBloques_a_leer=cantBloques_FAT_necesitados(tamanio_Archivo_fcb(nombreArchivo,c_directorio_fcb),ui32_tamBloque);
+    ui32_bloque_a_leer = posicionPuntero/ui32_tamBloque;
+    ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb);
+    for (indice=0;indice<ui32_bloque_a_leer;indice++) {
+        ui32_dataEntrada_FAT=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
+        ui32_entrada_FAT=ui32_dataEntrada_FAT;
+        ui32_numero_bloque++;
+    }
+    strcat(buffer_bloque,lectura_de_archivo_bloques(filesystem,ui32_entrada_FAT,buffer_lectura,ui32_tamBloque));
+    buffer_bloque[ui32_tamBloque]='\0';
+    if (posicionPuntero<ui32_tamBloque) posicionPunteroRelativa=posicionPuntero;
+    else posicionPunteroRelativa=posicionPuntero-((posicionPuntero/ui32_tamBloque)*ui32_tamBloque);
+    buffer_data=obtenerLectura(lectura_de_archivo_bloques(filesystem,ui32_entrada_FAT,buffer_lectura,ui32_tamBloque),buffer_data,posicionPunteroRelativa,cantBytes);
+    return(buffer_data);
+}
+
 /* 5) ESCRIBIR_ARCHIVO-----------------------------*/
+//FUNCION TEMPORAL PARA HACER PRUEBAS DE ESCRITURA COMPLETAS DE UN ARCHIVO
 int escribir_archivo(char *nombreArchivo,char *documentoArchivo,t_log *logger,FILE *fat,uint32_t ui32_tamBloque,FILE *filesystem,char *c_directorio_fcb) {
     uint32_t ui32_cantBloques_a_escribir=0;
     uint32_t ui32_entrada_FAT=0;
@@ -174,5 +207,32 @@ int escribir_archivo(char *nombreArchivo,char *documentoArchivo,t_log *logger,FI
         ui32_entrada_FAT=ui32_dataEntrada_FAT;
         ui32_numero_bloque++;
     }
+    return(1);
+}
+
+/* 5) ESCRIBIR_ARCHIVO-----------------------------*/
+int escribir_archivo_n(char *nombreArchivo,t_log *logger,FILE *fat,uint32_t ui32_tamBloque,FILE *filesystem,char *c_directorio_fcb,uint32_t posicionPuntero,uint32_t cantBytes,char *buffer_data) {
+    uint32_t ui32_bloque_a_escribir=0;
+    uint32_t ui32_entrada_FAT=0;
+    uint32_t ui32_dataEntrada_FAT;
+    uint32_t ui32_numero_bloque=0;
+    uint32_t posicionPunteroRelativa;
+    char buffer_escritura[1024];
+    uint32_t indice=0;
+
+    printf("OP:ESCRIBIR_ARCHIVO\n");
+    /*Calcula la cantidad de bloques a escribir en el archivo bloques.dat*/
+    /*Obtiene la direccion de la entrada inicial de la tabla FAT*/
+    ui32_bloque_a_escribir = posicionPuntero/ui32_tamBloque;
+    ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb);
+    for (indice=0;indice<ui32_bloque_a_escribir;indice++) {
+        ui32_dataEntrada_FAT=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
+        ui32_entrada_FAT=ui32_dataEntrada_FAT;
+        ui32_numero_bloque++;
+    }
+    if (posicionPuntero<ui32_tamBloque) posicionPunteroRelativa=posicionPuntero;
+    else posicionPunteroRelativa=posicionPuntero-((posicionPuntero/ui32_tamBloque)*ui32_tamBloque);
+    escribir_en_archivo_fisico(filesystem,ui32_entrada_FAT,ui32_tamBloque,buffer_data,posicionPunteroRelativa,cantBytes);
+
     return(1);
 }

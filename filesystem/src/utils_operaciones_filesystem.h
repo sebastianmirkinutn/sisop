@@ -21,7 +21,8 @@ int crear_archivo(char *nombreArchivo,t_log *logger,char *c_directorio_fcb);
 int truncar_archivo(char *nombreArchivo,uint32_t ui32_longMen_datos,t_log *logger,FILE *fat,uint32_t ui32_tamBloque,uint32_t ui32_max_entradas_fat,char *c_directorio_fcb); 
 /* 4) LEER_ARCHIVO-----------------------------*/
 int leer_archivo(char *nombreArchivo,t_log *logger,FILE *fat,uint32_t ui32_tamBloque,FILE *filesystem,char *c_directorio_fcb);
+char *leer_archivo_bloque_n(char *nombreArchivo,t_log *logger,FILE *fat,uint32_t ui32_tamBloque,FILE *filesystem,char *c_directorio_fcb,uint32_t posicionPuntero,uint32_t cantBytes,char *buffer_bloque);
 /* 5) ESCRIBIR_ARCHIVO-----------------------------*/
 int escribir_archivo(char *nombreArchivo,char *documentoArchivo,t_log *logger,FILE *fat,uint32_t ui32_tamBloque,FILE *filesystem,char *c_directorio_fcb);
-
+int escribir_archivo_n(char *nombreArchivo,t_log *logger,FILE *fat,uint32_t ui32_tamBloque,FILE *filesystem,char *c_directorio_fcb,uint32_t posicionPuntero,uint32_t cantBytes,char *buffer_bloque);
 #endif
