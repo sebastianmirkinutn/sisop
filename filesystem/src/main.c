@@ -1,9 +1,8 @@
 #include "main.h"
 
 
-uint32_t abrir_archivo(char* path_fcb, char* nombre)
+int32_t abrir_archivo(char* path_fcb, char* nombre)
 {
-    t_fcb* fcb = malloc(sizeof(t_fcb));
     char* ruta = path_fcb;
 	uint32_t tam_archivo;
     strcat(ruta, nombre);
@@ -13,11 +12,34 @@ uint32_t abrir_archivo(char* path_fcb, char* nombre)
 	{
 		return -1;
 	}
-	fseek(archivo_fcb, 0, SEEK_END);
-	tam_archivo = ftell(archivo_fcb);
 	//El archivo no va estar realmente abierto (o podríamos dejarlo abierto...).
     fclose(archivo_fcb);
+    t_fcb* fcb = leer_fcb(path_fcb, nombre);
+	tam_archivo = fcb->tam_archivo;
+	liberar_fcb(fcb);
     return tam_archivo;
+}
+
+uint32_t crear_archivo(char* path_fcb, char* nombre)
+{
+    t_fcb* fcb = malloc(sizeof(t_fcb));
+	char* ruta = path_fcb;
+	uint32_t tam_archivo;
+    strcat(ruta, nombre);
+    strcat(ruta, ".fcb");
+	t_config* config_fcb = iniciar_config(ruta);
+	FILE* archivo_fcb = open(ruta, O_CREAT);
+	if(archivo_fcb == -1)
+	{
+		return -1;
+	}
+	fseek(archivo_fcb, 0, SEEK_SET);
+	config_set_value(config_fcb, "NOMBRE_ARCHIVO", nombre);
+	config_set_value(config_fcb, "TAMANIO_ARCHIVO", nombre);
+	config_set_value(config_fcb, "BLOQUE_INICIAL", nombre);
+	//El archivo no va estar realmente abierto (o podríamos dejarlo abierto...).
+    fclose(archivo_fcb);
+    return 1;
 }
 
 int main(int argc, char* argv[]) {
@@ -34,7 +56,7 @@ int main(int argc, char* argv[]) {
 
 	//------------------------------------------------------------------------
     t_log* logger = iniciar_logger("log_filesystem.log","FILESYSTEM");
-    t_config* config = iniciar_config("../filesystem/cfg/filesystem.config");
+    t_config* config = iniciar_config("./cfg/filesystem.config");
     
 	char* puerto_escucha = config_get_string_value(config,"PUERTO_ESCUCHA");
     char* ip_memoria = config_get_string_value(config,"IP_MEMORIA");
@@ -81,10 +103,31 @@ int main(int argc, char* argv[]) {
 	printf("----------------------------------------------------------\n");
     op_code operacion;
 	t_list* lista;
+	char* nombre_archivo;
+	int32_t tam_archivo;
     while(1)
     {
 		operacion = recibir_operacion(socket_kernel);
 		printf ("\nSe recibe operacion:%d\n",operacion);
+		switch (operacion)
+		{
+		case ABRIR_ARCHIVO:
+			nombre_archivo = recibir_mensaje(socket_kernel);
+			tam_archivo = abrir_archivo(path_fcb, nombre_archivo);
+			send(socket_kernel, &tam_archivo, sizeof(int32_t), NULL);
+			break;
+
+		case CREAR_ARCHIVO:
+			crear_archivo(path_fcb, nombre_archivo);
+			break;
+		
+		default:
+			liberar_conexion(socket_kernel);
+			break;
+		}
+
+
+
 		if (operacion<6000) {
 			if (operacion==0) {
 				//char* nombre = recibir_mensaje(socket_kernel);
@@ -96,11 +139,11 @@ int main(int argc, char* argv[]) {
 			else if (operacion==RESET_FAT){
 				reiniciar_fat(fat,ui32_max_entradas_fat);
 			}
-			else if (operacion==ABRIR_ARCHIVO){
+			else if (operacion==ABRIR_ARCHIVO_D){
 				abrir_archivo("../filesystem/archivo_datos/documento1",path_fcb);
 			}
-			else if (operacion==CREAR_ARCHIVO){
-				crear_archivo("documento1",logger,path_fcb);
+			else if (operacion==CREAR_ARCHIVO_D){
+				crear_archivo_d("documento1",logger,path_fcb);
 			}
 			else if (operacion==TRUNCAR_ARCHIVO){
 				truncar_archivo("documento1",ui32_tam_de_archivo,logger,fat,ui32_tam_bloque,ui32_max_entradas_fat,path_fcb);

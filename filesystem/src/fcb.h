@@ -14,4 +14,6 @@ typedef struct
     uint32_t bloque_inicial;
 }t_fcb;
 
+void liberar_fcb(t_fcb* fcb);
+
 #endif

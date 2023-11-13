@@ -174,6 +174,7 @@ char* de_t_motivo_a_string(t_motivo_desalojo motivo)
 void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void* arg)
 {
     t_args_hilo* arg_h = (t_args_hilo*) arg;
+    int32_t tam_archivo;
     switch (motivo)
     {
     case SUCCESS:
@@ -203,7 +204,17 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         signal_recurso(logger_hilo, recurso, arg_h->socket_dispatch);
         break;
     case F_OPEN:
-        enviar_operacion(arg_h->socket_filesystem, F_OPEN);
+        enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
+        recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
+        if(tam_archivo != -1)
+        {
+            printf("El archivo tiene un tamaño de %i bytes\n", tam_archivo);
+        }
+        else
+        {
+            printf("El archivo no existe\n");
+            //Se bloquea al proceso
+        }
         break;
     
     default:

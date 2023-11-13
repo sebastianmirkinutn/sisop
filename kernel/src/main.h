@@ -24,6 +24,7 @@ typedef struct
 {
     char* nombre;
     uint16_t tam_archivo;
+    t_queue* cola_blocked;
 }t_archivo;
 
 
