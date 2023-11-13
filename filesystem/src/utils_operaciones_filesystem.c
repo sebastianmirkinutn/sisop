@@ -21,7 +21,7 @@ uint32_t d_abrir_archivo(char *nombreArchivo,char *c_directorio_fcb) {
 }
 
 /* 2) CREAR_ARCHIVO-----------------------------*/
-int crear_archivo(char *nombreArchivo,t_log *logger,char *c_directorio_fcb) {
+int crear_archivo_d(char *nombreArchivo,t_log *logger,char *c_directorio_fcb) {
     actualizar_Archivo_fcb(nombreArchivo,0,9999,c_directorio_fcb);
     committed_logger_CREAR_ARCHIVO(nombreArchivo,logger);
     return(1);

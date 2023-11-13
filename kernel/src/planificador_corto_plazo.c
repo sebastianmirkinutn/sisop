@@ -175,6 +175,8 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
 {
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     int32_t tam_archivo;
+    char* nombre_archivo;
+    char* recurso;
     switch (motivo)
     {
     case SUCCESS:
@@ -195,7 +197,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
 
     case WAIT:
         printf("Me pidieron WAIT\n");
-        char* recurso = recibir_mensaje(arg_h->socket_dispatch);
+        recurso = recibir_mensaje(arg_h->socket_dispatch);
         printf("Me pidieron WAIT de %s\n", recurso);
         wait_recurso(logger_hilo, recurso, arg_h->socket_dispatch);
         break;
@@ -204,7 +206,11 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         signal_recurso(logger_hilo, recurso, arg_h->socket_dispatch);
         break;
     case F_OPEN:
+        printf("F_OPEN\n");
+        nombre_archivo = recibir_mensaje(arg_h->socket_cpu);
+        printf("F_OPEN - Mando a FS\n");
         enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
+        enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
         recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
         if(tam_archivo != -1)
         {

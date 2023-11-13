@@ -127,7 +127,7 @@ int main(int argc, char* argv[]) {
 		}
 
 
-
+/*
 		if (operacion<6000) {
 			if (operacion==0) {
 				//char* nombre = recibir_mensaje(socket_kernel);
@@ -234,6 +234,7 @@ int main(int argc, char* argv[]) {
 				enviar_mensaje("1",socket_kernel);
 			}
 		}
+		*/
     }
     return 0;
 }
