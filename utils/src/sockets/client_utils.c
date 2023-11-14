@@ -74,7 +74,7 @@ void enviar_mensaje(char* mensaje, int socket_cliente)
 
 	//void* a_enviar = serializar_paquete(paquete, bytes);
 
-	send(socket_cliente, &(paquete->codigo_operacion), sizeof(int), 0);
+	send(socket_cliente, &(paquete->codigo_operacion), sizeof(op_code), 0);
 	printf("Mandé: %i\n",paquete->codigo_operacion);
 	send(socket_cliente, &(paquete->buffer->size), sizeof(int), 0);
 	printf("Mandé: %i\n",paquete->buffer->size);
