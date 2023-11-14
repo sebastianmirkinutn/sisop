@@ -327,6 +327,7 @@ int main(int argc, char* argv[]){
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
                 enviar_motivo_desalojo(socket_kernel_dispatch, F_OPEN);
                 enviar_mensaje(parametros[1],socket_kernel_dispatch);
+                enviar_mensaje(parametros[2],socket_kernel_dispatch);
             }
             else if(!strcmp(parametros[0], "F_CLOSE"))
             {
@@ -338,7 +339,12 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "F_READ"))
             {
-            
+                execute = 0;
+                registros->PC++;
+                enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+                enviar_motivo_desalojo(socket_kernel_dispatch, F_READ);
+                enviar_mensaje(parametros[1],socket_kernel_dispatch);
+                enviar_mensaje(parametros[2],socket_kernel_dispatch);
             }
             else if(!strcmp(parametros[0], "F_WRITE"))
             {
