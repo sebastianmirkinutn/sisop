@@ -6,6 +6,7 @@ extern t_list* procesos_en_memoria;
 extern sem_t mutex_lista_procesos;
 extern sem_t cantidad_de_procesos;
 extern int tam_pagina;
+extern int tam_memoria;
 
 uint8_t leer_de_memoria(t_direccion_fisica* direccion)
 {
@@ -99,7 +100,14 @@ uint32_t contador_frame = 0;
 uint32_t reemplazo_fifo(void)
 {
     return contador_frame;
+    //Lógica de desalojo
+
+
     contador_frame++;
+    if(contador_frame > tam_memoria / tam_pagina)
+    {
+        contador_frame = 0;
+    }
 }
 
 

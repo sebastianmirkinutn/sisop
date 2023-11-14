@@ -53,8 +53,8 @@ char *retardo_acceso_fat;
 
 #define RESET_FILE_SYSTEM 5000
 #define RESET_FAT 5001
-#define ABRIR_ARCHIVO 5002
-#define CREAR_ARCHIVO 5003
+#define ABRIR_ARCHIVO_D 5002
+#define CREAR_ARCHIVO_D 5003
 #define TRUNCAR_ARCHIVO 5004
 #define LEER_ARCHIVO 5005
 #define ESCRIBIR_ARCHIVO 5006
@@ -79,10 +79,6 @@ FILE *fat;
 
 char documentoArchivo[30000]="";
 
-
-void iterator(char* value) {
-	//log_info(logger,"%s", value);
-	puts(value);
-}
+int32_t abrir_archivo(char* path_fcb, char* nombre);
 
 #endif

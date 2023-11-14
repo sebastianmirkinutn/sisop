@@ -11,6 +11,7 @@ void* memoria_de_usuario;
 t_bitarray* frame_bitarray;
 
 int tam_pagina; 
+int tam_memoria;
 
 
 int main(int argc, char* argv[]){
@@ -18,7 +19,7 @@ int main(int argc, char* argv[]){
     t_config* config = iniciar_config("./cfg/memoria.config");
 
     char* puerto_escucha = config_get_string_value(config,"PUERTO_ESCUCHA");
-    int tam_memoria = config_get_int_value(config, "TAM_MEMORIA");
+    tam_memoria = config_get_int_value(config, "TAM_MEMORIA");
     tam_pagina = config_get_int_value(config, "TAM_PAGINA");
     int retardo_respuesta = config_get_int_value(config, "RETARDO_RESPUESTA");
 

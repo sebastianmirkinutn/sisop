@@ -322,7 +322,11 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "F_OPEN"))
             {
-
+                execute = 0;
+                registros->PC++;
+                enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+                enviar_motivo_desalojo(socket_kernel_dispatch, F_OPEN);
+                enviar_mensaje(parametros[1],socket_kernel_dispatch);
             }
             else if(!strcmp(parametros[0], "F_CLOSE"))
             {
