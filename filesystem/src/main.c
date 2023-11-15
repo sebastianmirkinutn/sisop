@@ -6,6 +6,7 @@ int32_t abrir_archivo(char* path_fcb, char* nombre)
 	char* ruta = malloc(strlen(path_fcb) + 1 + strlen(nombre) + 4 + 1);
 	strcpy(ruta, path_fcb);
 	uint32_t tam_archivo;
+	strcat(ruta, "/");
     strcat(ruta, nombre);
     strcat(ruta, ".fcb");
 	int archivo_fcb = open(ruta, O_RDONLY);
@@ -18,6 +19,7 @@ int32_t abrir_archivo(char* path_fcb, char* nombre)
     t_fcb* fcb = leer_fcb(path_fcb, nombre);
 	tam_archivo = fcb->tam_archivo;
 	liberar_fcb(fcb);
+	printf("aa_tam_archivo = %i\n", tam_archivo);
     return tam_archivo;
 }
 
@@ -118,6 +120,7 @@ int main(int argc, char* argv[]) {
 		case ABRIR_ARCHIVO:
 			nombre_archivo = recibir_mensaje(socket_kernel);
 			tam_archivo = abrir_archivo(path_fcb, nombre_archivo);
+			printf("m_tam_archivo = %i\n", tam_archivo);
 			send(socket_kernel, &tam_archivo, sizeof(int32_t), NULL);
 			break;
 
