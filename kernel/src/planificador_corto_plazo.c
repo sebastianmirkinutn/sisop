@@ -176,7 +176,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     int32_t tam_archivo;
     char* nombre_archivo;
-    char* recurso;
+    char* recurso, direccion, lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
     switch (motivo)
     {
     case SUCCESS:
@@ -208,6 +208,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
     case F_OPEN:
         printf("F_OPEN\n");
         nombre_archivo = recibir_mensaje(arg_h->socket_cpu);
+        lock = recibir_mensaje(arg_h->socket_cpu);
         printf("F_OPEN - Mando a FS\n");
         enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
         enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
@@ -219,10 +220,24 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         else
         {
             printf("El archivo no existe\n");
-            //Se bloquea al proceso
+            //Se le pide a Filesystem que cree el archivo
+            //enviar_operacion(arg_h->socket_filesystem, CREAR_ARCHIVO);
+            //enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
+            //Podríamos recibir un OK, de hecho creo que hay que recibirlo
         }
         break;
     
+    case F_READ:
+        printf("F_READ\n");
+        nombre_archivo = recibir_mensaje(arg_h->socket_cpu);
+        direccion = recibir_mensaje(arg_h->socket_cpu);
+        printf("F_OPEN - Mando a FS\n");
+        enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
+        enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
+        enviar_mensaje(direccion, arg_h->socket_filesystem);
+        recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
+        break;
+
     default:
         break;
     }

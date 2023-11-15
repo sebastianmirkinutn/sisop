@@ -118,11 +118,13 @@ int main(int argc, char* argv[]) {
 			break;
 
 		case CREAR_ARCHIVO:
+			nombre_archivo = recibir_mensaje(socket_kernel);
 			crear_archivo(path_fcb, nombre_archivo);
 			break;
 		
 		default:
 			liberar_conexion(socket_kernel);
+			return;
 			break;
 		}
 
