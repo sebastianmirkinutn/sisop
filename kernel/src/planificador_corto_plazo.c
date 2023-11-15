@@ -175,8 +175,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
 {
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     int32_t tam_archivo;
-    char* nombre_archivo;
-    char* recurso, direccion, lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
+    char* recurso, direccion, nombre_archivo, lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
     switch (motivo)
     {
     case SUCCESS:
@@ -207,9 +206,10 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         break;
     case F_OPEN:
         printf("F_OPEN\n");
-        nombre_archivo = recibir_mensaje(arg_h->socket_cpu);
-        lock = recibir_mensaje(arg_h->socket_cpu);
-        printf("F_OPEN - Mando a FS\n");
+        nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
+        printf("nombre_archivo = %s\n", nombre_archivo);
+        lock = recibir_mensaje(arg_h->socket_dispatch);
+        printf("lock = %s\n", lock);
         enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
         enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
         recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
@@ -229,8 +229,8 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
     
     case F_READ:
         printf("F_READ\n");
-        nombre_archivo = recibir_mensaje(arg_h->socket_cpu);
-        direccion = recibir_mensaje(arg_h->socket_cpu);
+        nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
+        direccion = recibir_mensaje(arg_h->socket_dispatch);
         printf("F_OPEN - Mando a FS\n");
         enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
         enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
