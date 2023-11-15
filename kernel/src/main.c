@@ -303,7 +303,7 @@ int main(int argc, char* argv[]){
 
             //mostramos los pids de bloqueado 
 
-            lista_para_iterar = list_iterator_create(cola_blocked);
+            lista_para_iterar = list_iterator_create(cola);
             pids = string_new();
             while(list_iterator_has_next(lista_para_iterar))
             {

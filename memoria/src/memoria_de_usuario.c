@@ -59,7 +59,7 @@ int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada)
 void asignar_memoria(uint32_t pid, uint32_t size, uint32_t (*algoritmo)(void))
 {
     uint32_t frame;
-    for(int nro_pagina = 0; nro_pagina < size / tam_pagina /*Habría que redondear hacia arriba*/; nro_pagina++)
+    for(int nro_pagina = 0; nro_pagina < ceil(size / tam_pagina); nro_pagina++)
     {
         frame = algoritmo();
         printf("Se asigna el frame %i\n", frame);
