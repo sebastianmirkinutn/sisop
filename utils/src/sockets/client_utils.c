@@ -129,3 +129,8 @@ void enviar_operacion (int socket, op_code operacion)
 {
 	send(socket, &operacion, sizeof(op_code), 0);
 }
+
+void enviar_respuesta (int socket, t_response respuesta)
+{
+	send(socket, &respuesta, sizeof(t_response), 0);
+}

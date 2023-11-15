@@ -48,6 +48,18 @@ op_code recibir_operacion(int socket_cliente)
 	}
 }
 
+t_response recibir_respuesta(int socket_cliente)
+{
+	op_code respuesta;
+	if(recv(socket_cliente, &respuesta, sizeof(t_response), MSG_WAITALL) > 0)
+		return respuesta;
+	else
+	{
+		close(socket_cliente);
+		return -1;
+	}
+}
+
 void* recibir_buffer(int* size, int socket_cliente)
 {
 	void * stream;

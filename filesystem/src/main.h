@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <stdint.h>
+#include <string.h>
 #include <commons/log.h>
 #include <commons/config.h>
 #include <log/log_utils.h>
@@ -12,6 +13,7 @@
 #include <sockets/client_utils.h>
 #include <sockets/server_utils.h>
 #include <pcb/pcb.h>
+#include <fcntl.h>
 #include "utils_adicionales.h"
 #include "utils_operaciones_filesystem.h"
 #include "utils_bloques.h"

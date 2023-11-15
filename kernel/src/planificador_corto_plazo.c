@@ -175,8 +175,9 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
 {
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     int32_t tam_archivo;
-    char* nombre_archivo;
-    char* recurso, direccion, lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
+    char* recurso, direccion;
+    char* nombre_archivo, lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
+    t_response respuesta;
     switch (motivo)
     {
     case SUCCESS:
@@ -206,31 +207,48 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         signal_recurso(logger_hilo, recurso, arg_h->socket_dispatch);
         break;
     case F_OPEN:
-        printf("F_OPEN\n");
-        nombre_archivo = recibir_mensaje(arg_h->socket_cpu);
-        lock = recibir_mensaje(arg_h->socket_cpu);
-        printf("F_OPEN - Mando a FS\n");
+        nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
+        printf("Me pidieron abrir de %s\n", nombre_archivo);
+        lock = recibir_mensaje(arg_h->socket_dispatch);
+
         enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
         enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
         recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
         if(tam_archivo != -1)
         {
             printf("El archivo tiene un tamaño de %i bytes\n", tam_archivo);
+            sem_wait(&mutex_cola_ready);
+            queue_push(cola_ready, execute); // Debería ser en la primera posición.
+            sem_post(&mutex_cola_ready);
+            sem_post(&procesos_en_ready);
         }
         else
         {
             printf("El archivo no existe\n");
             //Se le pide a Filesystem que cree el archivo
-            //enviar_operacion(arg_h->socket_filesystem, CREAR_ARCHIVO);
-            //enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
+            enviar_operacion(arg_h->socket_filesystem, CREAR_ARCHIVO);
+            enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
             //Podríamos recibir un OK, de hecho creo que hay que recibirlo
+            respuesta = recibir_respuesta(arg_h->socket_filesystem);
+            switch (respuesta)
+            {
+            case OK:
+                sem_wait(&mutex_cola_ready);
+                queue_push(cola_ready, execute); // Debería ser en la primera posición.
+                sem_post(&mutex_cola_ready);
+                sem_post(&procesos_en_ready);
+                break;
+            
+            default:
+                break;
+            }
         }
         break;
     
     case F_READ:
         printf("F_READ\n");
-        nombre_archivo = recibir_mensaje(arg_h->socket_cpu);
-        direccion = recibir_mensaje(arg_h->socket_cpu);
+        nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
+        direccion = recibir_mensaje(arg_h->socket_dispatch);
         printf("F_OPEN - Mando a FS\n");
         enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
         enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
