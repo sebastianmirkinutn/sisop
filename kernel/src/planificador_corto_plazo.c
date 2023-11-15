@@ -15,6 +15,7 @@ extern t_queue *cola_new;
  
 extern t_pcb* execute;
 extern t_list* recursos_disponibles;
+extern t_list* tabla_global_de_archivos;
 t_motivo_desalojo motivo;
 
 void planificador_rr(void* arg)
@@ -178,6 +179,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
     char* recurso, direccion;
     char* nombre_archivo, lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
     t_response respuesta;
+    t_archivo* archivo;
     switch (motivo)
     {
     case SUCCESS:
@@ -210,13 +212,14 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
         printf("Me pidieron abrir de %s\n", nombre_archivo);
         lock = recibir_mensaje(arg_h->socket_dispatch);
-
+        
         enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
         enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
         recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
         if(tam_archivo != -1)
         {
             printf("El archivo tiene un tamaño de %i bytes\n", tam_archivo);
+
             sem_wait(&mutex_cola_ready);
             queue_push(cola_ready, execute); // Debería ser en la primera posición.
             sem_post(&mutex_cola_ready);

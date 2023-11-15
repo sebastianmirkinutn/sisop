@@ -15,7 +15,7 @@ t_queue *cola_exit;
 
 t_pcb* execute;
 t_list* recursos_disponibles;
-t_list* tabla_globar_de_archivos;
+t_list* tabla_global_de_archivos;
 
 uint32_t* instancias_recursos(char** instancias)
 {

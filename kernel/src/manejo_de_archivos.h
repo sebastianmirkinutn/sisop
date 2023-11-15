@@ -1,5 +1,5 @@
-#ifndef KERNEL_H
-#define KERNEL_H
+#ifndef MANEJO_DE_ARCHIVOS_H
+#define MANEJO_DE_ARCHIVOS_H
 
 #include <stdio.h>
 #include <commons/log.h>
@@ -15,9 +15,23 @@
 #include <pcb/pcb.h>
 #include <pthread.h>
 
-#include "temp.h"
-#include "planificador_largo_plazo.h"
-#include "planificador_corto_plazo.h"
-#include "manejo_de_archivos.h"
+typedef enum
+{
+    READ,
+    WRITE,
+    NONE
+}t_lock;
 
-#endif 
+
+typedef struct
+{
+    char* nombre;
+    uint32_t tam_archivo;
+    uint32_t puntero;
+    t_lock lock;
+    t_queue* cola_blocked;
+}t_archivo;
+
+t_archivo* crear_archivo(char* nombre_archivo, uint32_t tam_archivo, char* lock);
+
+#endif
