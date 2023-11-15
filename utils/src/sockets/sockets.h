@@ -18,6 +18,12 @@ typedef enum
 	CREAR_ARCHIVO
 }op_code;
 
+typedef enum
+{   
+	OK,
+	ERROR
+}t_response;
+
 typedef struct
 {
 	int size;

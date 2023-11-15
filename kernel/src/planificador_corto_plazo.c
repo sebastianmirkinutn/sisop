@@ -177,6 +177,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
     int32_t tam_archivo;
     char* recurso, direccion;
     char* nombre_archivo, lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
+    t_response respuesta;
     switch (motivo)
     {
     case SUCCESS:
@@ -216,14 +217,31 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         if(tam_archivo != -1)
         {
             printf("El archivo tiene un tamaño de %i bytes\n", tam_archivo);
+            sem_wait(&mutex_cola_ready);
+            queue_push(cola_ready, execute); // Debería ser en la primera posición.
+            sem_post(&mutex_cola_ready);
+            sem_post(&procesos_en_ready);
         }
         else
         {
             printf("El archivo no existe\n");
             //Se le pide a Filesystem que cree el archivo
-            //enviar_operacion(arg_h->socket_filesystem, CREAR_ARCHIVO);
-            //enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
+            enviar_operacion(arg_h->socket_filesystem, CREAR_ARCHIVO);
+            enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
             //Podríamos recibir un OK, de hecho creo que hay que recibirlo
+            respuesta = recibir_respuesta(arg_h->socket_filesystem);
+            switch (respuesta)
+            {
+            case OK:
+                sem_wait(&mutex_cola_ready);
+                queue_push(cola_ready, execute); // Debería ser en la primera posición.
+                sem_post(&mutex_cola_ready);
+                sem_post(&procesos_en_ready);
+                break;
+            
+            default:
+                break;
+            }
         }
         break;
     

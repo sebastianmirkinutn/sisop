@@ -20,5 +20,6 @@ void* recibir_buffer(int* size, int socket_cliente);
 char* recibir_mensaje(int socket_cliente);
 t_paquete* recibir_paquete(t_log* logger, int conexion_socket);
 void terminar_programa(t_log* logger, t_config* config);
+t_response recibir_respuesta(int socket_cliente);;
 
 #endif
