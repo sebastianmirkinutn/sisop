@@ -258,6 +258,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         enviar_direccion(conexion_memoria, direccion);
         send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t),0); //falto buscar el archivo 
         recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
+        
         break;
 
     default:
