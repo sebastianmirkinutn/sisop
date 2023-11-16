@@ -251,11 +251,12 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
     case F_READ:
         printf("F_READ\n");
         nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
-        direccion = recibir_mensaje(arg_h->socket_dispatch);
+        direccion = recibir_direccion(arg_h->socket_cpu);
         printf("F_OPEN - Mando a FS\n");
-        enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
+        enviar_operacion(arg_h->socket_filesystem, PEDIDO_LECTURA);
         enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
-        enviar_mensaje(direccion, arg_h->socket_filesystem);
+        enviar_direccion(conexion_memoria, direccion);
+        send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t),0); //falto buscar el archivo 
         recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
         break;
 

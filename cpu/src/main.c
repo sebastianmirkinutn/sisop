@@ -341,10 +341,11 @@ int main(int argc, char* argv[]){
             {
                 execute = 0;
                 registros->PC++;
+                t_direccion_fisica* direccion_fisica = traducir_direccion(parametros[2], tam_pagina, conexion_memoria, pid) //revisar
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
                 enviar_motivo_desalojo(socket_kernel_dispatch, F_READ);
                 enviar_mensaje(parametros[1],socket_kernel_dispatch);
-                enviar_mensaje(parametros[2],socket_kernel_dispatch);
+                enviar_direccion(conexion_memoria, direccion);
             }
             else if(!strcmp(parametros[0], "F_WRITE"))
             {
