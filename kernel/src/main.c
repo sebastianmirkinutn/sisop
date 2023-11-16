@@ -114,6 +114,7 @@ int main(int argc, char* argv[]){
     cola_new = queue_create();
 	cola_ready = queue_create();
 	cola_exit = queue_create();
+    tabla_global_de_archivos = list_create();
 
     recursos_disponibles = iniciar_lista_de_recursos(recursos, instancias_recursos);
     t_recurso* recurso_prueba = list_get(recursos_disponibles, 0);  //---------------//
