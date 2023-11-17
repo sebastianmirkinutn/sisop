@@ -177,7 +177,8 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     int32_t tam_archivo;
     char* recurso, direccion;
-    char* nombre_archivo, lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
+    char* nombre_archivo;
+    char* lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
     t_response respuesta;
     t_archivo* archivo;
     switch (motivo)
@@ -212,8 +213,8 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
         printf("Me pidieron abrir de %s\n", nombre_archivo);
         lock = recibir_mensaje(arg_h->socket_dispatch);
-        
-        archivo = crear_archivo(nombre_archivo, tam_archivo, lock);
+        printf("lock = %s\n", lock);
+        archivo = crear_archivo(nombre_archivo, tam_archivo, de_string_a_t_lock(lock));
         list_add(tabla_global_de_archivos, archivo);
         list_add(execute->tabla_de_archivos_abiertos, archivo);
 
