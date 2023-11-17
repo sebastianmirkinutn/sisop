@@ -129,3 +129,40 @@ t_proceso* buscar_proceso(uint32_t pid)
     printf("TERMINA BUCAR_PROCESO\n");
     return proceso;
 }
+
+void conexion_filesystem(void* arg)
+{
+    t_log* logger_hilo = iniciar_logger("logger_hilo_conec_cpu.log","HILO_CPU");
+    log_info(logger_hilo, "HILO");
+    t_args_hilo* arg_h = (t_args_hilo*) arg;
+    log_info(logger_hilo,"Socket: %i", arg_h->socket_cpu);
+    t_direccion_fisica* direccion;
+    //enviar_mensaje("LISTO_PARA_RECIBIR_PEDIDOS",arg_h->socket_cpu);
+    while(1)
+    {
+        op_code codigo = recibir_operacion(arg_h->socket_cpu);
+        log_info(logger_hilo,"op_code: %i", codigo);
+        uint32_t pid;
+        switch (codigo)
+        {
+        case PEDIDO_LECTURA:
+            direccion = recibir_direccion(arg_h->socket_filesystem);
+            uint32_t lectura = leer_de_memoria(direccion);
+            send(arg_h->socket_filesystem, &lectura, sizeof(uint32_t), NULL);
+            break;
+
+        case PEDIDO_ESCRITURA:
+            uint32_t a_escribir;
+            direccion = recibir_direccion(arg_h->socket_filesystem);
+            recv(arg_h->socket_filesystem, &a_escribir, sizeof(uint32_t), MSG_WAITALL);
+            printf("Voy a escribir en memoria\n");
+            escribir_en_memoria(direccion, a_escribir);
+            break;
+
+        default:
+            liberar_conexion(arg_h->socket_filesystem);
+            return;
+        }
+
+    }
+}

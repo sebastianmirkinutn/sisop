@@ -32,6 +32,7 @@ typedef struct
     t_queue* cola_blocked;
 }t_archivo;
 
-t_archivo* crear_archivo(char* nombre_archivo, uint32_t tam_archivo, char* lock);
+t_archivo* crear_archivo(char* nombre_archivo, uint32_t tam_archivo, t_lock lock);
+t_lock de_string_a_t_lock(char* str);
 
 #endif

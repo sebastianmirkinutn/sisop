@@ -23,5 +23,6 @@ int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada);
 void asignar_memoria(uint32_t pid, uint32_t size, uint32_t (*algoritmo)(void));
 uint32_t reemplazo_fifo(void);
 t_proceso* buscar_proceso(uint32_t pid);
+void conexion_filesystem(void* arg);
 
 #endif

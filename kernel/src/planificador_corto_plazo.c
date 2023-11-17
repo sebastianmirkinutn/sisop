@@ -177,7 +177,8 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     int32_t tam_archivo;
     char* recurso, direccion;
-    char* nombre_archivo, lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
+    char* nombre_archivo;
+    char* lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
     t_response respuesta;
     t_archivo* archivo;
     switch (motivo)
@@ -212,7 +213,11 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
         printf("Me pidieron abrir de %s\n", nombre_archivo);
         lock = recibir_mensaje(arg_h->socket_dispatch);
-        
+        printf("lock = %s\n", lock);
+        archivo = crear_archivo(nombre_archivo, tam_archivo, de_string_a_t_lock(lock));
+        list_add(tabla_global_de_archivos, archivo);
+        list_add(execute->tabla_de_archivos_abiertos, archivo);
+
         enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
         enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
         recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
@@ -251,12 +256,15 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
     case F_READ:
         printf("F_READ\n");
         nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
-        direccion = recibir_mensaje(arg_h->socket_dispatch);
+        direccion = recibir_direccion(arg_h->socket_cpu);
         printf("F_OPEN - Mando a FS\n");
-        enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
+        enviar_operacion(arg_h->socket_filesystem, LEER_ARCHIVO);
         enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
-        enviar_mensaje(direccion, arg_h->socket_filesystem);
+
+        enviar_direccion(arg_h->socket_memoria, direccion);
+        send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t),0); //falto buscar el archivo 
         recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
+        
         break;
 
     default:

@@ -136,7 +136,9 @@ int main(int argc, char* argv[]) {
 				enviar_respuesta(socket_kernel, ERROR);
 			}
 			break;
-		
+
+		case LEER_ARCHIVO:
+			break;
 		default:
 			liberar_conexion(socket_kernel);
 			return;
