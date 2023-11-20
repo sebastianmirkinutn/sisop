@@ -14,4 +14,7 @@ typedef struct
     uint32_t bloque_inicial;
 }t_fcb;
 
+void liberar_fcb(t_fcb* fcb);
+t_fcb* leer_fcb(char* path_fcb, char* nombre);
+
 #endif

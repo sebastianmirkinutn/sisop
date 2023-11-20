@@ -14,9 +14,9 @@
 
 
 /* 1.1) ABRIR_ARCHIVO-----------------------------*/
-uint32_t abrir_archivo(char *nombreArchivo,char *c_directorio_fcb,t_log *logger);
+//uint32_t abrir_archivo(char *nombreArchivo,char *c_directorio_fcb,t_log *logger);
 /* 1.2) CREAR_ARCHIVO-----------------------------*/
-char *crear_archivo(char *nombreArchivo,char *c_directorio_fcb,t_log *logger);
+//char *crear_archivo(char *nombreArchivo,char *c_directorio_fcb,t_log *logger);
 /* 3) TRUNCAR_ARCHIVO-----------------------------*/
 int truncar_archivo(char *nombreArchivo,uint32_t ui32_longMen_datos,t_log *logger,FILE *fat,uint32_t ui32_tamBloque,uint32_t ui32_max_entradas_fat,char *c_directorio_fcb); 
 /* 4) LEER_ARCHIVO-----------------------------*/

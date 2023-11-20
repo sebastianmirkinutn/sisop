@@ -4,6 +4,7 @@
 /* Emulacion de peticiones del modulo Kernel*/
 /*-----------------------------------------------------------------------------------*/
 /* 1.1) ABRE UN ARCHIVO ----------------------*/
+/*
 uint32_t abrir_archivo(char *nombreArchivo,char *c_directorio_fcb,t_log *logger) {
     FILE *f_arch_fcb;
     char direccionArchivo[100]="";
@@ -17,13 +18,15 @@ uint32_t abrir_archivo(char *nombreArchivo,char *c_directorio_fcb,t_log *logger)
     }
     return(tamanio_Archivo_fcb(nombreArchivo,c_directorio_fcb));
 }
-
+*/
 /* 1.2) CREAR_ARCHIVO-----------------------------*/
+/*
 char *crear_archivo(char *nombreArchivo,char *c_directorio_fcb,t_log *logger) {
     actualizar_Archivo_fcb(nombreArchivo,0,9999,c_directorio_fcb);
     committed_logger_CREAR_ARCHIVO(nombreArchivo,logger);
     return("ok");
 }
+*/
 /* 3) TRUNCAR_ARCHIVO-----------------------------*/
 int truncar_archivo(char *nombreArchivo,uint32_t ui32_longMen_datos,t_log *logger,FILE *fat,uint32_t ui32_tamBloque,uint32_t ui32_max_entradas_fat,char *c_directorio_fcb) {
     uint32_t ui32_entrada_inicial;

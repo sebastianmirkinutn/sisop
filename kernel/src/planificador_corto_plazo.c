@@ -205,10 +205,12 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         printf("Me pidieron WAIT de %s\n", recurso);
         wait_recurso(logger_hilo, recurso, arg_h->socket_dispatch);
         break;
+
     case SIGNAL:
         recurso = recibir_mensaje(arg_h->socket_dispatch);
         signal_recurso(logger_hilo, recurso, arg_h->socket_dispatch);
         break;
+
     case F_OPEN:
         nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
         printf("Me pidieron abrir de %s\n", nombre_archivo);
@@ -236,6 +238,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             //Se le pide a Filesystem que cree el archivo
             enviar_operacion(arg_h->socket_filesystem, CREAR_ARCHIVO);
             enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
+            printf("Mandé el nombre del archivo\n");
             //Podríamos recibir un OK, de hecho creo que hay que recibirlo
             respuesta = recibir_respuesta(arg_h->socket_filesystem);
             switch (respuesta)
