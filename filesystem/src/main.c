@@ -73,8 +73,8 @@ int main(int argc, char* argv[]) {
 	char* cant_bloques_total=config_get_string_value(config,"CANT_BLOQUES_TOTAL");
     char* cant_bloques_swap=config_get_string_value(config,"CANT_BLOQUES_SWAP");
     char* tam_bloque=config_get_string_value(config,"TAM_BLOQUE");
-    //char* retardo_acceso_bloque=config_get_string_value(config,"RETARDO_ACCESO_BLOQUE");
-    //char* retardo_acceso_fat=config_get_string_value(config,"RETARDO_ACCESO_FAT");
+    char* retardo_acceso_bloque=config_get_string_value(config,"RETARDO_ACCESO_BLOQUE");
+    char* retardo_acceso_fat=config_get_string_value(config,"RETARDO_ACCESO_FAT");
 
     ui32_cant_bloques_total=atoi(cant_bloques_total);
     ui32_cant_bloques_swap=atoi(cant_bloques_swap);
