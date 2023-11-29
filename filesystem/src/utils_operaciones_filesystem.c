@@ -28,96 +28,96 @@ char *crear_archivo(char *nombreArchivo,char *c_directorio_fcb,t_log *logger) {
 }
 */
 /* 3) TRUNCAR_ARCHIVO-----------------------------*/
-int truncar_archivo(char *nombreArchivo,uint32_t ui32_longMen_datos,t_log *logger,FILE *fat,uint32_t ui32_tamBloque,uint32_t ui32_max_entradas_fat,char *c_directorio_fcb) {
-    uint32_t ui32_entrada_inicial;
-    uint32_t ui32_entrada_FAT;
-    uint32_t ui32_entrada_FAT_siguiente;
-    uint32_t ui32_cant_bloques_necesitados;
-    uint32_t ui32_cant_bloques_asignados;
-    uint32_t ui32_cant_bloques_libres;
-    uint32_t ui32_cant_bloques_adionales;
-    uint32_t ui32_data_entrada;
-    uint32_t indice;
-
-
-    printf("OP:TRUNCAR_ARCHIVO\n");
-    ui32_entrada_inicial=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb);
-
-    if (ui32_entrada_inicial==9999) {
-        printf("El archivo aún no tiene datos almacenados\n");
-        /* Caso (1): Asignacion de entradas a la tabla FAT a un archivo recientemente creado*/
-        /*El archivo fcb NO tiene una entrada inicial asignada en la tabla FAT*/
-        ui32_cant_bloques_necesitados=cantBloques_FAT_necesitados(ui32_longMen_datos,ui32_tamBloque);
-        ui32_cant_bloques_libres=cantidadBloques_FAT_libres(fat,ui32_max_entradas_fat);
-        /*Evalua si la cantidad de entradas en la Tabla FAT son suficientes*/
-        if(ui32_cant_bloques_necesitados<=ui32_cant_bloques_libres) {
-            ui32_entrada_inicial=asignarBloquesFAT(fat,ui32_cant_bloques_necesitados,ui32_max_entradas_fat);
-            actualizar_Archivo_fcb(nombreArchivo,ui32_longMen_datos,ui32_entrada_inicial,c_directorio_fcb);
-        }
-        else {
-            /*El archivo fcb NO tiene una entrada inicial asignada en la tabla FAT, pero NO hay mas
-            entradas disponibles en la tabla FAT*/
-            printf ("No hay espacio sufienciente en Disco para guardar el archivo\n");
-        }
-    }
-    else {
-        printf("--- Caso (2) de TRUNCADO, el archivo ya existe -----\n");
-        /* Caso (2): El archivo ya tiene entradas en la tabla FAT asignadas*/
-        //- Calcula la cantidad de entradas que requeriran los datos de memoria a almacenar
-        ui32_cant_bloques_necesitados=cantBloques_FAT_necesitados(ui32_longMen_datos,ui32_tamBloque);
-        //- Calcula la cantidad de entradas que ya tiene el archivo asignados previamente
-        ui32_cant_bloques_asignados=cantBloques_FAT_necesitados(tamanio_Archivo_fcb(nombreArchivo,c_directorio_fcb),ui32_tamBloque);
-
-        if (ui32_cant_bloques_necesitados<=ui32_cant_bloques_asignados) {
-            /*Caso 2A - La cantidad de entradas necesitadas es menor o igual a las que tiene
-            ya asignadas el archivo*/
-            ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb); //Entrada inicial a la tabla FAT
-
-            //Recorre la lista enlazada mientras que cuenta las entradas que necesita la version en memoria del archivo
-            for (indice=0;indice<ui32_cant_bloques_necesitados;indice++) {
-                if (indice==0) ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb); //Entrada inicial a la tabla FAT
-                else ui32_entrada_FAT=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
-            }
-            //Si la ultima entrada que necesita la version actualizada es distinto a 9999 es poque debe liberar entradas
-            if ((ui32_entrada_FAT!=9999) && (ui32_entrada_FAT!=2499)){
-                ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
-                ui32_data_entrada=9999;
-                actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
-                ui32_entrada_FAT=ui32_entrada_FAT_siguiente;
-                while ((ui32_entrada_FAT!=9999) && (ui32_entrada_FAT!=2499)) {
-                    ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
-                    ui32_data_entrada=0;
-                    actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
-                    ui32_entrada_FAT=ui32_entrada_FAT_siguiente;
-                }
-                ui32_data_entrada=0;
-                actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
-
-            }
-        }
-        else {
-            /*Caso 2B - La cantidad de entradas necesitadas es mayot a las que tiene
-            ya asignadas el archivo almacendo*/
-            ui32_cant_bloques_necesitados=cantBloques_FAT_necesitados(ui32_longMen_datos,ui32_tamBloque);
-            ui32_cant_bloques_libres=cantidadBloques_FAT_libres(fat,ui32_max_entradas_fat);
-            ui32_cant_bloques_asignados=cantBloques_FAT_necesitados(tamanio_Archivo_fcb(nombreArchivo,c_directorio_fcb),ui32_tamBloque);
-            ui32_cant_bloques_adionales=ui32_cant_bloques_necesitados-ui32_cant_bloques_asignados;
-
-            //Recorre la lista de entradas ya asignadas al archivo, en busqueda de la ultima entrada
-            ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb); //Entrada inicial a la tabla FAT
-            ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
-            while ((ui32_entrada_FAT_siguiente!=9999) && (ui32_entrada_FAT_siguiente!=2499)) {
-                ui32_entrada_FAT=ui32_entrada_FAT_siguiente;
-                ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
-            }
-            ui32_data_entrada=asignarBloquesFAT(fat,ui32_cant_bloques_adionales,ui32_max_entradas_fat)*4;
-            actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
-        }
-    }
-    committed_logger_TRUNCAR(nombreArchivo,logger,c_directorio_fcb);
-    
-    return(1);
-}
+//int truncar_archivo(char *nombreArchivo,uint32_t ui32_longMen_datos,t_log *logger,FILE *fat,uint32_t ui32_tamBloque,uint32_t ui32_max_entradas_fat,char *c_directorio_fcb) {
+//    uint32_t ui32_entrada_inicial;
+//    uint32_t ui32_entrada_FAT;
+//    uint32_t ui32_entrada_FAT_siguiente;
+//    uint32_t ui32_cant_bloques_necesitados;
+//    uint32_t ui32_cant_bloques_asignados;
+//    uint32_t ui32_cant_bloques_libres;
+//    uint32_t ui32_cant_bloques_adionales;
+//    uint32_t ui32_data_entrada;
+//    uint32_t indice;
+//
+//
+//    printf("OP:TRUNCAR_ARCHIVO\n");
+//    ui32_entrada_inicial=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb);
+//
+//    if (ui32_entrada_inicial==9999) {
+//        printf("El archivo aún no tiene datos almacenados\n");
+//        /* Caso (1): Asignacion de entradas a la tabla FAT a un archivo recientemente creado*/
+//        /*El archivo fcb NO tiene una entrada inicial asignada en la tabla FAT*/
+//        ui32_cant_bloques_necesitados=cantBloques_FAT_necesitados(ui32_longMen_datos,ui32_tamBloque);
+//        ui32_cant_bloques_libres=cantidadBloques_FAT_libres(fat,ui32_max_entradas_fat);
+//        /*Evalua si la cantidad de entradas en la Tabla FAT son suficientes*/
+//        if(ui32_cant_bloques_necesitados<=ui32_cant_bloques_libres) {
+//            ui32_entrada_inicial=asignarBloquesFAT(fat,ui32_cant_bloques_necesitados,ui32_max_entradas_fat);
+//            actualizar_Archivo_fcb(nombreArchivo,ui32_longMen_datos,ui32_entrada_inicial,c_directorio_fcb);
+//        }
+//        else {
+//            /*El archivo fcb NO tiene una entrada inicial asignada en la tabla FAT, pero NO hay mas
+//            entradas disponibles en la tabla FAT*/
+//            printf ("No hay espacio sufienciente en Disco para guardar el archivo\n");
+//        }
+//    }
+//    else {
+//        printf("--- Caso (2) de TRUNCADO, el archivo ya existe -----\n");
+//        /* Caso (2): El archivo ya tiene entradas en la tabla FAT asignadas*/
+//        //- Calcula la cantidad de entradas que requeriran los datos de memoria a almacenar
+//        ui32_cant_bloques_necesitados=cantBloques_FAT_necesitados(ui32_longMen_datos,ui32_tamBloque);
+//        //- Calcula la cantidad de entradas que ya tiene el archivo asignados previamente
+//        ui32_cant_bloques_asignados=cantBloques_FAT_necesitados(tamanio_Archivo_fcb(nombreArchivo,c_directorio_fcb),ui32_tamBloque);
+//
+//        if (ui32_cant_bloques_necesitados<=ui32_cant_bloques_asignados) {
+//            /*Caso 2A - La cantidad de entradas necesitadas es menor o igual a las que tiene
+//            ya asignadas el archivo*/
+//            ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb); //Entrada inicial a la tabla FAT
+//
+//            //Recorre la lista enlazada mientras que cuenta las entradas que necesita la version en memoria del archivo
+//            for (indice=0;indice<ui32_cant_bloques_necesitados;indice++) {
+//                if (indice==0) ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb); //Entrada inicial a la tabla FAT
+//                else ui32_entrada_FAT=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
+//            }
+//            //Si la ultima entrada que necesita la version actualizada es distinto a 9999 es poque debe liberar entradas
+//            if ((ui32_entrada_FAT!=9999) && (ui32_entrada_FAT!=2499)){
+//                ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
+//                ui32_data_entrada=9999;
+//                actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
+//                ui32_entrada_FAT=ui32_entrada_FAT_siguiente;
+//                while ((ui32_entrada_FAT!=9999) && (ui32_entrada_FAT!=2499)) {
+//                    ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
+//                    ui32_data_entrada=0;
+//                    actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
+//                    ui32_entrada_FAT=ui32_entrada_FAT_siguiente;
+//                }
+//                ui32_data_entrada=0;
+//                actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
+//
+//            }
+//        }
+//        else {
+//            /*Caso 2B - La cantidad de entradas necesitadas es mayot a las que tiene
+//            ya asignadas el archivo almacendo*/
+//            ui32_cant_bloques_necesitados=cantBloques_FAT_necesitados(ui32_longMen_datos,ui32_tamBloque);
+//            ui32_cant_bloques_libres=cantidadBloques_FAT_libres(fat,ui32_max_entradas_fat);
+//            ui32_cant_bloques_asignados=cantBloques_FAT_necesitados(tamanio_Archivo_fcb(nombreArchivo,c_directorio_fcb),ui32_tamBloque);
+//            ui32_cant_bloques_adionales=ui32_cant_bloques_necesitados-ui32_cant_bloques_asignados;
+//
+//            //Recorre la lista de entradas ya asignadas al archivo, en busqueda de la ultima entrada
+//            ui32_entrada_FAT=bloqueInicial_Archivo_fcb(nombreArchivo,c_directorio_fcb); //Entrada inicial a la tabla FAT
+//            ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
+//            while ((ui32_entrada_FAT_siguiente!=9999) && (ui32_entrada_FAT_siguiente!=2499)) {
+//                ui32_entrada_FAT=ui32_entrada_FAT_siguiente;
+//                ui32_entrada_FAT_siguiente=siguiente_entrada_tabla_FAT(fat,ui32_entrada_FAT);
+//            }
+//            ui32_data_entrada=asignarBloquesFAT(fat,ui32_cant_bloques_adionales,ui32_max_entradas_fat)*4;
+//            actualizar_entrada_FAT(fat,ui32_entrada_FAT,ui32_data_entrada);
+//        }
+//    }
+//    committed_logger_TRUNCAR(nombreArchivo,logger,c_directorio_fcb);
+//    
+//    return(1);
+//}
 
 /* 4) LEER_ARCHIVO-----------------------------*/
 //FUNCION TEMPORAL PARA HACER PRUEBAS DE LECTURA COMPLETAS DE UN ARCHIVO

@@ -1,0 +1,78 @@
+
+#include "operaciones.h"
+
+extern uint32_t tam_bloque;
+extern t_list* archivos_abiertos;
+
+int32_t abrir_archivo(char* path_fcb, char* nombre)
+{
+	char* ruta = malloc(strlen(path_fcb) + 1 + strlen(nombre) + 4 + 1);
+	strcpy(ruta, path_fcb);
+	uint32_t tam_archivo;
+	strcat(ruta, "/");
+    strcat(ruta, nombre);
+    strcat(ruta, ".fcb");
+	int archivo_fcb = open(ruta, O_RDONLY);
+	if(archivo_fcb == -1)
+	{
+		return -1;
+	}
+	//El archivo no va estar realmente abierto (o podríamos dejarlo abierto...).
+    close(archivo_fcb);
+    t_fcb* fcb = leer_fcb(path_fcb, nombre);
+	list_add(archivos_abiertos, fcb);
+	tam_archivo = fcb->tam_archivo;
+	liberar_fcb(fcb);
+	printf("aa_tam_archivo = %i\n", tam_archivo);
+    return tam_archivo;
+}
+
+uint32_t crear_archivo(char* path_fcb, char* nombre)
+{
+    t_fcb* fcb = malloc(sizeof(t_fcb));
+	char* ruta = malloc(strlen(path_fcb) + 1 + strlen(nombre) + 4 + 1);
+	strcpy(ruta, path_fcb);
+	uint32_t tam_archivo;
+	strcat(ruta, "/");
+    strcat(ruta, nombre);
+    strcat(ruta, ".fcb");
+	printf("PATH: %s", ruta);
+	int archivo_fcb = open(ruta, O_CREAT | O_RDWR, 0664);
+	t_config* config_fcb = iniciar_config(ruta);
+	if(archivo_fcb == -1)
+	{
+		return -1;
+	}
+	config_set_value(config_fcb, "NOMBRE_ARCHIVO", nombre);
+	config_set_value(config_fcb, "TAMANIO_ARCHIVO", "0");
+	config_set_value(config_fcb, "BLOQUE_INICIAL", "0");
+	config_save(config_fcb);
+	//El archivo no va estar realmente abierto (o podríamos dejarlo abierto...).
+    close(archivo_fcb);
+    return 1;
+}
+
+int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
+{
+	uint32_t por_asignar = archivo->tam_archivo - size;
+	uint32_t tam_teorico = ceil(archivo->tam_archivo / tam_bloque) * tam_bloque;
+	uint32_t bytes_libres = tam_teorico - archivo->tam_archivo;
+	if(bytes_libres > 0)
+	{
+		
+	}
+}
+
+int32_t truncar_archivo(char* nombre, uint32_t size)
+{
+	t_fcb* archivo = buscar_archivo(nombre, archivos_abiertos);
+	//archivo->tam_archivo = size; //Faltan validaciones
+	if(size > archivo->tam_archivo) //Se amplía
+	{
+
+	}
+	else if (size < archivo->tam_archivo) // Valido que no sea igual porque en ese caso no se hace nada
+	{
+
+	}
+}

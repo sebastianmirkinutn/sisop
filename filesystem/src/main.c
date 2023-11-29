@@ -1,60 +1,9 @@
 #include "main.h"
 
+uint32_t tam_bloque;
 t_list* archivos_abiertos; //Si bien la tabla global de archivos abiertos está en kernel, necesitamos guardar una lista de fcbs.
 
-int32_t abrir_archivo(char* path_fcb, char* nombre)
-{
-	char* ruta = malloc(strlen(path_fcb) + 1 + strlen(nombre) + 4 + 1);
-	strcpy(ruta, path_fcb);
-	uint32_t tam_archivo;
-	strcat(ruta, "/");
-    strcat(ruta, nombre);
-    strcat(ruta, ".fcb");
-	int archivo_fcb = open(ruta, O_RDONLY);
-	if(archivo_fcb == -1)
-	{
-		return -1;
-	}
-	//El archivo no va estar realmente abierto (o podríamos dejarlo abierto...).
-    close(archivo_fcb);
-    t_fcb* fcb = leer_fcb(path_fcb, nombre);
-	list_add(archivos_abiertos, fcb);
-	tam_archivo = fcb->tam_archivo;
-	liberar_fcb(fcb);
-	printf("aa_tam_archivo = %i\n", tam_archivo);
-    return tam_archivo;
-}
 
-uint32_t crear_archivo(char* path_fcb, char* nombre)
-{
-    t_fcb* fcb = malloc(sizeof(t_fcb));
-	char* ruta = malloc(strlen(path_fcb) + 1 + strlen(nombre) + 4 + 1);
-	strcpy(ruta, path_fcb);
-	uint32_t tam_archivo;
-	strcat(ruta, "/");
-    strcat(ruta, nombre);
-    strcat(ruta, ".fcb");
-	printf("PATH: %s", ruta);
-	int archivo_fcb = open(ruta, O_CREAT | O_RDWR, 0664);
-	t_config* config_fcb = iniciar_config(ruta);
-	if(archivo_fcb == -1)
-	{
-		return -1;
-	}
-	config_set_value(config_fcb, "NOMBRE_ARCHIVO", nombre);
-	config_set_value(config_fcb, "TAMANIO_ARCHIVO", "0");
-	config_set_value(config_fcb, "BLOQUE_INICIAL", "0");
-	config_save(config_fcb);
-	//El archivo no va estar realmente abierto (o podríamos dejarlo abierto...).
-    close(archivo_fcb);
-    return 1;
-}
-
-int32_t truncar_archivo(char* nombre, uint32_t size)
-{
-	t_fcb* archivo = buscar_archivo(nombre, archivos_abiertos);
-	archivo->tam_archivo = size; //Faltan validaciones
-}
 
 int main(int argc, char* argv[]) {
 
@@ -80,7 +29,7 @@ int main(int argc, char* argv[]) {
 	char* path_fcb = config_get_string_value(config,"PATH_FCB");
 	int cant_bloques_total=config_get_int_value(config,"CANT_BLOQUES_TOTAL");
     int cant_bloques_swap=config_get_int_value(config,"CANT_BLOQUES_SWAP");
-    int tam_bloque=config_get_int_value(config,"TAM_BLOQUE");
+    tam_bloque=config_get_int_value(config,"TAM_BLOQUE");
     int retardo_acceso_bloque=config_get_int_value(config,"RETARDO_ACCESO_BLOQUE");
     int retardo_acceso_fat=config_get_int_value(config,"RETARDO_ACCESO_FAT");
 
@@ -132,20 +81,20 @@ int main(int argc, char* argv[]) {
 			break;
 
 		case RESET_FILE_SYSTEM: 
-			creacionFilesystem(filesystem,path_bloques);
+			//creacionFilesystem(filesystem,path_bloques);
 			break;
 
 		case RESET_FAT: 
-			reiniciar_fat(fat,ui32_max_entradas_fat);
+			//reiniciar_fat(fat,ui32_max_entradas_fat);
 			break;
 
 		case MOSTRAR_TABLA_FAT: 
-			mostrar_tabla_FAT(fat,ui32_max_entradas_fat);
+			//mostrar_tabla_FAT(fat,ui32_max_entradas_fat);
 			break;
 
 		case FIN_DE_PROGRAMA: 
-			fclose(fat);
-			fclose(filesystem);
+			//fclose(fat);
+			//fclose(filesystem);
 			liberar_conexion(socket_kernel);
 			return EXIT_SUCCESS;
 			break;

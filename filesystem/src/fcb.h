@@ -16,6 +16,6 @@ typedef struct
 
 void liberar_fcb(t_fcb* fcb);
 t_fcb* leer_fcb(char* path_fcb, char* nombre);
-t_fcb* bucar_archivo(char* nombre, t_list* lista);
+t_fcb* buscar_archivo(char* nombre, t_list* lista);
 
 #endif
