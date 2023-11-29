@@ -30,3 +30,15 @@ t_fcb* leer_fcb(char* path_fcb, char* nombre)
     fcb->tam_archivo = config_get_int_value(archivo_fcb, "TAMANIO_ARCHIVO");
     return fcb;
 }
+
+t_fcb* bucar_archivo(char* nombre, t_list* lista)
+{
+    bool tiene_el_mismo_nombre(void* arg)
+    {
+        t_fcb* archivo = (t_fcb*) arg;
+        return (!strcmp(archivo->nombre, nombre));
+    }
+    t_fcb* archivo = NULL;
+    archivo = list_find(lista, tiene_el_mismo_nombre);
+    return archivo;
+}

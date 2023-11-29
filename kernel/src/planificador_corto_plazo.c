@@ -288,6 +288,10 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             break;
 
         case F_TRUNCATE:
+            nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
+            recv(arg_h->socket_dispatch, &tam_archivo, sizeof(uint32_t), MSG_WAITALL);
+            enviar_operacion(arg_h->socket_filesystem, TRUNCAR_ARCHIVO);
+            send(arg_h->socket_dispatch, &tam_archivo, sizeof(uint32_t), NULL);
             break;
 
         case F_CLOSE:
