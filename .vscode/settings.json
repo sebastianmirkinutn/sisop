@@ -37,6 +37,8 @@
         "stdint.h": "c",
         "utils_bloques.h": "c",
         "utils_file_op.h": "c",
-        "fcntl.h": "c"
+        "fcntl.h": "c",
+        "fat.h": "c",
+        "string.h": "c"
     }
 }

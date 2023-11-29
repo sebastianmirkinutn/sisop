@@ -69,7 +69,7 @@ int32_t truncar_archivo(char* nombre, uint32_t size)
 	//archivo->tam_archivo = size; //Faltan validaciones
 	if(size > archivo->tam_archivo) //Se amplía
 	{
-
+		agrandar_archivo(archivo, size);
 	}
 	else if (size < archivo->tam_archivo) // Valido que no sea igual porque en ese caso no se hace nada
 	{

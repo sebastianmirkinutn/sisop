@@ -18,6 +18,7 @@
 
 
 #include "operaciones.h"
+#include "fat.h"
 
 #include "utils_adicionales.h"
 #include "utils_operaciones_filesystem.h"

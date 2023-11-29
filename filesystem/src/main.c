@@ -2,8 +2,7 @@
 
 uint32_t tam_bloque;
 t_list* archivos_abiertos; //Si bien la tabla global de archivos abiertos está en kernel, necesitamos guardar una lista de fcbs.
-
-
+t_fat* fat;
 
 int main(int argc, char* argv[]) {
 
@@ -78,6 +77,9 @@ int main(int argc, char* argv[]) {
 			break;
 		
 		case TRUNCAR_ARCHIVO:
+			nombre_archivo = recibir_mensaje(socket_kernel);
+			recv(socket_kernel, &tam_archivo, sizeof(uint32_t), MSG_WAITALL);
+			truncar_archivo(nombre_archivo, tam_archivo);
 			break;
 
 		case RESET_FILE_SYSTEM: 

@@ -291,6 +291,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             recv(arg_h->socket_dispatch, &tam_archivo, sizeof(uint32_t), MSG_WAITALL);
             enviar_operacion(arg_h->socket_filesystem, TRUNCAR_ARCHIVO);
+            enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
             send(arg_h->socket_dispatch, &tam_archivo, sizeof(uint32_t), NULL);
             break;
 
