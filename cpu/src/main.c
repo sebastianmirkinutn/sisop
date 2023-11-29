@@ -357,7 +357,7 @@ int main(int argc, char* argv[]){
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
                 enviar_motivo_desalojo(socket_kernel_dispatch, F_READ);
                 enviar_mensaje(parametros[1],socket_kernel_dispatch);
-                enviar_direccion(conexion_memoria, direccion_fisica);
+                enviar_direccion(socket_kernel_dispatch, direccion_fisica);
             }
             else if(!strcmp(parametros[0], "F_WRITE"))
             {
@@ -367,7 +367,7 @@ int main(int argc, char* argv[]){
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
                 enviar_motivo_desalojo(socket_kernel_dispatch, F_WRITE);
                 enviar_mensaje(parametros[1],socket_kernel_dispatch);
-                enviar_direccion(conexion_memoria, direccion_fisica);
+                enviar_direccion(socket_kernel_dispatch, direccion_fisica);
             }
             else if(!strcmp(parametros[0], "F_TRUNCATE"))
             {

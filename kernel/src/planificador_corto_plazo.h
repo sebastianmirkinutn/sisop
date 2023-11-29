@@ -12,6 +12,7 @@
 #include <commons/collections/queue.h>
 #include <threads/thread_parameters.h>
 #include <pthread.h>
+#include <memoria/memoria.h>
 
 #include "manejo_de_archivos.h"
 

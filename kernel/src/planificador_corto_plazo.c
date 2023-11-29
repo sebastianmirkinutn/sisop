@@ -176,9 +176,10 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
 {
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     int32_t tam_archivo;
-    char* recurso, direccion;
+    char* recurso;
     char* nombre_archivo;
     char* lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
+    t_direccion_fisica* direccion;
     t_response respuesta;
     t_archivo* archivo;
     uint32_t puntero;
@@ -265,9 +266,11 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             enviar_operacion(arg_h->socket_filesystem, LEER_ARCHIVO);
             enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
 
+            archivo = buscar_archivo(tabla_global_de_archivos, nombre_archivo);
+
+            send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t),0);
             enviar_direccion(arg_h->socket_memoria, direccion);
-            send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t),0); //falto buscar el archivo 
-            recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
+            //recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
 
             break;
 

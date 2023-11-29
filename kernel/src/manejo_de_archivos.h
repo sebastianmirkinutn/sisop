@@ -14,6 +14,8 @@
 #include <log/log_utils.h>
 #include <pcb/pcb.h>
 #include <pthread.h>
+#include <threads/thread_parameters.h>
+
 
 typedef enum
 {
