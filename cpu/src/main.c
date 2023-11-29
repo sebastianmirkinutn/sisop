@@ -163,7 +163,7 @@ int main(int argc, char* argv[]){
 
     
     uint32_t pid = 0;
-    
+    uint32_t puntero;
     registros = malloc(sizeof(t_registros));
     flag_interrupciones = 0;
     sem_init(&mutex_flag_interrupciones, 0, 1);
@@ -335,6 +335,13 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "F_SEEK"))
             {
+                execute = 0;
+                registros->PC++;
+                puntero = atoi(parametros[2]);
+                enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+                enviar_motivo_desalojo(socket_kernel_dispatch, F_SEEK);
+                enviar_mensaje(parametros[1],socket_kernel_dispatch);
+                send(socket_kernel_dispatch, &puntero, sizeof(uint32_t), NULL);
             
             }
             else if(!strcmp(parametros[0], "F_READ"))

@@ -23,3 +23,15 @@ t_lock de_string_a_t_lock(char* str)
         lock = WRITE;
     }
 }
+
+t_archivo* buscar_archivo(t_list* lista, char* nombre)
+{
+    bool tiene_el_mismo_nombre(void* arg)
+    {
+        t_archivo* archivo = (t_archivo*) arg;
+        return (!strcmp(archivo->nombre, nombre));
+    }
+    t_archivo* archivo = NULL;
+    archivo = list_find(lista, tiene_el_mismo_nombre);
+    return archivo;
+}

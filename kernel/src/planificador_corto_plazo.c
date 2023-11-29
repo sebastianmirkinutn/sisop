@@ -181,6 +181,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
     char* lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
     t_response respuesta;
     t_archivo* archivo;
+    uint32_t puntero;
     switch (motivo)
     {
     case SUCCESS:
@@ -270,6 +271,13 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         
         break;
 
+    case F_SEEK:
+        nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
+        recv(arg_h->socket_dispatch, &puntero, sizeof(uint32_t), MSG_WAITALL);
+        archivo = buscar_archivo(tabla_global_de_archivos, nombre_archivo);
+        log_info("Archivo: %i - Puntero: %i", archivo->nombre, puntero);
+
+        break;
     default:
         break;
     }
