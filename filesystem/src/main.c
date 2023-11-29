@@ -1,5 +1,6 @@
 #include "main.h"
 
+t_list* archivos_abiertos; //Si bien la tabla global de archivos abiertos está en kernel, necesitamos guardar una lista de fcbs.
 
 int32_t abrir_archivo(char* path_fcb, char* nombre)
 {
@@ -17,6 +18,7 @@ int32_t abrir_archivo(char* path_fcb, char* nombre)
 	//El archivo no va estar realmente abierto (o podríamos dejarlo abierto...).
     close(archivo_fcb);
     t_fcb* fcb = leer_fcb(path_fcb, nombre);
+	list_add(archivos_abiertos, fcb);
 	tam_archivo = fcb->tam_archivo;
 	liberar_fcb(fcb);
 	printf("aa_tam_archivo = %i\n", tam_archivo);
@@ -48,6 +50,12 @@ uint32_t crear_archivo(char* path_fcb, char* nombre)
     return 1;
 }
 
+int32_t truncar_archivo(char* nombre, uint32_t size)
+{
+	t_fcb* archivo = buscar_archivo(nombre, archivos_abiertos);
+	archivo->tam_archivo = size; //Faltan validaciones
+}
+
 int main(int argc, char* argv[]) {
 
 	uint32_t ui32_tam_de_archivo=0;
@@ -70,62 +78,27 @@ int main(int argc, char* argv[]) {
 	char* path_fat = config_get_string_value(config,"PATH_FAT");
     char* path_bloques = config_get_string_value(config,"PATH_BLOQUES");
 	char* path_fcb = config_get_string_value(config,"PATH_FCB");
-	char* cant_bloques_total=config_get_string_value(config,"CANT_BLOQUES_TOTAL");
-    char* cant_bloques_swap=config_get_string_value(config,"CANT_BLOQUES_SWAP");
-    char* tam_bloque=config_get_string_value(config,"TAM_BLOQUE");
-    char* retardo_acceso_bloque=config_get_string_value(config,"RETARDO_ACCESO_BLOQUE");
-    char* retardo_acceso_fat=config_get_string_value(config,"RETARDO_ACCESO_FAT");
-
-    ui32_cant_bloques_total=atoi(cant_bloques_total);
-    ui32_cant_bloques_swap=atoi(cant_bloques_swap);
-    ui32_max_entradas_fat=ui32_cant_bloques_total-ui32_cant_bloques_swap;
-    ui32_tam_bloque=atoi(tam_bloque);
+	int cant_bloques_total=config_get_int_value(config,"CANT_BLOQUES_TOTAL");
+    int cant_bloques_swap=config_get_int_value(config,"CANT_BLOQUES_SWAP");
+    int tam_bloque=config_get_int_value(config,"TAM_BLOQUE");
+    int retardo_acceso_bloque=config_get_int_value(config,"RETARDO_ACCESO_BLOQUE");
+    int retardo_acceso_fat=config_get_int_value(config,"RETARDO_ACCESO_FAT");
 
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
 
     int conexion_memoria = crear_conexion(logger, ip_memoria, puerto_memoria);
-
     int socket_servidor = iniciar_servidor(logger, puerto_escucha);
     int socket_kernel = esperar_cliente(logger, socket_servidor);
     if(socket_kernel){
         log_info(logger,"Se conectó kernel");
     }
 
-	//Borra los archivos fcb para realizar las pruebas
-	/*
-	printf("----------------------------------------------------------\n");
-	printf(">>Se borran los archivos .fcb creados previamente\n");
-	printf("----------------------------------------------------------\n");
-	remove("../filesystem/fcbs/documento1.fcb");
-	remove("../filesystem/fcbs/documento2.fcb");
-	remove("../filesystem/fcbs/documento3.fcb");
-    //Creación e inicialización de Filesystem y Fat
-	*/
-	/*-------------------------------------------------------*/
-	/*
-	printf("----------------------------------------------------------\n");
-    filesystem=iniciarArchivoFilesystem(filesystem,path_bloques);
-	printf ("---> Apertura filesystem: bloques.dat <ok>\n");
-    filesystem=creacionFilesystem(filesystem,path_bloques); //(QUIRAR A FUTUTO)reset temporal de archivo bloques.dat
-	printf ("---> Reset filesystem: bloques.dat <ok>\n");
-	*/
-	/*-------------------------------------------------------*/
-	/*
-	fat=iniciarArchivoFAT(fat,path_fat,ui32_max_entradas_fat);
-	printf ("---> Apertura de archivo fat.dat: <ok>\n");
-	fat=reiniciar_fat(fat,ui32_max_entradas_fat); //(QUIRAR A FUTUTO)Reset de fat.dat para probar la creación de la tabla
-	printf ("---> Reset tabla FAT <ok>\n");
-	*/
-	/*-------------------------------------------------------*/
-	/*
-	//Documento para probar el funcionamiento del Filesystem y Fat
-	printf ("---> Emulación de contenido en memoria de: documento1.txt <ok>\n");
-    ui32_tam_de_archivo=abrirDocumento("../filesystem/archivo_datos/documento1.txt",documentoArchivo);
-	printf("----------------------------------------------------------\n");
-	*/
     op_code operacion;
 	char* nombre_archivo;
 	int32_t tam_archivo;
+
+	archivos_abiertos = list_create();
+
 	while(1)
 	{
 		operacion = recibir_operacion(socket_kernel);
@@ -154,21 +127,29 @@ int main(int argc, char* argv[]) {
 
 		case LEER_ARCHIVO:
 			break;
+		
+		case TRUNCAR_ARCHIVO:
+			break;
+
 		case RESET_FILE_SYSTEM: 
 			creacionFilesystem(filesystem,path_bloques);
 			break;
+
 		case RESET_FAT: 
 			reiniciar_fat(fat,ui32_max_entradas_fat);
 			break;
+
 		case MOSTRAR_TABLA_FAT: 
 			mostrar_tabla_FAT(fat,ui32_max_entradas_fat);
 			break;
+
 		case FIN_DE_PROGRAMA: 
 			fclose(fat);
 			fclose(filesystem);
 			liberar_conexion(socket_kernel);
 			return EXIT_SUCCESS;
 			break;
+
 		default:
 			liberar_conexion(socket_kernel);
 			return;
