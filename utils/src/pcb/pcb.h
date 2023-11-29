@@ -69,6 +69,7 @@ typedef enum
 	F_SEEK,
 	F_CLOSE,
 	F_OPEN,
+	F_TRUNCATE,
 	KILL
 }t_motivo_desalojo;
 
