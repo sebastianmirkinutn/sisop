@@ -9,6 +9,7 @@ extern sem_t procesos_en_ready;
 extern sem_t planificacion_largo_plazo;
 extern sem_t planificacion_corto_plazo;
 extern sem_t mutex_file_management;
+extern sem_t mutex_tabla_global_de_archivos;;
   
 extern t_queue *cola_ready;
 extern t_queue *cola_exit;
@@ -23,7 +24,8 @@ t_archivo* crear_archivo(char* nombre_archivo, uint32_t tam_archivo, t_lock lock
     t_archivo* archivo = malloc(sizeof(t_archivo));
     archivo->cola_blocked = queue_create();
     archivo->tam_archivo = tam_archivo;
-    archivo->nombre = nombre_archivo;
+    archivo->nombre = malloc(strlen(nombre_archivo) + 1);
+    strcpy(archivo->nombre, nombre_archivo);
     archivo->puntero = 0;
     archivo->lock = lock;
     return archivo;
@@ -60,8 +62,13 @@ void file_open(void* arg)
     t_response respuesta;
 
     t_archivo* archivo = crear_archivo(arg_h->nombre_archivo, arg_h->tam_archivo, arg_h->lock);
+    sem_wait(&mutex_tabla_global_de_archivos);
     list_add(tabla_global_de_archivos, archivo);
+    sem_post(&mutex_tabla_global_de_archivos);
     list_add(execute->tabla_de_archivos_abiertos, archivo);
+    log_info(arg_h->logger, "Agregué el archivo %s en %i", archivo->nombre, tabla_global_de_archivos);
+    
+    
     enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
     enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
     recv(arg_h->socket_filesystem, &(arg_h->tam_archivo), sizeof(int32_t), MSG_WAITALL);
@@ -95,4 +102,35 @@ void file_open(void* arg)
         }
     }
     sem_post(&mutex_file_management);
+    printf("TERMINA EL HILO\n");
+    liberar_parametros(arg_h);
+}
+
+void file_read(void* arg)
+{
+    t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
+    t_response respuesta;
+
+    enviar_operacion(arg_h->socket_filesystem, LEER_ARCHIVO);
+    enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
+    t_archivo* archivo = buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
+    send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t),0);
+    enviar_direccion(arg_h->socket_memoria, arg_h->direccion);
+    //recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
+    sem_post(&mutex_file_management);
+    liberar_parametros(arg_h);
+}
+
+void file_write(void* arg)
+{
+    t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
+    t_response respuesta;
+    
+}
+
+void file_close(void* arg)
+{
+    t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
+    t_response respuesta;
+    
 }

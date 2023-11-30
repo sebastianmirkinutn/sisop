@@ -3,6 +3,7 @@
 
 #include <pcb/pcb.h>
 #include <locks/lock.h>
+#include <memoria/memoria.h>
 
 typedef struct
 {
@@ -33,9 +34,11 @@ typedef struct
     uint32_t puntero;
     t_lock lock;
     char* nombre_archivo;
+    t_log* logger;
+    t_direccion_fisica* direccion;
 }t_args_hilo_archivos;
 
-t_args_hilo_archivos* crear_parametros(t_args_hilo* src, char* nombre_archivo);
+t_args_hilo_archivos* crear_parametros(t_args_hilo* src, char* nombre_archivo, t_log* logger);
 void liberar_parametros(t_args_hilo_archivos* arg);
 
 #endif
