@@ -1,8 +1,10 @@
 #include "fcb.h"
 
-t_fcb* crear_fcb()
+t_fcb* crear_fcb(char* nombre)
 {
     t_fcb* fcb = malloc(sizeof(t_fcb));
+    fcb->nombre = malloc(strlen(nombre) + 1);
+    strcpy(nombre, fcb->nombre);
     return fcb;
 }
 
@@ -17,7 +19,7 @@ void liberar_fcb(t_fcb* fcb)
 
 t_fcb* leer_fcb(char* path_fcb, char* nombre)
 {
-    t_fcb* fcb = crear_fcb();
+    t_fcb* fcb = malloc(sizeof(t_fcb));
     char* ruta = malloc(strlen(path_fcb) + 1 + strlen(nombre) + 4 + 1);
 	strcpy(ruta, path_fcb);
 	uint32_t tam_archivo;

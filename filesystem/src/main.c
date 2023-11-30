@@ -40,6 +40,7 @@ int main(int argc, char* argv[]) {
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
 	fat = crear_fat_mapeada(path_fat, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
 	mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
+
     int conexion_memoria = crear_conexion(logger, ip_memoria, puerto_memoria);
     int socket_servidor = iniciar_servidor(logger, puerto_escucha);
     int socket_kernel = esperar_cliente(logger, socket_servidor);

@@ -36,10 +36,8 @@ int32_t abrir_archivo(char* path_fcb, char* nombre)
 
 uint32_t crear_archivo(char* path_fcb, char* nombre)
 {
-    t_fcb* fcb = malloc(sizeof(t_fcb));
+    t_fcb* fcb = crear_fcb(nombre);
 	char* ruta = malloc(strlen(path_fcb) + 1 + strlen(nombre) + 4 + 1);
-	fcb->nombre = malloc(strlen(nombre) + 1);
-	strcpy(fcb->nombre, nombre);
 	strcpy(ruta, path_fcb);
 	uint32_t tam_archivo;
 	strcat(ruta, "/");
@@ -83,6 +81,7 @@ int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 	}
 	if(bytes_libres > 0)
 	{
+		/*
 		por_asignar -= tam_bloque - bytes_libres;
 		archivo->tam_archivo += bytes_libres;
 		if(por_asignar > 0)
@@ -93,12 +92,15 @@ int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 		{
 			return;
 		}
+		*/
 	}
 }
 
 int32_t truncar_archivo(char* nombre, uint32_t size)
 {
+	printf("truncar_archivo\n");
 	t_fcb* archivo = buscar_archivo(nombre, archivos_abiertos);
+	printf("Encontré al archivo\n");
 	//archivo->tam_archivo = size; //Faltan validaciones
 	if(size > archivo->tam_archivo) //Se amplía
 	{

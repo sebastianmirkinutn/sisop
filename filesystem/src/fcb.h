@@ -14,6 +14,7 @@ typedef struct
     uint32_t bloque_inicial;
 }t_fcb;
 
+t_fcb* crear_fcb(char* nombre);
 void liberar_fcb(t_fcb* fcb);
 t_fcb* leer_fcb(char* path_fcb, char* nombre);
 t_fcb* buscar_archivo(char* nombre, t_list* lista);
