@@ -13,6 +13,7 @@
 #include <fcntl.h>
 #include <math.h>
 #include <string.h>
+#include <commons/memory.h>
 
 #include "fcb.h"
 #include "fat.h"

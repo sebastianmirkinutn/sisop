@@ -51,6 +51,7 @@ int main(int argc, char* argv[]) {
 	uint32_t tam_archivo;
 
 	archivos_abiertos = list_create();
+	crear_fat_mapeada(path_fat, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
 
 	while(1)
 	{

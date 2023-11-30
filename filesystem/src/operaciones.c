@@ -84,6 +84,7 @@ int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 
 int32_t truncar_archivo(char* nombre, uint32_t size)
 {
+	mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
 	t_fcb* archivo = buscar_archivo(nombre, archivos_abiertos);
 	//archivo->tam_archivo = size; //Faltan validaciones
 	if(size > archivo->tam_archivo) //Se amplía
@@ -95,3 +96,4 @@ int32_t truncar_archivo(char* nombre, uint32_t size)
 
 	}
 }
+

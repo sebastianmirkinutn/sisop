@@ -19,6 +19,7 @@ t_fat* crear_fat_mapeada(char* path, uint32_t size)
 	}
     if(fat->file_descriptor != -1)
     {
+        ftruncate(fat->file_descriptor, size);
         fat->memory_map = mmap(NULL, size, PROT_WRITE, MAP_SHARED, fat->file_descriptor, 0);
         memcpy(fat->memory_map, &initialisation_value, sizeof(uint32_t));
         initialisation_value = 0;
@@ -29,7 +30,7 @@ t_fat* crear_fat_mapeada(char* path, uint32_t size)
     }
     else
     {
-        //Error
+        // Error
     }
     return fat;
 }

@@ -142,7 +142,7 @@ void file_truncate(void* arg)
     sem_wait(&mutex_file_management);
     t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
     t_response respuesta;
-    printf("Pido truncar %s a %u", arg_h->nombre_archivo, arg_h->tam_archivo);
+    //printf("Pido truncar %s a %u", arg_h->nombre_archivo, arg_h->tam_archivo);
     enviar_operacion(arg_h->socket_filesystem, TRUNCAR_ARCHIVO);
     enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
     send(arg_h->socket_filesystem, &(arg_h->tam_archivo), sizeof(uint32_t), NULL);

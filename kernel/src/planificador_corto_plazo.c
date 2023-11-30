@@ -240,7 +240,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             pthread_t h_file_read;
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
             argumentos_file_management->direccion = direccion;
-            pthread_create(&h_file_read, NULL, &file_open, (void*)argumentos_file_management);
+            pthread_create(&h_file_read, NULL, &file_read, (void*)argumentos_file_management);
             pthread_detach(h_file_read);
 
             break;

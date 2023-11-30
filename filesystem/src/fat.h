@@ -13,6 +13,9 @@
 #include <fcntl.h>
 #include <math.h>
 #include <sys/mman.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <fcntl.h>
 
 typedef struct
 {
@@ -20,6 +23,7 @@ typedef struct
     uint32_t* memory_map;
 }t_fat;
 
+t_fat* crear_fat_mapeada(char* path, uint32_t size);
 uint32_t obtener_bloque_libre();
 
 #endif
