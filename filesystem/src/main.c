@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
 
     op_code operacion;
 	char* nombre_archivo;
-	int32_t tam_archivo;
+	uint32_t tam_archivo;
 
 	archivos_abiertos = list_create();
 
@@ -60,9 +60,11 @@ int main(int argc, char* argv[]) {
 		{
 		case ABRIR_ARCHIVO:
 			nombre_archivo = recibir_mensaje(socket_kernel);
-			tam_archivo = abrir_archivo(path_fcb, nombre_archivo);
-			printf("m_tam_archivo = %i\n", tam_archivo);
-			send(socket_kernel, &tam_archivo, sizeof(int32_t), NULL);
+			{ //Creo un bloque de código porque creo la variable tam_archivo (int32_t) con el mismo nombre que tam_archivo (uint32_t)
+				int32_t tam_archivo = abrir_archivo(path_fcb, nombre_archivo);
+				printf("m_tam_archivo = %i\n", tam_archivo);
+				send(socket_kernel, &tam_archivo, sizeof(int32_t), NULL);
+			}
 			break;
 
 		case CREAR_ARCHIVO:
