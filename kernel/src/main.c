@@ -8,6 +8,7 @@ sem_t procesos_en_new;
 sem_t procesos_en_ready;
 sem_t planificacion_largo_plazo;
 sem_t planificacion_corto_plazo;
+sem_t mutex_file_management;
 
 t_queue *cola_new;
 t_queue *cola_ready;
@@ -110,6 +111,7 @@ int main(int argc, char* argv[]){
     sem_init(&grado_de_multiprogramacion, 0, atoi(grado_max_de_multiprogramacion));
     sem_init(&planificacion_largo_plazo, 0, 0);
     sem_init(&planificacion_corto_plazo, 0, 0);
+    sem_init(&mutex_file_management, 0, 1);
 
     cola_new = queue_create();
 	cola_ready = queue_create();

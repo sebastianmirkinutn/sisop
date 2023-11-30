@@ -8,6 +8,7 @@ extern sem_t procesos_en_new;
 extern sem_t procesos_en_ready;
 extern sem_t planificacion_largo_plazo;
 extern sem_t planificacion_corto_plazo;
+extern sem_t mutex_file_management;
   
 extern t_queue *cola_ready;
 extern t_queue *cola_exit;
@@ -55,19 +56,18 @@ t_archivo* buscar_archivo(t_list* lista, char* nombre)
 
 void file_open(void* arg)
 {
-    t_args_hilo* arg_h = (t_args_hilo*) arg;
-    int32_t tam_archivo;
+    t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
     t_response respuesta;
 
-    t_archivo* archivo = crear_archivo(arg_h->nombre_archivo, tam_archivo, de_string_a_t_lock(arg_h->lock));
+    t_archivo* archivo = crear_archivo(arg_h->nombre_archivo, arg_h->tam_archivo, arg_h->lock);
     list_add(tabla_global_de_archivos, archivo);
     list_add(execute->tabla_de_archivos_abiertos, archivo);
     enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
     enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
-    recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
-    if(tam_archivo != -1)
+    recv(arg_h->socket_filesystem, &(arg_h->tam_archivo), sizeof(int32_t), MSG_WAITALL);
+    if(arg_h->tam_archivo != -1)
     {
-        printf("El archivo tiene un tamaño de %i bytes\n", tam_archivo);
+        printf("El archivo tiene un tamaño de %i bytes\n", arg_h->tam_archivo);
         sem_wait(&mutex_cola_ready);
         queue_push(cola_ready, execute); // Debería ser en la primera posición.
         sem_post(&mutex_cola_ready);
@@ -94,4 +94,5 @@ void file_open(void* arg)
             break;
         }
     }
+    sem_post(&mutex_file_management);
 }

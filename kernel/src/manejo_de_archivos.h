@@ -15,15 +15,9 @@
 #include <pcb/pcb.h>
 #include <pthread.h>
 #include <threads/thread_parameters.h>
+#include <locks/lock.h>
 
-
-typedef enum
-{
-    READ,
-    WRITE,
-    NONE
-}t_lock;
-
+#include "manejo_de_archivos.h"
 
 typedef struct
 {
@@ -37,5 +31,6 @@ typedef struct
 t_archivo* crear_archivo(char* nombre_archivo, uint32_t tam_archivo, t_lock lock);
 t_lock de_string_a_t_lock(char* str);
 t_archivo* buscar_archivo(t_list* lista, char* nombre);
+void file_open(void* arg);
 
 #endif
