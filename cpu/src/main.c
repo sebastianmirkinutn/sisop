@@ -309,14 +309,14 @@ int main(int argc, char* argv[]){
                 uint32_t a_escribir;
                 recv(conexion_memoria, &a_escribir, sizeof(uint32_t), NULL);
                 printf("Recibí %i de memoria\n", a_escribir);
-                escribir_registro(parametros[2], a_escribir);
+                escribir_registro(parametros[1], a_escribir);
                 log_info(logger, "PID: %i - Acción: LECTURA - Dirección Física: %i:%i - Valor: %i", pid, direccion->frame, direccion->offset, a_escribir);
             }
             else if(!strcmp(parametros[0], "MOV_OUT"))
             {
-                t_direccion_fisica* direccion = traducir_direccion(parametros[2], tam_pagina, conexion_memoria, pid);
+                t_direccion_fisica* direccion = traducir_direccion(parametros[1], tam_pagina, conexion_memoria, pid);
                 enviar_operacion(conexion_memoria, PEDIDO_ESCRITURA);
-                uint32_t a_enviar = valor_de_registro(parametros[1]);
+                uint32_t a_enviar = valor_de_registro(parametros[2]);
                 enviar_direccion(conexion_memoria, direccion);
                 send(conexion_memoria, &a_enviar, sizeof(uint32_t), NULL);
                 log_info(logger, "PID: %i - Acción: ESCRIBIR - Dirección Física: %i:%i - Valor: %i", pid, direccion->frame, direccion->offset, a_enviar);
