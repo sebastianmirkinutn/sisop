@@ -38,6 +38,8 @@ uint32_t crear_archivo(char* path_fcb, char* nombre)
 {
     t_fcb* fcb = malloc(sizeof(t_fcb));
 	char* ruta = malloc(strlen(path_fcb) + 1 + strlen(nombre) + 4 + 1);
+	fcb->nombre = malloc(strlen(nombre) + 1);
+	strcpy(fcb->nombre, nombre);
 	strcpy(ruta, path_fcb);
 	uint32_t tam_archivo;
 	strcat(ruta, "/");
@@ -50,6 +52,7 @@ uint32_t crear_archivo(char* path_fcb, char* nombre)
 	{
 		return -1;
 	}
+	list_add(archivos_abiertos, fcb);
 	config_set_value(config_fcb, "NOMBRE_ARCHIVO", nombre);
 	config_set_value(config_fcb, "TAMANIO_ARCHIVO", "0");
 	config_set_value(config_fcb, "BLOQUE_INICIAL", int_to_string(UINT32_MAX));
@@ -64,27 +67,37 @@ int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 	uint32_t por_asignar = archivo->tam_archivo - size;
 	uint32_t tam_teorico = ceil(archivo->tam_archivo / tam_bloque) * tam_bloque;
 	uint32_t bytes_libres = tam_teorico - archivo->tam_archivo;
-	
-	if(bytes_libres == 0)
-	{
-		if(archivo->bloque_inicial == UINT32_MAX)
-		{
-			archivo->bloque_inicial = obtener_bloque_libre();
-			fat->memory_map[archivo->bloque_inicial] = UINT32_MAX;
-			por_asignar -= tam_bloque;
-			archivo->tam_archivo += tam_bloque;
-		}
-		
-	}
-	else if(bytes_libres > 0)
-	{
 
+	t_fcb* fcb;
+	
+	if(archivo->bloque_inicial == UINT32_MAX)
+	{
+		archivo->bloque_inicial = obtener_bloque_libre();
+		fat->memory_map[archivo->bloque_inicial] = UINT32_MAX;
+		por_asignar -= tam_bloque;
+		archivo->tam_archivo += tam_bloque;
+		if(por_asignar <= 0)
+		{
+			return;
+		}
+	}
+	if(bytes_libres > 0)
+	{
+		por_asignar -= tam_bloque - bytes_libres;
+		archivo->tam_archivo += bytes_libres;
+		if(por_asignar > 0)
+		{
+			agrandar_archivo(archivo, por_asignar);
+		}
+		else
+		{
+			return;
+		}
 	}
 }
 
 int32_t truncar_archivo(char* nombre, uint32_t size)
 {
-	mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
 	t_fcb* archivo = buscar_archivo(nombre, archivos_abiertos);
 	//archivo->tam_archivo = size; //Faltan validaciones
 	if(size > archivo->tam_archivo) //Se amplía

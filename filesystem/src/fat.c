@@ -10,7 +10,6 @@ extern uint32_t retardo_acceso_fat;
 
 t_fat* crear_fat_mapeada(char* path, uint32_t size)
 {
-    uint32_t initialisation_value = UINT32_MAX;
     uint32_t offset = 0;
     t_fat* fat = malloc(sizeof(t_fat));
     fat->file_descriptor = open(path, O_RDWR);
@@ -27,13 +26,12 @@ t_fat* crear_fat_mapeada(char* path, uint32_t size)
     {
         ftruncate(fat->file_descriptor, (cant_bloques_total- cant_bloques_swap)* sizeof(uint32_t));
         fat->memory_map = mmap(NULL, size, PROT_WRITE, MAP_SHARED, fat->file_descriptor, 0);
-        memcpy(fat->memory_map, &initialisation_value, sizeof(uint32_t));
-        initialisation_value = 0;
+        fat->memory_map[0] = UINT32_MAX;
         for(uint32_t i = 1; i < (cant_bloques_total- cant_bloques_swap)/4 ; i++)
         {
             //memcpy(fat->memory_map + offset, &initialisation_value, sizeof(uint32_t));
             //offset += sizeof(uint32_t);
-            fat->memory_map[i] = initialisation_value;
+            fat->memory_map[i] = 0;
         }
     }
     else

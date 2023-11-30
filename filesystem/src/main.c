@@ -39,12 +39,7 @@ int main(int argc, char* argv[]) {
 
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
 	fat = crear_fat_mapeada(path_fat, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
-	for(uint32_t i = 1; i < (cant_bloques_total- cant_bloques_swap)/4 ; i++)
-        {
-            //memcpy(fat->memory_map + offset, &initialisation_value, sizeof(uint32_t));
-            //offset += sizeof(uint32_t);
-            printf("%i",fat->memory_map[i]);
-        }
+	mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
     int conexion_memoria = crear_conexion(logger, ip_memoria, puerto_memoria);
     int socket_servidor = iniciar_servidor(logger, puerto_escucha);
     int socket_kernel = esperar_cliente(logger, socket_servidor);
@@ -105,7 +100,7 @@ int main(int argc, char* argv[]) {
 			break;
 
 		case MOSTRAR_TABLA_FAT: 
-			//mostrar_tabla_FAT(fat,ui32_max_entradas_fat);
+			mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
 			break;
 
 		case FIN_DE_PROGRAMA: 
