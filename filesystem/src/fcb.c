@@ -3,8 +3,7 @@
 t_fcb* crear_fcb(char* nombre)
 {
     t_fcb* fcb = malloc(sizeof(t_fcb));
-    fcb->nombre = malloc(strlen(nombre) + 1);
-    strcpy(nombre, fcb->nombre);
+    fcb->nombre = strndup(nombre, strlen(nombre) + 1);
     return fcb;
 }
 

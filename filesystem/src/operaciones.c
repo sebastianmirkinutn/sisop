@@ -29,7 +29,6 @@ int32_t abrir_archivo(char* path_fcb, char* nombre)
     t_fcb* fcb = leer_fcb(path_fcb, nombre);
 	list_add(archivos_abiertos, fcb);
 	tam_archivo = fcb->tam_archivo;
-	liberar_fcb(fcb);
 	printf("aa_tam_archivo = %i\n", tam_archivo);
     return tam_archivo;
 }
@@ -102,9 +101,10 @@ int32_t truncar_archivo(char* nombre, uint32_t size)
 	t_fcb* archivo = buscar_archivo(nombre, archivos_abiertos);
 	printf("Encontré al archivo\n");
 	//archivo->tam_archivo = size; //Faltan validaciones
+
 	if(size > archivo->tam_archivo) //Se amplía
 	{
-		agrandar_archivo(archivo, size);
+		//agrandar_archivo(archivo, size);
 	}
 	else if (size < archivo->tam_archivo) // Valido que no sea igual porque en ese caso no se hace nada
 	{
