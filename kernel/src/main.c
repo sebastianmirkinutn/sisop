@@ -8,6 +8,8 @@ sem_t procesos_en_new;
 sem_t procesos_en_ready;
 sem_t planificacion_largo_plazo;
 sem_t planificacion_corto_plazo;
+sem_t mutex_file_management;
+sem_t mutex_tabla_global_de_archivos;
 
 t_queue *cola_new;
 t_queue *cola_ready;
@@ -110,6 +112,8 @@ int main(int argc, char* argv[]){
     sem_init(&grado_de_multiprogramacion, 0, atoi(grado_max_de_multiprogramacion));
     sem_init(&planificacion_largo_plazo, 0, 0);
     sem_init(&planificacion_corto_plazo, 0, 0);
+    sem_init(&mutex_file_management, 0, 1);
+    sem_init(&mutex_tabla_global_de_archivos, 0, 1);
 
     cola_new = queue_create();
 	cola_ready = queue_create();
@@ -117,12 +121,6 @@ int main(int argc, char* argv[]){
     tabla_global_de_archivos = list_create();
 
     recursos_disponibles = iniciar_lista_de_recursos(recursos, instancias_recursos);
-    t_recurso* recurso_prueba = list_get(recursos_disponibles, 0);  //---------------//
-    printf("recurso = %s\n", recurso_prueba->nombre);               //----REVISAR----//
-    recurso_prueba = list_get(recursos_disponibles, 1);             //---------------//
-    printf("recurso = %s\n", recurso_prueba->nombre);
-    recurso_prueba = list_get(recursos_disponibles, 2);
-    printf("recurso = %s\n", recurso_prueba->nombre);
  
     t_args_hilo args_hilo;
     args_hilo.socket_dispatch = conexion_cpu_dispatch;

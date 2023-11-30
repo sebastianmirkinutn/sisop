@@ -8,6 +8,8 @@ extern sem_t procesos_en_new;
 extern sem_t procesos_en_ready;
 extern sem_t planificacion_largo_plazo;
 extern sem_t planificacion_corto_plazo;
+extern sem_t mutex_file_management;
+extern sem_t mutex_tabla_global_de_archivos;
   
 extern t_queue *cola_ready;
 extern t_queue *cola_exit;
@@ -183,6 +185,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
     t_response respuesta;
     t_archivo* archivo;
     uint32_t puntero;
+    t_args_hilo_archivos* argumentos_file_management;
     switch (motivo)
     {
         case SUCCESS:
@@ -214,70 +217,46 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             break;
 
         case F_OPEN:
+            sem_wait(&mutex_file_management);
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             //printf("Me pidieron abrir de %s\n", nombre_archivo);
             lock = recibir_mensaje(arg_h->socket_dispatch);
             //printf("lock = %s\n", lock);
-            archivo = crear_archivo(nombre_archivo, tam_archivo, de_string_a_t_lock(lock));
-            list_add(tabla_global_de_archivos, archivo);
-            list_add(execute->tabla_de_archivos_abiertos, archivo);
+            
 
-            enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
-            enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
-            recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
-            if(tam_archivo != -1)
-            {
-                printf("El archivo tiene un tamaño de %i bytes\n", tam_archivo);
-
-                sem_wait(&mutex_cola_ready);
-                queue_push(cola_ready, execute); // Debería ser en la primera posición.
-                sem_post(&mutex_cola_ready);
-                sem_post(&procesos_en_ready);
-            }
-            else
-            {
-                printf("El archivo no existe\n");
-                //Se le pide a Filesystem que cree el archivo
-                enviar_operacion(arg_h->socket_filesystem, CREAR_ARCHIVO);
-                enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
-                printf("Mandé el nombre del archivo\n");
-                //Podríamos recibir un OK, de hecho creo que hay que recibirlo
-                respuesta = recibir_respuesta(arg_h->socket_filesystem);
-                switch (respuesta)
-                {
-                case OK:
-                    sem_wait(&mutex_cola_ready);
-                    queue_push(cola_ready, execute); // Debería ser en la primera posición.
-                    sem_post(&mutex_cola_ready);
-                    sem_post(&procesos_en_ready);
-                    break;
-
-                default:
-                    break;
-                }
-            }
+            pthread_t h_file_open;
+            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
+            argumentos_file_management->lock = de_string_a_t_lock(lock);
+            pthread_create(&h_file_open, NULL, &file_open, (void*)argumentos_file_management);
+            pthread_detach(h_file_open);
+                
             break;
 
         case F_READ:
+            sem_wait(&mutex_file_management);
             printf("F_READ\n");
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             direccion = recibir_direccion(arg_h->socket_cpu);
             printf("F_OPEN - Mando a FS\n");
-            enviar_operacion(arg_h->socket_filesystem, LEER_ARCHIVO);
-            enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
 
-            archivo = buscar_archivo(tabla_global_de_archivos, nombre_archivo);
-
-            send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t),0);
-            enviar_direccion(arg_h->socket_memoria, direccion);
-            //recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
+            pthread_t h_file_read;
+            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
+            argumentos_file_management->direccion = direccion;
+            pthread_create(&h_file_read, NULL, &file_open, (void*)argumentos_file_management);
+            pthread_detach(h_file_read);
 
             break;
 
         case F_SEEK:
+            sem_wait(&mutex_file_management);
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             recv(arg_h->socket_dispatch, &puntero, sizeof(uint32_t), MSG_WAITALL);
+
+            log_info(logger_hilo, "Busco el archivo %s en %i", nombre_archivo, tabla_global_de_archivos);
+            sem_wait(&mutex_tabla_global_de_archivos);
             archivo = buscar_archivo(tabla_global_de_archivos, nombre_archivo);
+            sem_post(&mutex_tabla_global_de_archivos);
+
             if(archivo != NULL)
             {
                 archivo->puntero = puntero;
@@ -287,7 +266,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             {
                 log_error(logger_hilo, "El archivo no existe");
             }
-
+            sem_post(&mutex_file_management);
             break;
 
         case F_TRUNCATE:

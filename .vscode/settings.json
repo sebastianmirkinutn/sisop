@@ -39,6 +39,7 @@
         "utils_file_op.h": "c",
         "fcntl.h": "c",
         "fat.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "lock.h": "c"
     }
 }
