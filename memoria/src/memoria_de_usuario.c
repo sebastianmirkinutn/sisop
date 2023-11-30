@@ -141,7 +141,7 @@ void conexion_filesystem(void* arg)
     while(1)
     {
         op_code codigo = recibir_operacion(arg_h->socket_cpu);
-        log_info(logger_hilo,"op_code: %i", codigo);
+        ///log_info(logger_hilo,"op_code: %i", codigo);
         uint32_t pid;
         switch (codigo)
         {

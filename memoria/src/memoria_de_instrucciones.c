@@ -9,33 +9,33 @@ extern int tam_pagina;
 void conexion_cpu(void* arg)
 {
     t_log* logger_hilo = iniciar_logger("logger_hilo_conec_cpu.log","HILO_CPU");
-    log_info(logger_hilo, "HILO");
+    //log_info(logger_hilo, "HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
-    log_info(logger_hilo,"Socket: %i", arg_h->socket_cpu);
+    //log_info(logger_hilo,"Socket: %i", arg_h->socket_cpu);
     t_direccion_fisica* direccion;
     //enviar_mensaje("LISTO_PARA_RECIBIR_PEDIDOS",arg_h->socket_cpu);
     while(1)
     {
         op_code codigo = recibir_operacion(arg_h->socket_cpu);
-        log_info(logger_hilo,"op_code: %i", codigo);
+        //log_info(logger_hilo,"op_code: %i", codigo);
         uint32_t pid;
         switch (codigo)
         {
         case FETCH_INSTRUCCION:
             uint32_t program_counter;
             recv(arg_h->socket_cpu, &pid, sizeof(uint32_t), MSG_WAITALL);
-            log_info(logger_hilo,"pid: %i", pid);
+            //log_info(logger_hilo,"pid: %i", pid);
             recv(arg_h->socket_cpu, &program_counter, sizeof(uint32_t), MSG_WAITALL);
-            log_info(logger_hilo,"ip: %i", program_counter);
+            //log_info(logger_hilo,"ip: %i", program_counter);
 
             sem_wait(&cantidad_de_procesos);
             t_proceso* proceso = buscar_proceso(pid);
-            log_info(logger_hilo,"HAY QUE ENVIAR LA INSTRUCCION");
+            //log_info(logger_hilo,"HAY QUE ENVIAR LA INSTRUCCION");
             sem_wait(&mutex_lista_procesos);
 
             if(program_counter >= proceso->instrucciones->elements_count){
                 //Habría que mandarle un mensaje a CPU
-                log_info(logger_hilo, "No hay más isntrucciones");
+                //log_info(logger_hilo, "No hay más isntrucciones");
             }
             sleep(arg_h->retardo_memoria / 1000);
             log_info(logger_hilo,"Envío: %s", list_get(proceso->instrucciones, program_counter));
@@ -65,7 +65,7 @@ void conexion_cpu(void* arg)
             uint32_t a_escribir;
             direccion = recibir_direccion(arg_h->socket_cpu);
             recv(arg_h->socket_cpu, &a_escribir, sizeof(uint32_t), MSG_WAITALL);
-            printf("Voy a escribir en memoria\n");
+            //printf("Voy a escribir en memoria\n");
             escribir_en_memoria(direccion, a_escribir);
             //send(arg_h->socket_cpu, &direccion, sizeof(uint32_t), NULL);
             break;
@@ -112,15 +112,15 @@ void parsear_instrucciones(t_log* logger,t_proceso* proceso, char* str)
 
 char* leer_pseudocodigo(t_log* logger, char* nombre_archivo)
 {
-    log_info(logger, "leer_pseudocodigo.");
+    //log_info(logger, "leer_pseudocodigo.");
     char* ruta = malloc(strlen(nombre_archivo) + 15);
     strcpy(ruta, "./pseudocodigo/");
-    log_info(logger, "char*.");
+    //log_info(logger, "char*.");
     strcat(ruta, nombre_archivo);
-    log_info(logger, "strcat.");
-    log_info(logger, "ruta: %s", ruta);    
+    //log_info(logger, "strcat.");
+    //log_info(logger, "ruta: %s", ruta);    
     FILE* archivo = fopen(ruta, "r");
-    log_info(logger, "Se abrió el archivo.");
+    //log_info(logger, "Se abrió el archivo.");
     if(archivo == NULL)
     {
         log_error(logger, "Error al abrir el archivo.");
@@ -166,7 +166,7 @@ void conexion_kernel(void* arg)
     t_log* logger_hilo = iniciar_logger("logger_hilo.log","HILO");
     log_info(logger_hilo, "HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
-    log_info(logger_hilo,"Socket: %i", arg_h->socket_kernel);
+    //log_info(logger_hilo,"Socket: %i", arg_h->socket_kernel);
     while(1)
     {
         op_code codigo = recibir_operacion(arg_h->socket_kernel);
@@ -191,7 +191,7 @@ void conexion_kernel(void* arg)
             log_info(logger_hilo, "Se asignó %i bytes al proceso %i", size, pid);
 
             uint32_t (*algoritmo)(void);
-            algoritmo = reemplazo_fifo;
+            algoritmo = buscar_victima_fifo;
             asignar_memoria(pid, size, algoritmo);
 
             break;
