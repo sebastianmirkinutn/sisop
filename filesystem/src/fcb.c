@@ -29,6 +29,7 @@ t_fcb* leer_fcb(char* path_fcb, char* nombre)
     fcb->nombre = config_get_string_value(archivo_fcb, "NOMBRE_ARCHIVO");
     fcb->bloque_inicial = config_get_int_value(archivo_fcb, "BLOQUE_INICIAL");
     fcb->tam_archivo = config_get_int_value(archivo_fcb, "TAMANIO_ARCHIVO");
+    fcb->config = archivo_fcb;
     return fcb;
 }
 

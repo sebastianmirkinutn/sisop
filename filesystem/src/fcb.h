@@ -12,6 +12,7 @@ typedef struct
 	char* nombre;
 	uint32_t tam_archivo;
     uint32_t bloque_inicial;
+	t_config* config;
 }t_fcb;
 
 t_fcb* crear_fcb(char* nombre);

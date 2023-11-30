@@ -50,6 +50,7 @@ uint32_t crear_archivo(char* path_fcb, char* nombre)
 		return -1;
 	}
 	list_add(archivos_abiertos, fcb);
+	fcb->config = config_fcb;
 	config_set_value(config_fcb, "NOMBRE_ARCHIVO", nombre);
 	config_set_value(config_fcb, "TAMANIO_ARCHIVO", "0");
 	config_set_value(config_fcb, "BLOQUE_INICIAL", int_to_string(UINT32_MAX));
@@ -58,7 +59,7 @@ uint32_t crear_archivo(char* path_fcb, char* nombre)
     close(archivo_fcb);
     return 1;
 }
-
+/*
 int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 {
 	uint32_t por_asignar = archivo->tam_archivo - size;
@@ -71,8 +72,13 @@ int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 	{
 		archivo->bloque_inicial = obtener_bloque_libre();
 		fat->memory_map[archivo->bloque_inicial] = UINT32_MAX;
+		msync(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t), MS_SYNC);
+		mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
 		por_asignar -= tam_bloque;
 		archivo->tam_archivo += tam_bloque;
+		config_set_value(archivo->config, "BLOQUE_INICIAL", int_to_string(archivo->bloque_inicial));
+		config_save(archivo->config);
+
 		if(por_asignar <= 0)
 		{
 			return;
@@ -80,7 +86,16 @@ int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 	}
 	if(bytes_libres > 0)
 	{
-		/*
+		if(bytes_libres >= por_asignar)
+		{
+			por_asignar -= tam_bloque - por_asignar;
+			archivo->tam_archivo += por_asignar;
+			return;
+		}
+		else
+		{
+
+		}
 		por_asignar -= tam_bloque - bytes_libres;
 		archivo->tam_archivo += bytes_libres;
 		if(por_asignar > 0)
@@ -91,10 +106,39 @@ int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 		{
 			return;
 		}
-		*/
 	}
 }
+*/
 
+uint32_t ultimo_bloque(uint32_t puntero)
+{
+	uint32_t puntero_sig = puntero;
+	while(puntero_sig != UINT32_MAX)
+	{
+		puntero_sig = fat->memory_map[puntero];
+		if(puntero_sig != UINT32_MAX)
+		{
+			puntero = puntero_sig;
+		}
+	}
+	return puntero;
+}
+
+int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
+{
+	uint32_t bytes_por_asignar = size - archivo->tam_archivo;
+	uint32_t tam_teorico = ceil(archivo->tam_archivo / tam_bloque) * tam_bloque;
+	uint32_t bytes_libres = tam_teorico - archivo->tam_archivo;
+
+	uint32_t bloques_por_asignar = ceil(bytes_por_asignar - bytes_libres / tam_bloque);
+
+	//Acá podríamos validar si hay blouqes libres suficientes
+
+	for(uint32_t i; i < bloques_por_asignar; i++)
+	{
+
+	}
+}
 int32_t truncar_archivo(char* nombre, uint32_t size)
 {
 	printf("truncar_archivo\n");
@@ -104,11 +148,14 @@ int32_t truncar_archivo(char* nombre, uint32_t size)
 
 	if(size > archivo->tam_archivo) //Se amplía
 	{
-		//agrandar_archivo(archivo, size);
+		agrandar_archivo(archivo, size);
 	}
 	else if (size < archivo->tam_archivo) // Valido que no sea igual porque en ese caso no se hace nada
 	{
 
 	}
+	
+archivo->tam_archivo = size;
+
 }
 
