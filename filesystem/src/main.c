@@ -1,6 +1,11 @@
 #include "main.h"
 
+uint32_t cant_bloques_total;
+uint32_t cant_bloques_swap;
 uint32_t tam_bloque;
+uint32_t retardo_acceso_bloque;
+uint32_t retardo_acceso_fat;
+
 t_list* archivos_abiertos; //Si bien la tabla global de archivos abiertos está en kernel, necesitamos guardar una lista de fcbs.
 t_fat* fat;
 
@@ -26,11 +31,11 @@ int main(int argc, char* argv[]) {
 	char* path_fat = config_get_string_value(config,"PATH_FAT");
     char* path_bloques = config_get_string_value(config,"PATH_BLOQUES");
 	char* path_fcb = config_get_string_value(config,"PATH_FCB");
-	int cant_bloques_total=config_get_int_value(config,"CANT_BLOQUES_TOTAL");
-    int cant_bloques_swap=config_get_int_value(config,"CANT_BLOQUES_SWAP");
+	cant_bloques_total=config_get_int_value(config,"CANT_BLOQUES_TOTAL");
+    cant_bloques_swap=config_get_int_value(config,"CANT_BLOQUES_SWAP");
     tam_bloque=config_get_int_value(config,"TAM_BLOQUE");
-    int retardo_acceso_bloque=config_get_int_value(config,"RETARDO_ACCESO_BLOQUE");
-    int retardo_acceso_fat=config_get_int_value(config,"RETARDO_ACCESO_FAT");
+    retardo_acceso_bloque=config_get_int_value(config,"RETARDO_ACCESO_BLOQUE");
+    retardo_acceso_fat=config_get_int_value(config,"RETARDO_ACCESO_FAT");
 
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
 
@@ -79,6 +84,7 @@ int main(int argc, char* argv[]) {
 		case TRUNCAR_ARCHIVO:
 			nombre_archivo = recibir_mensaje(socket_kernel);
 			recv(socket_kernel, &tam_archivo, sizeof(uint32_t), MSG_WAITALL);
+			printf("Truncar %s a %u\n", nombre_archivo, tam_archivo);
 			truncar_archivo(nombre_archivo, tam_archivo);
 			break;
 

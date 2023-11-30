@@ -177,7 +177,7 @@ char* de_t_motivo_a_string(t_motivo_desalojo motivo)
 void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void* arg)
 {
     t_args_hilo* arg_h = (t_args_hilo*) arg;
-    int32_t tam_archivo;
+    uint32_t tam_archivo;
     char* recurso;
     char* nombre_archivo;
     char* lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
@@ -217,7 +217,6 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             break;
 
         case F_OPEN:
-            sem_wait(&mutex_file_management);
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             //printf("Me pidieron abrir de %s\n", nombre_archivo);
             lock = recibir_mensaje(arg_h->socket_dispatch);
@@ -233,7 +232,6 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             break;
 
         case F_READ:
-            sem_wait(&mutex_file_management);
             printf("F_READ\n");
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             direccion = recibir_direccion(arg_h->socket_cpu);
@@ -247,7 +245,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
 
             break;
 
-        case F_SEEK:
+        case F_SEEK: //Crear un hilo
             sem_wait(&mutex_file_management);
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             recv(arg_h->socket_dispatch, &puntero, sizeof(uint32_t), MSG_WAITALL);
@@ -272,9 +270,13 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         case F_TRUNCATE:
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             recv(arg_h->socket_dispatch, &tam_archivo, sizeof(uint32_t), MSG_WAITALL);
-            enviar_operacion(arg_h->socket_filesystem, TRUNCAR_ARCHIVO);
-            enviar_mensaje(nombre_archivo, arg_h->socket_filesystem);
-            send(arg_h->socket_dispatch, &tam_archivo, sizeof(uint32_t), NULL);
+            
+            pthread_t h_file_truncate;
+            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
+            argumentos_file_management->tam_archivo = tam_archivo;
+            pthread_create(&h_file_truncate, NULL, &file_truncate, (void*)argumentos_file_management);
+            pthread_detach(h_file_truncate);
+
             break;
 
         case F_CLOSE:

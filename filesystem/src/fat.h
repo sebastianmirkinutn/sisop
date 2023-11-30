@@ -20,5 +20,6 @@ typedef struct
     uint32_t* memory_map;
 }t_fat;
 
+uint32_t obtener_bloque_libre();
 
 #endif

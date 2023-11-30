@@ -1,8 +1,15 @@
 
 #include "operaciones.h"
 
+extern uint32_t cant_bloques_total;
+extern uint32_t cant_bloques_swap;
 extern uint32_t tam_bloque;
+extern uint32_t retardo_acceso_bloque;
+extern uint32_t retardo_acceso_fat;
+
 extern t_list* archivos_abiertos;
+
+extern t_fat* fat;
 
 int32_t abrir_archivo(char* path_fcb, char* nombre)
 {
@@ -45,7 +52,7 @@ uint32_t crear_archivo(char* path_fcb, char* nombre)
 	}
 	config_set_value(config_fcb, "NOMBRE_ARCHIVO", nombre);
 	config_set_value(config_fcb, "TAMANIO_ARCHIVO", "0");
-	config_set_value(config_fcb, "BLOQUE_INICIAL", "0");
+	config_set_value(config_fcb, "BLOQUE_INICIAL", int_to_string(UINT32_MAX));
 	config_save(config_fcb);
 	//El archivo no va estar realmente abierto (o podríamos dejarlo abierto...).
     close(archivo_fcb);
@@ -57,9 +64,21 @@ int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 	uint32_t por_asignar = archivo->tam_archivo - size;
 	uint32_t tam_teorico = ceil(archivo->tam_archivo / tam_bloque) * tam_bloque;
 	uint32_t bytes_libres = tam_teorico - archivo->tam_archivo;
-	if(bytes_libres > 0)
+	
+	if(bytes_libres == 0)
 	{
+		if(archivo->bloque_inicial == UINT32_MAX)
+		{
+			archivo->bloque_inicial = obtener_bloque_libre();
+			fat->memory_map[archivo->bloque_inicial] = UINT32_MAX;
+			por_asignar -= tam_bloque;
+			archivo->tam_archivo += tam_bloque;
+		}
 		
+	}
+	else if(bytes_libres > 0)
+	{
+
 	}
 }
 

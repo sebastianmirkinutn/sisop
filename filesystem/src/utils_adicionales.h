@@ -8,5 +8,6 @@
 
 // Convierte un número de tipo de dato número a una cadena de caracteres
 char *itoa_(uint32_t dividendo,char *cadenaText);
+char* int_to_string(uint32_t numero);
 
 #endif

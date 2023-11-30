@@ -32,4 +32,10 @@ char *itoa_(uint32_t dividendo,char *cadenaText) {
     return (cadenaText);
 }
 
-
+char* int_to_string(uint32_t numero)
+{
+    char* str = malloc(20);
+    printf("UUINT32_MAX = %u", numero);
+    sprintf(str, "%u", numero);
+    return str;
+}

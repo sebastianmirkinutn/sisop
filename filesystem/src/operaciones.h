@@ -12,8 +12,11 @@
 #include <pcb/pcb.h>
 #include <fcntl.h>
 #include <math.h>
+#include <string.h>
 
 #include "fcb.h"
+#include "fat.h"
+#include "utils_adicionales.h"
 
 int32_t abrir_archivo(char* path_fcb, char* nombre);
 uint32_t crear_archivo(char* path_fcb, char* nombre);
