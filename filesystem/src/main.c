@@ -38,7 +38,13 @@ int main(int argc, char* argv[]) {
     retardo_acceso_fat=config_get_int_value(config,"RETARDO_ACCESO_FAT");
 
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
-
+	fat = crear_fat_mapeada(path_fat, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
+	for(uint32_t i = 1; i < (cant_bloques_total- cant_bloques_swap)/4 ; i++)
+        {
+            //memcpy(fat->memory_map + offset, &initialisation_value, sizeof(uint32_t));
+            //offset += sizeof(uint32_t);
+            printf("%i",fat->memory_map[i]);
+        }
     int conexion_memoria = crear_conexion(logger, ip_memoria, puerto_memoria);
     int socket_servidor = iniciar_servidor(logger, puerto_escucha);
     int socket_kernel = esperar_cliente(logger, socket_servidor);
@@ -51,8 +57,7 @@ int main(int argc, char* argv[]) {
 	uint32_t tam_archivo;
 
 	archivos_abiertos = list_create();
-	//crear_fat_mapeada(path_fat, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
-
+	
 	while(1)
 	{
 		operacion = recibir_operacion(socket_kernel);
