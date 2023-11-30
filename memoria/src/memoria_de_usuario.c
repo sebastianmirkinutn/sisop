@@ -97,17 +97,17 @@ void agregar_pagina(uint32_t pid, uint32_t nro_pagina, uint32_t nro_frame)
 /*ALGORTMOS DE REEMPLAZO*/
 
 uint32_t contador_frame = 0;
-uint32_t reemplazo_fifo(void)
+uint32_t buscar_victima_fifo(void)
 {
-    return contador_frame;
+    uint32_t victima = contador_frame;
+    contador_frame++;
     //Lógica de desalojo
 
-
-    contador_frame++;
     if(contador_frame > tam_memoria / tam_pagina)
     {
         contador_frame = 0;
     }
+    return victima;
 }
 
 

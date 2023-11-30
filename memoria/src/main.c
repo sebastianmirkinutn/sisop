@@ -50,7 +50,7 @@ int main(int argc, char* argv[]){
     log_info(logger, "Declaré el hilo.");
     log_info(logger, "socket: %i", args_conexion_kernel.socket_kernel);
     pthread_create(&hilo_conexion_kernel, NULL, &conexion_kernel, (void*)&args_conexion_kernel);
-    pthread_detach(&conexion_kernel);
+    pthread_detach(hilo_conexion_kernel);
     log_info(logger, "Creé el hilo.");
 
     pthread_t hilo_conexion_cpu;
