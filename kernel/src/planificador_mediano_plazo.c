@@ -91,7 +91,7 @@ void wait_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch)
             //enviar_contexto_de_ejecucion(execute->contexto, socket_cpu_dispatch);
             sem_wait(&mutex_cola_ready);
             printf("Hice wait de la cola de ready: %i",cola_ready);
-            queue_push(cola_ready, execute); // Debería ser en la primera posición.
+            agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
             sem_post(&mutex_cola_ready);
             sem_post(&procesos_en_ready);
         }
@@ -133,7 +133,7 @@ void signal_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatc
                 //Se libera el recurso y se devuelve el contexto de ejecución
                 sem_wait(&mutex_cola_ready);
                 printf("Hice wait de la cola de ready: %i",cola_ready);
-                queue_push(cola_ready, execute); // Debería ser en la primera posición.
+                agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
                 sem_post(&mutex_cola_ready);
                 sem_post(&procesos_en_ready);
                 desbloquear_procesos(recurso_buscado);
