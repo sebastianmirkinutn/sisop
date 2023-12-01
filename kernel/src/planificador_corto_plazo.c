@@ -261,7 +261,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             break;
 
         case F_SEEK: //Crear un hilo
-            sem_wait(&mutex_file_management);
+            //sem_wait(&mutex_file_management);
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             recv(arg_h->socket_dispatch, &puntero, sizeof(uint32_t), MSG_WAITALL);
 
@@ -283,7 +283,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             {
                 log_error(logger_hilo, "El archivo no existe");
             }
-            sem_post(&mutex_file_management);
+            //sem_post(&mutex_file_management);
             break;
 
         case F_TRUNCATE:
@@ -301,10 +301,55 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         case F_CLOSE:
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
 
-            //Se cierra el archivo...
+            bool es_el_archivo(void* arg)
+            {
+                return(((t_archivo*)arg)->nombre == nombre_archivo);
+            }
+
+            bool es_el_proceso(void* arg)
+            {
+                return(((t_pcb*)arg)->pid == execute->pid);
+            }
+
+            archivo = buscar_archivo(tabla_global_de_archivos, nombre_archivo);
+            if(archivo != NULL)
+            {
+                printf("archivo != NULL\n");
+                list_remove_by_condition(execute->tabla_de_archivos_abiertos, es_el_archivo);
+                if(archivo->lock == READ)
+                {
+                    printf("archivo->lock == READ\n");
+                    list_remove_by_condition(archivo->locks_lectura, es_el_proceso);
+                    archivo->contador_aperturas--;
+
+                    if(archivo->locks_lectura->elements_count == 0) 
+                    {
+                        printf("archivo->locks_lectura->elements_count == 0\n");
+
+                        if (archivo->cola_blocked->elements->elements_count != 0)
+                        {
+                            t_pcb* proceso_bloqueado = queue_pop(archivo->cola_blocked);
+                            archivo->lock = READ;
+                            execute->estado = READY;
+                            list_add(proceso_bloqueado->tabla_de_archivos_abiertos, archivo);
+                            sem_wait(&mutex_cola_ready);
+                            queue_push(&cola_ready, proceso_bloqueado);
+                            sem_post(&mutex_cola_ready);
+                            sem_post(&procesos_en_ready);
+                             archivo->contador_aperturas++;
+                        }
+                        else //Se elimina el archivo completamente
+                        {
+                            printf("Se elimina el archivo completamente\n");
+                            list_remove_by_condition(tabla_global_de_archivos, es_el_archivo);
+
+                        }
+                    }
+                }
+            }
 
             sem_wait(&mutex_cola_ready);
-            queue_push(cola_ready, execute);
+            agregar_primero_en_cola(cola_ready, execute);
             sem_post(&mutex_cola_ready);
             sem_post(&procesos_en_ready);
             break;

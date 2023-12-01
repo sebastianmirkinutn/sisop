@@ -7,6 +7,7 @@ extern sem_t mutex_lista_procesos;
 extern sem_t cantidad_de_procesos;
 extern int tam_pagina;
 extern int tam_memoria;
+extern t_log* logger;
 
 uint8_t leer_de_memoria(t_direccion_fisica* direccion)
 {
@@ -36,7 +37,7 @@ int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada)
     t_proceso* proceso = buscar_proceso(pid);
     if(proceso != NULL)
     {
-        printf("Existe el proceso del que se busca el marco\n");
+        //printf("Existe el proceso del que se busca el marco\n");
         t_pagina* pagina = list_find(proceso->tabla_de_paginas, es_la_pagina);
         if(pagina != NULL)
         {
@@ -114,19 +115,19 @@ uint32_t buscar_victima_fifo(void)
 t_proceso* buscar_proceso(uint32_t pid)
 {
     bool comparar(void* arg){
-        printf("COMPARAR");
+        //printf("COMPARAR");
         t_proceso* proceso = arg;
         return proceso->pid == pid;
     }
-    printf("EMPIEZA BUCAR_PROCESO\n");
+    //printf("EMPIEZA BUCAR_PROCESO\n");
     t_proceso* proceso;
     printf("EMPIEZA BUCAR_PROCESO\n");
     sem_wait(&mutex_lista_procesos);
-    printf("hice waitss BUCAR_PROCESO\n");
+    //printf("hice waitss BUCAR_PROCESO\n");
     //pid_funcion = pid;
     proceso = list_find(procesos_en_memoria, comparar);
     sem_post(&mutex_lista_procesos);
-    printf("TERMINA BUCAR_PROCESO\n");
+    //printf("TERMINA BUCAR_PROCESO\n");
     return proceso;
 }
 

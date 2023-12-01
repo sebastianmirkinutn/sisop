@@ -29,6 +29,7 @@ typedef struct
     t_list* locks_lectura;
     sem_t mutex_cola_blocked;
     sem_t mutex_locks_lectura;
+    uint32_t contador_aperturas;
 }t_archivo;
 
 t_archivo* crear_archivo(char* nombre_archivo, uint32_t tam_archivo, t_lock lock);

@@ -5,6 +5,7 @@ extern char* saveptr;
 extern sem_t mutex_lista_procesos;
 extern sem_t cantidad_de_procesos;
 extern int tam_pagina;
+extern t_log* logger;
 
 void conexion_cpu(void* arg)
 {
@@ -95,19 +96,19 @@ void parsear_instrucciones(t_log* logger,t_proceso* proceso, char* str)
     //log_info(logger, "Instruccion: %s", token);
     while(token != NULL)
     {
-        log_info(logger, "Instruccion: %s", token);
+        //log_info(logger, "Instruccion: %s", token);
         if (strlen(token) > 0)
         {
             char* token_cpy = malloc(strlen(token));
             memcpy(token_cpy, token,strlen(token));
             token_cpy[strlen(token_cpy)] = '\0';
             list_add(proceso->instrucciones, token);
-            log_info(logger, "Hice list_add de: %s", token);
+            //log_info(logger, "Hice list_add de: %s", token);
             free(token_cpy);
         }
         token = strtok(NULL, "\n");
     }
-    log_info(logger,"TOKEN NULL");
+    //log_info(logger,"TOKEN NULL");
 }
 
 char* leer_pseudocodigo(t_log* logger, char* nombre_archivo)
@@ -188,8 +189,7 @@ void conexion_kernel(void* arg)
             sem_post(&cantidad_de_procesos);
             //log_info(logger_hilo, "SIGNAL cantidad_de_procesos");
 
-            log_info(logger_hilo, "Se asignó %i bytes al proceso %i", size, pid);
-
+            log_info(logger, "PID: %i - Tamaño: %i", pid, size);
             uint32_t (*algoritmo)(void);
             algoritmo = buscar_victima_fifo;
             asignar_memoria(pid, size, algoritmo);

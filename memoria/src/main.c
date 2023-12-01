@@ -13,9 +13,10 @@ t_bitarray* frame_bitarray;
 int tam_pagina; 
 int tam_memoria;
 
+t_log* logger;
 
 int main(int argc, char* argv[]){
-    t_log* logger = iniciar_logger("log_memoria.log","CPU");
+    logger = iniciar_logger("log_memoria.log","CPU");
     t_config* config = iniciar_config("./cfg/memoria.config");
 
     char* puerto_escucha = config_get_string_value(config,"PUERTO_ESCUCHA");
