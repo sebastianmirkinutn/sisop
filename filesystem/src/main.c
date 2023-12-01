@@ -9,6 +9,8 @@ uint32_t retardo_acceso_fat;
 t_list* archivos_abiertos; //Si bien la tabla global de archivos abiertos está en kernel, necesitamos guardar una lista de fcbs.
 t_fat* fat;
 
+FILE* bloques;
+
 int main(int argc, char* argv[]) {
 
 	uint32_t ui32_tam_de_archivo=0;

@@ -23,5 +23,6 @@ int32_t abrir_archivo(char* path_fcb, char* nombre);
 uint32_t crear_archivo(char* path_fcb, char* nombre);
 int32_t agrandar_archivo(t_fcb* archivo, uint32_t size);
 int32_t truncar_archivo(char* nombre, uint32_t size);
+uint32_t ultimo_bloque(uint32_t puntero);
 
 #endif

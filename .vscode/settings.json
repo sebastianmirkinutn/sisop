@@ -41,6 +41,7 @@
         "fat.h": "c",
         "string.h": "c",
         "lock.h": "c",
-        "operaciones.h": "c"
+        "operaciones.h": "c",
+        "bloques.h": "c"
     }
 }

@@ -25,7 +25,7 @@ t_fat* crear_fat_mapeada(char* path, uint32_t size)
     if(fat->file_descriptor != -1)
     {
         ftruncate(fat->file_descriptor, (cant_bloques_total- cant_bloques_swap)* sizeof(uint32_t));
-        fat->memory_map = mmap(NULL, size, PROT_WRITE, MAP_SHARED, fat->file_descriptor, 0);
+        fat->memory_map = mmap(NULL, size, PROT_WRITE, MAP_PRIVATE, fat->file_descriptor, 0);
         fat->memory_map[0] = UINT32_MAX;
         for(uint32_t i = 1; i < (cant_bloques_total- cant_bloques_swap)/4 ; i++)
         {

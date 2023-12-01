@@ -1,5 +1,5 @@
-#ifndef FILESYSTEM_H
-#define FILESYSTEM_H
+#ifndef BLOQUES_H
+#define BLOQUES_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,19 +15,5 @@
 #include <pcb/pcb.h>
 #include <fcntl.h>
 #include <math.h>
-
-
-#include "operaciones.h"
-#include "fat.h"
-#include "bloques.h"
-
-#include "utils_adicionales.h"
-#include "utils_operaciones_filesystem.h"
-#include "utils_bloques.h"
-#include "utils_committed_logger.h"
-#include "utils_filesystem.h"
-#include "utils_file_op.h"
-
-
 
 #endif
