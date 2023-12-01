@@ -139,10 +139,11 @@ void file_write(void* arg)
         {
             case OK:
                 printf("OK escritura\n");
-                //sem_wait(&mutex_cola_ready);
-                //agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
-                //sem_post(&mutex_cola_ready);
-                //sem_post(&procesos_en_ready);
+                sem_wait(&mutex_cola_ready);
+                agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
+                enviar_operacion(arg_h->socket_interrupt, CLOCK_INTERRUPT); //Cambiar a I/O interrupt
+                sem_post(&mutex_cola_ready);
+                sem_post(&procesos_en_ready);
                 break;
             default:
                 break;

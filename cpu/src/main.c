@@ -283,7 +283,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "SLEEP"))
             {
-                sleep(atoi(parametros[1]));
+                sleep(atoi(parametros[1]) / 1000);
             }
             else if(!strcmp(parametros[0], "WAIT"))
             {    

@@ -300,6 +300,13 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
 
         case F_CLOSE:
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
+
+            //Se cierra el archivo...
+
+            sem_wait(&mutex_cola_ready);
+            queue_push(cola_ready, execute);
+            sem_post(&mutex_cola_ready);
+            sem_post(&procesos_en_ready);
             break;
         default:
             break;
