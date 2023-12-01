@@ -125,9 +125,31 @@ void file_read(void* arg)
 
 void file_write(void* arg)
 {
+    sem_wait(&mutex_file_management);
     t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
     t_response respuesta;
-    
+    printf("Direccion = %i:%i\n", arg_h->direccion->frame, arg_h->direccion->offset);
+    enviar_operacion(arg_h->socket_filesystem, ESCRIBIR_ARCHIVO);
+    enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
+    t_archivo* archivo = buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
+    send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t),0);
+    enviar_direccion(arg_h->socket_filesystem, arg_h->direccion);
+    respuesta = recibir_respuesta(arg_h->socket_filesystem);
+    switch (respuesta)
+        {
+            case OK:
+                printf("OK escritura\n");
+                //sem_wait(&mutex_cola_ready);
+                //agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
+                //sem_post(&mutex_cola_ready);
+                //sem_post(&procesos_en_ready);
+                break;
+            default:
+                break;
+        }
+
+    sem_post(&mutex_file_management);
+    liberar_parametros(arg_h);
 }
 
 void file_close(void* arg)
