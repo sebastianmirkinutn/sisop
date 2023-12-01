@@ -77,7 +77,7 @@ void file_open(void* arg)
     {
         printf("El archivo tiene un tamaño de %i bytes\n", arg_h->tam_archivo);
         sem_wait(&mutex_cola_ready);
-        queue_push(cola_ready, execute); // Debería ser en la primera posición.
+        agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
         sem_post(&mutex_cola_ready);
         sem_post(&procesos_en_ready);
     }
@@ -92,14 +92,14 @@ void file_open(void* arg)
         respuesta = recibir_respuesta(arg_h->socket_filesystem);
         switch (respuesta)
         {
-        case OK:
-            sem_wait(&mutex_cola_ready);
-            queue_push(cola_ready, execute); // Debería ser en la primera posición.
-            sem_post(&mutex_cola_ready);
-            sem_post(&procesos_en_ready);
-            break;
-        default:
-            break;
+            case OK:
+                sem_wait(&mutex_cola_ready);
+                agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
+                sem_post(&mutex_cola_ready);
+                sem_post(&procesos_en_ready);
+                break;
+            default:
+                break;
         }
     }
     sem_post(&mutex_file_management);
@@ -146,7 +146,18 @@ void file_truncate(void* arg)
     enviar_operacion(arg_h->socket_filesystem, TRUNCAR_ARCHIVO);
     enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
     send(arg_h->socket_filesystem, &(arg_h->tam_archivo), sizeof(uint32_t), NULL);
-
+    respuesta = recibir_respuesta(arg_h->socket_filesystem);
+        switch (respuesta)
+        {
+            case OK:
+                sem_wait(&mutex_cola_ready);
+                queue_push(cola_ready, execute); // Debería ser en la primera posición.
+                sem_post(&mutex_cola_ready);
+                sem_post(&procesos_en_ready);
+                break;
+            default:
+                break;
+        }
     sem_post(&mutex_file_management);
     liberar_parametros(arg_h);
 }

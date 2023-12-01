@@ -91,7 +91,14 @@ int main(int argc, char* argv[]) {
 			nombre_archivo = recibir_mensaje(socket_kernel);
 			recv(socket_kernel, &tam_archivo, sizeof(uint32_t), MSG_WAITALL);
 			printf("Truncar %s a %u\n", nombre_archivo, tam_archivo);
-			truncar_archivo(nombre_archivo, tam_archivo);
+			if(truncar_archivo(nombre_archivo, tam_archivo))
+			{
+				enviar_respuesta(socket_kernel, OK);
+			}
+			else
+			{
+				enviar_respuesta(socket_kernel, ERROR);
+			}
 			break;
 
 		case RESET_FILE_SYSTEM: 
