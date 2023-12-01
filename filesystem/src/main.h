@@ -15,6 +15,7 @@
 #include <pcb/pcb.h>
 #include <fcntl.h>
 #include <math.h>
+#include <memoria/memoria.h>
 
 
 #include "operaciones.h"

@@ -10,6 +10,7 @@ t_list* archivos_abiertos; //Si bien la tabla global de archivos abiertos está 
 t_fat* fat;
 
 FILE* bloques;
+uint32_t puntero;
 
 int main(int argc, char* argv[]) {
 
@@ -38,6 +39,8 @@ int main(int argc, char* argv[]) {
     tam_bloque=config_get_int_value(config,"TAM_BLOQUE");
     retardo_acceso_bloque=config_get_int_value(config,"RETARDO_ACCESO_BLOQUE");
     retardo_acceso_fat=config_get_int_value(config,"RETARDO_ACCESO_FAT");
+
+	bloques = fopen(path_bloques, "rb+");
 
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
 	fat = crear_fat_mapeada(path_fat, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
@@ -85,6 +88,48 @@ int main(int argc, char* argv[]) {
 			break;
 
 		case LEER_ARCHIVO:
+			nombre_archivo = recibir_mensaje(socket_kernel);
+			{
+				recv(socket_kernel, &puntero, sizeof(uint32_t), MSG_WAITALL);
+				t_direccion_fisica* direccion = recibir_direccion(socket_kernel);
+				t_fcb* fcb = buscar_archivo(nombre_archivo, archivos_abiertos);
+				uint32_t nro_bloque = fcb->bloque_inicial;
+				for(uint32_t i; i < ceil(puntero / tam_bloque); i++)
+				{
+					nro_bloque = fat->memory_map[nro_bloque]; //No validemos que se pida un dato mayor al mapeado;
+				}
+
+				void* bloque = leer_bloque(nro_bloque);
+				uint32_t a_enviar;
+				memcpy(&a_enviar, bloque + (uint32_t)(puntero - ceil(puntero / tam_bloque)), sizeof(uint32_t));
+				enviar_operacion(conexion_memoria, PEDIDO_ESCRITURA);
+				enviar_direccion(conexion_memoria, direccion);
+				send(conexion_memoria, &a_enviar, sizeof(uint32_t), NULL);
+
+
+			}
+			break;
+
+			case ESCRIBIR_ARCHIVO:
+			nombre_archivo = recibir_mensaje(socket_kernel);
+			{
+				recv(socket_kernel, &puntero, sizeof(uint32_t), MSG_WAITALL);
+				t_direccion_fisica* direccion = recibir_direccion(socket_kernel);
+				t_fcb* fcb = buscar_archivo(nombre_archivo, archivos_abiertos);
+				uint32_t bloque = fcb->bloque_inicial;
+				uint32_t a_escribir;
+				for(uint32_t i; i < ceil(puntero / tam_bloque); i++)
+				{
+					bloque = fat->memory_map[bloque]; //No validemos que se pida un dato mayor al mapeado;
+				}
+
+				enviar_operacion(conexion_memoria, PEDIDO_LECTURA);
+				enviar_direccion(conexion_memoria, direccion);
+				recv(conexion_memoria, &a_escribir, sizeof(uint32_t), MSG_WAITALL);
+				//Escribir en el archivo
+				escribir_dato(bloque, puntero - ceil(puntero / tam_bloque) * tam_bloque, a_escribir);
+
+			}
 			break;
 		
 		case TRUNCAR_ARCHIVO:
@@ -126,5 +171,6 @@ int main(int argc, char* argv[]) {
 			break;
 		}
 	}
+	fclose(path_bloques);
 	return 0;
 	}

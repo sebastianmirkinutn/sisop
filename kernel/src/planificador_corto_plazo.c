@@ -259,6 +259,10 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             {
                 archivo->puntero = puntero;
                 log_info(logger_hilo, "Archivo: %i - Puntero: %i", archivo->nombre, puntero);
+                agregar_primero_en_cola(cola_ready, execute);
+                sem_post(&mutex_cola_ready);
+                sem_post(&procesos_en_ready);
+
             }
             else
             {

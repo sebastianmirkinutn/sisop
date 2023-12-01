@@ -16,4 +16,7 @@
 #include <fcntl.h>
 #include <math.h>
 
+void* leer_bloque(uint32_t puntero);
+void escribir_dato(uint32_t bloque, uint32_t offset, uint32_t dato);
+
 #endif
