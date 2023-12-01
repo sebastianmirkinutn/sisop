@@ -132,16 +132,16 @@ t_proceso* buscar_proceso(uint32_t pid)
 
 void conexion_filesystem(void* arg)
 {
-    t_log* logger_hilo = iniciar_logger("logger_hilo_conec_cpu.log","HILO_CPU");
+    t_log* logger_hilo = iniciar_logger("logger_hilo_conec_FS.log","HILO_CPU");
     log_info(logger_hilo, "HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
-    log_info(logger_hilo,"Socket: %i", arg_h->socket_cpu);
+    log_info(logger_hilo,"Socket: %i", arg_h->socket_filesystem);
     t_direccion_fisica* direccion;
     //enviar_mensaje("LISTO_PARA_RECIBIR_PEDIDOS",arg_h->socket_cpu);
     while(1)
     {
-        op_code codigo = recibir_operacion(arg_h->socket_cpu);
-        ///log_info(logger_hilo,"op_code: %i", codigo);
+        op_code codigo = recibir_operacion(arg_h->socket_filesystem);
+        log_info(logger_hilo,"op_code: %i", codigo);
         uint32_t pid;
         switch (codigo)
         {

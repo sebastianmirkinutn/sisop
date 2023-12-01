@@ -61,8 +61,8 @@ int main(int argc, char* argv[]){
     pthread_t hilo_conexion_filesystem;
     t_args_hilo args_conexion_filesystem;
     args_conexion_filesystem.socket_filesystem = socket_filesystem;
-    pthread_create(&hilo_conexion_filesystem, NULL, &conexion_cpu, (void*)&conexion_filesystem);
-
+    pthread_create(&hilo_conexion_filesystem, NULL, &conexion_filesystem, (void*)&args_conexion_filesystem);
+    pthread_detach(hilo_conexion_filesystem);
     //pthread_create(&hilo_conexion_cpu, NULL, &conexion_cpu, (void*)&args_conexion_cpu);
     //pthread_join(&hilo_conexion_kernel, NULL);
     //pthread_join(&hilo_conexion_cpu, NULL);

@@ -36,6 +36,7 @@ t_lock de_string_a_t_lock(char* str);
 t_archivo* buscar_archivo(t_list* lista, char* nombre);
 void file_open(void* arg);
 void file_truncate(void* arg);
+void file_write(void* arg);
 void file_read(void* arg);
 
 #endif

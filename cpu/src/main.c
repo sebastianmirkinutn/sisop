@@ -283,7 +283,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "SLEEP"))
             {
-                sleep(atoi(parametros[1]));
+                sleep(atoi(parametros[1]) / 1000);
             }
             else if(!strcmp(parametros[0], "WAIT"))
             {    
@@ -368,6 +368,7 @@ int main(int argc, char* argv[]){
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
                 enviar_motivo_desalojo(socket_kernel_dispatch, F_WRITE);
                 enviar_mensaje(parametros[1],socket_kernel_dispatch);
+                printf("Direccion = %i:%i\n", direccion_fisica->frame, direccion_fisica->offset);
                 enviar_direccion(socket_kernel_dispatch, direccion_fisica);
             }
             else if(!strcmp(parametros[0], "F_TRUNCATE"))
