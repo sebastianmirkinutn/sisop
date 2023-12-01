@@ -28,6 +28,10 @@ t_archivo* crear_archivo(char* nombre_archivo, uint32_t tam_archivo, t_lock lock
     strcpy(archivo->nombre, nombre_archivo);
     archivo->puntero = 0;
     archivo->lock = lock;
+    archivo->cola_blocked = queue_create();
+    archivo->locks_lectura = list_create();
+    sem_init(&(archivo->mutex_cola_blocked), 0, 1);
+    sem_init(&(archivo->mutex_locks_lectura), 0, 1);
     return archivo;
 }
 
@@ -62,10 +66,37 @@ void file_open(void* arg)
     t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
     t_response respuesta;
 
-    t_archivo* archivo = crear_archivo(arg_h->nombre_archivo, arg_h->tam_archivo, arg_h->lock);
-    sem_wait(&mutex_tabla_global_de_archivos);
-    list_add(tabla_global_de_archivos, archivo);
-    sem_post(&mutex_tabla_global_de_archivos);
+    t_archivo* archivo =  buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
+    if(archivo != NULL)
+    {
+        if(archivo->lock == READ)
+        {
+            if(arg_h->lock == READ)
+            {
+                sem_wait(&())
+                list_add(archivo->locks_lectura, execute); //no se bloquea el proceso
+                sem_wait(&mutex_cola_ready);
+                agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
+                sem_post(&procesos_en_ready);
+            } else 
+            {
+                sem_wait(&(archivo->mutex_cola_blocked));
+                list_add(archivo->cola_blocked, execute);
+                sem_post(&(archivo->mutex_cola_blocked));
+                execute->estado = BLOCKED; 
+            }
+       
+        } 
+    }
+    else
+    {
+        t_archivo* archivo = crear_archivo(arg_h->nombre_archivo, arg_h->tam_archivo, arg_h->lock); 
+        sem_wait(&mutex_tabla_global_de_archivos);
+        list_add(tabla_global_de_archivos, archivo);
+        sem_post(&mutex_tabla_global_de_archivos);
+    }
+    
+    
     list_add(execute->tabla_de_archivos_abiertos, archivo);
     log_info(arg_h->logger, "Agregué el archivo %s en %i", archivo->nombre, tabla_global_de_archivos);
     
@@ -127,6 +158,9 @@ void file_write(void* arg)
 {
     t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
     t_response respuesta;
+
+    enviar_operacion(arg_h->socket_filesystem, ESCRIBIR_ARCHIVO);
+
     
 }
 

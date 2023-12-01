@@ -26,6 +26,9 @@ typedef struct
     uint32_t puntero;
     t_lock lock;
     t_queue* cola_blocked;
+    t_list* locks_lectura;
+    sem_t mutex_cola_blocked;
+    sem_t mutex_locks_lectura;
 }t_archivo;
 
 t_archivo* crear_archivo(char* nombre_archivo, uint32_t tam_archivo, t_lock lock);
