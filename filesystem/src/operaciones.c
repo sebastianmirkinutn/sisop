@@ -1,5 +1,7 @@
 
 #include "operaciones.h"
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
 extern uint32_t cant_bloques_total;
 extern uint32_t cant_bloques_swap;
@@ -59,10 +61,10 @@ uint32_t crear_archivo(char* path_fcb, char* nombre)
     close(archivo_fcb);
     return 1;
 }
-/*
+
 int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 {
-	uint32_t por_asignar = archivo->tam_archivo - size;
+	uint32_t por_asignar = size - archivo->tam_archivo;
 	uint32_t tam_teorico = ceil(archivo->tam_archivo / tam_bloque) * tam_bloque;
 	uint32_t bytes_libres = tam_teorico - archivo->tam_archivo;
 
@@ -74,45 +76,46 @@ int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 		fat->memory_map[archivo->bloque_inicial] = UINT32_MAX;
 		//msync(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t), MS_SYNC);
 		//mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
-		por_asignar -= tam_bloque;
-		archivo->tam_archivo += tam_bloque;
+		archivo->tam_archivo += MIN(tam_bloque, por_asignar);
+		printf("pr_asignar = %i\n", por_asignar);
+		por_asignar = MAX((int32_t)por_asignar - (int32_t)tam_bloque, 0);
+		printf("Asigné el orimer bloque y me falta %i\n", por_asignar);
+		config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
 		config_set_value(archivo->config, "BLOQUE_INICIAL", int_to_string(archivo->bloque_inicial));
 		config_save(archivo->config);
 
-		if(por_asignar <= 0)
+		if(por_asignar == 0)
 		{
 			return;
 		}
+		
 	}
 	if(bytes_libres > 0)
 	{
-		if(bytes_libres >= por_asignar)
-		{
-			por_asignar = 0;
-			archivo->tam_archivo += por_asignar;
-			return;
-		}
-		else
-		{
-			por_asignar -= bytes_libres;
-			archivo->tam_archivo += bytes_libres;
-		}
+		bytes_libres -= MIN(bytes_libres, por_asignar);
+		por_asignar -= MIN(bytes_libres, por_asignar);
+		archivo->tam_archivo += MIN(bytes_libres, por_asignar);
+		config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
 	}
 	if(por_asignar > 0)
 	{
 		uint32_t nuevo_bloque = obtener_bloque_libre();
 		fat->memory_map[ultimo_bloque(archivo->bloque_inicial)] = nuevo_bloque;
 		fat->memory_map[nuevo_bloque] = UINT32_MAX;
-		if(por_asignar > tam_bloque)
+
+		archivo->tam_archivo += MIN(tam_bloque, por_asignar);
+		config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
+		bytes_libres = tam_bloque - MIN(tam_bloque, por_asignar);
+		por_asignar = MAX((int32_t)por_asignar - (int32_t)tam_bloque, 0);
+
+		if(por_asignar > 0)
 		{
-			por_asignar -= tam_bloque;
-			archivo->tam_archivo += bytes_libres;
+			printf("Tengo que volver a agrandarlo por %i\n", por_asignar);
 			agrandar_archivo(archivo, por_asignar);
+			return;
 		}
 		else
 		{
-			por_asignar = 0;
-			archivo->tam_archivo += por_asignar;
 			return;
 		}
 	}
@@ -122,7 +125,7 @@ int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 	}
 }
 
-*/
+
 uint32_t ultimo_bloque(uint32_t puntero)
 {
 	uint32_t puntero_sig = puntero;
@@ -136,7 +139,7 @@ uint32_t ultimo_bloque(uint32_t puntero)
 	}
 	return puntero;
 }
-
+/*
 int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 {
 	uint32_t bytes_por_asignar = size - archivo->tam_archivo;
@@ -147,7 +150,7 @@ int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 	printf("tam_teorico = %i\n",tam_teorico);
 	printf("bytes_libres = %i\n",bytes_libres);
 
-printf("BLOQUES POR ASIGNAR = %f\n", ( (float)bytes_por_asignar - (float)bytes_libres) / (float)tam_bloque);
+	printf("BLOQUES POR ASIGNAR = %f\n", ( (float)bytes_por_asignar - (float)bytes_libres) / (float)tam_bloque);
 
 	uint32_t bloques_por_asignar = ceil(((double)bytes_por_asignar - (double)bytes_libres) / (double)tam_bloque);
 
@@ -155,7 +158,7 @@ printf("BLOQUES POR ASIGNAR = %f\n", ( (float)bytes_por_asignar - (float)bytes_l
 
 	//Acá podríamos validar si hay bloques libres suficientes
 
-printf("BLOQUES POR ASIGNAR = %i\n", bloques_por_asignar);
+	printf("BLOQUES POR ASIGNAR = %i\n", bloques_por_asignar);
 	if(archivo->bloque_inicial == UINT32_MAX)
 	{
 		archivo->bloque_inicial = obtener_bloque_libre();
@@ -166,6 +169,7 @@ printf("BLOQUES POR ASIGNAR = %i\n", bloques_por_asignar);
 		config_save(archivo->config);
 		if(bytes_por_asignar <= 0)
 		{
+			config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
 			return;
 		}
 	}
@@ -179,8 +183,10 @@ printf("BLOQUES POR ASIGNAR = %i\n", bloques_por_asignar);
 		fat->memory_map[ult_bloque] = nuevo_bloque;
 		ult_bloque = nuevo_bloque;
 	}
+	config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
+	return;
 }
-
+*/
 int32_t truncar_archivo(char* nombre, uint32_t size)
 {
 	printf("truncar_archivo\n");
@@ -192,6 +198,8 @@ int32_t truncar_archivo(char* nombre, uint32_t size)
 	{
 		agrandar_archivo(archivo, size);
 		mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
+		//msync(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t), MS_SYNC);
+		fsync(fat->file_descriptor);
 	}
 	else if (size < archivo->tam_archivo) // Valido que no sea igual porque en ese caso no se hace nada
 	{

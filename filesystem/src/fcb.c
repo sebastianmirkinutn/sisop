@@ -4,6 +4,8 @@ t_fcb* crear_fcb(char* nombre)
 {
     t_fcb* fcb = malloc(sizeof(t_fcb));
     fcb->nombre = strndup(nombre, strlen(nombre) + 1);
+    fcb->bloque_inicial = UINT32_MAX;
+    fcb->tam_archivo = 0;
     return fcb;
 }
 
