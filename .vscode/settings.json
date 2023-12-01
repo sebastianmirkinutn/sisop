@@ -42,6 +42,7 @@
         "string.h": "c",
         "lock.h": "c",
         "operaciones.h": "c",
-        "bloques.h": "c"
+        "bloques.h": "c",
+        "cmath": "c"
     }
 }

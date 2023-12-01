@@ -140,10 +140,16 @@ uint32_t ultimo_bloque(uint32_t puntero)
 int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 {
 	uint32_t bytes_por_asignar = size - archivo->tam_archivo;
-	uint32_t tam_teorico = ceil(archivo->tam_archivo / tam_bloque) * tam_bloque; //Hay un errpr acá
+	uint32_t tam_teorico = ceil(archivo->tam_archivo / tam_bloque) * tam_bloque;
 	uint32_t bytes_libres = tam_teorico - archivo->tam_archivo;
+	printf("size = %i\n",size);
+	printf("archivo->tam_archivo = %i\n",archivo->tam_archivo);
+	printf("tam_teorico = %i\n",tam_teorico);
+	printf("bytes_libres = %i\n",bytes_libres);
 
-	uint32_t bloques_por_asignar = ceil((bytes_por_asignar - bytes_libres) / tam_bloque);
+printf("BLOQUES POR ASIGNAR = %f\n", ( (float)bytes_por_asignar - (float)bytes_libres) / (float)tam_bloque);
+
+	uint32_t bloques_por_asignar = ceil(((double)bytes_por_asignar - (double)bytes_libres) / (double)tam_bloque);
 
 	uint32_t ult_bloque;
 
