@@ -6,6 +6,8 @@
 #include <sockets/sockets.h>
 #include <sockets/client_utils.h>
 #include <sockets/server_utils.h>
+#include <time.h>
+
 typedef struct
 {
     uint32_t pagina;
@@ -13,6 +15,7 @@ typedef struct
     uint8_t presencia;
     uint8_t modificado;
     uint32_t posicion_en_swap;
+    //time_t timestamp;
 }t_pagina;
 
 typedef struct
