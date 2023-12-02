@@ -5,6 +5,8 @@ uint32_t cant_bloques_swap;
 uint32_t tam_bloque;
 uint32_t retardo_acceso_bloque;
 uint32_t retardo_acceso_fat;
+t_bitarray* swap_bitarray;
+t_list* lista_de_bloques_swap;
 
 t_list* archivos_abiertos; //Si bien la tabla global de archivos abiertos está en kernel, necesitamos guardar una lista de fcbs.
 t_fat* fat;
@@ -39,6 +41,9 @@ int main(int argc, char* argv[]) {
     tam_bloque=config_get_int_value(config,"TAM_BLOQUE");
     retardo_acceso_bloque=config_get_int_value(config,"RETARDO_ACCESO_BLOQUE");
     retardo_acceso_fat=config_get_int_value(config,"RETARDO_ACCESO_FAT");
+
+	bitarray_create_with_mode(swap_bitarray, cant_bloques_swap / 8, MSB_FIRST);
+	list_create(lista_de_bloques_swap);
 
 	bloques = fopen(path_bloques, "rb+");
 
@@ -177,6 +182,8 @@ int main(int argc, char* argv[]) {
 			break;
 		}
 	}
+	bitarray_destroy(swap_bitarray);
+	list_destroy_and_destroy_elements(lista_de_bloques_swap, free);
 	fclose(path_bloques);
 	return 0;
 	}
