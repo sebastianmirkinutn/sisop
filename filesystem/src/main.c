@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
 	bloques = fopen(path_bloques, "rb+");
 
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
-	fat = crear_fat_mapeada(path_fat, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
+	fat = crear_fat_mapeada(path_fat);
 	mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
 
     int conexion_memoria = crear_conexion(logger, ip_memoria, puerto_memoria);
@@ -102,6 +102,7 @@ int main(int argc, char* argv[]) {
 				void* bloque = leer_bloque(nro_bloque);
 				uint32_t a_enviar;
 				memcpy(&a_enviar, bloque + (uint32_t)(puntero - ceil(puntero / tam_bloque)), sizeof(uint32_t));
+				printf("operacion: PEDIDO_ESCRITURA - direccion: %i:%i - datos: %i\n", direccion->frame, direccion->offset, a_enviar);
 				enviar_operacion(conexion_memoria, PEDIDO_ESCRITURA);
 				enviar_direccion(conexion_memoria, direccion);
 				send(conexion_memoria, &a_enviar, sizeof(uint32_t), NULL);

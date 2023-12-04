@@ -24,7 +24,7 @@ typedef struct
     uint32_t* memory_map;
 }t_fat;
 
-t_fat* crear_fat_mapeada(char* path, uint32_t size);
+t_fat* crear_fat_mapeada(char* path);
 uint32_t obtener_bloque_libre();
 
 #endif
