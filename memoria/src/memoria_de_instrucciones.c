@@ -36,7 +36,7 @@ void conexion_cpu(void* arg)
 
             if(program_counter >= proceso->instrucciones->elements_count){
                 //Habría que mandarle un mensaje a CPU
-                //log_info(logger_hilo, "No hay más isntrucciones");
+                log_info(logger_hilo, "No hay más isntrucciones");
             }
             sleep(arg_h->retardo_memoria / 1000);
             log_info(logger_hilo,"Envío: %s", list_get(proceso->instrucciones, program_counter));

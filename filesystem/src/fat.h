@@ -22,6 +22,7 @@ typedef struct
 {
     int file_descriptor;
     uint32_t* memory_map;
+    uint32_t size;
 }t_fat;
 
 t_fat* crear_fat_mapeada(char* path);
