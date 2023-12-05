@@ -49,4 +49,12 @@ typedef struct
 	char* mensaje;
 } t_mensaje;
 
+typedef struct
+{
+	op_code operacion;
+	char* nombre_archivo;
+	uint32_t longitud_nombre;
+	uint32_t puntero;
+
+} t_opfilesystem;
 #endif

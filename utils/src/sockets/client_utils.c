@@ -134,3 +134,48 @@ void enviar_respuesta (int socket, t_response respuesta)
 {
 	send(socket, &respuesta, sizeof(t_response), 0);
 }
+
+t_paquete* serializar_op_filesystem(t_opfilesystem* valor)
+{
+	t_paquete* paquete = malloc(sizeof(t_paquete));
+    paquete->buffer = malloc(sizeof(t_buffer));
+
+	int bytes = sizeof(valor->operacion) 
+			  + strlen(valor->longitud_nombre) + 1  
+			  + sizeof(uint32_t) * 2; 
+	
+	paquete->buffer->size = bytes;
+
+	void* stream = malloc(paquete->buffer->size);
+    int offset = 0;
+
+	memcpy(stream + offset, (&valor->operacion), sizeof(valor->operacion));
+	offset += sizeof(valor->operacion);
+	memcpy(stream + offset,( &valor->longitud_nombre), sizeof(uint32_t));
+	offset += sizeof(uint32_t);
+	memcpy(stream + offset, (&valor->nombre_archivo), strlen(valor->longitud_nombre) + 1 );
+	offset += strlen(valor->longitud_nombre) + 1 ;
+	memcpy(stream + offset, (&valor->puntero), sizeof(uint32_t));
+
+	paquete->buffer->stream = stream;
+
+	return paquete;
+}
+
+t_opfilesystem* deserializar_op_filesystem(t_buffer* buffer)
+{
+	t_opfilesystem* valor = malloc(sizeof(t_opfilesystem));
+
+	void* stream = buffer->stream;
+
+	memcpy(&(valor->operacion), stream, sizeof(uint32_t));
+	stream += sizeof(uint32_t);
+	memcpy(&(valor->longitud_nombre), stream, sizeof(uint32_t));
+    stream += sizeof(uint32_t);
+    valor->nombre_archivo = malloc(valor->longitud_nombre);
+    memcpy(valor->nombre_archivo, stream, valor->longitud_nombre);
+	stream += valor->longitud_nombre;
+	memcpy(&(valor->puntero), stream, sizeof(uint32_t));
+	
+	return valor; 
+}

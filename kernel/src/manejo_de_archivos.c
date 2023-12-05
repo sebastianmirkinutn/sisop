@@ -121,7 +121,7 @@ void file_open(void* arg)
     
     
     enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
-    enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
+    enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem); //SERIALIZAR
     recv(arg_h->socket_filesystem, &(arg_h->tam_archivo), sizeof(int32_t), MSG_WAITALL);
     if(arg_h->tam_archivo != -1)
     {
@@ -136,7 +136,7 @@ void file_open(void* arg)
         printf("El archivo no existe\n");
         //Se le pide a Filesystem que cree el archivo
         enviar_operacion(arg_h->socket_filesystem, CREAR_ARCHIVO);
-        enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
+        enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem); //SERIALIZAR
         printf("Mandé el nombre del archivo\n");
         //Podríamos recibir un OK, de hecho creo que hay que recibirlo
         respuesta = recibir_respuesta(arg_h->socket_filesystem);
@@ -164,10 +164,10 @@ void file_read(void* arg)
     t_response respuesta;
 
     enviar_operacion(arg_h->socket_filesystem, LEER_ARCHIVO);
-    enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
+    enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem); //SERIALIZAR (OP, NOMBRE_ARCHIVO, PUNTERO)
     t_archivo* archivo = buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
     send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t),0);
-    enviar_direccion(arg_h->socket_memoria, arg_h->direccion);
+    enviar_direccion(arg_h->socket_memoria, arg_h->direccion); //SERIALIZAR NO HACE FALTA
     //recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
     sem_post(&mutex_file_management);
     liberar_parametros(arg_h);
@@ -183,7 +183,7 @@ void file_write(void* arg)
     enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
     t_archivo* archivo = buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
     send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t),0);
-    enviar_direccion(arg_h->socket_filesystem, arg_h->direccion);
+    enviar_direccion(arg_h->socket_filesystem, arg_h->direccion); //SERIALIZAR (OPERACION, NOMBRE, PUNTERO, DIRECCION)
     respuesta = recibir_respuesta(arg_h->socket_filesystem);
     switch (respuesta)
         {
@@ -218,7 +218,7 @@ void file_truncate(void* arg)
     //printf("Pido truncar %s a %u", arg_h->nombre_archivo, arg_h->tam_archivo);
     enviar_operacion(arg_h->socket_filesystem, TRUNCAR_ARCHIVO);
     enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
-    send(arg_h->socket_filesystem, &(arg_h->tam_archivo), sizeof(uint32_t), NULL);
+    send(arg_h->socket_filesystem, &(arg_h->tam_archivo), sizeof(uint32_t), NULL);  //SERIALIZAR
     respuesta = recibir_respuesta(arg_h->socket_filesystem);
         switch (respuesta)
         {

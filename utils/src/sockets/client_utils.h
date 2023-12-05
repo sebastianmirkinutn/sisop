@@ -23,5 +23,7 @@ void enviar_paquete(t_paquete *paquete, int socket_cliente);
 void eliminar_paquete(t_paquete *paquete);
 void enviar_operacion (int socket, op_code operacion);
 void enviar_respuesta (int socket, t_response respuesta);
+t_opfilesystem* deserializar_op_filesystem(t_buffer* buffer);
+t_paquete* serializar_op_filesystem(t_opfilesystem* valor);
 
 #endif
