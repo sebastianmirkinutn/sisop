@@ -1,2 +1,4 @@
 F_OPEN arch1 W
+F_TRUNCATE arch1 5000
 F_SEEK arch1 12
+EXIT
