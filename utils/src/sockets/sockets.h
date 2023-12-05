@@ -1,6 +1,8 @@
 #ifndef SOCKETS_H
 #define SOCKETS_H
 
+#include <stdint.h>
+
 typedef enum
 {  MENSAJE,
 	PAQUETE,
@@ -33,7 +35,7 @@ typedef enum
 
 typedef struct
 {
-	int size;
+	uint32_t size;
 	void* stream;
 } t_buffer;
 
@@ -45,7 +47,7 @@ typedef struct
 
 typedef struct
 {
-	int size_mensaje;
+	uint32_t size_mensaje;
 	char* mensaje;
 } t_mensaje;
 

@@ -43,6 +43,7 @@
         "lock.h": "c",
         "operaciones.h": "c",
         "bloques.h": "c",
-        "cmath": "c"
+        "cmath": "c",
+        "ctype.h": "c"
     }
 }
