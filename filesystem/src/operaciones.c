@@ -67,8 +67,6 @@ int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 	uint32_t por_asignar = size - archivo->tam_archivo;
 	uint32_t tam_teorico = ceil(archivo->tam_archivo / tam_bloque) * tam_bloque;
 	uint32_t bytes_libres = tam_teorico - archivo->tam_archivo;
-
-	t_fcb* fcb;
 	
 	if(archivo->bloque_inicial == UINT32_MAX)
 	{
@@ -126,60 +124,56 @@ uint32_t ultimo_bloque(uint32_t puntero)
 	}
 	return puntero;
 }
-/*
-int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
+
+uint32_t penultimo_bloque(uint32_t puntero)
 {
-	uint32_t bytes_por_asignar = size - archivo->tam_archivo;
-	uint32_t tam_teorico = ceil(archivo->tam_archivo / tam_bloque) * tam_bloque;
-	uint32_t bytes_libres = tam_teorico - archivo->tam_archivo;
-	printf("size = %i\n",size);
-	printf("archivo->tam_archivo = %i\n",archivo->tam_archivo);
-	printf("tam_teorico = %i\n",tam_teorico);
-	printf("bytes_libres = %i\n",bytes_libres);
-
-	printf("BLOQUES POR ASIGNAR = %f\n", ( (float)bytes_por_asignar - (float)bytes_libres) / (float)tam_bloque);
-
-	uint32_t bloques_por_asignar = ceil(((double)bytes_por_asignar - (double)bytes_libres) / (double)tam_bloque);
-
-	uint32_t ult_bloque;
-
-	//Acá podríamos validar si hay bloques libres suficientes
-
-	printf("BLOQUES POR ASIGNAR = %i\n", bloques_por_asignar);
-	if(archivo->bloque_inicial == UINT32_MAX)
+	uint32_t puntero_sig = puntero;
+	uint32_t puntero_penult = puntero;
+	while(puntero_sig != UINT32_MAX)
 	{
-		archivo->bloque_inicial = obtener_bloque_libre();
-		fat->memory_map[archivo->bloque_inicial] = UINT32_MAX;
-		bytes_por_asignar -= tam_bloque;
-		archivo->tam_archivo += tam_bloque;
-		config_set_value(archivo->config, "BLOQUE_INICIAL", int_to_string(archivo->bloque_inicial));
-		config_save(archivo->config);
-		if(bytes_por_asignar <= 0)
+		puntero_sig = fat->memory_map[puntero];
+		if(puntero_sig != UINT32_MAX)
 		{
-			config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
-			return;
+			puntero = puntero_sig;
+			puntero_penult = puntero;
 		}
 	}
-	bloques_por_asignar -= 1;
-	printf("BLOQUES POR ASIGNAR = %i\n", bloques_por_asignar);
-	ult_bloque = ultimo_bloque(archivo->bloque_inicial);
-	for(uint32_t i = 0; i < bloques_por_asignar; i++)
-	{
-		uint32_t nuevo_bloque = obtener_bloque_libre();
-		fat->memory_map[nuevo_bloque] = UINT32_MAX;
-		fat->memory_map[ult_bloque] = nuevo_bloque;
-		ult_bloque = nuevo_bloque;
-	}
-	config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
-	return;
+	return puntero_penult;
 }
-*/
+
+void achicar_archivo(t_fcb* archivo, uint32_t size)
+{
+	uint32_t por_quitar = archivo->tam_archivo - size;
+	uint32_t tam_teorico = ceil(archivo->tam_archivo / tam_bloque) * tam_bloque;
+	uint32_t bytes_libres = tam_teorico - archivo->tam_archivo;
+
+	if(por_quitar< bytes_libres)
+	{
+		archivo->tam_archivo -= por_quitar;
+		return;
+	}
+	else
+	{
+		archivo->tam_archivo -= bytes_libres;
+		por_quitar -= bytes_libres;
+
+		while(por_quitar > 0)
+		{
+			uint32_t ult_bloque = ultimo_bloque(archivo->bloque_inicial);
+			uint32_t penult_bloque = penultimo_bloque(archivo->bloque_inicial);
+			fat->memory_map[ult_bloque] = 0;
+			fat->memory_map[penult_bloque] = UINT32_MAX;
+			archivo->tam_archivo -= MIN(tam_bloque, por_quitar);
+			por_quitar -= MIN(tam_bloque, por_quitar);;
+		}
+	}
+}
+
 int32_t truncar_archivo(char* nombre, uint32_t size)
 {
 	printf("truncar_archivo\n");
 	t_fcb* archivo = buscar_archivo(nombre, archivos_abiertos);
 	printf("Encontré al archivo\n");
-	//archivo->tam_archivo = size; //Faltan validaciones
 
 	if(size > archivo->tam_archivo) //Se amplía
 	{
@@ -192,7 +186,10 @@ int32_t truncar_archivo(char* nombre, uint32_t size)
 	}
 	else if (size < archivo->tam_archivo) // Valido que no sea igual porque en ese caso no se hace nada
 	{
-
+		achicar_archivo(archivo, size);
+		mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
+		config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
+		config_save(archivo->config);
 	}
 	
 archivo->tam_archivo = size;

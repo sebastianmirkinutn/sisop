@@ -61,8 +61,3 @@ uint32_t obtener_bloque_libre()
     }
     return UINT32_MAX;
 }
-
-FILE* crear_fat(char* path, uint32_t size)
-{
-    //FILE* fat = fopen(path, "rw")
-}
