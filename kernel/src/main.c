@@ -81,8 +81,8 @@ t_list* iniciar_lista_de_recursos(char** a_recursos, char** a_instancias)
     return recursos;   
 }
 
-int main(int argc, char* argv[]){
-   
+int main(int argc, char* argv[])
+{  
     t_log* logger = iniciar_logger("log_kernel","Kernel");
     t_config* config = iniciar_config("./cfg/kernel.config");
     

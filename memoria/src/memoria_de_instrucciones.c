@@ -25,9 +25,9 @@ void conexion_cpu(void* arg)
         case FETCH_INSTRUCCION:
             uint32_t program_counter;
             recv(arg_h->socket_cpu, &pid, sizeof(uint32_t), MSG_WAITALL);
-            //log_info(logger_hilo,"pid: %i", pid);
+            log_info(logger_hilo,"pid: %i", pid);
             recv(arg_h->socket_cpu, &program_counter, sizeof(uint32_t), MSG_WAITALL);
-            //log_info(logger_hilo,"ip: %i", program_counter);
+            log_info(logger_hilo,"ip: %i", program_counter);
 
             sem_wait(&cantidad_de_procesos);
             t_proceso* proceso = buscar_proceso(pid);

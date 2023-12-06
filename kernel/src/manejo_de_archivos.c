@@ -203,13 +203,6 @@ void file_write(void* arg)
     liberar_parametros(arg_h);
 }
 
-void file_close(void* arg)
-{
-    t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
-    t_response respuesta;
-    
-}
-
 void file_truncate(void* arg)
 {
     sem_wait(&mutex_file_management);
@@ -224,7 +217,7 @@ void file_truncate(void* arg)
         {
             case OK:
                 sem_wait(&mutex_cola_ready);
-                queue_push(cola_ready, execute); // Debería ser en la primera posición.
+                agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
                 sem_post(&mutex_cola_ready);
                 sem_post(&procesos_en_ready);
                 break;
@@ -233,4 +226,16 @@ void file_truncate(void* arg)
         }
     sem_post(&mutex_file_management);
     liberar_parametros(arg_h);
+}
+
+void file_close(void* arg)
+{
+    sem_wait(&mutex_file_management);
+    t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
+    t_response respuesta;
+ 
+   sem_wait(&mutex_cola_ready);
+        agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
+        sem_post(&mutex_cola_ready);
+        sem_post(&procesos_en_ready);
 }

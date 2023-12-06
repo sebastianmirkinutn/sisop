@@ -300,7 +300,11 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
 
         case F_CLOSE:
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
-
+            printf("pid= %i - ip= %i\n", execute->pid, execute->contexto->PC);
+            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
+            pthread_create(&h_file_truncate, NULL, &file_close, (void*)argumentos_file_management);
+            pthread_detach(h_file_truncate);
+/*
             bool es_el_archivo(void* arg)
             {
                 return(((t_archivo*)arg)->nombre == nombre_archivo);
@@ -347,11 +351,8 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
                     }
                 }
             }
-
-            sem_wait(&mutex_cola_ready);
-            agregar_primero_en_cola(cola_ready, execute);
-            sem_post(&mutex_cola_ready);
-            sem_post(&procesos_en_ready);
+*/
+     
             break;
         default:
             break;

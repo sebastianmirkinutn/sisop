@@ -39,5 +39,6 @@ void file_open(void* arg);
 void file_truncate(void* arg);
 void file_write(void* arg);
 void file_read(void* arg);
+void file_close(void* arg);
 
 #endif

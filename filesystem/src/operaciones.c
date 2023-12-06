@@ -156,15 +156,30 @@ void achicar_archivo(t_fcb* archivo, uint32_t size)
 	{
 		archivo->tam_archivo -= bytes_libres;
 		por_quitar -= bytes_libres;
-
-		while(por_quitar > 0)
+uint32_t ult_bloque = ultimo_bloque(archivo->bloque_inicial);
+			uint32_t penult_bloque = penultimo_bloque(archivo->bloque_inicial);
+			printf("ult = %i - penult = %i\n", ult_bloque, penult_bloque);
+		while(por_quitar > tam_bloque)
 		{
 			uint32_t ult_bloque = ultimo_bloque(archivo->bloque_inicial);
 			uint32_t penult_bloque = penultimo_bloque(archivo->bloque_inicial);
-			fat->memory_map[ult_bloque] = 0;
-			fat->memory_map[penult_bloque] = UINT32_MAX;
-			archivo->tam_archivo -= MIN(tam_bloque, por_quitar);
-			por_quitar -= MIN(tam_bloque, por_quitar);;
+			printf("ult = %i - penult = %i\n", ult_bloque, penult_bloque);
+			if(ult_bloque != penult_bloque)
+			{
+				fat->memory_map[ult_bloque] = 0;
+				fat->memory_map[penult_bloque] = UINT32_MAX;
+				archivo->tam_archivo -= MIN(tam_bloque, por_quitar);
+			}
+			else
+			{
+				fat->memory_map[ult_bloque] = 0;
+				archivo->bloque_inicial = UINT32_MAX;
+			}
+			por_quitar -= tam_bloque;
+		}
+		if(por_quitar > 0)
+		{
+			archivo->tam_archivo -= por_quitar;
 		}
 	}
 }
@@ -189,6 +204,7 @@ int32_t truncar_archivo(char* nombre, uint32_t size)
 		achicar_archivo(archivo, size);
 		mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
 		config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
+		config_set_value(archivo->config, "BLOQUE_INICIAL", int_to_string(archivo->bloque_inicial));
 		config_save(archivo->config);
 	}
 	
