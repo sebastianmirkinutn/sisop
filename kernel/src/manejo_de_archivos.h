@@ -40,5 +40,6 @@ void file_truncate(void* arg);
 void file_write(void* arg);
 void file_read(void* arg);
 void file_close(void* arg);
+void file_seek(void* arg);
 
 #endif

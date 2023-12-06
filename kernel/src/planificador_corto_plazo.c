@@ -269,25 +269,14 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             recv(arg_h->socket_dispatch, &puntero, sizeof(uint32_t), MSG_WAITALL);
 
-            log_info(logger_hilo, "Busco el archivo %s en %i", nombre_archivo, tabla_global_de_archivos);
-            sem_wait(&mutex_tabla_global_de_archivos);
-            archivo = buscar_archivo(tabla_global_de_archivos, nombre_archivo);
-            sem_post(&mutex_tabla_global_de_archivos);
+            pthread_t h_file_seek;
+            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
+            argumentos_file_management->tam_archivo = tam_archivo;
+            argumentos_file_management->execute = execute;
 
-            if(archivo != NULL)
-            {
-                archivo->puntero = puntero;
-                log_info(logger_hilo, "Archivo: %i - Puntero: %i", archivo->nombre, puntero);
-                agregar_primero_en_cola(cola_ready, execute);
-                sem_post(&mutex_cola_ready);
-                sem_post(&procesos_en_ready);
+            pthread_create(&h_file_seek, NULL, &file_seek, (void*)argumentos_file_management);
+            pthread_detach(h_file_seek);
 
-            }
-            else
-            {
-                log_error(logger_hilo, "El archivo no existe");
-            }
-            //sem_post(&mutex_file_management);
             break;
 
         case F_TRUNCATE:
@@ -299,6 +288,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
             argumentos_file_management->tam_archivo = tam_archivo;
             argumentos_file_management->execute = execute;
+            argumentos_file_management->puntero = puntero;
             pthread_create(&h_file_truncate, NULL, &file_truncate, (void*)argumentos_file_management);
             pthread_detach(h_file_truncate);
             printf("pthread_detach(h_file_truncate);\n");

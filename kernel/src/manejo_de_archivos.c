@@ -296,3 +296,29 @@ void file_close(void* arg)
     sem_post(&procesos_en_ready);
     sem_post(&mutex_file_management);
 }
+
+void file_seek(void* arg)
+{
+    t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
+    t_response respuesta;
+ 
+    sem_wait(&mutex_file_management);
+    log_info(arg_h->logger, "Busco el archivo %s en %i", arg_h->nombre_archivo, tabla_global_de_archivos);
+    sem_wait(&mutex_tabla_global_de_archivos);
+    t_archivo* archivo = buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
+    sem_post(&mutex_tabla_global_de_archivos);
+    if(archivo != NULL)
+    {
+        archivo->puntero = arg_h->puntero;
+        log_info(arg_h->logger, "Archivo: %i - Puntero: %i", archivo->nombre, arg_h->puntero);
+        sem_wait(&mutex_cola_ready);
+        agregar_primero_en_cola(cola_ready, execute);
+        sem_post(&mutex_cola_ready);
+        sem_post(&procesos_en_ready);
+    }
+    else
+    {
+        log_error(arg_h->logger, "El archivo no existe");
+    }
+    sem_post(&mutex_file_management);
+}
