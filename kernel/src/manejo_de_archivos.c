@@ -284,7 +284,9 @@ void file_truncate(void* arg)
 
 void file_close(void* arg)
 {
+    printf("file_close()\n");
     sem_wait(&mutex_file_management);
+    printf("ejecuta file_close()\n");
     t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
     t_response respuesta;
  
@@ -292,4 +294,5 @@ void file_close(void* arg)
     agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
     sem_post(&mutex_cola_ready);
     sem_post(&procesos_en_ready);
+    sem_post(&mutex_file_management);
 }
