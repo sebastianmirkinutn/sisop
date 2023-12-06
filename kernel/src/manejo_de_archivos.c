@@ -84,8 +84,14 @@ void file_open(void* arg)
                 list_add(archivo->locks_lectura, execute); //no se bloquea el proceso
                 sem_post(&(archivo->mutex_cola_blocked));
                 sem_wait(&mutex_cola_ready);
-                agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
+                printf("execute = %i - arg_h->execute = %i\n",execute->pid, arg_h->execute->pid);
+                agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
                 sem_post(&procesos_en_ready);
+                
+                sem_post(&mutex_file_management);
+                printf("TERMINA EL HILO\n");
+                liberar_parametros(arg_h);
+                return;
             } 
             else 
             {
@@ -126,8 +132,9 @@ void file_open(void* arg)
     if(arg_h->tam_archivo != -1)
     {
         printf("El archivo tiene un tamaño de %i bytes\n", arg_h->tam_archivo);
+        execute->estado = READY;
         sem_wait(&mutex_cola_ready);
-        agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
+        agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
         sem_post(&mutex_cola_ready);
         sem_post(&procesos_en_ready);
     }
@@ -144,7 +151,7 @@ void file_open(void* arg)
         {
             case OK:
                 sem_wait(&mutex_cola_ready);
-                agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
+                agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
                 sem_post(&mutex_cola_ready);
                 sem_post(&procesos_en_ready);
                 break;
@@ -190,7 +197,7 @@ void file_write(void* arg)
             case OK:
                 printf("OK escritura\n");
                 sem_wait(&mutex_cola_ready);
-                agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
+                agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
                 enviar_operacion(arg_h->socket_interrupt, CLOCK_INTERRUPT); //Cambiar a I/O interrupt
                 sem_post(&mutex_cola_ready);
                 sem_post(&procesos_en_ready);
@@ -217,7 +224,7 @@ void file_truncate(void* arg)
         {
             case OK:
                 sem_wait(&mutex_cola_ready);
-                agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
+                agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
                 sem_post(&mutex_cola_ready);
                 sem_post(&procesos_en_ready);
                 break;
@@ -235,7 +242,7 @@ void file_close(void* arg)
     t_response respuesta;
  
    sem_wait(&mutex_cola_ready);
-        agregar_primero_en_cola(cola_ready, execute); // Debería ser en la primera posición.
+        agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
         sem_post(&mutex_cola_ready);
         sem_post(&procesos_en_ready);
 }

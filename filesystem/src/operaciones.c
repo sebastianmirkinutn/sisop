@@ -207,8 +207,12 @@ int32_t truncar_archivo(char* nombre, uint32_t size)
 		config_set_value(archivo->config, "BLOQUE_INICIAL", int_to_string(archivo->bloque_inicial));
 		config_save(archivo->config);
 	}
+	else
+	{
+		
+	}
 	
-archivo->tam_archivo = size;
+	return 1;
 
 }
 

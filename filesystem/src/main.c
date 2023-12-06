@@ -145,6 +145,7 @@ int main(int argc, char* argv[]) {
 			printf("Truncar %s a %u\n", nombre_archivo, tam_archivo);
 			if(truncar_archivo(nombre_archivo, tam_archivo))
 			{
+				printf("ON\n");
 				enviar_respuesta(socket_kernel, OK);
 			}
 			else

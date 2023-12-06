@@ -226,6 +226,8 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             pthread_t h_file_open;
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
             argumentos_file_management->lock = de_string_a_t_lock(lock);
+            argumentos_file_management->execute = execute;
+            printf("execute = %i - aarg_h->pcb->pid = %i\n",execute->pid, arg_h->pcb->pid);
             pthread_create(&h_file_open, NULL, &file_open, (void*)argumentos_file_management);
             pthread_detach(h_file_open);
                 
@@ -240,6 +242,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             pthread_t h_file_read;
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
             argumentos_file_management->direccion = direccion;
+            argumentos_file_management->execute = execute;
             pthread_create(&h_file_read, NULL, &file_read, (void*)argumentos_file_management);
             pthread_detach(h_file_read);
 
@@ -254,6 +257,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             pthread_t h_file_write;
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
             argumentos_file_management->direccion = direccion;
+            argumentos_file_management->execute = execute;
             printf("Direccion = %i:%i\n", direccion->frame, direccion->offset);
             pthread_create(&h_file_write, NULL, &file_write, (void*)argumentos_file_management);
             pthread_detach(h_file_write);
@@ -293,6 +297,8 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             pthread_t h_file_truncate;
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
             argumentos_file_management->tam_archivo = tam_archivo;
+            argumentos_file_management->execute = execute;
+            argumentos_file_management->socket_filesystem = arg_h->socket_filesystem;
             pthread_create(&h_file_truncate, NULL, &file_truncate, (void*)argumentos_file_management);
             pthread_detach(h_file_truncate);
 
@@ -302,6 +308,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             printf("pid= %i - ip= %i\n", execute->pid, execute->contexto->PC);
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
+            argumentos_file_management->execute = execute;
             pthread_create(&h_file_truncate, NULL, &file_close, (void*)argumentos_file_management);
             pthread_detach(h_file_truncate);
 /*
