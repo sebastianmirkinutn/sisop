@@ -218,8 +218,8 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
 
         case F_OPEN:
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
-            //printf("Me pidieron abrir de %s\n", nombre_archivo);
             lock = recibir_mensaje(arg_h->socket_dispatch);
+            printf("Me pidieron abrir de %s con lock = %i\n", nombre_archivo, de_string_a_t_lock(lock));
             //printf("lock = %s\n", lock);
             
 
@@ -291,6 +291,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             break;
 
         case F_TRUNCATE:
+        printf("ME LLEGO UN F_TRUCNATE\n");
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             recv(arg_h->socket_dispatch, &tam_archivo, sizeof(uint32_t), MSG_WAITALL);
             
@@ -298,9 +299,9 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
             argumentos_file_management->tam_archivo = tam_archivo;
             argumentos_file_management->execute = execute;
-            argumentos_file_management->socket_filesystem = arg_h->socket_filesystem;
             pthread_create(&h_file_truncate, NULL, &file_truncate, (void*)argumentos_file_management);
             pthread_detach(h_file_truncate);
+            printf("pthread_detach(h_file_truncate);\n");
 
             break;
 

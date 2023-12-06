@@ -39,14 +39,15 @@ t_archivo* crear_archivo(char* nombre_archivo, uint32_t tam_archivo, t_lock lock
 t_lock de_string_a_t_lock(char* str)
 {
     t_lock lock = NONE;
-    if(!strcmp(str, "R"))
+    if(str[0] == 'R')
     {
         lock = READ;
     }
-    else if(!strcmp(str, "W"))
+    else if(str[0] == 'W')
     {
         lock = WRITE;
     }
+    return lock;
 }
 
 t_archivo* buscar_archivo(t_list* lista, char* nombre)
@@ -80,18 +81,15 @@ void file_open(void* arg)
             {
                 archivo->contador_aperturas++;
                  printf("arg_h->lock == READ");
-                sem_wait(&(archivo->mutex_cola_blocked));
+                sem_wait(&(archivo->mutex_locks_lectura));
                 list_add(archivo->locks_lectura, execute); //no se bloquea el proceso
-                sem_post(&(archivo->mutex_cola_blocked));
+                sem_post(&(archivo->mutex_locks_lectura));
                 sem_wait(&mutex_cola_ready);
                 printf("execute = %i - arg_h->execute = %i\n",execute->pid, arg_h->execute->pid);
                 agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
+                sem_wait(&mutex_cola_ready);
                 sem_post(&procesos_en_ready);
-                
-                sem_post(&mutex_file_management);
-                printf("TERMINA EL HILO\n");
-                liberar_parametros(arg_h);
-                return;
+            
             } 
             else 
             {
@@ -99,17 +97,45 @@ void file_open(void* arg)
                 sem_wait(&(archivo->mutex_cola_blocked));
                 list_add(archivo->cola_blocked, execute);
                 sem_post(&(archivo->mutex_cola_blocked));
-                execute->estado = BLOCKED; 
+                execute->estado = BLOCKED;
+                
             }
        
         }
-        else //lock = WRITE
+        else if(arg_h->lock == WRITE)
         {
+            int temp;
+            sem_getvalue(&(archivo->mutex_cola_blocked), &temp);
+            printf("archivo->mutex_cola_blocked = %i\n", temp);
             sem_wait(&(archivo->mutex_cola_blocked));
             list_add(archivo->cola_blocked, execute);
             sem_post(&(archivo->mutex_cola_blocked));
             execute->estado = BLOCKED;
+            sem_post(&mutex_file_management);
+            printf("TERMINA EL HILO\n");
+            liberar_parametros(arg_h);
         }
+        else //Ningún archivo lo tiene abierto
+        {
+            archivo->contador_aperturas++;
+            archivo->lock = READ;
+            printf("arg_h->lock == READ");
+            sem_wait(&(archivo->mutex_locks_lectura));
+            list_add(archivo->locks_lectura, execute); //no se bloquea el proceso
+            sem_post(&(archivo->mutex_locks_lectura));
+            sem_wait(&mutex_cola_ready);
+            printf("execute = %i - arg_h->execute = %i\n",execute->pid, arg_h->execute->pid);
+            agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
+            printf("1");
+            sem_wait(&mutex_cola_ready);
+            printf("2");
+            sem_post(&procesos_en_ready);
+            printf("3");
+            sem_post(&mutex_file_management);
+            liberar_parametros(arg_h);
+            return;
+        }
+        
     }
     else
     {
@@ -120,48 +146,51 @@ void file_open(void* arg)
         sem_wait(&mutex_tabla_global_de_archivos);
         list_add(tabla_global_de_archivos, archivo);
         sem_post(&mutex_tabla_global_de_archivos);
-    }
+
+        list_add(execute->tabla_de_archivos_abiertos, archivo);
+        log_info(arg_h->logger, "Agregué el archivo %s en %i", archivo->nombre, tabla_global_de_archivos);
     
-    list_add(execute->tabla_de_archivos_abiertos, archivo);
-    log_info(arg_h->logger, "Agregué el archivo %s en %i", archivo->nombre, tabla_global_de_archivos);
+  
     
     
-    enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
-    enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem); //SERIALIZAR
-    recv(arg_h->socket_filesystem, &(arg_h->tam_archivo), sizeof(int32_t), MSG_WAITALL);
-    if(arg_h->tam_archivo != -1)
-    {
-        printf("El archivo tiene un tamaño de %i bytes\n", arg_h->tam_archivo);
-        execute->estado = READY;
-        sem_wait(&mutex_cola_ready);
-        agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
-        sem_post(&mutex_cola_ready);
-        sem_post(&procesos_en_ready);
-    }
-    else
-    {
-        printf("El archivo no existe\n");
-        //Se le pide a Filesystem que cree el archivo
-        enviar_operacion(arg_h->socket_filesystem, CREAR_ARCHIVO);
+        enviar_operacion(arg_h->socket_filesystem, ABRIR_ARCHIVO);
         enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem); //SERIALIZAR
-        printf("Mandé el nombre del archivo\n");
-        //Podríamos recibir un OK, de hecho creo que hay que recibirlo
-        respuesta = recibir_respuesta(arg_h->socket_filesystem);
-        switch (respuesta)
+        recv(arg_h->socket_filesystem, &(arg_h->tam_archivo), sizeof(int32_t), MSG_WAITALL);
+        if(arg_h->tam_archivo != -1)
         {
-            case OK:
-                sem_wait(&mutex_cola_ready);
-                agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
-                sem_post(&mutex_cola_ready);
-                sem_post(&procesos_en_ready);
-                break;
-            default:
-                break;
+            printf("El archivo tiene un tamaño de %i bytes (lock = %i)\n", arg_h->tam_archivo, arg_h->lock);
+            execute->estado = READY;
+            sem_wait(&mutex_cola_ready);
+            agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
+            sem_post(&mutex_cola_ready);
+            sem_post(&procesos_en_ready);
+        }
+        else
+        {
+            printf("El archivo no existe\n");
+            //Se le pide a Filesystem que cree el archivo
+            enviar_operacion(arg_h->socket_filesystem, CREAR_ARCHIVO);
+            enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem); //SERIALIZAR
+            printf("Mandé el nombre del archivo\n");
+            //Podríamos recibir un OK, de hecho creo que hay que recibirlo
+            respuesta = recibir_respuesta(arg_h->socket_filesystem);
+            switch (respuesta)
+            {
+                case OK:
+                    sem_wait(&mutex_cola_ready);
+                    agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
+                    sem_post(&mutex_cola_ready);
+                    sem_post(&procesos_en_ready);
+                    break;
+                default:
+                    break;
+            }
         }
     }
     sem_post(&mutex_file_management);
     printf("TERMINA EL HILO\n");
     liberar_parametros(arg_h);
+    return;
 }
 
 void file_read(void* arg)
@@ -212,10 +241,12 @@ void file_write(void* arg)
 
 void file_truncate(void* arg)
 {
+    printf("Empieza file_truncate()\n");
     sem_wait(&mutex_file_management);
     t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
     t_response respuesta;
-    //printf("Pido truncar %s a %u", arg_h->nombre_archivo, arg_h->tam_archivo);
+    printf("PRINT");
+    printf("Pido truncar %s a %u", arg_h->nombre_archivo, arg_h->tam_archivo);
     enviar_operacion(arg_h->socket_filesystem, TRUNCAR_ARCHIVO);
     enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
     send(arg_h->socket_filesystem, &(arg_h->tam_archivo), sizeof(uint32_t), NULL);  //SERIALIZAR
@@ -223,6 +254,10 @@ void file_truncate(void* arg)
         switch (respuesta)
         {
             case OK:
+            printf("OK\n");
+            int temp;
+            sem_getvalue(&mutex_cola_ready, &temp);
+            printf("mutex_cola_ready = %i\n", temp); 
                 sem_wait(&mutex_cola_ready);
                 agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
                 sem_post(&mutex_cola_ready);
@@ -232,6 +267,7 @@ void file_truncate(void* arg)
                 break;
         }
     sem_post(&mutex_file_management);
+    printf("TERMINA EL HILO\n");
     liberar_parametros(arg_h);
 }
 
@@ -241,8 +277,8 @@ void file_close(void* arg)
     t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
     t_response respuesta;
  
-   sem_wait(&mutex_cola_ready);
-        agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
-        sem_post(&mutex_cola_ready);
-        sem_post(&procesos_en_ready);
+    sem_wait(&mutex_cola_ready);
+    agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
+    sem_post(&mutex_cola_ready);
+    sem_post(&procesos_en_ready);
 }
