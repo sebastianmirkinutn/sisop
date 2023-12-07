@@ -345,18 +345,31 @@ void imprimir_procesos_por_estado()
     {
         printf("PID: %i - Archivo de pseudocódigo: %s\n", ((t_pcb*)arg)->pid, ((t_pcb*)arg)->archivo_de_pseudocodigo);
     }
-            //t_list_iterator* lista_para_iterar = list_iterator_create(cola_new->elements);
-            //char* pids = string_new();
+            //MOSTRAMOS LOS PROCESOS EN NEW 
+            printf("Estado: NEW\n");
             list_iterate(cola_new->elements, imprimir_proceso);
             
+            //MOSTRAMOS LOS PROCESOS EN READY
+            printf("Estado: READY\n");
+            list_iterate(cola_ready->elements, imprimir_proceso);
             
-            
-            /*
-            while(list_iterator_has_next(lista_para_iterar))
+            //PRIMERO LOS BLOQUEADOS POR RECURSOS
+            printf("Estado: BLOQUEADOS - Motivo: Recursos\n");
+            for(int i = 0; i < list_size(recursos_disponibles); i++)
             {
-                t_pcb* proceso = list_iterator_next(lista_para_iterar);
-                string_append(pids,string_itoa(proceso->pid));
-                string_append(pids, ", ");
+                t_recurso* recurso = list_get(recursos_disponibles, i);
+                list_iterate(recurso->cola_blocked->elements, imprimir_proceso);
             }
-*/
+
+            //SEGUNDO LOS BLOQUEADOS POR ARCHIVOS
+            printf("Estado: BLOQUEADOS - Motivo: Archivos\n");
+            for(int i = 0; i < list_size(tabla_global_de_archivos); i++)
+            {
+                t_archivo* archivo = list_get(tabla_global_de_archivos, i);
+                list_iterate(cola_new->elements, imprimir_proceso);
+            }
+
+            //MOSTRAMOS LOS PROCESOS EN EXIT 
+            printf("Estado: EXIT\n");
+            list_iterate(cola_exit->elements, imprimir_proceso);
 }
