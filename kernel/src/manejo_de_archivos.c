@@ -82,7 +82,8 @@ void file_open(void* arg)
                 archivo->contador_aperturas++;
                 printf("arg_h->lock == READ");
                 sem_wait(&(archivo->mutex_locks_lectura));
-                list_add(archivo->locks_lectura, execute); //no se bloquea el proceso
+                list_add(archivo->locks_lectura, arg_h->execute); //no se bloquea el proceso
+                list_add(arg_h->execute->tabla_de_archivos_abiertos, archivo);
                 sem_post(&(archivo->mutex_locks_lectura));
                 sem_wait(&mutex_cola_ready);
                 printf("execute = %i - arg_h->execute = %i\n",execute->pid, arg_h->execute->pid);
@@ -99,7 +100,7 @@ void file_open(void* arg)
                 bloqueado->pcb = arg_h->execute;
                 bloqueado->lock = arg_h->lock;
                 sem_wait(&(archivo->mutex_cola_blocked));
-                list_add(archivo->cola_blocked, bloqueado);
+                queue_push(archivo->cola_blocked, bloqueado);
                 sem_post(&(archivo->mutex_cola_blocked));
             }
        
@@ -113,7 +114,8 @@ void file_open(void* arg)
             bloqueado->lock = arg_h->lock;
             printf("archivo->mutex_cola_blocked = %i\n", temp);
             sem_wait(&(archivo->mutex_cola_blocked));
-            list_add(archivo->cola_blocked, bloqueado);
+            queue_push(archivo->cola_blocked, bloqueado);
+            printf("Agrego al proceso %i a bloqueado por lock (hay %i procesos)\n", bloqueado->pcb->pid, archivo->cola_blocked->elements->elements_count);
             sem_post(&(archivo->mutex_cola_blocked));
             arg_h->execute->estado = BLOCKED;
         }
@@ -123,7 +125,8 @@ void file_open(void* arg)
             archivo->lock = READ;
             printf("arg_h->lock == READ");
             sem_wait(&(archivo->mutex_locks_lectura));
-            list_add(archivo->locks_lectura, execute); //no se bloquea el proceso
+            list_add(archivo->locks_lectura, arg_h->execute); //no se bloquea el proceso
+            list_add(arg_h->execute->tabla_de_archivos_abiertos, archivo);
             sem_post(&(archivo->mutex_locks_lectura));
             sem_wait(&mutex_cola_ready);
             printf("execute = %i - arg_h->execute = %i\n",execute->pid, arg_h->execute->pid);
@@ -143,9 +146,10 @@ void file_open(void* arg)
         printf("archivo->nombre == %s\n", archivo->nombre);
         sem_wait(&mutex_tabla_global_de_archivos);
         list_add(tabla_global_de_archivos, archivo);
+        list_add(arg_h->execute->tabla_de_archivos_abiertos, archivo);
         sem_post(&mutex_tabla_global_de_archivos);
 
-        list_add(execute->tabla_de_archivos_abiertos, archivo);
+        list_add(arg_h->execute->tabla_de_archivos_abiertos, archivo);
         log_info(arg_h->logger, "Agregué el archivo %s en %i", archivo->nombre, tabla_global_de_archivos);
     
   
@@ -157,7 +161,7 @@ void file_open(void* arg)
         if(arg_h->tam_archivo != -1)
         {
             printf("El archivo tiene un tamaño de %i bytes (lock = %i)\n", arg_h->tam_archivo, arg_h->lock);
-            execute->estado = READY;
+            arg_h->execute->estado = READY;
             sem_wait(&mutex_cola_ready);
             queue_push(cola_ready, arg_h->execute);
             sem_post(&mutex_cola_ready);
@@ -280,6 +284,7 @@ void file_close(void* arg)
 {
     t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
     t_archivo* archivo;
+    t_proceso_bloqueado_por_fs* proceso_bloqueado;
     bool es_el_archivo(void* arg)
     {
         return(((t_archivo*)arg)->nombre == arg_h->nombre_archivo);
@@ -292,13 +297,17 @@ void file_close(void* arg)
     {
         return(((t_proceso_bloqueado_por_fs*)arg)->lock == READ);
     }
-    void iterator_agregar_a_reaady(void* arg)
+    void iterator_agregar_a_ready(void* arg)
     {
         queue_push(cola_ready,(t_pcb*)arg);
     }
     void iterator_agregar_a_locks_lectura(void* arg)
-    {
-        list_add(archivo->locks_lectura,((t_proceso_bloqueado_por_fs*)arg)->pcb);
+    {   
+        if((t_proceso_bloqueado_por_fs*)arg != proceso_bloqueado)
+        {
+            list_add(archivo->locks_lectura,((t_proceso_bloqueado_por_fs*)arg)->pcb);
+            sem_post(&procesos_en_ready);
+        }
     }
     printf("file_close()\n");
     sem_wait(&mutex_file_management);
@@ -308,7 +317,8 @@ void file_close(void* arg)
     archivo = buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
     if(archivo != NULL)
     {
-        printf("archivo != NULL\n");
+        printf("archivo != NULL (es %s)\n", archivo->nombre);
+        printf("Procesos bloqueados por lock = %i\n",archivo->cola_blocked->elements->elements_count);
         list_remove_by_condition(arg_h->execute->tabla_de_archivos_abiertos, es_el_archivo);
         if(archivo->lock == READ)
         {
@@ -320,10 +330,10 @@ void file_close(void* arg)
                 printf("archivo->locks_lectura->elements_count == 0\n");
                 if (archivo->cola_blocked->elements->elements_count != 0)
                 {
-                    t_pcb* proceso_bloqueado = queue_pop(archivo->cola_blocked);
+                    proceso_bloqueado = queue_pop(archivo->cola_blocked);
                     archivo->lock = WRITE;
                     arg_h->execute->estado = READY;
-                    list_add(proceso_bloqueado->tabla_de_archivos_abiertos, archivo);
+                    list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo);
                     sem_wait(&mutex_cola_ready);
                     queue_push(&cola_ready, proceso_bloqueado);
                     sem_post(&mutex_cola_ready);
@@ -339,52 +349,46 @@ void file_close(void* arg)
         }
         else
         {
-            sem_wait(&(archivo->mutex_cola_blocked));
-            t_proceso_bloqueado_por_fs* proceso_bloqueado = queue_pop(archivo->cola_blocked);
-            sem_post(&(archivo->mutex_cola_blocked));
-
-            if(proceso_bloqueado != NULL)
+            if(archivo->cola_blocked->elements->elements_count > 0)
             {
 
-                archivo->lock = proceso_bloqueado->lock;
-                if(proceso_bloqueado->lock == WRITE)
+                sem_wait(&(archivo->mutex_cola_blocked));
+                proceso_bloqueado = queue_pop(archivo->cola_blocked);
+                sem_post(&(archivo->mutex_cola_blocked));
+                if(proceso_bloqueado != NULL)
                 {
+                    printf("EL PROCESO BLOQUEADO ES EL QUE TIENE PID = %i\n", proceso_bloqueado->pcb->pid);
                     sem_wait(&mutex_cola_ready);
                     queue_push(cola_ready, proceso_bloqueado->pcb);
                     sem_post(&mutex_cola_ready);
-                }
-                else if(proceso_bloqueado->lock == READ)
-                {
-                    list_add(archivo->locks_lectura, proceso_bloqueado->pcb);
-                    t_list* procesos_lectura = list_filter(archivo->cola_blocked->elements, tiene_lock_lectura);
-                    
-                    t_list_iterator* iterator = list_iterator_create(procesos_lectura);
-                    list_iterate(iterator, iterator_agregar_a_locks_lectura);
-
-
-                    list_add_all(archivo->locks_lectura, procesos_lectura);
-                    sem_wait(&(archivo->mutex_cola_blocked));
-                    void* element;
-                    do
+                    sem_post(&procesos_en_ready);
+                    list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo);
+    
+                    if(proceso_bloqueado->lock == READ)
                     {
-                        element = list_remove_by_condition(archivo->cola_blocked->elements, tiene_lock_lectura);
+                        //list_add(archivo->locks_lectura, proceso_bloqueado->pcb);
+                        t_list* procesos_lectura = list_filter(archivo->cola_blocked->elements, tiene_lock_lectura);
+                        
+                        t_list_iterator* iterator = list_iterator_create(procesos_lectura);
+                        list_iterate(iterator, iterator_agregar_a_locks_lectura);
+                        list_iterator_destroy(iterator);
+                        iterator = list_iterator_create(archivo->locks_lectura);
+                        sem_wait(&mutex_cola_ready);
+                        list_iterate(iterator, iterator_agregar_a_ready);
+                        sem_post(&mutex_cola_ready);
+                        list_iterator_destroy(iterator);
+                        list_remove_by_condition(archivo->cola_blocked->elements, tiene_lock_lectura);
+                        list_add(archivo->locks_lectura, proceso_bloqueado->pcb); 
                     }
-                    while(element != NULL);
-                    sem_post(&(archivo->mutex_cola_blocked));
-
-                    sem_wait(&mutex_cola_ready);
-                    t_list_iterator* iterator = list_iterator_create(archivo->locks_lectura);
-                    list_iterate(iterator, )
                     
-                    sem_post(&mutex_cola_ready);
+                    
+                    
                 }
-                
-                
-                
             }
             else
             {
                 //Se elimina el archivo
+                log_warning(arg_h->logger, "Se elimina el archivo");
             }
         }
     }
