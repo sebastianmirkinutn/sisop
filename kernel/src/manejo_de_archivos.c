@@ -145,17 +145,17 @@ void file_open(void* arg)
     }
     else
     {
+        archivo_local->archivo = archivo;
+        archivo_local->puntero = 0;
         printf("archivo == NULL\n");
         archivo = crear_archivo(arg_h->nombre_archivo, arg_h->tam_archivo, arg_h->lock); 
         printf("archivo == %i\n", archivo);
         printf("archivo->nombre == %s\n", archivo->nombre);
         sem_wait(&mutex_tabla_global_de_archivos);
         list_add(tabla_global_de_archivos, archivo);
+        list_add(arg_h->execute->tabla_de_archivos_abiertos, archivo_local);
         sem_post(&mutex_tabla_global_de_archivos);
         archivo_local = malloc(sizeof(t_archivo_local));
-        archivo_local->archivo = archivo;
-        archivo_local->puntero = 0;
-        list_add(arg_h->execute->tabla_de_archivos_abiertos, archivo_local);
 
         list_add(arg_h->execute->tabla_de_archivos_abiertos, archivo);
         log_info(arg_h->logger, "Agregué el archivo %s en %i", archivo->nombre, tabla_global_de_archivos);
@@ -292,12 +292,16 @@ void file_close(void* arg)
 {
     t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
     t_archivo* archivo;
-    t_archivo_local* archivo_local;
+    t_archivo_local* archivo_local = malloc(sizeof(t_archivo_local));
     printf("Me piden F_CLOSE de %s\n", arg_h->nombre_archivo);
     t_proceso_bloqueado_por_fs* proceso_bloqueado;
     bool es_el_archivo(void* arg)
     {
         return(((t_archivo*)arg)->nombre == arg_h->nombre_archivo);
+    }
+    bool es_el_archivo_local(void* arg)
+    {
+        return(((t_archivo_local*)arg)->archivo->nombre == arg_h->nombre_archivo);
     }
     bool es_el_proceso(void* arg)
     {
@@ -334,7 +338,7 @@ void file_close(void* arg)
     {
         printf("archivo != NULL (es %s)\n", archivo->nombre);
         printf("Procesos bloqueados por lock = %i\n",archivo->cola_blocked->elements->elements_count);
-        list_remove_by_condition(arg_h->execute->tabla_de_archivos_abiertos, es_el_archivo);
+        list_remove_by_condition(arg_h->execute->tabla_de_archivos_abiertos, es_el_archivo_local);
         if(archivo->lock == READ)
         {
             printf("archivo->lock == READ\n");
@@ -387,21 +391,22 @@ void file_close(void* arg)
                 sem_wait(&(archivo->mutex_cola_blocked));
                 proceso_bloqueado = queue_pop(archivo->cola_blocked);
                 sem_post(&(archivo->mutex_cola_blocked));
-                archivo_local->archivo = archivo;
-                archivo_local->puntero = 0;
-                list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
                 if(proceso_bloqueado != NULL)
+                list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
                 {
                     printf("EL PROCESO BLOQUEADO ES EL QUE TIENE PID = %i\n", proceso_bloqueado->pcb->pid);
                     
     
                     if(proceso_bloqueado->lock == READ && archivo->cola_blocked->elements->elements_count > 0) //Hay que desbloquear otros procesos con READ
                     {
+                        archivo_local->archivo = archivo;
+                        archivo_local->puntero = 0;
                         t_list* procesos_lectura = list_filter(archivo->cola_blocked->elements, tiene_lock_lectura);
                         list_iterate(procesos_lectura, iterator_agregar_a_locks_lectura);
                         sem_wait(&mutex_cola_ready);
-                        list_iterate(archivo->locks_lectura, iterator_agregar_a_ready);
                         queue_push(cola_ready, proceso_bloqueado->pcb);
+                        list_iterate(archivo->locks_lectura, iterator_agregar_a_ready);
+                        list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
                         sem_post(&procesos_en_ready);
                         sem_post(&mutex_cola_ready);
                         void* element;
@@ -455,11 +460,16 @@ void file_seek(void* arg)
 {
     t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
     t_response respuesta;
+
+    bool es_el_archivo_local(void* arg)
+    {
+        return(((t_archivo_local*)arg)->archivo->nombre == arg_h->nombre_archivo);
+    }
  
     sem_wait(&mutex_file_management);
     log_info(arg_h->logger, "Busco el archivo %s en %i", arg_h->nombre_archivo, tabla_global_de_archivos);
     //sem_wait(&mutex_tabla_global_de_archivos);
-    t_archivo_local* archivo = buscar_archivo(arg_h->execute->tabla_de_archivos_abiertos, arg_h->nombre_archivo);
+    t_archivo_local* archivo = list_find(arg_h->execute->tabla_de_archivos_abiertos, es_el_archivo_local);
     //sem_post(&mutex_tabla_global_de_archivos);
     if(archivo != NULL)
     {
