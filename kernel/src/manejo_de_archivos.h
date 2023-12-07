@@ -23,7 +23,6 @@ typedef struct
 {
     char* nombre;
     uint32_t tam_archivo;
-    uint32_t puntero;
     t_lock lock;
     t_queue* cola_blocked;
     t_list* locks_lectura;
@@ -31,6 +30,12 @@ typedef struct
     sem_t mutex_locks_lectura;
     uint32_t contador_aperturas;
 }t_archivo;
+
+typedef struct
+{
+    t_archivo* archivo;
+    uint32_t puntero;
+}t_archivo_local;
 
 typedef struct
 {

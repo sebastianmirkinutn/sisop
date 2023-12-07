@@ -26,7 +26,6 @@ t_archivo* crear_archivo(char* nombre_archivo, uint32_t tam_archivo, t_lock lock
     archivo->tam_archivo = tam_archivo;
     archivo->nombre = malloc(strlen(nombre_archivo) + 1);
     strcpy(archivo->nombre, nombre_archivo);
-    archivo->puntero = 0;
     archivo->lock = lock;
     archivo->cola_blocked = queue_create();
     archivo->locks_lectura = list_create();
@@ -146,7 +145,10 @@ void file_open(void* arg)
         printf("archivo->nombre == %s\n", archivo->nombre);
         sem_wait(&mutex_tabla_global_de_archivos);
         list_add(tabla_global_de_archivos, archivo);
-        list_add(arg_h->execute->tabla_de_archivos_abiertos, archivo);
+        t_archivo_local* archivo_local = malloc(sizeof(t_archivo_local));
+        archivo_local->archivo = archivo;
+        archivo_local->puntero = 0;
+        list_add(arg_h->execute->tabla_de_archivos_abiertos, archivo_local);
         sem_post(&mutex_tabla_global_de_archivos);
 
         list_add(arg_h->execute->tabla_de_archivos_abiertos, archivo);
@@ -441,13 +443,13 @@ void file_seek(void* arg)
  
     sem_wait(&mutex_file_management);
     log_info(arg_h->logger, "Busco el archivo %s en %i", arg_h->nombre_archivo, tabla_global_de_archivos);
-    sem_wait(&mutex_tabla_global_de_archivos);
-    t_archivo* archivo = buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
-    sem_post(&mutex_tabla_global_de_archivos);
+    //sem_wait(&mutex_tabla_global_de_archivos);
+    t_archivo_local* archivo = buscar_archivo(arg_h->execute->tabla_de_archivos_abiertos, arg_h->nombre_archivo);
+    //sem_post(&mutex_tabla_global_de_archivos);
     if(archivo != NULL)
     {
         archivo->puntero = arg_h->puntero;
-        log_info(arg_h->logger, "Archivo: %i - Puntero: %i", archivo->nombre, arg_h->puntero);
+        log_info(arg_h->logger, "Archivo: %i - Puntero: %i", archivo->archivo->nombre, arg_h->puntero);
         sem_wait(&mutex_cola_ready);
         queue_push(cola_ready, arg_h->execute);
         sem_post(&mutex_cola_ready);
