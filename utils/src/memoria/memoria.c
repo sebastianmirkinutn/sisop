@@ -1,5 +1,47 @@
 #include "memoria.h"
+/*
+void pedir_instruccion()
+{
+    t_paquete* serializar_pedido_cpu(t_pedCPU *valor){
 
+        t_paquete* paquete = malloc(sizeof(t_paquete));
+        paquete->buffer = malloc(sizeof(t_buffer));
+
+        int bytes = sizeof(valor->operacion) + strlen(valor->pid) + 1 + sizeof(uint32_t) * 2;
+
+        paquete->buffer->size = bytes;
+
+        void* stream = malloc(paquete->buffer->size);
+        int offset = 0;
+
+        memcpy(stream + offset, (&valor->operacion), sizeof(valor->operacion));
+        offset += sizeof(valor->operacion);
+        memcpy(stream + offset, (&valor->pid), sizeof(uint32_t));
+        offset += sizeod(uint32_t);
+        memcpy(stream + offset, (&valor->puntero), sizeof(uint32_t));
+
+        paquete->buffer->stream = stream;
+
+        return paquete;
+    }
+
+    t_fetch_instruccion* deserializar_pedido_cpu(t_buffer* buffer){
+
+        t_fetch_instruccion* valor = malloc(sizeof(t_fetch_instruccion));
+
+        stream += sizeof(uint32_t);
+
+        memcpy(&(valor->operacion), stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+        memcpy(&(valor->pid), stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+        memcpy(&(valor->puntero, stream, sizeof(uint32_t)));
+
+        return valor;
+        
+    }
+}
+*/
 void pedir_frame(int socket, uint32_t pid, uint32_t pagina)
 {
     enviar_operacion(socket, PEDIDO_DE_FRAME);

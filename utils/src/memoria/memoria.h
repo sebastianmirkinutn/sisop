@@ -31,6 +31,15 @@ typedef struct
     uint32_t offset;
 }t_direccion_fisica;
 
+/*
+typedef struct
+{
+	op_code operacion;
+	uint32_t pid;
+	uint32_t registros;
+
+} t_fetch_instruccion;
+*/
 
 void pedir_frame(int socket, uint32_t pid, uint32_t pagina);
 uint32_t recibir_frame(int socket);
