@@ -58,6 +58,12 @@ int main(int argc, char* argv[]) {
 	uint32_t tam_archivo;
 
 	archivos_abiertos = list_create();
+
+	//---------------------------------------------------------------
+	remove("../filesystem/fcbs/ARCHITEST.fcb");
+	remove("../filesystem/fcbs/ARCHITEST2.fcb");
+	//---------------------------------------------------------------
+	
 	
 	while(1)
 	{
