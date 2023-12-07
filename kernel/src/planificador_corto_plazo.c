@@ -355,4 +355,12 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         default:
             break;
     }
+    int temp1, temp2, temp3;
+    sem_getvalue(&mutex_cola_ready, &temp1);
+    sem_getvalue(&mutex_file_management, &temp2);
+    sem_getvalue(&procesos_en_ready, &temp3);
+    printf("mutex_cola_ready = %i\n", temp1);
+    printf("mutex_file_management = %i\n", temp2);
+    printf("procesos_en_ready = %i\n", temp3);
+
 }

@@ -32,6 +32,13 @@ typedef struct
     uint32_t contador_aperturas;
 }t_archivo;
 
+typedef struct
+{
+    t_pcb* pcb;
+    t_lock lock;
+}t_proceso_bloqueado_por_fs;
+
+
 t_archivo* crear_archivo(char* nombre_archivo, uint32_t tam_archivo, t_lock lock);
 t_lock de_string_a_t_lock(char* str);
 t_archivo* buscar_archivo(t_list* lista, char* nombre);

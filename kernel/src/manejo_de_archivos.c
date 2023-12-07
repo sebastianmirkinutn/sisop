@@ -87,38 +87,35 @@ void file_open(void* arg)
                 sem_wait(&mutex_cola_ready);
                 printf("execute = %i - arg_h->execute = %i\n",execute->pid, arg_h->execute->pid);
                 arg_h->execute->estado = READY;
-                agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
+                queue_push(cola_ready, arg_h->execute);
                 sem_post(&mutex_cola_ready);
                 sem_post(&procesos_en_ready);
             
             } 
-            else 
+            else //hay un lock de LECTURA y se pide ESCRITURA 
             {
                 printf("arg_h->lock != READ");
+                t_proceso_bloqueado_por_fs* bloqueado = malloc(sizeof(t_proceso_bloqueado_por_fs));
+                bloqueado->pcb = arg_h->execute;
+                bloqueado->lock = arg_h->lock;
                 sem_wait(&(archivo->mutex_cola_blocked));
-                list_add(archivo->cola_blocked, execute);
+                list_add(archivo->cola_blocked, bloqueado);
                 sem_post(&(archivo->mutex_cola_blocked));
-                arg_h->execute->estado = BLOCKED;
-                sem_post(&mutex_file_management);
-                printf("TERMINA EL HILO\n");
-                liberar_parametros(arg_h);
-                return;
             }
        
         }
-        else if(arg_h->lock == WRITE)
+        else if(archivo->lock == WRITE)
         {
             int temp;
             sem_getvalue(&(archivo->mutex_cola_blocked), &temp);
+            t_proceso_bloqueado_por_fs* bloqueado = malloc(sizeof(t_proceso_bloqueado_por_fs));
+            bloqueado->pcb = arg_h->execute;
+            bloqueado->lock = arg_h->lock;
             printf("archivo->mutex_cola_blocked = %i\n", temp);
             sem_wait(&(archivo->mutex_cola_blocked));
-            list_add(archivo->cola_blocked, execute);
+            list_add(archivo->cola_blocked, bloqueado);
             sem_post(&(archivo->mutex_cola_blocked));
-            execute->estado = BLOCKED;
-            sem_post(&mutex_file_management);
-            printf("TERMINA EL HILO\n");
-            liberar_parametros(arg_h);
-            return;
+            arg_h->execute->estado = BLOCKED;
         }
         else //Ningún archivo lo tiene abierto
         {
@@ -130,15 +127,11 @@ void file_open(void* arg)
             sem_post(&(archivo->mutex_locks_lectura));
             sem_wait(&mutex_cola_ready);
             printf("execute = %i - arg_h->execute = %i\n",execute->pid, arg_h->execute->pid);
-            agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
+            queue_push(cola_ready, arg_h->execute); 
             printf("1");
             sem_post(&mutex_cola_ready);
             printf("2");
             sem_post(&procesos_en_ready);
-            printf("3");
-            sem_post(&mutex_file_management);
-            liberar_parametros(arg_h);
-            return;
         }
         
     }
@@ -166,7 +159,7 @@ void file_open(void* arg)
             printf("El archivo tiene un tamaño de %i bytes (lock = %i)\n", arg_h->tam_archivo, arg_h->lock);
             execute->estado = READY;
             sem_wait(&mutex_cola_ready);
-            agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
+            queue_push(cola_ready, arg_h->execute);
             sem_post(&mutex_cola_ready);
             sem_post(&procesos_en_ready);
         }
@@ -183,9 +176,10 @@ void file_open(void* arg)
             {
                 case OK:
                     sem_wait(&mutex_cola_ready);
-                    agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
+                    queue_push(cola_ready, arg_h->execute); // Debería ser en la primera posición.
                     sem_post(&mutex_cola_ready);
                     sem_post(&procesos_en_ready);
+
                     break;
                 default:
                     break;
@@ -212,7 +206,7 @@ void file_read(void* arg)
     //recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
 
     sem_wait(&mutex_cola_ready);
-    agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
+    queue_push(cola_ready, arg_h->execute); // Debería ser en la primera posición.
     sem_post(&mutex_cola_ready);
     sem_post(&procesos_en_ready);
 
@@ -237,7 +231,7 @@ void file_write(void* arg)
             case OK:
                 printf("OK escritura\n");
                 sem_wait(&mutex_cola_ready);
-                agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
+                queue_push(cola_ready, arg_h->execute);
                 //enviar_operacion(arg_h->socket_interrupt, CLOCK_INTERRUPT); //Cambiar a I/O interrupt
                 sem_post(&mutex_cola_ready);
                 sem_post(&procesos_en_ready);
@@ -270,7 +264,7 @@ void file_truncate(void* arg)
             sem_getvalue(&mutex_cola_ready, &temp);
             printf("mutex_cola_ready = %i\n", temp); 
                 sem_wait(&mutex_cola_ready);
-                agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
+                queue_push(cola_ready, arg_h->execute);
                 sem_post(&mutex_cola_ready);
                 sem_post(&procesos_en_ready);
                 break;
@@ -284,16 +278,122 @@ void file_truncate(void* arg)
 
 void file_close(void* arg)
 {
+    t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
+    t_archivo* archivo;
+    bool es_el_archivo(void* arg)
+    {
+        return(((t_archivo*)arg)->nombre == arg_h->nombre_archivo);
+    }
+    bool es_el_proceso(void* arg)
+    {
+        return(((t_pcb*)arg)->pid == arg_h->execute->pid);
+    }
+    bool tiene_lock_lectura(void* arg)
+    {
+        return(((t_proceso_bloqueado_por_fs*)arg)->lock == READ);
+    }
+    void iterator_agregar_a_reaady(void* arg)
+    {
+        queue_push(cola_ready,(t_pcb*)arg);
+    }
+    void iterator_agregar_a_locks_lectura(void* arg)
+    {
+        list_add(archivo->locks_lectura,((t_proceso_bloqueado_por_fs*)arg)->pcb);
+    }
     printf("file_close()\n");
     sem_wait(&mutex_file_management);
     printf("ejecuta file_close()\n");
-    t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
     t_response respuesta;
- 
+
+    archivo = buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
+    if(archivo != NULL)
+    {
+        printf("archivo != NULL\n");
+        list_remove_by_condition(arg_h->execute->tabla_de_archivos_abiertos, es_el_archivo);
+        if(archivo->lock == READ)
+        {
+            printf("archivo->lock == READ\n");
+            list_remove_by_condition(archivo->locks_lectura, es_el_proceso);
+            archivo->contador_aperturas--;
+            if(archivo->locks_lectura->elements_count == 0) 
+            {
+                printf("archivo->locks_lectura->elements_count == 0\n");
+                if (archivo->cola_blocked->elements->elements_count != 0)
+                {
+                    t_pcb* proceso_bloqueado = queue_pop(archivo->cola_blocked);
+                    archivo->lock = WRITE;
+                    arg_h->execute->estado = READY;
+                    list_add(proceso_bloqueado->tabla_de_archivos_abiertos, archivo);
+                    sem_wait(&mutex_cola_ready);
+                    queue_push(&cola_ready, proceso_bloqueado);
+                    sem_post(&mutex_cola_ready);
+                    sem_post(&procesos_en_ready);
+                    archivo->contador_aperturas++;
+                }
+                else //Se elimina el archivo completamente
+                {
+                    printf("Se elimina el archivo completamente\n");
+                    list_remove_by_condition(tabla_global_de_archivos, es_el_archivo);
+                }
+            }
+        }
+        else
+        {
+            sem_wait(&(archivo->mutex_cola_blocked));
+            t_proceso_bloqueado_por_fs* proceso_bloqueado = queue_pop(archivo->cola_blocked);
+            sem_post(&(archivo->mutex_cola_blocked));
+
+            if(proceso_bloqueado != NULL)
+            {
+
+                archivo->lock = proceso_bloqueado->lock;
+                if(proceso_bloqueado->lock == WRITE)
+                {
+                    sem_wait(&mutex_cola_ready);
+                    queue_push(cola_ready, proceso_bloqueado->pcb);
+                    sem_post(&mutex_cola_ready);
+                }
+                else if(proceso_bloqueado->lock == READ)
+                {
+                    list_add(archivo->locks_lectura, proceso_bloqueado->pcb);
+                    t_list* procesos_lectura = list_filter(archivo->cola_blocked->elements, tiene_lock_lectura);
+                    
+                    t_list_iterator* iterator = list_iterator_create(procesos_lectura);
+                    list_iterate(iterator, iterator_agregar_a_locks_lectura);
+
+
+                    list_add_all(archivo->locks_lectura, procesos_lectura);
+                    sem_wait(&(archivo->mutex_cola_blocked));
+                    void* element;
+                    do
+                    {
+                        element = list_remove_by_condition(archivo->cola_blocked->elements, tiene_lock_lectura);
+                    }
+                    while(element != NULL);
+                    sem_post(&(archivo->mutex_cola_blocked));
+
+                    sem_wait(&mutex_cola_ready);
+                    t_list_iterator* iterator = list_iterator_create(archivo->locks_lectura);
+                    list_iterate(iterator, )
+                    
+                    sem_post(&mutex_cola_ready);
+                }
+                
+                
+                
+            }
+            else
+            {
+                //Se elimina el archivo
+            }
+        }
+    }
+
     sem_wait(&mutex_cola_ready);
-    agregar_primero_en_cola(cola_ready, arg_h->execute); // Debería ser en la primera posición.
+    queue_push(cola_ready, arg_h->execute);
     sem_post(&mutex_cola_ready);
     sem_post(&procesos_en_ready);
+    printf("TERMINA EL HILO\n");
     sem_post(&mutex_file_management);
 }
 
@@ -312,7 +412,7 @@ void file_seek(void* arg)
         archivo->puntero = arg_h->puntero;
         log_info(arg_h->logger, "Archivo: %i - Puntero: %i", archivo->nombre, arg_h->puntero);
         sem_wait(&mutex_cola_ready);
-        agregar_primero_en_cola(cola_ready, execute);
+        queue_push(cola_ready, execute);
         sem_post(&mutex_cola_ready);
         sem_post(&procesos_en_ready);
     }
