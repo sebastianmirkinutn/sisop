@@ -206,7 +206,7 @@ void file_read(void* arg)
 
     enviar_operacion(arg_h->socket_filesystem, LEER_ARCHIVO);
     enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem); //SERIALIZAR (OP, NOMBRE_ARCHIVO, PUNTERO)
-    t_archivo* archivo = buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
+    t_archivo_local* archivo = buscar_archivo(arg_h->execute->tabla_de_archivos_abiertos, arg_h->nombre_archivo);
     send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t),0);
     enviar_direccion(arg_h->socket_memoria, arg_h->direccion); //SERIALIZAR NO HACE FALTA
     //recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
@@ -228,7 +228,7 @@ void file_write(void* arg)
     printf("Direccion = %i:%i\n", arg_h->direccion->frame, arg_h->direccion->offset);
     enviar_operacion(arg_h->socket_filesystem, ESCRIBIR_ARCHIVO);
     enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
-    t_archivo* archivo = buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
+    t_archivo_local* archivo = buscar_archivo(arg_h->execute->tabla_de_archivos_abiertos, arg_h->nombre_archivo);
     send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t),0);
     enviar_direccion(arg_h->socket_filesystem, arg_h->direccion); //SERIALIZAR (OPERACION, NOMBRE, PUNTERO, DIRECCION)
     respuesta = recibir_respuesta(arg_h->socket_filesystem);
@@ -449,7 +449,7 @@ void file_seek(void* arg)
     if(archivo != NULL)
     {
         archivo->puntero = arg_h->puntero;
-        log_info(arg_h->logger, "Archivo: %i - Puntero: %i", archivo->archivo->nombre, arg_h->puntero);
+        log_info(arg_h->logger, "Archivo: %s - Puntero: %i", arg_h->nombre_archivo, arg_h->puntero);
         sem_wait(&mutex_cola_ready);
         queue_push(cola_ready, arg_h->execute);
         sem_post(&mutex_cola_ready);
