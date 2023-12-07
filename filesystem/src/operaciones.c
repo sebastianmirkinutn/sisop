@@ -216,3 +216,116 @@ int32_t truncar_archivo(char* nombre, uint32_t size)
 
 }
 
+
+
+//------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+//---- Version Pablo
+/*
+	
+int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
+{
+	t_fcb* fcb;
+	//Al tamaño requerido truncar le resto el tamaño anterior del archivo que podría ser 0 si el
+	//archivo es nuevo o tener una cantidad de bytes ya asignados si fue creado previamente
+	if(archivo->bloque_inicial == UINT32_MAX)
+	{
+		//Caso (1) El archivo no existía y se le asigna el primer bloque
+ 		archivo->bloque_inicial = obtener_bloque_libre();
+		fat->memory_map[archivo->bloque_inicial] = UINT32_MAX;
+		//-----------------------------------------------------------------------------
+		//-- Actualiza el archivo FCB con los datos del tamaño del archivo y el bloque inicial 
+		archivo->tam_archivo = MIN (size,tam_bloque);
+		config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
+		config_set_value(archivo->config, "BLOQUE_INICIAL", int_to_string(archivo->bloque_inicial));
+		config_save(archivo->config);
+		//-----------------------------------------------------------------------------
+		//msync(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t), MS_SYNC);
+		//mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
+		if (size > tam_bloque)
+			size=size-tam_bloque;
+		else
+			size=0;
+		//-----------------------------------------------------------------------------
+		agrandar_archivo_NuevoBloque(archivo,size);
+	}
+	else
+	{	
+		uint32_t ptrBl	= fat->memory_map[archivo->bloque_inicial];
+		uint32_t contBlk=0;
+		while (ptrBl != UINT32_MAX) {
+			contBlk++;
+			ptrBl = fat->memory_map[ptrBl];
+		}
+		contBlk++;
+		uint32_t tam_fisico = contBlk * tam_bloque;
+		uint32_t frag_arch = tam_fisico - archivo->tam_archivo;
+		size -= archivo->tam_archivo;
+		if (size > frag_arch) {
+			size -= frag_arch;
+			archivo->tam_archivo += frag_arch;
+			config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
+			config_save(archivo->config);
+			agrandar_archivo_NuevoBloque(archivo,size);
+		}
+		else {
+			archivo->tam_archivo += size;
+			config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
+			config_save(archivo->config);
+		}
+	}
+	
+}
+
+int32_t agrandar_archivo_NuevoBloque(t_fcb* archivo, uint32_t size)
+{
+	if (size>0) {
+		//----------------------------------------------------------------------------
+		printf ("Adiciona un nuevo bloque a la fat\n");
+		uint32_t nuevo_bloque = obtener_bloque_libre();
+		fat->memory_map[ultimo_bloque(archivo->bloque_inicial)] = nuevo_bloque;
+		fat->memory_map[nuevo_bloque] = UINT32_MAX;
+		if (size < tam_bloque) 
+		{
+			archivo->tam_archivo += size;
+			size=0;
+		}
+		else 
+		{
+			archivo->tam_archivo += tam_bloque;
+			size = size - tam_bloque;
+		}
+		config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
+		config_save(archivo->config);
+		agrandar_archivo_NuevoBloque(archivo,size);
+	}
+	return;
+}
+
+
+int32_t truncar_archivo(char* nombre, uint32_t size)
+{
+	printf("truncar_archivo\n");
+	t_fcb* archivo = buscar_archivo(nombre, archivos_abiertos);
+	printf("Encontré al archivo\n");
+	//archivo->tam_archivo = size; //Faltan validaciones
+
+	if(size > archivo->tam_archivo) //Se amplía
+	{
+		agrandar_archivo(archivo, size);
+		mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
+		//msync(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t), MS_SYNC);
+		fsync(fat->file_descriptor);
+	}
+	else if (size < archivo->tam_archivo) // Valido que no sea igual porque en ese caso no se hace nada
+	{
+
+	}
+	
+	archivo->tam_archivo = size;
+}
+*/
+//------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
