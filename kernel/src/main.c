@@ -270,36 +270,31 @@ int main(int argc, char* argv[])
         }
         else if(!strcmp(c_argv[0], "PROCESO_ESTADO"))
         {   
+            imprimir_procesos_por_estado();
+            //mostramos los pid de NEW
+            //char* pids = pids_to_string(cola_new);
+            //char* log_new = string_new();
+            //string_append(log_new, "Estado: NEW - Procesos: ");
+            //string_append(log_new, pids);
+            //log_info(logger, log_new);
+//
+            ////mostramos los pids de READY
+            //char* pids = pids_to_string(cola_new);
+            //char* log_ready = string_new();
+            //string_append(log_ready, "Estado: READY - Procesos: ");
+            //string_append(log_ready, pids);
+            //log_info(logger, log_ready);
+//
+            ////mostramos los pids de bloqueado
+
+            //POR RECURSOS
+            for(int i = 0; i < list_size(recursos_disponibles); i++)
+            {
+
+            }
+
             /*
-            //mostramos los pid de NEW 
-            t_list* lista_para_iterar = list_iterator_create(cola_new);
-            char* pids = string_new();
-            while(list_iterator_has_next(lista_para_iterar))
-            {
-                t_pcb* proceso = list_iterator_next(lista_para_iterar);
-                strcat(pids,string_itoa(proceso->pid));
-                strcat(pids, ", ");
-            }
-            char* log = string_new();
-            strcat(log, "Estado: NEW - Procesos: ");
-            strcat(log, pids);
-            log_info(logger, log);
-
-            //mostramos los pids de READY
-
-            lista_para_iterar = list_iterator_create(cola_ready);
-            pids = string_new();
-            while(list_iterator_has_next(lista_para_iterar))
-            {
-                t_pcb* proceso = list_iterator_next(lista_para_iterar);
-                strcat(pids,string_itoa(proceso->pid));
-                strcat(pids, ", ");
-            }
-            char* log = string_new();
-            strcat(log, "Estado: READY - Procesos: ");
-            strcat(log, pids);
-            log_info(logger, log);
-
+             
             //mostramos los pids de bloqueado 
 
             lista_para_iterar = list_iterator_create(cola);
@@ -341,4 +336,27 @@ int main(int argc, char* argv[])
     config_destroy(config);
     liberar_conexion(conexion_cpu_dispatch);
     
+}
+
+
+void imprimir_procesos_por_estado()
+{
+    void imprimir_proceso(void* arg)
+    {
+        printf("PID: %i - Archivo de pseudocódigo: %s\n", ((t_pcb*)arg)->pid, ((t_pcb*)arg)->archivo_de_pseudocodigo);
+    }
+            //t_list_iterator* lista_para_iterar = list_iterator_create(cola_new->elements);
+            //char* pids = string_new();
+            list_iterate(cola_new->elements, imprimir_proceso);
+            
+            
+            
+            /*
+            while(list_iterator_has_next(lista_para_iterar))
+            {
+                t_pcb* proceso = list_iterator_next(lista_para_iterar);
+                string_append(pids,string_itoa(proceso->pid));
+                string_append(pids, ", ");
+            }
+*/
 }

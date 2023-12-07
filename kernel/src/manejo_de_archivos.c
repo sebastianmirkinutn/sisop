@@ -300,14 +300,18 @@ void file_close(void* arg)
     void iterator_agregar_a_ready(void* arg)
     {
         queue_push(cola_ready,(t_pcb*)arg);
+        sem_post(&procesos_en_ready);
     }
     void iterator_agregar_a_locks_lectura(void* arg)
     {   
         if((t_proceso_bloqueado_por_fs*)arg != proceso_bloqueado)
         {
             list_add(archivo->locks_lectura,((t_proceso_bloqueado_por_fs*)arg)->pcb);
-            sem_post(&procesos_en_ready);
         }
+    }
+    void iterator_eliminar_procesos_con_lock_de_escritura(void* arg)
+    {
+        list_remove_by_condition(arg, tiene_lock_lectura);
     }
     printf("file_close()\n");
     sem_wait(&mutex_file_management);
@@ -364,21 +368,15 @@ void file_close(void* arg)
                     sem_post(&procesos_en_ready);
                     list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo);
     
-                    if(proceso_bloqueado->lock == READ)
+                    if(proceso_bloqueado->lock == READ && archivo->cola_blocked->elements->elements_count > 0)
                     {
-                        //list_add(archivo->locks_lectura, proceso_bloqueado->pcb);
                         t_list* procesos_lectura = list_filter(archivo->cola_blocked->elements, tiene_lock_lectura);
-                        
-                        t_list_iterator* iterator = list_iterator_create(procesos_lectura);
-                        list_iterate(iterator, iterator_agregar_a_locks_lectura);
-                        list_iterator_destroy(iterator);
-                        iterator = list_iterator_create(archivo->locks_lectura);
-                        sem_wait(&mutex_cola_ready);
-                        list_iterate(iterator, iterator_agregar_a_ready);
-                        sem_post(&mutex_cola_ready);
-                        list_iterator_destroy(iterator);
-                        list_remove_by_condition(archivo->cola_blocked->elements, tiene_lock_lectura);
-                        list_add(archivo->locks_lectura, proceso_bloqueado->pcb); 
+                        list_iterate(procesos_lectura, iterator_agregar_a_locks_lectura);
+                        //sem_wait(&mutex_cola_ready);
+                        //list_iterate(procesos_lectura, iterator_agregar_a_ready);
+                        //sem_post(&mutex_cola_ready);
+                        //list_iterate(archivo->cola_blocked->elements, iterator_agregar_a_locks_lectura);
+                        //list_add(archivo->locks_lectura, proceso_bloqueado->pcb); 
                     }
                     
                     

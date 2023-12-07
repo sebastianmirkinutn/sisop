@@ -20,4 +20,6 @@
 #include "planificador_corto_plazo.h"
 #include "manejo_de_archivos.h"
 
+void imprimir_procesos_por_estado();
+
 #endif 
