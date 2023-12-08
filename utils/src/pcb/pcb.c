@@ -152,7 +152,7 @@ t_pcb* buscar_proceso_segun_pid(uint32_t pid, t_queue* cola)
     }
 
     t_pcb* pcb = NULL;
-    pcb = list_find(cola, tiene_mismo_pid);
+    pcb = list_find(cola->elements, tiene_mismo_pid);
     return pcb;
 }
 /*

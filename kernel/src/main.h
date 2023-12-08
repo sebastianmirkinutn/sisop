@@ -21,5 +21,6 @@
 #include "manejo_de_archivos.h"
 
 void imprimir_procesos_por_estado();
+t_pcb* buscar_proceso_en_cola_bloqueados(t_list* recursos_disponibles, t_list* tabla_global_de_archivos, uint32_t pid);
 
 #endif 

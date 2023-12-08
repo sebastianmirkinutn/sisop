@@ -175,7 +175,7 @@ int main(int argc, char* argv[])
             }
             token = strtok(NULL, " ");
         }
-        printf(" Parametros %i",i);
+        //printf(" Parametros %i",i);
 
         if(!strcmp(c_argv[0], "INICIAR_PROCESO"))
         {
@@ -205,29 +205,34 @@ int main(int argc, char* argv[])
         {
             t_pcb* pcb = NULL;
             //buscar el proceso (primero fijarse si esta ejecutando, segundo en la lista de blocked y tercero ready...)
-            if(execute->pid == c_argv[1]){
+            if(execute != NULL)
+            {
+                if(execute->pid == atoi(c_argv[1]))
+                {
                 enviar_operacion(conexion_cpu_interrupt, FINALIZAR_PROCESO);
-            }else 
+                }
+            }
+            else 
             {
                 //buscamos en la cola de bloqueados SEGUN RECURSO
 
-                pcb = buscar_proceso_en_cola_bloqueados(recursos_disponibles, tabla_global_de_archivos, c_argv[1]);
+                pcb = buscar_proceso_en_cola_bloqueados(recursos_disponibles, tabla_global_de_archivos, atoi(c_argv[1]));
                 
                 
                 //Vamos a tener que buscar en la cola de bloqueados de cada recurso
                 if(pcb == NULL)
                 {
 
-                    if(buscar_proceso_segun_pid(c_argv[1], cola_ready) != NULL)
+                    if(buscar_proceso_segun_pid(atoi(c_argv[1]), cola_ready) != NULL)
                     {
-                        pcb = buscar_proceso_segun_pid(c_argv[1], cola_ready);
-                        list_remove_element(cola_ready, pcb);
+                        pcb = buscar_proceso_segun_pid(atoi(c_argv[1]), cola_ready);
+                        list_remove_element(cola_ready->elements, pcb);
 
                     }
-                    else if(buscar_proceso_segun_pid(c_argv[1], cola_new) != NULL)
+                    else if(buscar_proceso_segun_pid(atoi(c_argv[1]), cola_new) != NULL)
                     {
-                        pcb = buscar_proceso_segun_pid(c_argv[1], cola_new);
-                        list_remove_element(cola_new, pcb);
+                        pcb = buscar_proceso_segun_pid(atoi(c_argv[1]), cola_new);
+                        list_remove_element(cola_new->elements, pcb);
 
                     }
                     else
@@ -338,7 +343,7 @@ void imprimir_procesos_por_estado()
 
 
 
-t_pcb* buscar_proceso_en_cola_bloqueados(t_list* recursos_disponibles, t_list* tabla_global_de_archivos, char* pid)
+t_pcb* buscar_proceso_en_cola_bloqueados(t_list* recursos_disponibles, t_list* tabla_global_de_archivos, uint32_t pid)
 {
 
     t_pcb* pcb = NULL;
