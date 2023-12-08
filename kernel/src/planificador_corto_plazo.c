@@ -236,13 +236,14 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         case F_READ:
             printf("F_READ\n");
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
-            direccion = recibir_direccion(arg_h->socket_cpu);
+            direccion = recibir_direccion(arg_h->socket_dispatch);
             printf("F_OPEN - Mando a FS\n");
 
             pthread_t h_file_read;
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
             argumentos_file_management->direccion = direccion;
             argumentos_file_management->execute = execute;
+             printf("arg_h->socket_filesystem = %i\n", arg_h->socket_filesystem);
             pthread_create(&h_file_read, NULL, &file_read, (void*)argumentos_file_management);
             pthread_detach(h_file_read);
 

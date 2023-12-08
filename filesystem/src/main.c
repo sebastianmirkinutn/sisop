@@ -97,22 +97,23 @@ int main(int argc, char* argv[]) {
 			nombre_archivo = recibir_mensaje(socket_kernel);
 			{
 				recv(socket_kernel, &puntero, sizeof(uint32_t), MSG_WAITALL);
+				printf("1A\n");
 				t_direccion_fisica* direccion = recibir_direccion(socket_kernel);
+				printf("1B\n");
 				t_fcb* fcb = buscar_archivo(nombre_archivo, archivos_abiertos);
 				uint32_t nro_bloque = fcb->bloque_inicial;
+				printf("2\n");
 				for(uint32_t i; i < ceil(puntero / tam_bloque); i++)
 				{
 					nro_bloque = fat->memory_map[nro_bloque]; //No validemos que se pida un dato mayor al mapeado;
 				}
-
-				void* bloque = leer_bloque(nro_bloque);
-				uint32_t a_enviar;
-				memcpy(&a_enviar, bloque + (uint32_t)(puntero - ceil(puntero / tam_bloque)), sizeof(uint32_t));
+				printf("3\n");
+				uint32_t a_enviar = leer_dato(nro_bloque, puntero - ceil(puntero / tam_bloque) * tam_bloque);
 				printf("operacion: PEDIDO_ESCRITURA - direccion: %i:%i - datos: %i\n", direccion->frame, direccion->offset, a_enviar);
 				enviar_operacion(conexion_memoria, PEDIDO_ESCRITURA);
 				enviar_direccion(conexion_memoria, direccion);
 				send(conexion_memoria, &a_enviar, sizeof(uint32_t), NULL);
-
+				enviar_respuesta(socket_kernel, OK);
 
 			}
 			break;

@@ -17,6 +17,14 @@ void* leer_bloque(uint32_t puntero)
     return bloque;
 }
 
+uint32_t leer_dato(uint32_t bloque, uint32_t offset)
+{
+    uint32_t dato;
+    fseek(bloques, (cant_bloques_swap + bloque) * tam_bloque + offset, SEEK_SET);
+    fread(&dato, sizeof(uint32_t), 1, bloques);
+    return dato;
+}
+
 void escribir_dato(uint32_t bloque, uint32_t offset, uint32_t dato)
 {
     fseek(bloques, (cant_bloques_swap + bloque) * tam_bloque + offset, SEEK_SET);

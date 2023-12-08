@@ -219,7 +219,7 @@ int main(int argc, char* argv[]){
             printf("pid= %i - ip= %i\n", pid, registros->PC);
             send(conexion_memoria, &codigo, sizeof(op_code), 0);
             send(conexion_memoria, &pid, sizeof(uint32_t), 0);
-            send(conexion_memoria, &(registros->PC), sizeof(uint32_t), 0) ;  
+            send(conexion_memoria, &(registros->PC), sizeof(uint32_t), 0) ;  //SERIALIZAR
             log_info(logger, "Envié el pedido");     
             char* instruccion = recibir_mensaje(conexion_memoria);
             log_info(logger, "%s", instruccion);
