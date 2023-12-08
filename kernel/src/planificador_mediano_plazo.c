@@ -55,6 +55,11 @@ void desbloquear_procesos(char* recurso_buscado)
 
 void wait_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch)
 {
+    bool es_el_recurso(void* arg)
+    {
+        t_recurso* elemento = (t_recurso*) arg;
+        return (!strcmp(elemento->nombre, recurso_buscado));
+    }
     printf("FUNCIÓN WAIT\n");
     t_recurso* recurso = NULL;
     recurso = buscar_recurso(recurso_buscado);
@@ -74,7 +79,7 @@ void wait_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch)
         {
             recurso->instancias--;
             printf("Entro al list_find\n");
-            recurso = buscar_recurso(recurso_buscado);
+            recurso = list_find(execute->recursos_asignados, es_el_recurso);
             printf("Pasé el list_find\n");
             if(recurso != NULL)
             {
@@ -111,23 +116,31 @@ void wait_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch)
 
 void signal_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch)
 {
+    bool es_el_recurso(void* arg)
+    {
+        t_recurso* elemento = (t_recurso*) arg;
+        return (!strcmp(elemento->nombre, recurso_buscado));
+    }
     printf("FUNCIÓN SIGNAL\n");
     t_recurso* recurso = NULL;
     recurso = buscar_recurso(recurso_buscado);
     if(recurso == NULL)
     {
         /*El recurso no existe*/
-        printf("El recurso no está asignado\n");
-        sem_wait(&(recurso->mutex_cola_blocked));
-        queue_push(recurso->cola_blocked, execute);
-        sem_post(&(recurso->mutex_cola_blocked));
+        printf("El recurso no existe\n");
+        sem_wait(&mutex_cola_exit);
+        queue_push(cola_exit, execute);
+        sem_post(&mutex_cola_exit);
+        log_info(logger, "Fin de proceso %i motivo %s", execute->pid, "INVALID_RESOURCE");
+
+        
     }
     else
     {
         if(recurso->instancias > 0)
         {
             recurso->instancias--;
-            recurso = buscar_recurso(recurso_buscado);
+            recurso = list_find(execute->recursos_asignados, es_el_recurso);
             if(recurso != NULL)
             {
                 recurso->instancias++;
