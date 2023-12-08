@@ -18,6 +18,7 @@ t_queue *cola_exit;
 t_pcb* execute;
 t_list* recursos_disponibles;
 t_list* tabla_global_de_archivos;
+t_log* logger;
 
 uint32_t* instancias_recursos(char** instancias)
 {
@@ -83,7 +84,7 @@ t_list* iniciar_lista_de_recursos(char** a_recursos, char** a_instancias)
 
 int main(int argc, char* argv[])
 {  
-    t_log* logger = iniciar_logger("log_kernel","Kernel");
+    logger = iniciar_logger("log_kernel","Kernel");
     t_config* config = iniciar_config("./cfg/kernel.config");
     
     char* ip_cpu = config_get_string_value(config, "IP_CPU");

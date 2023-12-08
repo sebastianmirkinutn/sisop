@@ -16,10 +16,10 @@ extern t_queue *cola_exit;
 extern t_queue *cola_new;
  
 extern t_pcb* execute;
+extern t_log* logger;
 
 void planificador_largo_plazo(void* arg)
 {
-    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
 
     while(1)
@@ -27,16 +27,16 @@ void planificador_largo_plazo(void* arg)
         sem_wait(&planificacion_largo_plazo);
         sem_wait(&procesos_en_new);
         sem_wait(&grado_de_multiprogramacion);
-        log_info(logger_hilo,"Hice wait del gdmp");
+        log_info(logger,"Hice wait del gdmp");
         sem_wait(&mutex_cola_new);
-        log_info(logger_hilo,"Hice wait de la cola de new: %i",cola_new);
+        log_info(logger,"Hice wait de la cola de new: %i",cola_new);
         t_pcb* pcb = queue_pop(cola_new);
         sem_post(&mutex_cola_new);
         sem_wait(&mutex_cola_ready);
         queue_push(cola_ready, pcb);
         sem_post(&mutex_cola_ready);
-        log_info(logger_hilo, "PID:%i - Estado:%i", pcb->pid, pcb->estado);
-        log_info(logger_hilo, "PID: %i - Estado Anterior: NEW - Estado Actual: READY", pcb->pid);
+        log_info(logger, "PID:%i - Estado:%i", pcb->pid, pcb->estado);
+        log_info(logger, "PID: %i - Estado Anterior: NEW - Estado Actual: READY", pcb->pid);
 
         op_code operacion = INICIAR_PROCESO;
         send(arg_h->socket_memoria, &operacion, sizeof(op_code), 0);

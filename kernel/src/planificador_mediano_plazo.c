@@ -16,6 +16,7 @@ extern t_queue *cola_new;
 extern t_pcb* execute;
 extern t_list* recursos_disponibles;
 t_motivo_desalojo motivo;
+extern t_log* logger;
 
 t_recurso* buscar_recurso(char* recurso_buscado)
 {
