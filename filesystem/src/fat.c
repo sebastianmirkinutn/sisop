@@ -52,7 +52,7 @@ t_fat* crear_fat_mapeada(char* path)
 
 uint32_t obtener_bloque_libre()
 {
-    for(uint32_t i = 0; i < cant_bloques_total - cant_bloques_swap; i++)
+    for(uint32_t i = 1; i < cant_bloques_total - cant_bloques_swap; i++)
     {
         if(fat->memory_map[i] == 0)
         {
