@@ -68,5 +68,18 @@ typedef struct
 	uint32_t pagina;
 
 }t_optraduccionDeDirecciones;
+
+typedef struct {
+    double direccion_fisica;
+    char* valor_a_escribir;
+    uint32_t tamanio_a_escribir;
+    uint32_t pid;
+} t_escritura_memoria;
+
+typedef struct {
+    double direccion_fisica;
+    uint32_t tamanio_registro;
+    uint32_t pid;
+} t_lectura_memoria;
 #endif
 

@@ -25,5 +25,9 @@ void enviar_operacion (int socket, op_code operacion);
 void enviar_respuesta (int socket, t_response respuesta);
 t_opfilesystem* deserializar_op_filesystem(t_buffer* buffer);
 t_paquete* serializar_op_filesystem(t_opfilesystem* valor);
+t_paquete* serializar_escritura_memoria(char* valor, double direccionFisica, uint32_t tamanio_registro, uint32_t pid);
+t_escritura_memoria* deserializar_escritura_memoria(t_buffer* asd);
+t_paquete* serializar_lectura_memoria(double dirFisica, uint32_t tamanio, uint32_t pid);
+t_lectura_memoria* deserializar_lectura_memoria(t_buffer*);
 
 #endif

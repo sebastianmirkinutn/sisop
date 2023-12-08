@@ -29,7 +29,7 @@ void pedir_instruccion()
 
         t_fetch_instruccion* valor = malloc(sizeof(t_fetch_instruccion));
 
-        stream += sizeof(uint32_t);
+        void* stream += sizeof(uint32_t);
 
         memcpy(&(valor->operacion), stream, sizeof(uint32_t));
         stream += sizeof(uint32_t);
