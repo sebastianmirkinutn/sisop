@@ -203,41 +203,45 @@ int main(int argc, char* argv[])
         }
         else if(!strcmp(c_argv[0], "FINALIZAR_PROCESO"))
         {
-            t_pcb* pcb;
+            t_pcb* pcb = NULL;
             //buscar el proceso (primero fijarse si esta ejecutando, segundo en la lista de blocked y tercero ready...)
             if(execute->pid == c_argv[1]){
                 enviar_operacion(conexion_cpu_interrupt, FINALIZAR_PROCESO);
-            }else
+            }else 
             {
-                /*
-                if(buscar_proceso_segun_pid(c_argv[1], cola_blocked) != NULL){
-                    pcb = buscar_proceso_segun_pid(c_argv[1], cola_blocked);
-                    list_remove_element(cola_blocked, pcb);
-                   
-                }
-                */      //Vamos a tener que buscar en la cola de bloqueados de cada recurso
-                if(buscar_proceso_segun_pid(c_argv[1], cola_ready) != NULL)
-                {
-                    pcb = buscar_proceso_segun_pid(c_argv[1], cola_ready);
-                    list_remove_element(cola_ready, pcb);
+                //buscamos en la cola de bloqueados SEGUN RECURSO
 
-                }
-                else if(buscar_proceso_segun_pid(c_argv[1], cola_new) != NULL)
-                {
-                    pcb = buscar_proceso_segun_pid(c_argv[1], cola_new);
-                    list_remove_element(cola_new, pcb);
-
-                }
-                else
-                {
-                    log_error(logger, "No se encontro el proceso");
-                }
+                pcb = buscar_proceso_en_cola_bloqueados(recursos_disponibles, tabla_global_de_archivos, c_argv[1]);
                 
+                
+                //Vamos a tener que buscar en la cola de bloqueados de cada recurso
+                if(pcb == NULL)
+                {
+
+                    if(buscar_proceso_segun_pid(c_argv[1], cola_ready) != NULL)
+                    {
+                        pcb = buscar_proceso_segun_pid(c_argv[1], cola_ready);
+                        list_remove_element(cola_ready, pcb);
+
+                    }
+                    else if(buscar_proceso_segun_pid(c_argv[1], cola_new) != NULL)
+                    {
+                        pcb = buscar_proceso_segun_pid(c_argv[1], cola_new);
+                        list_remove_element(cola_new, pcb);
+
+                    }
+                    else
+                    {
+                        log_error(logger, "No se encontro el proceso");
+                    }
+                
+                }
             }
 
             //send a memoria para liberar espacio
             enviar_operacion(conexion_memoria, FINALIZAR_PROCESO);
-            //liberar_recursos(pcb);
+            //send(arg_h->socket_memoria, &(pcb->pid), sizeof(int), 0); //mandamos el pid 
+            //liberar_recursos_archivos(pcb);
             
         }
         else if(!strcmp(c_argv[0], "DETENER_PLANIFICACION"))
@@ -271,49 +275,7 @@ int main(int argc, char* argv[])
         else if(!strcmp(c_argv[0], "PROCESO_ESTADO"))
         {   
             imprimir_procesos_por_estado();
-            //mostramos los pid de NEW
-            //char* pids = pids_to_string(cola_new);
-            //char* log_new = string_new();
-            //string_append(log_new, "Estado: NEW - Procesos: ");
-            //string_append(log_new, pids);
-            //log_info(logger, log_new);
-//
-            ////mostramos los pids de READY
-            //char* pids = pids_to_string(cola_new);
-            //char* log_ready = string_new();
-            //string_append(log_ready, "Estado: READY - Procesos: ");
-            //string_append(log_ready, pids);
-            //log_info(logger, log_ready);
-//
-            ////mostramos los pids de bloqueado
-
-            //POR RECURSOS
-            for(int i = 0; i < list_size(recursos_disponibles); i++)
-            {
-
-            }
-
-            /*
-             
-            //mostramos los pids de bloqueado 
-
-            lista_para_iterar = list_iterator_create(cola);
-            pids = string_new();
-            while(list_iterator_has_next(lista_para_iterar))
-            {
-                t_pcb* proceso = list_iterator_next(lista_para_iterar);
-                strcat(pids,string_itoa(proceso->pid));
-                strcat(pids, ", ");
-            }
-            char* log = string_new();
-            strcat(log, "Estado: BLOCKED - Procesos: ");
-            strcat(log, pids);
-            log_info(logger, log);
-
-            //mostramos el pid de running
-
-            log_info(logger, "Estado: RUNNING - PID: %i", execute->pid);
-        */
+            
         }
         else if(!strcmp(c_argv[0], "INTERRUPT"))
         {
@@ -372,4 +334,82 @@ void imprimir_procesos_por_estado()
             //MOSTRAMOS LOS PROCESOS EN EXIT 
             printf("Estado: EXIT\n");
             list_iterate(cola_exit->elements, imprimir_proceso);
+}
+
+
+
+t_pcb* buscar_proceso_en_cola_bloqueados(t_list* recursos_disponibles, t_list* tabla_global_de_archivos, char* pid)
+{
+
+    t_pcb* pcb = NULL;
+    t_list_iterator* recursos_disponibles_iterator = list_iterator_create(recursos_disponibles);
+    t_recurso* recurso = NULL;
+
+    while(list_iterator_has_next(recursos_disponibles_iterator))
+    {
+        recurso = list_iterator_next(recursos_disponibles_iterator);
+        pcb = buscar_proceso_segun_pid(pid, recurso->cola_blocked);
+        if(pcb != NULL)
+        {
+            list_remove_element(recurso->cola_blocked->elements, pcb);
+            break;
+        }
+    }
+
+    if(pcb == NULL)
+    {   
+        t_archivo* archivo = NULL;
+        t_list_iterator* tabla_global_de_archivos_iterator = list_iterator_create(tabla_global_de_archivos);
+
+        while(list_iterator_has_next(tabla_global_de_archivos_iterator))
+        {
+            
+            t_archivo* archivo = list_iterator_next(tabla_global_de_archivos_iterator);
+            pcb = buscar_proceso_segun_pid(pid, archivo->cola_blocked);
+            if(pcb != NULL)
+            {
+                list_remove_element(archivo->cola_blocked->elements, pcb);
+                break;
+            }
+        }
+    }
+
+    return pcb; 
+}
+
+void liberar_recursos_archivos(t_pcb* pcb)
+{
+    //recurremos los recursos asigados 
+    t_list_iterator* recursos_asignados = list_iterator_create(pcb->recursos_asignados);
+    t_recurso* recurso = NULL;
+    t_recurso* recurso_en_lista_disponibles = NULL;
+
+    while(list_iterator_has_next(recursos_asignados))
+    {
+        recurso = list_iterator_next(recursos_asignados);
+        recurso_en_lista_disponibles = buscar_recurso(recurso); //busca en la lista de recursos disponibles
+        recurso_en_lista_disponibles->instancias += recurso->instancias;
+        list_remove_element(pcb->recursos_asignados, recurso);
+    }
+
+    t_list_iterator* archivos_abiertos_iterator = list_iterator_create(pcb->tabla_de_archivos_abiertos);
+    t_archivo* archivo = NULL;
+    t_archivo* archivo_en_tabla_global = NULL;
+
+    while(list_iterator_has_next(archivos_abiertos_iterator))
+    {
+        archivo = list_iterator_next(archivos_abiertos_iterator);
+        archivo_en_tabla_global = buscar_archivo(tabla_global_de_archivos, archivo); 
+        if(archivo_en_tabla_global->contador_aperturas > 1)
+        {
+            archivo_en_tabla_global->contador_aperturas--;
+        }
+        else 
+        {
+            list_remove_element(tabla_global_de_archivos, archivo_en_tabla_global);
+        }
+        
+        list_remove_element(pcb->tabla_de_archivos_abiertos, archivo);
+    }
+
 }
