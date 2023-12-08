@@ -7,7 +7,7 @@ void pedir_instruccion()
         t_paquete* paquete = malloc(sizeof(t_paquete));
         paquete->buffer = malloc(sizeof(t_buffer));
 
-        int bytes = sizeof(valor->operacion) + strlen(valor->pid) + 1 + sizeof(uint32_t) * 2;
+        int bytes = sizeof(valor->operacion)+ sizeof(uint32_t) * 2;
 
         paquete->buffer->size = bytes;
 

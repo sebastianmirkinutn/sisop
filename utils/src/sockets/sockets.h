@@ -59,4 +59,14 @@ typedef struct
 	uint32_t puntero;
 
 } t_opfilesystem;
+
+typedef struct
+{
+	op_code operacion;
+	//char* fetch;
+	uint32_t processId;
+	uint32_t pagina;
+
+}t_optraduccionDeDirecciones;
 #endif
+

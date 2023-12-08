@@ -166,3 +166,26 @@ t_opfilesystem *deserializar_op_filesystem(t_buffer *buffer)
 
 	return valor;
 }
+
+t_paquete *serializar_cpu_traduccionDeDirecciones(t_optraduccionDeDirecciones *valor)
+{
+	t_paquete *paquete = malloc(sizeof(t_paquete));
+	paquete->buffer = malloc(sizeof(t_buffer));
+
+	int bytes = sizeof(valor->operacion) + sizeof(uint32_t) * 2;
+
+	paquete->buffer->size = bytes;
+
+	void *stream = malloc(paquete->buffer->size);
+	int frame = 0;
+
+	memcpy(stream + frame, (&valor->operacion), sizeof(valor->operacion));
+	frame += sizeof(valor->operacion);
+	memcpy(stream + frame, (&valor->processId), sizeof(uint32_t));
+	frame += sizeof(uint32_t);
+	memcpy(stream + frame, (&valor->pagina), sizeof(uint32_t));
+
+	paquete->buffer->stream = stream;
+
+	return paquete;
+}
