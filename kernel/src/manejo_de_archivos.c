@@ -297,11 +297,11 @@ void file_close(void* arg)
     t_proceso_bloqueado_por_fs* proceso_bloqueado;
     bool es_el_archivo(void* arg)
     {
-        return(((t_archivo*)arg)->nombre == arg_h->nombre_archivo);
+        return(!strcmp(((t_archivo*)arg)->nombre, arg_h->nombre_archivo));
     }
     bool es_el_archivo_local(void* arg)
     {
-        return(((t_archivo_local*)arg)->archivo->nombre == arg_h->nombre_archivo);
+        return(!strcmp(((t_archivo_local*)arg)->archivo->nombre, arg_h->nombre_archivo));
     }
     bool es_el_proceso(void* arg)
     {
@@ -463,7 +463,7 @@ void file_seek(void* arg)
 
     bool es_el_archivo_local(void* arg)
     {
-        return(((t_archivo_local*)arg)->archivo->nombre == arg_h->nombre_archivo);
+        return(!strcmp(((t_archivo_local*)arg)->archivo->nombre, arg_h->nombre_archivo));
     }
  
     sem_wait(&mutex_file_management);

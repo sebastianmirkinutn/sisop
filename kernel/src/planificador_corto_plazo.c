@@ -272,6 +272,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
             argumentos_file_management->tam_archivo = tam_archivo;
             argumentos_file_management->execute = execute;
+            argumentos_file_management->puntero = puntero;
 
             pthread_create(&h_file_seek, NULL, &file_seek, (void*)argumentos_file_management);
             pthread_detach(h_file_seek);
