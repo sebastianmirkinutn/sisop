@@ -244,7 +244,10 @@ int main(int argc, char* argv[])
                 //buscamos en la cola de bloqueados SEGUN RECURSO
 
                 pcb = buscar_proceso_en_cola_bloqueados(recursos_disponibles, tabla_global_de_archivos, atoi(c_argv[1]));
-                
+                if(pcb != NULL)
+                {
+                    liberar_recursos_archivos(pcb, conexion_filesystem);
+                }
                 
                 //Vamos a tener que buscar en la cola de bloqueados de cada recurso
                 if(pcb == NULL)
@@ -401,39 +404,17 @@ t_pcb* buscar_proceso_en_cola_bloqueados(t_list* recursos_disponibles, t_list* t
     return pcb; 
 }
 
-void liberar_recursos_archivos(t_pcb* pcb)
+void liberar_recursos_archivos(t_pcb* pcb, int socket_filesystem)
 {
-    //recurremos los recursos asigados 
-    t_list_iterator* recursos_asignados = list_iterator_create(pcb->recursos_asignados);
-    t_recurso* recurso = NULL;
-    t_recurso* recurso_en_lista_disponibles = NULL;
-
-    while(list_iterator_has_next(recursos_asignados))
+    void hacer_f_close(void* arg)
     {
-        recurso = list_iterator_next(recursos_asignados);
-        recurso_en_lista_disponibles = buscar_recurso(recurso); //busca en la lista de recursos disponibles
-        recurso_en_lista_disponibles->instancias += recurso->instancias;
-        list_remove_element(pcb->recursos_asignados, recurso);
+        pthread_t h_file_close_deallocate;
+        t_args_hilo_archivos* argumentos_file_management = malloc(sizeof(t_args_hilo_archivos));
+        argumentos_file_management->execute = pcb;
+        argumentos_file_management->nombre_archivo = (((t_archivo*)arg)->nombre);
+        argumentos_file_management->socket_filesystem = socket_filesystem;
+        pthread_create(&h_file_close_deallocate, NULL, &file_close, (void*)argumentos_file_management);
+        pthread_detach(h_file_close_deallocate);
     }
-
-    t_list_iterator* archivos_abiertos_iterator = list_iterator_create(pcb->tabla_de_archivos_abiertos);
-    t_archivo* archivo = NULL;
-    t_archivo* archivo_en_tabla_global = NULL;
-
-    while(list_iterator_has_next(archivos_abiertos_iterator))
-    {
-        archivo = list_iterator_next(archivos_abiertos_iterator);
-        archivo_en_tabla_global = buscar_archivo(tabla_global_de_archivos, archivo); 
-        if(archivo_en_tabla_global->contador_aperturas > 1)
-        {
-            archivo_en_tabla_global->contador_aperturas--;
-        }
-        else 
-        {
-            list_remove_element(tabla_global_de_archivos, archivo_en_tabla_global);
-        }
-        
-        list_remove_element(pcb->tabla_de_archivos_abiertos, archivo);
-    }
-
+    list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
 }
