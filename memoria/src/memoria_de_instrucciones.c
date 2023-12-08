@@ -196,6 +196,9 @@ void conexion_kernel(void* arg)
 
             break;
         
+        case FINALIZAR_PROCESO:
+            //liberar_memoria();
+            break; 
         default:
             liberar_conexion(arg_h->socket_kernel);
             return;
