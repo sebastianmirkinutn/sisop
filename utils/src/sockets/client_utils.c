@@ -189,3 +189,105 @@ t_paquete *serializar_cpu_traduccionDeDirecciones(t_optraduccionDeDirecciones *v
 
 	return paquete;
 }
+/* HAY ALGO MAL
+
+t_optraduccionDeDirecciones *deserializar_cpu_traduccionDeDirecciones(t_buffer* buffer){
+
+        t_optraduccionDeDirecciones* frame = malloc(sizeof(t_optraduccionDeDirecciones));
+
+        void* stream= buffer->stream;
+
+        memcpy(&(frame->operacion), stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+        memcpy(&(frame->processId), stream, sizeof(uint32_t));
+        stream += sizeof(uint32_t);
+        memcpy(&(frame->pagina, stream, sizeof(uint32_t)));
+
+        return frame;
+        
+}
+*/
+
+t_paquete* serializar_escritura_memoria(char* valor_a_escribir, double direccion_fisica, uint32_t tamanio_a_escribir, uint32_t pid){
+    
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+    paquete->buffer = malloc(sizeof(t_buffer));
+
+    
+    int size_bytes= tamanio_a_escribir + sizeof(double) + sizeof(uint32_t)*2;
+    paquete->buffer->size=size_bytes;
+    
+    void* stream= malloc(size_bytes);
+
+    int offset=0;
+
+    memcpy(stream+offset,&pid,sizeof(uint32_t));
+    offset+= sizeof(uint32_t);
+    memcpy(stream+offset, &tamanio_a_escribir,sizeof(uint32_t));
+    offset+= sizeof(uint32_t);
+    memcpy(stream+offset,&direccion_fisica,sizeof(double));
+    offset+=sizeof(double);
+    memcpy(stream + offset, valor_a_escribir,tamanio_a_escribir);
+   
+
+    paquete->buffer->stream=stream;
+    return paquete;
+
+}
+
+t_escritura_memoria* deserializar_escritura_memoria(t_buffer* buffer){
+    t_escritura_memoria* tricky= malloc(sizeof(t_escritura_memoria));     
+    void* stream= buffer->stream;
+
+    memcpy(&tricky->pid,stream,sizeof(uint32_t));
+    stream+=sizeof(uint32_t);
+
+    memcpy(&tricky->tamanio_a_escribir,stream,sizeof(uint32_t));
+    stream+=sizeof(uint32_t);
+
+    memcpy(&tricky->direccion_fisica, stream, sizeof(double));
+    stream+=sizeof(double); 
+    
+    tricky->valor_a_escribir = malloc(tricky->tamanio_a_escribir);
+    memcpy(tricky->valor_a_escribir, stream, tricky->tamanio_a_escribir);
+   
+    return tricky;
+
+}
+
+
+t_paquete* serializar_lectura_memoria(double dirFisica, uint32_t tamanio, uint32_t pid){
+
+    t_paquete* paquete = malloc(sizeof(t_paquete));
+    paquete->buffer = malloc(sizeof(t_buffer));
+
+    int size_bytes= sizeof(double)+ sizeof(uint32_t) + sizeof(uint32_t);
+    paquete->buffer->size=size_bytes;
+    
+    void* stream= malloc(size_bytes);
+    int offset=0;
+
+    
+    memcpy(stream+offset,&dirFisica, sizeof(double));
+    offset+=sizeof(double);
+    memcpy(stream+offset,&tamanio,sizeof(uint32_t));
+    offset+=sizeof(uint32_t);
+    memcpy(stream+offset,&pid,sizeof(uint32_t));
+
+    paquete->buffer->stream=stream;
+    return paquete;
+}
+
+
+t_lectura_memoria* deserializar_lectura_memoria(t_buffer* buffer){
+    
+    t_lectura_memoria* tricky= malloc(sizeof(t_lectura_memoria));     
+    void* stream= buffer->stream;
+
+    memcpy(&tricky->direccion_fisica, stream,sizeof(double));
+    stream+=sizeof(double);
+    memcpy(&tricky->tamanio_registro, stream, sizeof(uint32_t));
+    stream+=sizeof(uint32_t); 
+    memcpy(&tricky->pid,stream,sizeof(uint32_t));
+    return tricky;
+}
