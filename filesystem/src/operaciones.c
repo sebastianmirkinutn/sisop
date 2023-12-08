@@ -373,7 +373,11 @@ int32_t truncar_archivo(char* nombre, uint32_t size)
 	}
 	else if (size < archivo->tam_archivo) // Valido que no sea igual porque en ese caso no se hace nada
 	{
-
+		achicar_archivo(archivo, size);
+		mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
+		config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
+		config_set_value(archivo->config, "BLOQUE_INICIAL", int_to_string(archivo->bloque_inicial));
+		config_save(archivo->config);
 	}
 	
 	archivo->tam_archivo = size;
