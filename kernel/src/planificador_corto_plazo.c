@@ -28,8 +28,8 @@ void planificador_rr(void* arg)
     pthread_t generador_de_interrupciones;
     while(1)
     {
-        sem_wait(&planificacion_corto_plazo);
         sem_wait(&procesos_en_ready);
+        sem_wait(&planificacion_corto_plazo);
         //log_info(logger,"Hice wait del gdmp");
         sem_wait(&mutex_cola_ready);
         //log_info(logger,"Hice wait de la cola de new: %i",cola_new);
@@ -63,8 +63,8 @@ void planificador_fifo(void* arg)
     //log_info(logger, "Empieza el planificador fifo");
     while(1)
     {
-        sem_wait(&planificacion_corto_plazo);
         sem_wait(&procesos_en_ready);
+        sem_wait(&planificacion_corto_plazo);
         log_info(logger,"Hice wait del gdmp");
         sem_wait(&mutex_cola_ready);
         //log_info(logger,"Hice wait de la cola de new: %i",cola_new);
@@ -98,8 +98,8 @@ void planificador_prioridades(void* arg)
     char* recurso;
     while(1)
     {
-        sem_wait(&planificacion_corto_plazo);
         sem_wait(&procesos_en_ready);
+        sem_wait(&planificacion_corto_plazo);
         //log_info(logger,"Hice wait del gdmp");
         sem_wait(&mutex_cola_ready);
         //log_info(logger,"Hice wait de la cola de new: %i",cola_new);

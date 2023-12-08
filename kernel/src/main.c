@@ -20,6 +20,8 @@ t_list* recursos_disponibles;
 t_list* tabla_global_de_archivos;
 t_log* logger;
 
+uint8_t planificacion_iniciada;
+
 uint32_t* instancias_recursos(char** instancias)
 {
     uint32_t* rec_instancias;
@@ -82,6 +84,29 @@ t_list* iniciar_lista_de_recursos(char** a_recursos, char** a_instancias)
     return recursos;   
 }
 
+void iniciar_planificacion()
+{
+    log_info(logger, "Iniciar");
+    if(!planificacion_iniciada)
+    {
+        sem_post(&planificacion_largo_plazo);
+        sem_post(&planificacion_corto_plazo);
+        planificacion_iniciada = 1;
+        log_info(logger, "Se inició");
+    }
+}
+void detener_planificacion()
+{
+    log_info(logger, "Detener");
+    if(planificacion_iniciada)
+    {
+        sem_wait(&planificacion_largo_plazo);
+        sem_wait(&planificacion_corto_plazo);
+        planificacion_iniciada = 0;
+    }
+    log_info(logger, "Se detuvo");
+}
+
 int main(int argc, char* argv[])
 {  
     logger = iniciar_logger("log_kernel","Kernel");
@@ -122,6 +147,7 @@ int main(int argc, char* argv[])
     tabla_global_de_archivos = list_create();
 
     recursos_disponibles = iniciar_lista_de_recursos(recursos, instancias_recursos);
+    planificacion_iniciada = 0;
  
     t_args_hilo args_hilo;
     args_hilo.socket_dispatch = conexion_cpu_dispatch;
@@ -247,11 +273,7 @@ int main(int argc, char* argv[])
             //sem_getvalue(&planificacion_corto_plazo,&sem_value_cp);
             //if(!sem_value_lp) sem_wait(&planificacion_largo_plazo);
             //if(!sem_value_cp) sem_wait(&planificacion_corto_plazo);
-            log_info(logger, "Detener");
-            sem_wait(&planificacion_largo_plazo);
-            sem_wait(&planificacion_corto_plazo);
-            log_info(logger, "Se detuvo");
-
+            detener_planificacion();
         }
         else if(!strcmp(c_argv[0], "INICIAR_PLANIFICACION"))
         {
@@ -259,11 +281,7 @@ int main(int argc, char* argv[])
             //sem_getvalue(&planificacion_corto_plazo,&sem_value_cp);
             //if(!sem_value_lp) sem_post(&planificacion_largo_plazo);
             //if(!sem_value_cp) sem_post(&planificacion_corto_plazo);
-            log_info(logger, "Iniciar");
-            sem_post(&planificacion_largo_plazo);
-            sem_post(&planificacion_corto_plazo);
-            log_info(logger, "Se inició");
-        
+            iniciar_planificacion();
         }
         else if(!strcmp(c_argv[0], "MULTIPROGRAMACION"))
         {

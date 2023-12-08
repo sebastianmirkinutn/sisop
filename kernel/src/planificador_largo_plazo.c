@@ -24,8 +24,8 @@ void planificador_largo_plazo(void* arg)
 
     while(1)
     {
-        sem_wait(&planificacion_largo_plazo);
         sem_wait(&procesos_en_new);
+        sem_wait(&planificacion_largo_plazo);
         sem_wait(&grado_de_multiprogramacion);
         log_info(logger,"Hice wait del gdmp");
         sem_wait(&mutex_cola_new);
