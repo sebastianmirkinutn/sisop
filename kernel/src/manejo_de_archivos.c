@@ -70,6 +70,8 @@ void file_open(void* arg)
 
     t_archivo* archivo =  buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
     t_archivo_local* archivo_local = malloc(sizeof(t_archivo_local));
+    archivo_local->archivo = archivo;
+    archivo_local->puntero = 0;
     if(archivo != NULL)
     {
         printf("archivo != NULL\n");
@@ -80,8 +82,6 @@ void file_open(void* arg)
             printf("archivo->lock == READ");
             if(arg_h->lock == READ)
             {
-                archivo_local->archivo = archivo;
-                archivo_local->puntero = 0;
                 archivo->contador_aperturas++;
                 printf("arg_h->lock == READ");
                 sem_wait(&(archivo->mutex_locks_lectura));
@@ -124,8 +124,6 @@ void file_open(void* arg)
         }
         else //Ningún archivo lo tiene abierto
         {
-            archivo_local->archivo = archivo;
-            archivo_local->puntero = 0;
             archivo->contador_aperturas++;
             archivo->lock = READ;
             printf("arg_h->lock == READ");
@@ -145,20 +143,18 @@ void file_open(void* arg)
     }
     else
     {
-        archivo_local->archivo = archivo;
-        archivo_local->puntero = 0;
         printf("archivo == NULL\n");
         archivo = crear_archivo(arg_h->nombre_archivo, arg_h->tam_archivo, arg_h->lock); 
+        archivo_local->archivo = archivo;
+        archivo_local->puntero = 0;
         printf("archivo == %i\n", archivo);
         printf("archivo->nombre == %s\n", archivo->nombre);
         sem_wait(&mutex_tabla_global_de_archivos);
         list_add(tabla_global_de_archivos, archivo);
-        list_add(arg_h->execute->tabla_de_archivos_abiertos, archivo_local);
         sem_post(&mutex_tabla_global_de_archivos);
-        archivo_local = malloc(sizeof(t_archivo_local));
 
-        list_add(arg_h->execute->tabla_de_archivos_abiertos, archivo);
-        log_info(arg_h->logger, "Agregué el archivo %s en %i", archivo->nombre, tabla_global_de_archivos);
+        list_add(arg_h->execute->tabla_de_archivos_abiertos, archivo_local);
+        log_info(arg_h->logger, "Agregué el archivo %s en %i", archivo_local->archivo->nombre, tabla_global_de_archivos);
     
   
     
@@ -210,9 +206,14 @@ void file_read(void* arg)
     t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
     t_response respuesta;
 
+    bool es_el_archivo_local(void* arg)
+    {
+        return(!strcmp(((t_archivo_local*)arg)->archivo->nombre, arg_h->nombre_archivo));
+    }
+
     enviar_operacion(arg_h->socket_filesystem, LEER_ARCHIVO);
     enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem); //SERIALIZAR (OP, NOMBRE_ARCHIVO, PUNTERO)
-    t_archivo_local* archivo = buscar_archivo(arg_h->execute->tabla_de_archivos_abiertos, arg_h->nombre_archivo);
+    t_archivo_local* archivo = list_find(arg_h->execute->tabla_de_archivos_abiertos, es_el_archivo_local);
     send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t),0);
     enviar_direccion(arg_h->socket_memoria, arg_h->direccion); //SERIALIZAR NO HACE FALTA
     //recv(arg_h->socket_filesystem, &tam_archivo, sizeof(int32_t), MSG_WAITALL);
@@ -224,6 +225,7 @@ void file_read(void* arg)
 
     sem_post(&mutex_file_management);
     liberar_parametros(arg_h);
+    return;
 }
 
 void file_write(void* arg)
@@ -231,10 +233,14 @@ void file_write(void* arg)
     sem_wait(&mutex_file_management);
     t_args_hilo_archivos* arg_h = (t_args_hilo_archivos*) arg;
     t_response respuesta;
+    bool es_el_archivo_local(void* arg)
+    {
+        return(!strcmp(((t_archivo_local*)arg)->archivo->nombre, arg_h->nombre_archivo));
+    }
     printf("Direccion = %i:%i\n", arg_h->direccion->frame, arg_h->direccion->offset);
     enviar_operacion(arg_h->socket_filesystem, ESCRIBIR_ARCHIVO);
     enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
-    t_archivo_local* archivo = buscar_archivo(arg_h->execute->tabla_de_archivos_abiertos, arg_h->nombre_archivo);
+    t_archivo_local* archivo = list_find(arg_h->execute->tabla_de_archivos_abiertos, es_el_archivo_local);
     send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t),0);
     enviar_direccion(arg_h->socket_filesystem, arg_h->direccion); //SERIALIZAR (OPERACION, NOMBRE, PUNTERO, DIRECCION)
     respuesta = recibir_respuesta(arg_h->socket_filesystem);
@@ -314,6 +320,7 @@ void file_close(void* arg)
     void iterator_agregar_a_ready(void* arg)
     {
         list_add(((t_pcb*)arg)->tabla_de_archivos_abiertos, archivo_local);
+        printf("AGREGUÉ EL ARCHIVO LOCAL %s\n\n", archivo_local->archivo->nombre);
         queue_push(cola_ready,(t_pcb*)arg);
         sem_post(&procesos_en_ready);
     }
@@ -339,6 +346,13 @@ void file_close(void* arg)
         printf("archivo != NULL (es %s)\n", archivo->nombre);
         printf("Procesos bloqueados por lock = %i\n",archivo->cola_blocked->elements->elements_count);
         list_remove_by_condition(arg_h->execute->tabla_de_archivos_abiertos, es_el_archivo_local);
+
+        arg_h->execute->estado = READY;
+        sem_wait(&mutex_cola_ready);
+        queue_push(cola_ready, arg_h->execute);
+        sem_post(&mutex_cola_ready);
+        sem_post(&procesos_en_ready);
+
         if(archivo->lock == READ)
         {
             printf("archivo->lock == READ\n");
@@ -354,14 +368,17 @@ void file_close(void* arg)
                     arg_h->execute->estado = READY;
                     archivo_local->archivo = archivo;
                     archivo_local->puntero = 0;
-                    list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
-                    sem_wait(&mutex_cola_ready);
-                    queue_push(&cola_ready, arg_h->execute);
-                    queue_push(&cola_ready, proceso_bloqueado);
-                    sem_post(&mutex_cola_ready);
-                    sem_post(&procesos_en_ready);
-                    sem_post(&procesos_en_ready);
-                    archivo->contador_aperturas++;
+                    if(proceso_bloqueado != NULL)
+                    {    
+                        list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
+                        sem_wait(&mutex_cola_ready);
+                        //queue_push(cola_ready, arg_h->execute);
+                        queue_push(cola_ready, proceso_bloqueado);
+                        sem_post(&mutex_cola_ready);
+                        //sem_post(&procesos_en_ready);
+                        sem_post(&procesos_en_ready);
+                        archivo->contador_aperturas++;
+                    }
                     printf("TERMINA EL HILO PORQUE TODOS LOS BLOQUEADOS SON DE ESCRITURA\n");
                     liberar_parametros(arg_h);
                     sem_post(&mutex_file_management);
@@ -373,7 +390,7 @@ void file_close(void* arg)
                     list_remove_by_condition(tabla_global_de_archivos, es_el_archivo);
 
                     sem_wait(&mutex_cola_ready);
-                    queue_push(&cola_ready, arg_h->execute);
+                    //queue_push(&cola_ready, arg_h->execute);
                     sem_post(&mutex_cola_ready);
                     sem_post(&procesos_en_ready);
                     printf("TERMINA EL HILO PORQUE NO HAY NADA\n");
@@ -387,10 +404,11 @@ void file_close(void* arg)
         {
             if(archivo->cola_blocked->elements->elements_count > 0) //Hay elementos bloqueados (no se sabe si R o W)
             {
-
-                sem_wait(&(archivo->mutex_cola_blocked));
+                archivo_local->archivo = archivo;
+                archivo_local->puntero = 0;
+                //sem_wait(&(archivo->mutex_cola_blocked));
                 proceso_bloqueado = queue_pop(archivo->cola_blocked);
-                sem_post(&(archivo->mutex_cola_blocked));
+                //sem_post(&(archivo->mutex_cola_blocked));
                 if(proceso_bloqueado != NULL)
                 list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
                 {
@@ -405,8 +423,8 @@ void file_close(void* arg)
                         list_iterate(procesos_lectura, iterator_agregar_a_locks_lectura);
                         sem_wait(&mutex_cola_ready);
                         queue_push(cola_ready, proceso_bloqueado->pcb);
+                        list_add(archivo->locks_lectura, proceso_bloqueado->pcb);
                         list_iterate(archivo->locks_lectura, iterator_agregar_a_ready);
-                        list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
                         sem_post(&procesos_en_ready);
                         sem_post(&mutex_cola_ready);
                         void* element;
@@ -424,10 +442,10 @@ void file_close(void* arg)
                         archivo_local->archivo = archivo;
                         archivo_local->puntero = 0;
                         sem_wait(&mutex_cola_ready);
-                        queue_push(cola_ready, arg_h->execute);
+                        //queue_push(cola_ready, arg_h->execute);
                         queue_push(cola_ready, proceso_bloqueado->pcb);
                         sem_post(&mutex_cola_ready);
-                        sem_post(&procesos_en_ready);
+                        //sem_post(&procesos_en_ready);
                         sem_post(&procesos_en_ready);
                         list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
                         printf("TERMINA EL HILO PORQUE NO HAY NADA\n");
