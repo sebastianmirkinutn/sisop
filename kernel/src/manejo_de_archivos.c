@@ -328,6 +328,8 @@ void file_close(void* arg)
     {   
         if((t_proceso_bloqueado_por_fs*)arg != proceso_bloqueado)
         {
+            printf("Agrego PID: %i a los locks de lectura\n\n", ((t_proceso_bloqueado_por_fs*)arg)->pcb->pid);
+            list_add(((t_proceso_bloqueado_por_fs*)arg)->pcb->tabla_de_archivos_abiertos, archivo_local);
             list_add(archivo->locks_lectura,((t_proceso_bloqueado_por_fs*)arg)->pcb);
         }
     }
@@ -423,19 +425,20 @@ void file_close(void* arg)
                         list_iterate(procesos_lectura, iterator_agregar_a_locks_lectura);
                         sem_wait(&mutex_cola_ready);
                         queue_push(cola_ready, proceso_bloqueado->pcb);
-                        list_add(archivo->locks_lectura, proceso_bloqueado->pcb);
                         list_iterate(archivo->locks_lectura, iterator_agregar_a_ready);
+                        list_add(archivo->locks_lectura, proceso_bloqueado->pcb);
                         sem_post(&procesos_en_ready);
                         sem_post(&mutex_cola_ready);
                         void* element;
                         do
                         {
                             element = list_remove_by_condition(archivo->cola_blocked->elements, tiene_lock_lectura);
-                        } while (element != NULL);
-                        list_add(archivo->locks_lectura, proceso_bloqueado->pcb); 
+                        } while (element != NULL); 
                         printf("TERMINA EL HILO PORQUE NO HAY NADA\n");
                         liberar_parametros(arg_h);
                         sem_post(&mutex_file_management);
+                        printf("Después del fclose, hay %i archivos con lock de lectura, y %i bloqueados\n", archivo->locks_lectura->elements_count, archivo->cola_blocked->elements->elements_count);
+                        return;
                     }
                     else //No se desbloquea nada (El lock es WRITE)
                     {
