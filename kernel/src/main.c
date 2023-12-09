@@ -379,6 +379,7 @@ void liberar_recursos_archivos(t_pcb* pcb, int socket_filesystem)
 void finalizar_proceso (uint32_t pid, int socket_filesystem, int socket_cpu_dispatch)
 {
     t_pcb* pcb;
+    
     void hacer_f_close(void* arg)
     {
         pthread_t h_file_close_deallocate;
@@ -394,6 +395,12 @@ void finalizar_proceso (uint32_t pid, int socket_filesystem, int socket_cpu_disp
         signal_recurso(logger, ((t_recurso*)arg)->nombre, socket_cpu_dispatch, pcb);
     }
     t_queue* cola = obtener_queue(pid);
+    if(execute->pid == pid)
+    {
+        pcb = execute;
+        list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
+        list_iterate(pcb->recursos_asignados, hacer_signal);
+    }
     if(cola != NULL)
     {
         pcb = buscar_proceso_segun_pid(pid, cola);
