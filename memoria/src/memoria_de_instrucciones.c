@@ -6,6 +6,7 @@ extern sem_t mutex_lista_procesos;
 extern sem_t cantidad_de_procesos;
 extern int tam_pagina;
 extern t_log* logger;
+extern int conexion_server_swap;
 
 void conexion_cpu(void* arg)
 {
@@ -15,23 +16,30 @@ void conexion_cpu(void* arg)
     //log_info(logger_hilo,"Socket: %i", arg_h->socket_cpu);
     t_direccion_fisica* direccion;
     //enviar_mensaje("LISTO_PARA_RECIBIR_PEDIDOS",arg_h->socket_cpu);
+    t_proceso* proceso;
+    int32_t frame;
+    t_frame_info* frame_victima_info;
+    t_proceso* proceso_victima;
+    t_pagina* pagina_victima;
+    uint32_t lectura, a_escribir, pid, pagina_buscada, program_counter;
+    op_code codigo;
     while(1)
     {
-        op_code codigo = recibir_operacion(arg_h->socket_cpu);
+        codigo = recibir_operacion(arg_h->socket_cpu);
         //log_info(logger_hilo,"op_code: %i", codigo);
-        uint32_t pid;
+        
         switch (codigo)
         {
         case FETCH_INSTRUCCION:
-            uint32_t program_counter;
             recv(arg_h->socket_cpu, &pid, sizeof(uint32_t), MSG_WAITALL);
             //log_info(logger_hilo,"pid: %i", pid);
             recv(arg_h->socket_cpu, &program_counter, sizeof(uint32_t), MSG_WAITALL);
             //log_info(logger_hilo,"ip: %i", program_counter);
 
-            sem_wait(&cantidad_de_procesos);
-            t_proceso* proceso = buscar_proceso(pid);
+            //sem_wait(&cantidad_de_procesos);
+            proceso = buscar_proceso(pid);
             //log_info(logger_hilo,"HAY QUE ENVIAR LA INSTRUCCION");
+            sem_wait(&cantidad_de_procesos);
             sem_wait(&mutex_lista_procesos);
 
             if(program_counter >= proceso->instrucciones->elements_count){
@@ -39,7 +47,7 @@ void conexion_cpu(void* arg)
                 //log_info(logger_hilo, "No hay más isntrucciones");
             }
             sleep(arg_h->retardo_memoria / 1000);
-            log_info(logger_hilo,"Envío: %s", list_get(proceso->instrucciones, program_counter));
+            log_info(logger_hilo,"Envío: %s", (char*)list_get(proceso->instrucciones, program_counter));
             enviar_mensaje(list_get(proceso->instrucciones, program_counter), arg_h->socket_cpu);
             sem_post(&mutex_lista_procesos);
             sem_post(&cantidad_de_procesos);
@@ -47,43 +55,48 @@ void conexion_cpu(void* arg)
         
         case PEDIDO_DE_FRAME:
             printf("PEDIDO_DE_FRAME\n");
-            uint32_t pagina_buscada;
             recv(arg_h->socket_cpu, &pid, sizeof(uint32_t), MSG_WAITALL);
             printf("Recibí pid\n");
             recv(arg_h->socket_cpu, &pagina_buscada, sizeof(uint32_t), MSG_WAITALL);
             printf("RECIBI PAGINA\n");
-            int32_t frame = obtener_frame(pagina_buscada, pid);
-            enviar_frame(arg_h->socket_cpu, frame);
+            sem_wait(&cantidad_de_procesos);
+            sem_wait(&mutex_lista_procesos);
+            frame = obtener_frame(pagina_buscada, pid);
+            sem_post(&mutex_lista_procesos);
+            sem_post(&cantidad_de_procesos);
             if(frame == -3){
+                enviar_operacion(arg_h->socket_cpu, PAGE_FAULT);
                 // Tengo que repetir lógica para hacer bien el log
-                t_frame_info* frame_victima_info = elegir_victima();
-                t_proceso* proceso_victima = buscar_proceso(frame_victima_info->pid);
-                t_pagina* pagina_victima = obtener_pagina_de_frame(proceso_victima->tabla_de_paginas, frame_victima_info->frame);
+                frame_victima_info = elegir_victima();
+                sem_wait(&cantidad_de_procesos);
+                sem_wait(&mutex_lista_procesos);
+                proceso_victima = buscar_proceso(frame_victima_info->pid);
+                pagina_victima = obtener_pagina_de_frame(proceso_victima->tabla_de_paginas, frame_victima_info->frame);
+                log_info(logger_hilo, "PID: %u - Pagina: %u - Marco %u", proceso_victima->pid, pagina_victima->pagina, pagina_victima->frame);
                 if(pagina_victima->modificado){
-                    escribir_en_swap(pagina_victima, arg);
-                    log_info(logger_hilo, "SWAP OUT - PID: %i - Marco: %i - Page OUT: %i-%i", proceso_victima->pid, frame_victima_info->frame, proceso_victima->pid, pagina_victima->pagina);
+                    escribir_en_swap(pagina_victima);
+                    log_info(logger_hilo, "SWAP OUT - PID: %u - Marco: %u - Page OUT: %u-%u", proceso_victima->pid, frame_victima_info->frame, proceso_victima->pid, pagina_victima->pagina);
                 }
                 frame = frame_victima_info->frame;
-                eliminar_frame_info(frame_victima_info);
-
+                eliminar_frame_info(frame_victima_info->frame);
                 agregar_frame_info(frame, pid);
                 t_pagina* pagina = pagina_en_proceso(pagina_buscada, pid);
                 pagina->frame = frame;
-                leer_en_swap(pagina, arg);
-                log_info("REEMPLAZO - Marco: %i - Page Out: %i-%i - Page In: %i-%i", frame, proceso_victima->pid,pagina_victima->pagina,pid,pagina_buscada);
+                leer_en_swap(pagina);
+                log_info(logger_hilo, "REEMPLAZO - Marco: %u - Page Out: %u-%u - Page In: %u-%u", frame, proceso_victima->pid,pagina_victima->pagina,pid,pagina_buscada);
+                sem_post(&mutex_lista_procesos);
+                sem_post(&cantidad_de_procesos);
             }
-            // Tengo tres tipos de PAGE_FAULT, uno es salvable
-            // Consultar
+            enviar_frame(arg_h->socket_cpu, frame);
             break;
 
         case PEDIDO_LECTURA:
             direccion = recibir_direccion(arg_h->socket_cpu);
-            uint32_t lectura = leer_de_memoria(direccion);
-            send(arg_h->socket_cpu, &lectura, sizeof(uint32_t), NULL);
+            lectura = leer_de_memoria(direccion);
+            send(arg_h->socket_cpu, &lectura, sizeof(uint32_t), 0);
             break;
 
         case PEDIDO_ESCRITURA:
-            uint32_t a_escribir;
             direccion = recibir_direccion(arg_h->socket_cpu);
             recv(arg_h->socket_cpu, &a_escribir, sizeof(uint32_t), MSG_WAITALL);
             //printf("Voy a escribir en memoria\n");
@@ -92,7 +105,7 @@ void conexion_cpu(void* arg)
             break;
 
         case PEDIDO_SIZE_PAGINA:
-            send(conexion_cpu, &tam_pagina, sizeof(int), NULL);
+            send(arg_h->socket_cpu, &tam_pagina, sizeof(int), 0);
             break;
 
         default:
@@ -108,7 +121,7 @@ void parsear_instrucciones(t_log* logger,t_proceso* proceso, char* str)
     if(str == NULL)
     {
         log_error(logger, "No hay instrucciones.");
-        return NULL;
+        return;
     }
     //t_list* instrucciones = list_create();
     char* str_cpy = strdup(str);
@@ -175,11 +188,11 @@ char* leer_pseudocodigo(t_log* logger, char* nombre_archivo)
 
 t_proceso* crear_proceso(uint32_t pid)
 {
-    t_proceso* proceso = malloc(sizeof(t_proceso));
-    proceso->pid = pid;
-    proceso->instrucciones = list_create();
-    proceso->tabla_de_paginas = malloc(sizeof(t_pagina));
-    return proceso;
+    t_proceso* nuevo_proceso = malloc(sizeof(t_proceso));
+    nuevo_proceso->pid = pid;
+    nuevo_proceso->instrucciones = list_create();
+    nuevo_proceso->tabla_de_paginas = malloc(sizeof(t_pagina));
+    return nuevo_proceso;
 }
 
 void conexion_kernel(void* arg)
@@ -187,6 +200,14 @@ void conexion_kernel(void* arg)
     t_log* logger_hilo = iniciar_logger("logger_hilo.log","HILO");
     log_info(logger_hilo, "HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
+    t_proceso* proceso;
+    t_pagina* pagina;
+    uint32_t pid, size;
+    uint32_t cantidad_de_bloques;
+    int32_t frame;
+    uint32_t cantidad_de_paginas;
+    t_response respuesta;
+
     //log_info(logger_hilo,"Socket: %i", arg_h->socket_kernel);
     while(1)
     {
@@ -195,9 +216,8 @@ void conexion_kernel(void* arg)
         switch (codigo)
         {
         case INICIAR_PROCESO:
-            uint32_t pid, size;
             recv(arg_h->socket_kernel, &pid, sizeof(uint32_t), MSG_WAITALL);
-            t_proceso* proceso = crear_proceso(pid);
+            proceso = crear_proceso(pid);
             //log_info(logger_hilo,"pid: %i", pid);
             char* ruta = recibir_mensaje(arg_h->socket_kernel);
             recv(arg_h->socket_kernel, &size, sizeof(uint32_t), MSG_WAITALL);
@@ -210,59 +230,60 @@ void conexion_kernel(void* arg)
             //log_info(logger_hilo, "SIGNAL cantidad_de_procesos");
 
             // Reservo el espacio en swap
-            uint32_t cantidad_de_bloques = ceil(size / tam_pagina);
-            t_list* bloques_reservados;
-            enviar_operacion(arg_h->socket_filesystem, RESERVAR_SWAP);
-            send(arg_h->socket_filesystem, &cantidad_de_bloques, sizeof(uint32_t), 0);
-            send(arg_h, &pid, sizeof(uint32_t), MSG_WAITALL);
+            cantidad_de_bloques = ceil(size / tam_pagina);
+            enviar_operacion(conexion_server_swap, RESERVAR_SWAP);
+            send(conexion_server_swap, &cantidad_de_bloques, sizeof(uint32_t), 0);
+            send(conexion_server_swap, &pid, sizeof(uint32_t), MSG_WAITALL);
             
-            t_response respuesta = recibir_respuesta(arg_h->socket_filesystem);
+            respuesta = recibir_respuesta(conexion_server_swap);
 
             if(respuesta == OK){
-                
-
-                int32_t frame;
-                t_frame_info* frame_info;
-                t_pagina* pagina;
-                uint32_t cantidad_de_paginas = ceil(size / tam_pagina);
+                cantidad_de_paginas = ceil(size / tam_pagina);
                 // Asigno memoria página por página
-                for(int nro_pagina = 0; nro_pagina < cantidad_de_paginas; nro_pagina++)
+                for(uint32_t nro_pagina = 0; nro_pagina < cantidad_de_paginas; nro_pagina++)
                 {
                     // En caso que no haya frame, se busca reemplazo
-                    if(frame = frame_disponible() == -1)
-                        frame = reemplazo_de_frame(logger_hilo, arg);
+                    frame = frame_disponible();
+                    if(frame == -1){
+                        log_info(logger_hilo, "No hay frame disponible, reemplazo");
+                        frame = reemplazo_de_frame(pid, nro_pagina, false, logger_hilo);
+                    }
+                        
                     agregar_frame_info(frame, pid);
-                    agregar_pagina(pid, nro_pagina, frame, list_get(bloques_reservados, nro_pagina)); // Al ser del mismo tamaño los bloques que los frames, asigno linealmente
-                    printf("Se asigna el frame %i al proceso %i para la página %i\n", frame, pid, nro_pagina);
+                    sem_wait(&mutex_lista_procesos);
+                    agregar_pagina(pid, nro_pagina, frame); // Al ser del mismo tamaño los bloques que los frames, asigno linealmente
+                    sem_post(&mutex_lista_procesos); 
                 }
-                log_info(logger_hilo, "PID: %i - Tamaño: %i", pid, cantidad_de_paginas);
+                log_info(logger_hilo, "PID: %u - Tamaño: %u", pid, cantidad_de_paginas);
             }
             else{
-                log_info(logger_hilo, "No se pudo reservar SWAP para PID:", pid);
+                log_info(logger_hilo, "No se pudo reservar SWAP para PID: %u", pid);
             }
             
             
             break;
         
         case FINALIZAR_PROCESO:
-            u_int32_t pid;
             recv(arg_h->socket_kernel, &pid, sizeof(uint32_t), MSG_WAITALL);
-            t_proceso* proceso = buscar_proceso(pid);
-            t_pagina* pagina;
-
-            log_info(logger_hilo, "PID: %i - Tamaño: %i", proceso->pid, list_size(proceso->tabla_de_paginas));
+            sem_wait(&cantidad_de_procesos);
+            sem_wait(&mutex_lista_procesos);
+            proceso = buscar_proceso(pid);
+            
+            log_info(logger_hilo, "PID: %u - Tamaño: %i", proceso->pid, list_size(proceso->tabla_de_paginas));
 
             for(int nro_pagina = 0; nro_pagina < list_size(proceso->tabla_de_paginas); nro_pagina++){
                 pagina = list_get(proceso->tabla_de_paginas, nro_pagina);
-                log_info(logger_hilo, "PID: %i - Pagina: %i - Marco: %i", pid, pagina->pagina, pagina->frame);
+                log_info(logger_hilo, "PID: %u - Pagina: %u - Marco: %u", pid, pagina->pagina, pagina->frame);
                 eliminar_frame_info(pagina->frame);
             }
-            enviar_operacion(arg_h->socket_filesystem, ELIMINAR_SWAP);
-            send(arg_h->socket_filesystem, &pid, sizeof(uint32_t),NULL);
+            
+            enviar_operacion(conexion_server_swap, ELIMINAR_SWAP);
+            send(conexion_server_swap, &pid, sizeof(uint32_t),0);
             // Elimino la tabla de memoria
             list_destroy_and_destroy_elements(proceso->tabla_de_paginas, free);
             // Elimino el proceso de la lista de procesos en memoria
             quitar_de_memoria(pid);
+            sem_post(&mutex_lista_procesos);
             break;
 
         default:

@@ -30,7 +30,9 @@ uint32_t recibir_frame(int socket)
     case FRAME:
         recv(socket, &frame, sizeof(uint32_t), MSG_WAITALL);
         break;
-    
+    case PAGE_FAULT:
+        frame = -1;
+        break;
     default:
         break;
     }
@@ -56,6 +58,9 @@ t_pagina* crear_pagina(uint32_t nro_pagina, uint32_t frame)
     t_pagina* pagina = malloc(sizeof(t_pagina));
     pagina->pagina = nro_pagina;
     pagina->frame = frame;
+    pagina->modificado = 0;
+    pagina->presencia = 1;
+    pagina->posicion_en_swap = 0;
     return pagina;
 }
 

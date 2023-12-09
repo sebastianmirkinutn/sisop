@@ -24,11 +24,13 @@ typedef struct{
 }t_bloque_swap_info;
 
 void conexion_memoria(void* arg);
-void reservar_bloques_swap(uint32_t cantidad, uint32_t pid);
-uint32_t reservar_bloque_swap(uint32_t pid);
-uint32_t elegir_bloque_swap();
-void* leer_swap(uint32_t bloque);
-void escribir_swap(uint32_t bloque, void* contenido);
-void eliminar_swap(int32_t pid);
+void reservar_bloques_swap(uint32_t cantidad, uint32_t pid, t_log* logger_hilo);
+bool proceso_esta_reservado(uint32_t pid);
+uint32_t reservar_bloque_swap(uint32_t pid, t_log* logger_hilo);
+uint32_t elegir_bloque_swap(t_log* logger_hilo);
+void leer_bloque_swap(uint32_t bloque);
+void escribir_bloque_swap(uint32_t bloque, void* contenido);
+uint32_t escribir_nuevo_bloque_swap(void* contenido, uint32_t pid, t_log* logger_hilo);
+void eliminar_en_swap(uint32_t pid);
 
 #endif

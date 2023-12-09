@@ -17,6 +17,8 @@
 #include <math.h>
 #include <memoria/memoria.h>
 #include <commons/bitarray.h>
+#include <pthread.h>
+#include <threads/thread_parameters.h>
 
 
 #include "operaciones.h"

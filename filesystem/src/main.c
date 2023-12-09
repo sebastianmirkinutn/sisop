@@ -42,7 +42,12 @@ int main(int argc, char* argv[]) {
     retardo_acceso_bloque=config_get_int_value(config,"RETARDO_ACCESO_BLOQUE");
     retardo_acceso_fat=config_get_int_value(config,"RETARDO_ACCESO_FAT");
 
-	bitarray_create_with_mode(swap_bitarray, cant_bloques_swap / 8, MSB_FIRST);
+	char* c_swap_bitarray = malloc(cant_bloques_swap / 8);
+
+	swap_bitarray = bitarray_create_with_mode(c_swap_bitarray, cant_bloques_swap / 8, MSB_FIRST);
+	for(int i = 0; i< cant_bloques_swap; i++)
+		bitarray_clean_bit(swap_bitarray,i);
+		
 	list_create(lista_de_bloques_swap);
 
 	bloques = fopen(path_bloques, "rb+");
@@ -51,8 +56,22 @@ int main(int argc, char* argv[]) {
 	fat = crear_fat_mapeada(path_fat, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
 	mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
 
-    int conexion_memoria = crear_conexion(logger, ip_memoria, puerto_memoria);
     int socket_servidor = iniciar_servidor(logger, puerto_escucha);
+
+	int conexion_memoria_cliente = crear_conexion(logger, ip_memoria, puerto_memoria);
+	int socket_memoria = esperar_cliente(logger, socket_servidor);
+	log_info(logger, "mem cliente: %i mem server %i", socket_memoria, conexion_memoria_cliente);
+	if(socket_memoria){
+    }
+	pthread_t hilo_conexion_memoria;
+    t_args_hilo args_conexion_memoria;
+    args_conexion_memoria.socket_memoria = socket_memoria;
+	log_info(logger, "Declaré el hilo para memoria.");
+    log_info(logger, "socket: %i", args_conexion_memoria.socket_memoria);
+    pthread_create(&hilo_conexion_memoria, NULL, &conexion_memoria, (void*)&args_conexion_memoria);
+    pthread_detach(hilo_conexion_memoria);
+	log_info(logger, "Creé el hilo para conexión filesystem.");
+
     int socket_kernel = esperar_cliente(logger, socket_servidor);
     if(socket_kernel){
         log_info(logger,"Se conectó kernel");
@@ -107,9 +126,9 @@ int main(int argc, char* argv[]) {
 				void* bloque = leer_bloque(nro_bloque);
 				uint32_t a_enviar;
 				memcpy(&a_enviar, bloque + (uint32_t)(puntero - ceil(puntero / tam_bloque)), sizeof(uint32_t));
-				enviar_operacion(conexion_memoria, PEDIDO_ESCRITURA);
-				enviar_direccion(conexion_memoria, direccion);
-				send(conexion_memoria, &a_enviar, sizeof(uint32_t), NULL);
+				enviar_operacion(conexion_memoria_cliente, PEDIDO_ESCRITURA);
+				enviar_direccion(conexion_memoria_cliente, direccion);
+				send(conexion_memoria_cliente, &a_enviar, sizeof(uint32_t), NULL);
 
 
 			}
@@ -131,10 +150,10 @@ int main(int argc, char* argv[]) {
 					bloque = fat->memory_map[bloque]; //No validemos que se pida un dato mayor al mapeado;
 				}
 				printf("Pido el dato a memoria\n");
-				enviar_operacion(conexion_memoria, PEDIDO_LECTURA);
-				enviar_direccion(conexion_memoria, direccion);
+				enviar_operacion(conexion_memoria_cliente, PEDIDO_LECTURA);
+				enviar_direccion(conexion_memoria_cliente, direccion);
 				printf("Pedí el dato a memoria, ahora lo recibo\n");
-				recv(conexion_memoria, &a_escribir, sizeof(uint32_t), MSG_WAITALL);
+				recv(conexion_memoria_cliente, &a_escribir, sizeof(uint32_t), MSG_WAITALL);
 				//Escribir en el archivo
 				printf("El dato que recibí es %i\n", a_escribir);
 				escribir_dato(bloque, puntero - ceil(puntero / tam_bloque) * tam_bloque, a_escribir);
