@@ -114,7 +114,7 @@ void wait_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch)
     return;
 }
 
-void signal_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch)
+void signal_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch, t_pcb* execute)
 {
     bool es_el_recurso(void* arg)
     {

@@ -230,50 +230,10 @@ int main(int argc, char* argv[])
         }
         else if(!strcmp(c_argv[0], "FINALIZAR_PROCESO"))
         {
-            t_pcb* pcb = NULL;
-            //buscar el proceso (primero fijarse si esta ejecutando, segundo en la lista de blocked y tercero ready...)
-            if(execute != NULL)
-            {
-                if(execute->pid == atoi(c_argv[1]))
-                {
-                enviar_operacion(conexion_cpu_interrupt, FINALIZAR_PROCESO);
-                }
-            }
-            else 
-            {
-                //buscamos en la cola de bloqueados SEGUN RECURSO
-
-                pcb = buscar_proceso_en_cola_bloqueados(recursos_disponibles, tabla_global_de_archivos, atoi(c_argv[1]));
-                if(pcb != NULL)
-                {
-                    liberar_recursos_archivos(pcb, conexion_filesystem);
-                }
-                
-                //Vamos a tener que buscar en la cola de bloqueados de cada recurso
-                if(pcb == NULL)
-                {
-
-                    if(buscar_proceso_segun_pid(atoi(c_argv[1]), cola_ready) != NULL)
-                    {
-                        pcb = buscar_proceso_segun_pid(atoi(c_argv[1]), cola_ready);
-                        list_remove_element(cola_ready->elements, pcb);
-
-                    }
-                    else if(buscar_proceso_segun_pid(atoi(c_argv[1]), cola_new) != NULL)
-                    {
-                        pcb = buscar_proceso_segun_pid(atoi(c_argv[1]), cola_new);
-                        list_remove_element(cola_new->elements, pcb);
-
-                    }
-                    else
-                    {
-                        log_error(logger, "No se encontro el proceso");
-                    }
-                
-                }
-            }
+            
 
             //send a memoria para liberar espacio
+            finalizar_proceso (atoi(c_argv[1]), conexion_filesystem, conexion_cpu_dispatch);
             enviar_operacion(conexion_memoria, FINALIZAR_PROCESO);
             //send(arg_h->socket_memoria, &(pcb->pid), sizeof(int), 0); //mandamos el pid 
             //liberar_recursos_archivos(pcb);
@@ -365,7 +325,7 @@ void imprimir_procesos_por_estado()
 
 
 
-t_pcb* buscar_proceso_en_cola_bloqueados(t_list* recursos_disponibles, t_list* tabla_global_de_archivos, uint32_t pid)
+t_queue* buscar_proceso_en_cola_bloqueados(t_list* recursos_disponibles, t_list* tabla_global_de_archivos, uint32_t pid)
 {
 
     t_pcb* pcb = NULL;
@@ -378,8 +338,7 @@ t_pcb* buscar_proceso_en_cola_bloqueados(t_list* recursos_disponibles, t_list* t
         pcb = buscar_proceso_segun_pid(pid, recurso->cola_blocked);
         if(pcb != NULL)
         {
-            list_remove_element(recurso->cola_blocked->elements, pcb);
-            break;
+            return recurso->cola_blocked;
         }
     }
 
@@ -395,15 +354,13 @@ t_pcb* buscar_proceso_en_cola_bloqueados(t_list* recursos_disponibles, t_list* t
             pcb = buscar_proceso_segun_pid(pid, archivo->cola_blocked);
             if(pcb != NULL)
             {
-                list_remove_element(archivo->cola_blocked->elements, pcb);
-                break;
+                return archivo->cola_blocked;
             }
         }
     }
 
-    return pcb; 
 }
-
+/*
 void liberar_recursos_archivos(t_pcb* pcb, int socket_filesystem)
 {
     void hacer_f_close(void* arg)
@@ -417,4 +374,55 @@ void liberar_recursos_archivos(t_pcb* pcb, int socket_filesystem)
         pthread_detach(h_file_close_deallocate);
     }
     list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
+}
+*/
+void finalizar_proceso (uint32_t pid, int socket_filesystem, int socket_cpu_dispatch)
+{
+    t_pcb* pcb;
+    void hacer_f_close(void* arg)
+    {
+        pthread_t h_file_close_deallocate;
+        t_args_hilo_archivos* argumentos_file_management = malloc(sizeof(argumentos_file_management));
+        argumentos_file_management->socket_filesystem = socket_filesystem;
+        argumentos_file_management->execute = pcb;
+        argumentos_file_management->nombre_archivo = ((t_archivo_local*)arg)->archivo->nombre;
+        pthread_create(&h_file_close_deallocate, NULL, &file_close, (void*)argumentos_file_management);
+        pthread_detach(h_file_close_deallocate);
+    }
+    void hacer_signal(void* arg)
+    {
+        signal_recurso(logger, ((t_recurso*)arg)->nombre, socket_cpu_dispatch, pcb);
+    }
+    t_queue* cola = obtener_queue(pid);
+    if(cola != NULL)
+    {
+        pcb = buscar_proceso_segun_pid(pid, cola);
+        list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
+        list_iterate(pcb->recursos_asignados, hacer_signal);
+        list_remove_element(cola->elements, pcb);
+    }
+}
+
+t_queue* obtener_queue(uint32_t pid)
+{
+    bool tiene_mismo_pid(void* pcb) {
+        return (((t_pcb*)pcb)->pid == pid);
+    }
+    int a;
+    if(list_find(cola_new->elements, tiene_mismo_pid) != NULL)
+    {
+        return cola_new;
+    }
+    else if(list_find(cola_ready->elements, tiene_mismo_pid) != NULL)
+    {
+        return cola_ready;
+    }
+    else if(list_find(cola_exit->elements, tiene_mismo_pid) != NULL)
+    {
+        return cola_exit;
+    }
+    else
+    {
+        return buscar_proceso_en_cola_bloqueados(recursos_disponibles, tabla_global_de_archivos, pid);
+    }
 }

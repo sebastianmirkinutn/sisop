@@ -211,7 +211,7 @@ void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
 
         case SIGNAL:
             recurso = recibir_mensaje(arg_h->socket_dispatch);
-            signal_recurso(logger, recurso, arg_h->socket_dispatch);
+            signal_recurso(logger, recurso, arg_h->socket_dispatch, execute);
             break;
 
         case F_OPEN:
