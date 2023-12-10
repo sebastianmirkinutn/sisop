@@ -20,6 +20,9 @@ extern t_list *recursos_disponibles;
 extern t_list *tabla_global_de_archivos;
 extern t_log *logger;
 
+extern char* ip_filesystem;
+extern char* puerto_filesystem;
+
 t_archivo *crear_archivo(char *nombre_archivo, uint32_t tam_archivo, t_lock lock)
 {
     t_archivo *archivo = malloc(sizeof(t_archivo));
@@ -64,10 +67,11 @@ t_archivo *buscar_archivo(t_list *lista, char *nombre)
 
 void file_open(void *arg)
 {
-    sem_wait(&mutex_file_management);
+    //sem_wait(&mutex_file_management);
     t_args_hilo_archivos *arg_h = (t_args_hilo_archivos *)arg;
     t_response respuesta;
-
+    arg_h->socket_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
+    printf("arg_h->socket_filesystem = %i\n", arg_h->socket_filesystem);
     t_archivo *archivo = buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
     t_archivo_local *archivo_local = malloc(sizeof(t_archivo_local));
     archivo_local->archivo = archivo;
@@ -168,6 +172,7 @@ void file_open(void *arg)
         {
             printf("El archivo no existe\n");
             // Se le pide a Filesystem que cree el archivo
+            arg_h->socket_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
             enviar_operacion(arg_h->socket_filesystem, CREAR_ARCHIVO);
             enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem); // SERIALIZAR
             printf("Mandé el nombre del archivo\n");
@@ -187,7 +192,8 @@ void file_open(void *arg)
             }
         }
     }
-    sem_post(&mutex_file_management);
+    liberar_conexion(arg_h->socket_filesystem);
+    //sem_post(&mutex_file_management);
     printf("TERMINA EL HILO\n");
     liberar_parametros(arg_h);
     return;
@@ -195,9 +201,10 @@ void file_open(void *arg)
 
 void file_read(void *arg)
 {
-    sem_wait(&mutex_file_management);
+    //sem_wait(&mutex_file_management);
     t_args_hilo_archivos *arg_h = (t_args_hilo_archivos *)arg;
     t_response respuesta;
+    arg_h->socket_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
 
     bool es_el_archivo_local(void *arg)
     {
@@ -230,16 +237,18 @@ void file_read(void *arg)
         break;
     }
 
-    sem_post(&mutex_file_management);
+    liberar_conexion(arg_h->socket_filesystem);
+    //sem_post(&mutex_file_management);
     liberar_parametros(arg_h);
     return;
 }
 
 void file_write(void *arg)
 {
-    sem_wait(&mutex_file_management);
+    //sem_wait(&mutex_file_management);
     t_args_hilo_archivos *arg_h = (t_args_hilo_archivos *)arg;
     t_response respuesta;
+    arg_h->socket_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
     bool es_el_archivo_local(void *arg)
     {
         return (!strcmp(((t_archivo_local *)arg)->archivo->nombre, arg_h->nombre_archivo));
@@ -265,16 +274,18 @@ void file_write(void *arg)
         break;
     }
 
-    sem_post(&mutex_file_management);
+    liberar_conexion(arg_h->socket_filesystem);
+    //sem_post(&mutex_file_management);
     liberar_parametros(arg_h);
 }
 
 void file_truncate(void *arg)
 {
     printf("Empieza file_truncate()\n");
-    sem_wait(&mutex_file_management);
+    //sem_wait(&mutex_file_management);
     t_args_hilo_archivos *arg_h = (t_args_hilo_archivos *)arg;
     t_response respuesta;
+    arg_h->socket_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
     printf("PRINT");
     printf("Pido truncar %s a %u", arg_h->nombre_archivo, arg_h->tam_archivo);
     enviar_operacion(arg_h->socket_filesystem, TRUNCAR_ARCHIVO);
@@ -296,7 +307,8 @@ void file_truncate(void *arg)
     default:
         break;
     }
-    sem_post(&mutex_file_management);
+    liberar_conexion(arg_h->socket_filesystem);
+    //sem_post(&mutex_file_management);
     printf("TERMINA EL HILO\n");
     liberar_parametros(arg_h);
 }
@@ -346,9 +358,10 @@ void file_close(void *arg)
         list_remove_by_condition(arg, tiene_lock_lectura);
     }
     printf("file_close()\n");
-    sem_wait(&mutex_file_management);
+    //sem_wait(&mutex_file_management);
     printf("ejecuta file_close()\n");
     t_response respuesta;
+    arg_h->socket_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
 
     archivo = buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
     if (archivo != NULL)
@@ -393,7 +406,7 @@ void file_close(void *arg)
                     }
                     printf("TERMINA EL HILO PORQUE TODOS LOS BLOQUEADOS SON DE ESCRITURA\n");
                     liberar_parametros(arg_h);
-                    sem_post(&mutex_file_management);
+                    //sem_post(&mutex_file_management);
                     return;
                 }
                 else // Se elimina el archivo completamente
@@ -401,16 +414,18 @@ void file_close(void *arg)
                     log_warning(logger, "Se elimina el archivo");
                     list_remove_by_condition(tabla_global_de_archivos, es_el_archivo);
 
+                    liberar_conexion(arg_h->socket_filesystem);
                     printf("TERMINA EL HILO PORQUE NO HAY NADA\n");
                     liberar_parametros(arg_h);
-                    sem_post(&mutex_file_management);
+                    //sem_post(&mutex_file_management);
                     return;
                 }
             }
             else
             {
+                liberar_conexion(arg_h->socket_filesystem);
                 liberar_parametros(arg_h);
-                sem_post(&mutex_file_management);
+                //sem_post(&mutex_file_management);
                 return;
             }
         }
@@ -448,7 +463,8 @@ void file_close(void *arg)
                         } while (element != NULL);
                         printf("TERMINA EL HILO PORQUE NO HAY NADA\n");
                         liberar_parametros(arg_h);
-                        sem_post(&mutex_file_management);
+                        liberar_conexion(arg_h->socket_filesystem);
+                        //sem_post(&mutex_file_management);
                         printf("Después del fclose, hay %i archivos con lock de lectura, y %i bloqueados\n", archivo->locks_lectura->elements_count, archivo->cola_blocked->elements->elements_count);
                         return;
                     }
@@ -464,7 +480,8 @@ void file_close(void *arg)
                         list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
                         printf("TERMINA EL HILO PORQUE NO HAY NADA\n");
                         liberar_parametros(arg_h);
-                        sem_post(&mutex_file_management);
+                        liberar_conexion(arg_h->socket_filesystem);
+                        //sem_post(&mutex_file_management);
                         return;
                     }
                 }
@@ -477,7 +494,8 @@ void file_close(void *arg)
             }
         }
         liberar_parametros(arg_h);
-        sem_post(&mutex_file_management);
+        liberar_conexion(arg_h->socket_filesystem);
+        //sem_post(&mutex_file_management);
         return;
     }
 
@@ -486,7 +504,7 @@ void file_close(void *arg)
     // sem_post(&mutex_cola_ready);
     // sem_post(&procesos_en_ready);
     // printf("TERMINA EL HILO\n");
-    // sem_post(&mutex_file_management);
+    // //sem_post(&mutex_file_management);
 }
 
 void file_seek(void *arg)
@@ -499,7 +517,8 @@ void file_seek(void *arg)
         return (!strcmp(((t_archivo_local *)arg)->archivo->nombre, arg_h->nombre_archivo));
     }
 
-    sem_wait(&mutex_file_management);
+    //sem_wait(&mutex_file_management);
+    arg_h->socket_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
     log_info(logger, "Busco el archivo %s en %i", arg_h->nombre_archivo, tabla_global_de_archivos);
     // sem_wait(&mutex_tabla_global_de_archivos);
     t_archivo_local *archivo = list_find(arg_h->execute->tabla_de_archivos_abiertos, es_el_archivo_local);
@@ -517,5 +536,6 @@ void file_seek(void *arg)
     {
         log_error(logger, "El archivo no existe");
     }
-    sem_post(&mutex_file_management);
+    liberar_conexion(arg_h->socket_filesystem);
+    //sem_post(&mutex_file_management);
 }

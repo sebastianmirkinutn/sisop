@@ -22,6 +22,9 @@ t_log* logger;
 
 uint8_t planificacion_iniciada;
 
+char* ip_filesystem;
+char* puerto_filesystem;
+
 uint32_t* instancias_recursos(char** instancias)
 {
     uint32_t* rec_instancias;
@@ -117,8 +120,8 @@ int main(int argc, char* argv[])
     char* puerto_cpu_interrupt = config_get_string_value(config, "PUERTO_CPU_INTERRUPT");
     char* ip_memoria = config_get_string_value(config, "IP_MEMORIA");
     char* puerto_memoria = config_get_string_value(config, "PUERTO_MEMORIA");
-    char* ip_filesystem = config_get_string_value(config, "IP_FILESYSTEM");
-    char* puerto_filesystem = config_get_string_value(config, "PUERTO_FILESYSTEM");
+    ip_filesystem = config_get_string_value(config, "IP_FILESYSTEM");
+    puerto_filesystem = config_get_string_value(config, "PUERTO_FILESYSTEM");
     char* grado_max_de_multiprogramacion = config_get_string_value(config, "GRADO_MULTIPROGRAMACION_INI");
     char* algoritmo_planificacion = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
     char** recursos = config_get_array_value(config, "RECURSOS");
@@ -128,7 +131,7 @@ int main(int argc, char* argv[])
     int conexion_cpu_dispatch = crear_conexion(logger, ip_cpu, puerto_cpu_dispatch);
     int conexion_cpu_interrupt = crear_conexion(logger, ip_cpu, puerto_cpu_interrupt);
     int conexion_memoria = crear_conexion(logger, ip_memoria, puerto_memoria);
-    int conexion_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
+    //int conexion_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
 
     sem_init(&mutex_cola_new, 0, 1);
     sem_init(&mutex_cola_ready, 0, 1);
@@ -153,7 +156,7 @@ int main(int argc, char* argv[])
     args_hilo.socket_dispatch = conexion_cpu_dispatch;
     args_hilo.socket_interrupt = conexion_cpu_interrupt;
     args_hilo.socket_memoria = conexion_memoria;
-    args_hilo.socket_filesystem = conexion_filesystem;
+    //args_hilo.socket_filesystem = conexion_filesystem;
     args_hilo.quantum = quantum; 
     
     pthread_t hilo_planificador_de_largo_plazo;
@@ -233,7 +236,7 @@ int main(int argc, char* argv[])
             
 
             //send a memoria para liberar espacio
-            finalizar_proceso (atoi(c_argv[1]), conexion_filesystem, conexion_cpu_dispatch);
+            finalizar_proceso (atoi(c_argv[1]), conexion_cpu_dispatch);
             enviar_operacion(conexion_memoria, FINALIZAR_PROCESO);
             //send(arg_h->socket_memoria, &(pcb->pid), sizeof(int), 0); //mandamos el pid 
             //liberar_recursos_archivos(pcb);
@@ -272,7 +275,7 @@ int main(int argc, char* argv[])
         /*----------------------------------------------------*/
         //Código temporal para probar interaccion instrucciones
         else if(!strcmp(c_argv[0], "FS")) {
-            ejecutarSecuencia(conexion_filesystem);
+            //ejecutarSecuencia(conexion_filesystem);
         }
         /*----------------------------------------------------*/
         else
@@ -376,7 +379,7 @@ void liberar_recursos_archivos(t_pcb* pcb, int socket_filesystem)
     list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
 }
 */
-void finalizar_proceso (uint32_t pid, int socket_filesystem, int socket_cpu_dispatch)
+void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch)
 {
     t_pcb* pcb;
     
@@ -384,7 +387,7 @@ void finalizar_proceso (uint32_t pid, int socket_filesystem, int socket_cpu_disp
     {
         pthread_t h_file_close_deallocate;
         t_args_hilo_archivos* argumentos_file_management = malloc(sizeof(argumentos_file_management));
-        argumentos_file_management->socket_filesystem = socket_filesystem;
+        //argumentos_file_management->socket_filesystem = socket_filesystem;
         argumentos_file_management->execute = pcb;
         argumentos_file_management->nombre_archivo = ((t_archivo_local*)arg)->archivo->nombre;
         pthread_create(&h_file_close_deallocate, NULL, &file_close, (void*)argumentos_file_management);
