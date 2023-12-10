@@ -20,6 +20,8 @@ int main(int argc, char* argv[]){
     t_config* config = iniciar_config("./cfg/memoria.config");
 
     char* puerto_escucha = config_get_string_value(config,"PUERTO_ESCUCHA");
+    char* ip_filesystem = config_get_string_value(config,"IP_FILESYSTEM");
+    char* puerto_filesystem = config_get_string_value(config,"PUERTO_FILESYSTEM");
     tam_memoria = config_get_int_value(config, "TAM_MEMORIA");
     tam_pagina = config_get_int_value(config, "TAM_PAGINA");
     int retardo_respuesta = config_get_int_value(config, "RETARDO_RESPUESTA");
@@ -31,6 +33,7 @@ int main(int argc, char* argv[]){
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
     int socket_servidor = iniciar_servidor(logger,puerto_escucha);
     int socket_filesystem = esperar_cliente(logger, socket_servidor);
+    int socket_swap;
     if(socket_filesystem){
         log_info(logger,"Se conectó filesystem");
     }
@@ -42,6 +45,7 @@ int main(int argc, char* argv[]){
     if(socket_kernel){
         log_info(logger,"Se conectó kernel");
     }
+    socket_swap = crear_conexion(logger, ip_filesystem, puerto_filesystem);
     sem_init(&mutex_lista_procesos, 0, 1);
     sem_init(&cantidad_de_procesos, 0, 0);
     procesos_en_memoria = list_create();

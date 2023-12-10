@@ -12,7 +12,7 @@
 #include <netdb.h>
 #include <string.h>
 
-int crear_conexion_al_server(t_log *logger, char *ip, char *puerto);
+int crear_conexion(t_log *logger, char *ip, char *puerto);
 void liberar_conexion(int socket_cliente);
 void *serializar_paquete(t_paquete* paquete, uint32_t bytes);
 void enviar_mensaje(char *mensaje, int socket_cliente);

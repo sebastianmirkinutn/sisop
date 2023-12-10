@@ -16,7 +16,8 @@
 #include <fcntl.h>
 #include <math.h>
 #include <memoria/memoria.h>
-
+#include <threads/thread_parameters.h>
+#include <pthread.h>
 
 #include "operaciones.h"
 #include "fat.h"
