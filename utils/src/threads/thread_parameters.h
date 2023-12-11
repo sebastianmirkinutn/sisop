@@ -36,6 +36,7 @@ typedef struct
     char* nombre_archivo;
     t_log* logger;
     t_direccion_fisica* direccion;
+    t_pcb* execute;
 }t_args_hilo_archivos;
 
 t_args_hilo_archivos* crear_parametros(t_args_hilo* src, char* nombre_archivo, t_log* logger);

@@ -49,7 +49,7 @@ typedef struct
 typedef struct
 {
 	char* nombre;
-	uint32_t instancias;
+	int32_t instancias;
 	t_queue* cola_blocked;
 	sem_t mutex_cola_blocked;
 }t_recurso;

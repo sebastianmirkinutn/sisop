@@ -152,10 +152,10 @@ t_pcb* buscar_proceso_segun_pid(uint32_t pid, t_queue* cola)
     }
 
     t_pcb* pcb = NULL;
-    pcb = list_find(cola, tiene_mismo_pid);
+    pcb = list_find(cola->elements, tiene_mismo_pid);
     return pcb;
 }
-
+/*
 void agregar_primero_en_cola(t_queue* cola, t_pcb* pcb)
 {
     bool comparator_pcb(void* pcb_a, void* pcb_b) {
@@ -163,4 +163,10 @@ void agregar_primero_en_cola(t_queue* cola, t_pcb* pcb)
     }
     queue_push(cola, pcb);
     list_sort(cola->elements, comparator_pcb);
+}
+*/
+
+void agregar_primero_en_cola(t_queue* cola, t_pcb* pcb)
+{
+    list_add_in_index(cola->elements, 0, pcb);
 }

@@ -12,7 +12,6 @@ t_args_hilo_archivos* crear_parametros(t_args_hilo* src, char* nombre_archivo, t
     arg->socket_filesystem = src->socket_filesystem;
     arg->socket_interrupt = src->socket_interrupt;
     arg->socket_kernel = src->socket_kernel;
-    printf("Argf FS %i:\n", arg->socket_filesystem);
     return arg;
 }
 

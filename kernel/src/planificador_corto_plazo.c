@@ -19,29 +19,29 @@ extern t_pcb* execute;
 extern t_list* recursos_disponibles;
 extern t_list* tabla_global_de_archivos;
 t_motivo_desalojo motivo;
+extern t_log* logger;
 
 void planificador_rr(void* arg)
 {
-    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
-    //log_info(logger_hilo, "Empieza el planificador fifo");
+    //log_info(logger, "Empieza el planificador fifo");
     pthread_t generador_de_interrupciones;
     while(1)
     {
-        sem_wait(&planificacion_corto_plazo);
         sem_wait(&procesos_en_ready);
-        //log_info(logger_hilo,"Hice wait del gdmp");
+        sem_wait(&planificacion_corto_plazo);
+        //log_info(logger,"Hice wait del gdmp");
         sem_wait(&mutex_cola_ready);
-        //log_info(logger_hilo,"Hice wait de la cola de new: %i",cola_new);
+        //log_info(logger,"Hice wait de la cola de new: %i",cola_new);
 
         execute = queue_pop(cola_ready);
         sem_post(&mutex_cola_ready);
         execute->estado = EXEC;
 
-        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute->pid);
+        log_info(logger, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute->pid);
   
         send(arg_h->socket_dispatch, &(execute->pid), sizeof(uint32_t), 0);
-        //log_info(logger_hilo, "Envié %i a %i", execute->pid, arg_h->socket_dispatch);
+        //log_info(logger, "Envié %i a %i", execute->pid, arg_h->socket_dispatch);
         enviar_contexto_de_ejecucion(execute->contexto, arg_h->socket_dispatch);
 
         arg_h->pcb = execute;
@@ -50,7 +50,7 @@ void planificador_rr(void* arg)
 
         execute->contexto = recibir_contexto_de_ejecucion(arg_h->socket_dispatch);
         motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
-        evaluar_motivo_desalojo(logger_hilo, motivo, arg);
+        evaluar_motivo_desalojo(logger, motivo, arg);
         
         sem_post(&planificacion_corto_plazo);
     }
@@ -58,33 +58,33 @@ void planificador_rr(void* arg)
 
 void planificador_fifo(void* arg)
 {
-    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
+    t_log* logger = iniciar_logger("log_plani.log","HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
-    //log_info(logger_hilo, "Empieza el planificador fifo");
+    //log_info(logger, "Empieza el planificador fifo");
     while(1)
     {
-        sem_wait(&planificacion_corto_plazo);
         sem_wait(&procesos_en_ready);
-        log_info(logger_hilo,"Hice wait del gdmp");
+        sem_wait(&planificacion_corto_plazo);
+        log_info(logger,"Hice wait del gdmp");
         sem_wait(&mutex_cola_ready);
-        //log_info(logger_hilo,"Hice wait de la cola de new: %i",cola_new);
+        //log_info(logger,"Hice wait de la cola de new: %i",cola_new);
 
         execute = queue_pop(cola_ready);
         sem_post(&mutex_cola_ready);
         execute->estado = EXEC;
 
-        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute->pid);
+        log_info(logger, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute->pid);
   
         send(arg_h->socket_dispatch, &(execute->pid), sizeof(uint32_t), 0);
         
         
         enviar_contexto_de_ejecucion(execute->contexto, arg_h->socket_dispatch);
         
-        //log_info(logger_hilo, "Envié %i a %i", execute->pid, arg_h->socket_dispatch);
+        //log_info(logger, "Envié %i a %i", execute->pid, arg_h->socket_dispatch);
         
         execute->contexto = recibir_contexto_de_ejecucion(arg_h->socket_dispatch);
         motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
-        evaluar_motivo_desalojo(logger_hilo, motivo, arg);
+        evaluar_motivo_desalojo(logger, motivo, arg);
         
         sem_post(&planificacion_corto_plazo);
     }
@@ -92,33 +92,32 @@ void planificador_fifo(void* arg)
 
 void planificador_prioridades(void* arg)
 {
-    t_log* logger_hilo = iniciar_logger("log_plani.log","HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
-    //log_info(logger_hilo, "Empieza el planificador por prioridades");
+    //log_info(logger, "Empieza el planificador por prioridades");
     op_code operacion;
     char* recurso;
     while(1)
     {
-        sem_wait(&planificacion_corto_plazo);
         sem_wait(&procesos_en_ready);
-        //log_info(logger_hilo,"Hice wait del gdmp");
+        sem_wait(&planificacion_corto_plazo);
+        //log_info(logger,"Hice wait del gdmp");
         sem_wait(&mutex_cola_ready);
-        //log_info(logger_hilo,"Hice wait de la cola de new: %i",cola_new);
+        //log_info(logger,"Hice wait de la cola de new: %i",cola_new);
 
         ordenar_colas_segun_prioridad(cola_ready);
         execute = queue_pop(cola_ready);
         sem_post(&mutex_cola_ready);
         execute->estado = EXEC;
 
-        log_info(logger_hilo, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute->pid);
+        log_info(logger, "PID: %i - Estado Anterior: READY - Estado Actual: EXEC", execute->pid);
 
         send(arg_h->socket_dispatch, &(execute->pid), sizeof(uint32_t), 0);
-        //log_info(logger_hilo, "Envié %i a %i", execute->pid, arg_h->socket_dispatch);
+        //log_info(logger, "Envié %i a %i", execute->pid, arg_h->socket_dispatch);
         enviar_contexto_de_ejecucion(execute->contexto, arg_h->socket_dispatch);
 
         execute->contexto = recibir_contexto_de_ejecucion(arg_h->socket_dispatch);
         motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
-        evaluar_motivo_desalojo(logger_hilo, motivo, arg);
+        evaluar_motivo_desalojo(logger, motivo, arg);
 
         sem_post(&planificacion_corto_plazo);
     }
@@ -126,9 +125,8 @@ void planificador_prioridades(void* arg)
 
 void clock_interrupt(void* arg)
 {
-    t_log* logger_hilo_ci = iniciar_logger("log_plani.log","HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
-    //log_info(logger_hilo_ci, "Empieza clock_interrupt");
+    //log_info(logger_ci, "Empieza clock_interrupt");
     op_code operacion = INTERRUPT;
     sleep(arg_h->quantum / 1000);
     if (arg_h->pcb->estado == EXEC){
@@ -174,7 +172,7 @@ char* de_t_motivo_a_string(t_motivo_desalojo motivo)
     }
 }
 
-void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void* arg)
+void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
 {
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     uint32_t tam_archivo;
@@ -193,7 +191,7 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             sem_wait(&mutex_cola_exit);
             queue_push(cola_exit, execute);
             sem_post(&mutex_cola_exit);
-            log_info(logger_hilo, "Fin de proceso %i motivo %s (%i)", execute->pid, de_t_motivo_a_string(motivo));
+            log_info(logger, "Fin de proceso %i motivo %s (%i)", execute->pid, de_t_motivo_a_string(motivo));
             break;
 
         case CLOCK_INTERRUPT:
@@ -208,24 +206,26 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             //printf("Me pidieron WAIT\n");
             recurso = recibir_mensaje(arg_h->socket_dispatch);
             //printf("Me pidieron WAIT de %s\n", recurso);
-            wait_recurso(logger_hilo, recurso, arg_h->socket_dispatch);
+            wait_recurso(logger, recurso, arg_h->socket_dispatch);
             break;
 
         case SIGNAL:
             recurso = recibir_mensaje(arg_h->socket_dispatch);
-            signal_recurso(logger_hilo, recurso, arg_h->socket_dispatch);
+            signal_recurso(logger, recurso, arg_h->socket_dispatch, execute);
             break;
 
         case F_OPEN:
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
-            //printf("Me pidieron abrir de %s\n", nombre_archivo);
             lock = recibir_mensaje(arg_h->socket_dispatch);
+            printf("Me pidieron abrir de %s con lock = %i\n", nombre_archivo, de_string_a_t_lock(lock));
             //printf("lock = %s\n", lock);
             
 
             pthread_t h_file_open;
-            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
+            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger);
             argumentos_file_management->lock = de_string_a_t_lock(lock);
+            argumentos_file_management->execute = execute;
+            //printf("execute = %i - aarg_h->pcb->pid = %i\n",execute->pid, arg_h->pcb->pid);
             pthread_create(&h_file_open, NULL, &file_open, (void*)argumentos_file_management);
             pthread_detach(h_file_open);
                 
@@ -234,12 +234,14 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
         case F_READ:
             printf("F_READ\n");
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
-            direccion = recibir_direccion(arg_h->socket_cpu);
+            direccion = recibir_direccion(arg_h->socket_dispatch);
             printf("F_OPEN - Mando a FS\n");
 
             pthread_t h_file_read;
-            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
+            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger);
             argumentos_file_management->direccion = direccion;
+            argumentos_file_management->execute = execute;
+             printf("arg_h->socket_filesystem = %i\n", arg_h->socket_filesystem);
             pthread_create(&h_file_read, NULL, &file_read, (void*)argumentos_file_management);
             pthread_detach(h_file_read);
 
@@ -249,11 +251,11 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             printf("F_READ\n");
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             direccion = recibir_direccion(arg_h->socket_dispatch);
-            printf("F_OPEN - Mando a FS\n");
 
             pthread_t h_file_write;
-            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
+            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger);
             argumentos_file_management->direccion = direccion;
+            argumentos_file_management->execute = execute;
             printf("Direccion = %i:%i\n", direccion->frame, direccion->offset);
             pthread_create(&h_file_write, NULL, &file_write, (void*)argumentos_file_management);
             pthread_detach(h_file_write);
@@ -265,95 +267,51 @@ void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void*
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             recv(arg_h->socket_dispatch, &puntero, sizeof(uint32_t), MSG_WAITALL);
 
-            log_info(logger_hilo, "Busco el archivo %s en %i", nombre_archivo, tabla_global_de_archivos);
-            sem_wait(&mutex_tabla_global_de_archivos);
-            archivo = buscar_archivo(tabla_global_de_archivos, nombre_archivo);
-            sem_post(&mutex_tabla_global_de_archivos);
+            pthread_t h_file_seek;
+            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger);
+            argumentos_file_management->tam_archivo = tam_archivo;
+            argumentos_file_management->execute = execute;
+            argumentos_file_management->puntero = puntero;
 
-            if(archivo != NULL)
-            {
-                archivo->puntero = puntero;
-                log_info(logger_hilo, "Archivo: %i - Puntero: %i", archivo->nombre, puntero);
-                agregar_primero_en_cola(cola_ready, execute);
-                sem_post(&mutex_cola_ready);
-                sem_post(&procesos_en_ready);
+            pthread_create(&h_file_seek, NULL, &file_seek, (void*)argumentos_file_management);
+            pthread_detach(h_file_seek);
 
-            }
-            else
-            {
-                log_error(logger_hilo, "El archivo no existe");
-            }
-            //sem_post(&mutex_file_management);
             break;
 
         case F_TRUNCATE:
+        printf("ME LLEGO UN F_TRUCNATE\n");
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             recv(arg_h->socket_dispatch, &tam_archivo, sizeof(uint32_t), MSG_WAITALL);
             
             pthread_t h_file_truncate;
-            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger_hilo);
+            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger);
             argumentos_file_management->tam_archivo = tam_archivo;
+            argumentos_file_management->execute = execute;
+            argumentos_file_management->puntero = puntero;
             pthread_create(&h_file_truncate, NULL, &file_truncate, (void*)argumentos_file_management);
             pthread_detach(h_file_truncate);
+            printf("pthread_detach(h_file_truncate);\n");
 
             break;
 
         case F_CLOSE:
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
-
-            bool es_el_archivo(void* arg)
-            {
-                return(((t_archivo*)arg)->nombre == nombre_archivo);
-            }
-
-            bool es_el_proceso(void* arg)
-            {
-                return(((t_pcb*)arg)->pid == execute->pid);
-            }
-
-            archivo = buscar_archivo(tabla_global_de_archivos, nombre_archivo);
-            if(archivo != NULL)
-            {
-                printf("archivo != NULL\n");
-                list_remove_by_condition(execute->tabla_de_archivos_abiertos, es_el_archivo);
-                if(archivo->lock == READ)
-                {
-                    printf("archivo->lock == READ\n");
-                    list_remove_by_condition(archivo->locks_lectura, es_el_proceso);
-                    archivo->contador_aperturas--;
-
-                    if(archivo->locks_lectura->elements_count == 0) 
-                    {
-                        printf("archivo->locks_lectura->elements_count == 0\n");
-
-                        if (archivo->cola_blocked->elements->elements_count != 0)
-                        {
-                            t_pcb* proceso_bloqueado = queue_pop(archivo->cola_blocked);
-                            archivo->lock = READ;
-                            execute->estado = READY;
-                            list_add(proceso_bloqueado->tabla_de_archivos_abiertos, archivo);
-                            sem_wait(&mutex_cola_ready);
-                            queue_push(&cola_ready, proceso_bloqueado);
-                            sem_post(&mutex_cola_ready);
-                            sem_post(&procesos_en_ready);
-                             archivo->contador_aperturas++;
-                        }
-                        else //Se elimina el archivo completamente
-                        {
-                            printf("Se elimina el archivo completamente\n");
-                            list_remove_by_condition(tabla_global_de_archivos, es_el_archivo);
-
-                        }
-                    }
-                }
-            }
-
-            sem_wait(&mutex_cola_ready);
-            agregar_primero_en_cola(cola_ready, execute);
-            sem_post(&mutex_cola_ready);
-            sem_post(&procesos_en_ready);
+            printf("pid= %i - ip= %i\n", execute->pid, execute->contexto->PC);
+            argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger);
+            argumentos_file_management->execute = execute;
+            pthread_create(&h_file_truncate, NULL, &file_close, (void*)argumentos_file_management);
+            pthread_detach(h_file_truncate);
+     
             break;
         default:
             break;
     }
+    int temp1, temp2, temp3;
+    sem_getvalue(&mutex_cola_ready, &temp1);
+    sem_getvalue(&mutex_file_management, &temp2);
+    sem_getvalue(&procesos_en_ready, &temp3);
+    printf("mutex_cola_ready = %i\n", temp1);
+    printf("mutex_file_management = %i\n", temp2);
+    printf("procesos_en_ready = %i\n", temp3);
+
 }
