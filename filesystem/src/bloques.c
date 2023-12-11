@@ -14,13 +14,24 @@ void* leer_bloque(uint32_t puntero)
     void* bloque = malloc(tam_bloque);
     fseek(bloques, (cant_bloques_swap + puntero) * tam_bloque, SEEK_SET);
     fread(&bloque, tam_bloque, 1, bloques);
+    sleep(retardo_acceso_bloque / 1000);
     return bloque;
+}
+
+uint32_t leer_dato(uint32_t bloque, uint32_t offset)
+{
+    uint32_t dato;
+    fseek(bloques, (cant_bloques_swap + bloque) * tam_bloque + offset, SEEK_SET);
+    fread(&dato, sizeof(uint32_t), 1, bloques);
+    sleep(retardo_acceso_bloque / 1000);
+    return dato;
 }
 
 void escribir_dato(uint32_t bloque, uint32_t offset, uint32_t dato)
 {
     fseek(bloques, (cant_bloques_swap + bloque) * tam_bloque + offset, SEEK_SET);
     fwrite(&dato, sizeof(uint32_t), 1, bloques);
+    sleep(retardo_acceso_bloque / 1000);
 }
 /*
 void escribir(uint32_t puntero, )

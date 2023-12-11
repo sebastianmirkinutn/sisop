@@ -16,10 +16,9 @@
 #include <fcntl.h>
 #include <math.h>
 #include <memoria/memoria.h>
-#include <commons/bitarray.h>
-#include <pthread.h>
 #include <threads/thread_parameters.h>
-
+#include <pthread.h>
+#include <commons/bitarray.h>
 
 #include "operaciones.h"
 #include "fat.h"
