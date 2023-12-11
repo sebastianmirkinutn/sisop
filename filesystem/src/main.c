@@ -12,6 +12,7 @@ t_fat* fat;
 FILE* bloques;
 uint32_t puntero;
 t_log* logger;
+t_bitarray* swap_bitarray;
 
 char* puerto_escucha;
 char* ip_memoria;
@@ -168,6 +169,9 @@ int main(int argc, char* argv[]) {
     retardo_acceso_fat=config_get_int_value(config,"RETARDO_ACCESO_FAT");
 
 	bloques = fopen(path_bloques, "rb+");
+
+	char* s_bitarray = malloc((tam_bloque * cant_bloques_swap) / 8);
+    swap_bitarray = bitarray_create_with_mode(s_bitarray, sizeof(s_bitarray), LSB_FIRST);
 
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
 	fat = crear_fat_mapeada(path_fat);

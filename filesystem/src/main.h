@@ -18,10 +18,12 @@
 #include <memoria/memoria.h>
 #include <threads/thread_parameters.h>
 #include <pthread.h>
+#include <commons/bitarray.h>
 
 #include "operaciones.h"
 #include "fat.h"
 #include "bloques.h"
+#include "swap.h"
 
 #include "utils_adicionales.h"
 #include "utils_operaciones_filesystem.h"
