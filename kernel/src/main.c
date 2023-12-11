@@ -267,6 +267,11 @@ int main(int argc, char* argv[])
             imprimir_procesos_por_estado();
             
         }
+        else if(!strcmp(c_argv[0], "IMPRIMIR_RECURSOS"))
+        {   
+            imprimir_recursos();
+            
+        }
         else if(!strcmp(c_argv[0], "INTERRUPT"))
         {
             op_code operacion = INTERRUPT;
@@ -290,6 +295,15 @@ int main(int argc, char* argv[])
     
 }
 
+void imprimir_recursos()
+{
+    void imprimir_recurso(void* arg)
+    {
+        printf("REC: %s - Instancias: %i\n", ((t_recurso*)arg)->nombre, ((t_recurso*)arg)->instancias);
+    }
+    printf("RECURSOS\n");
+    list_iterate(recursos_disponibles, imprimir_recurso);
+}
 
 void imprimir_procesos_por_estado()
 {
@@ -397,11 +411,17 @@ void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch)
     {
         t_recurso* recurso_local = (t_recurso*)arg;
         t_recurso* recurso = buscar_recurso(((t_recurso*)arg)->nombre);
+        if(recurso_local->instancias == 0)
+        {
+            recurso->instancias++;
+            //desbloquear_procesos(recurso->nombre);
+        }
         for(uint32_t i = recurso_local->instancias; i > 0; i--)
         {
             recurso->instancias++;
             desbloquear_procesos(recurso->nombre);
         }
+        printf("Libero %i instancias del recurso %s\n", recurso_local->instancias, recurso_local->nombre);
         recurso_local->instancias = 0;
         //signal_recurso(logger, ((t_recurso*)arg)->nombre, socket_cpu_dispatch, pcb);
     }
@@ -415,7 +435,7 @@ void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch)
     if(cola != NULL)
     {
         pcb = buscar_proceso_segun_pid(pid, cola);
-        list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
+        //list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
         list_iterate(pcb->recursos_asignados, hacer_signal);
         list_remove_element(cola->elements, pcb);
     }

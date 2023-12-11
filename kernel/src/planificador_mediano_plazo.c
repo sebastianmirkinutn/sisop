@@ -70,7 +70,7 @@ void desbloquear_procesos(char* recurso_buscado)
         }
         else
         {
-            recurso->instancias++;
+            //recurso->instancias++;
         }
         sem_post(&(recurso->mutex_cola_blocked));
     }
@@ -176,7 +176,7 @@ void signal_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatc
         {
             if(recurso_del_proceso->instancias >= 1)
             {
-                //recurso->instancias++;
+                recurso->instancias++;
                 recurso_del_proceso->instancias--;
                 //Se libera el recurso y se devuelve el contexto de ejecución
                 printf("Voy a hacer wait de la cola de ready: %i\n",cola_ready);

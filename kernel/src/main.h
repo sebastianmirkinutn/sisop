@@ -26,5 +26,6 @@ t_queue* buscar_proceso_en_cola_bloqueados(t_list* recursos_disponibles, t_list*
 void liberar_recursos_archivos(t_pcb* pcb, int socket_filesystem);
 t_queue* obtener_queue(uint32_t pid);
 void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch);
+void imprimir_recursos();
 
 #endif 
