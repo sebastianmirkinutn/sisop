@@ -182,7 +182,12 @@ int main(int argc, char* argv[]) {
 
 	int socket_swap = esperar_cliente(logger, socket_servidor);
 
-    
+	t_args_hilo* args_hilo = malloc(sizeof(t_args_hilo));
+	args_hilo->socket_memoria = socket_memoria;
+	args_hilo->socket_swap = socket_swap;
+    pthread_t h_conexion_memoria;
+	pthread_create(&h_conexion_memoria, NULL, &conexion_memoria, (void*)args_hilo);
+    pthread_detach(h_conexion_memoria);
 
 	archivos_abiertos = list_create();
 

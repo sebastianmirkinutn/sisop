@@ -95,14 +95,14 @@ t_direccion_fisica* recibir_direccion(int socket)
     return direccion;
 }
 
-t_pagina* crear_pagina(uint32_t nro_pagina, uint32_t frame)
+t_pagina* crear_pagina(uint32_t nro_pagina, uint32_t frame, uint32_t bloque_swap)
 {
     t_pagina* pagina = malloc(sizeof(t_pagina));
     pagina->pagina = nro_pagina;
     pagina->frame = frame;
     pagina->modificado = 0;
     pagina->presencia = 1;
-    //pagina->posicion_en_swap = 0;
+    pagina->posicion_en_swap = bloque_swap;
     //time(pagina->timestamp);
     return pagina;
 }

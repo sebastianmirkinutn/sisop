@@ -22,7 +22,7 @@
 void conexion_memoria(void* arg);
 t_list* reservar_bloques_swap(uint32_t cantidad);
 uint32_t reservar_bloque_swap();
-uint32_t elegir_bloque_swap();
+uint32_t buscar_bloque_swap_libre();
 void* leer_bloque_swap(uint32_t nro_bloque);
 void escribir_bloque_swap(uint32_t nro_bloque, void* contenido);
 

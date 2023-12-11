@@ -19,9 +19,18 @@ void conexion_memoria(void* arg)
         {
             case RESERVAR_BLOQUES_SWAP:
                 recv(arg_h->socket_swap, &cantidad_de_bloques, sizeof(uint32_t), MSG_WAITALL);
-                log_info(logger, "Pide reservar %i bloques", cantidad_de_bloques);
-                reservar_bloques_swap(cantidad_de_bloques);
-                log_info(logger, "Se reservaron.");
+                {
+                    log_info(logger, "Pide reservar %i bloques", cantidad_de_bloques);
+                    t_list* bloques = reservar_bloques_swap(cantidad_de_bloques);
+                    log_info(logger, "Se reservaron.");
+
+                    for(int i = 0; i < cantidad_de_bloques; i++)
+                    {
+                        uint32_t* elemento = list_get(bloques, i);
+                        send(arg_h->socket_swap, elemento, sizeof(uint32_t), NULL);
+                        printf("Envío: %i\n", *elemento);
+                    }
+                }
                 //enviar los bloques
                 break;
 
@@ -70,22 +79,25 @@ t_list* reservar_bloques_swap(uint32_t cantidad)
 
 uint32_t reservar_bloque_swap()
 {
-    uint32_t bloque = elegir_bloque_swap();
-    bitarray_set_bit(swap_bitarray, bloque);
+    uint32_t bloque = buscar_bloque_swap_libre();
+    if(bloque != -1)
+    {
+        bitarray_set_bit(swap_bitarray, bloque);
+    }
     return bloque;
 }
 
-uint32_t elegir_bloque_swap()
+uint32_t buscar_bloque_swap_libre()
 {
     int i;
     for(i = 0; i < swap_bitarray->size * 8; i++)
     {
         if(!bitarray_test_bit(swap_bitarray,i))
         {
-            break;
+            return i;
         }
     }
-    return i;
+    return -1;
 }
 
 void* leer_bloque_swap(uint32_t nro_bloque)
