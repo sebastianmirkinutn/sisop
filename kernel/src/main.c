@@ -395,7 +395,15 @@ void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch)
     }
     void hacer_signal(void* arg)
     {
-        signal_recurso(logger, ((t_recurso*)arg)->nombre, socket_cpu_dispatch, pcb);
+        t_recurso* recurso_local = (t_recurso*)arg;
+        t_recurso* recurso = buscar_recurso(((t_recurso*)arg)->nombre);
+        for(uint32_t i = recurso_local->instancias; i > 0; i--)
+        {
+            recurso->instancias++;
+            desbloquear_procesos(recurso->nombre);
+        }
+        recurso_local->instancias = 0;
+        //signal_recurso(logger, ((t_recurso*)arg)->nombre, socket_cpu_dispatch, pcb);
     }
     t_queue* cola = obtener_queue(pid);
     if(execute->pid == pid)

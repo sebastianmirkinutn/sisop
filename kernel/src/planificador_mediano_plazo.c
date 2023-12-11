@@ -39,6 +39,7 @@ void desbloquear_procesos(char* recurso_buscado)
 
     t_pcb* pcb;
     t_recurso* recurso = buscar_recurso(recurso_buscado);
+    t_recurso* recurso_del_proceso;
     if(recurso != NULL)
     {
         sem_wait(&(recurso->mutex_cola_blocked));
@@ -49,13 +50,27 @@ void desbloquear_procesos(char* recurso_buscado)
             pcb = queue_pop(recurso->cola_blocked);
             if(pcb != NULL)
             {
-                recurso = list_find(pcb->recursos_asignados, es_el_recurso);
-                recurso->instancias++;
+                recurso_del_proceso = list_find(pcb->recursos_asignados, es_el_recurso);
+                if(recurso_del_proceso != NULL)
+                {
+                    recurso_del_proceso->instancias++;
+                }
+                else
+                {
+                    recurso_del_proceso = crear_recurso(recurso_buscado, 1); //Creo el recurso con una instancia porque es la instancia que le asigno
+                    list_add(execute->recursos_asignados, (void*) recurso_del_proceso); 
+                    printf("se asigna el recurso %s\n", recurso_del_proceso->nombre);
+                }
 
                 sem_wait(&mutex_cola_ready);
                 queue_push(cola_ready,pcb);
                 sem_post(&mutex_cola_ready);
+                sem_post(&procesos_en_ready);
             }
+        }
+        else
+        {
+            recurso->instancias++;
         }
         sem_post(&(recurso->mutex_cola_blocked));
     }
@@ -74,6 +89,7 @@ void wait_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch)
     }
     printf("FUNCIÓN WAIT\n");
     t_recurso* recurso = NULL;
+    t_recurso* recurso_del_proceso = NULL;
     recurso = buscar_recurso(recurso_buscado);
     if(recurso == NULL)
     {
@@ -91,18 +107,18 @@ void wait_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch)
         if(recurso->instancias >= 0)
         {
             printf("Entro al list_find\n");
-            recurso = list_find(execute->recursos_asignados, es_el_recurso);
+            recurso_del_proceso = list_find(execute->recursos_asignados, es_el_recurso);
             printf("Pasé el list_find\n");
-            if(recurso != NULL)
+            if(recurso_del_proceso != NULL)
             {
-                recurso->instancias++;
-                printf("se asigna el recurso %s\n", recurso->nombre);
+                recurso_del_proceso->instancias++;
+                printf("se asigna el recurso %s\n", recurso_del_proceso->nombre);
             }
             else
             {
-                t_recurso* recurso = crear_recurso(recurso_buscado, 1); //Creo el recurso con una instancia porque es la instancia que le asigno
-                list_add(execute->recursos_asignados, (void*) recurso); 
-                printf("se asigna el recurso %s\n", recurso->nombre);
+                recurso_del_proceso = crear_recurso(recurso_buscado, 1); //Creo el recurso con una instancia porque es la instancia que le asigno
+                list_add(execute->recursos_asignados, (void*) recurso_del_proceso); 
+                printf("se asigna el recurso %s\n", recurso_del_proceso->nombre);
             }
             //El recurso se asigna y se devuelve el contexto de ejecución
             //send(socket_cpu_dispatch, &(execute->pid), sizeof(uint32_t), NULL);
@@ -116,6 +132,13 @@ void wait_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch)
         else
         {
             //No se asigna el recurso y se agrega a la cola de bloqueados.
+            recurso_del_proceso = list_find(execute->recursos_asignados, es_el_recurso);
+            if(recurso_del_proceso == NULL)
+            {
+                recurso_del_proceso = crear_recurso(recurso_buscado, 0);
+                list_add(execute->recursos_asignados, (void*) recurso_del_proceso); 
+                printf("se asigna el recurso %s\n", recurso_del_proceso->nombre);
+            }
             sem_wait(&(recurso->mutex_cola_blocked));
             queue_push(recurso->cola_blocked, execute);
             sem_post(&(recurso->mutex_cola_blocked));
@@ -153,7 +176,7 @@ void signal_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatc
         {
             if(recurso_del_proceso->instancias >= 1)
             {
-                recurso->instancias++;
+                //recurso->instancias++;
                 recurso_del_proceso->instancias--;
                 //Se libera el recurso y se devuelve el contexto de ejecución
                 printf("Voy a hacer wait de la cola de ready: %i\n",cola_ready);
