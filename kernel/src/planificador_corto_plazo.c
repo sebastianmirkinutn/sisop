@@ -242,7 +242,7 @@ void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger);
             argumentos_file_management->direccion = direccion;
             argumentos_file_management->execute = execute;
-             printf("arg_h->socket_filesystem = %i\n", arg_h->socket_filesystem);
+            printf("arg_h->socket_filesystem = %i\n", arg_h->socket_filesystem);
             pthread_create(&h_file_read, NULL, &file_read, (void*)argumentos_file_management);
             pthread_detach(h_file_read);
 
@@ -307,6 +307,15 @@ void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
 
         case PAGE_FAULT:
             recv(arg_h->socket_dispatch, &pagina, sizeof(uint32_t), MSG_WAITALL);
+
+            {
+                pthread_t h_page_fault;
+                t_args_hilo_archivos* args_hilo = crear_parametros(arg_h, nombre_archivo, logger);
+                args_hilo->execute = execute;
+                args_hilo->pagina = pagina;
+                pthread_create(&h_page_fault, NULL, &atender_page_fault, (void*)args_hilo);
+                pthread_detach(h_page_fault);
+            }
 
             //Pedirle a memoria que cargue la página del proceso
 

@@ -31,7 +31,7 @@ typedef enum
 	ELIMINAR_SWAP,
 	RESERVAR_BLOQUES_SWAP,
 	LIBERAR_BLOQUES_SWAP,
-	OP_PAGE_FAULT
+	OP_PAGE_FAULT,
 }op_code;
 
 typedef enum

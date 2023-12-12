@@ -129,6 +129,20 @@ void sum(char* destino, char* origen){
     }
 }
 
+uint8_t atender_page_fault(uint32_t pid, uint32_t pagina, uint32_t frame, int socket_kernel_dispatch)
+{
+    if(frame == -1)
+    {
+        execute = 0;
+        registros->PC--;
+        enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+        enviar_motivo_desalojo(socket_kernel_dispatch, PAGE_FAULT);
+        send(socket_kernel_dispatch, &pid, sizeof(uint32_t), NULL);
+        send(socket_kernel_dispatch, &pagina, sizeof(uint32_t), NULL);
+        return 1;
+    }
+    return 0;
+}
 
 int main(int argc, char* argv[]){
     t_log* logger = iniciar_logger("log_cpu.log","CPU");
@@ -304,22 +318,30 @@ int main(int argc, char* argv[]){
             else if(!strcmp(parametros[0], "MOV_IN"))
             {
                 t_direccion_fisica* direccion = traducir_direccion(parametros[2], tam_pagina, conexion_memoria, pid);
-                enviar_operacion(conexion_memoria, PEDIDO_LECTURA);
-                enviar_direccion(conexion_memoria, direccion);
-                uint32_t a_escribir;
-                recv(conexion_memoria, &a_escribir, sizeof(uint32_t), NULL);
-                printf("Recibí %i de memoria\n", a_escribir);
-                escribir_registro(parametros[1], a_escribir);
-                log_info(logger, "PID: %i - Acción: LECTURA - Dirección Física: %i:%i - Valor: %i", pid, direccion->frame, direccion->offset, a_escribir);
+
+                if(!atender_page_fault(pid, floor(atof(parametros[2])/tam_pagina), direccion->frame, socket_kernel_dispatch))
+                {
+                    enviar_operacion(conexion_memoria, PEDIDO_LECTURA);
+                    enviar_direccion(conexion_memoria, direccion);
+                    uint32_t a_escribir;
+                    recv(conexion_memoria, &a_escribir, sizeof(uint32_t), NULL);
+                    printf("Recibí %i de memoria\n", a_escribir);
+                    escribir_registro(parametros[1], a_escribir);
+                    log_info(logger, "PID: %i - Acción: LECTURA - Dirección Física: %i:%i - Valor: %i", pid, direccion->frame, direccion->offset, a_escribir);
+                }
             }
             else if(!strcmp(parametros[0], "MOV_OUT"))
             {
                 t_direccion_fisica* direccion = traducir_direccion(parametros[1], tam_pagina, conexion_memoria, pid);
-                enviar_operacion(conexion_memoria, PEDIDO_ESCRITURA);
-                uint32_t a_enviar = valor_de_registro(parametros[2]);
-                enviar_direccion(conexion_memoria, direccion);
-                send(conexion_memoria, &a_enviar, sizeof(uint32_t), NULL);
-                log_info(logger, "PID: %i - Acción: ESCRIBIR - Dirección Física: %i:%i - Valor: %i", pid, direccion->frame, direccion->offset, a_enviar);
+                
+                if(!atender_page_fault(pid, floor(atof(parametros[1])/tam_pagina), direccion->frame, socket_kernel_dispatch))
+                {
+                    enviar_operacion(conexion_memoria, PEDIDO_ESCRITURA);
+                    uint32_t a_enviar = valor_de_registro(parametros[2]);
+                    enviar_direccion(conexion_memoria, direccion);
+                    send(conexion_memoria, &a_enviar, sizeof(uint32_t), NULL);
+                    log_info(logger, "PID: %i - Acción: ESCRIBIR - Dirección Física: %i:%i - Valor: %i", pid, direccion->frame, direccion->offset, a_enviar);
+                }
             }
             else if(!strcmp(parametros[0], "F_OPEN"))
             {
@@ -352,20 +374,28 @@ int main(int argc, char* argv[]){
             {
                 execute = 0;
                 t_direccion_fisica* direccion_fisica = traducir_direccion(parametros[2], tam_pagina, conexion_memoria, pid); //revisar
-                enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
-                enviar_motivo_desalojo(socket_kernel_dispatch, F_READ);
-                enviar_mensaje(parametros[1],socket_kernel_dispatch);
-                enviar_direccion(socket_kernel_dispatch, direccion_fisica);
+                
+                if(!atender_page_fault(pid, floor(atof(parametros[2])/tam_pagina), direccion_fisica->frame, socket_kernel_dispatch))
+                {
+                    enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+                    enviar_motivo_desalojo(socket_kernel_dispatch, F_READ);
+                    enviar_mensaje(parametros[1],socket_kernel_dispatch);
+                    enviar_direccion(socket_kernel_dispatch, direccion_fisica);
+                }
             }
             else if(!strcmp(parametros[0], "F_WRITE"))
             {
                 execute = 0;
                 t_direccion_fisica* direccion_fisica = traducir_direccion(parametros[2], tam_pagina, conexion_memoria, pid);
-                enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
-                enviar_motivo_desalojo(socket_kernel_dispatch, F_WRITE);
-                enviar_mensaje(parametros[1],socket_kernel_dispatch);
-                printf("Direccion = %i:%i\n", direccion_fisica->frame, direccion_fisica->offset);
-                enviar_direccion(socket_kernel_dispatch, direccion_fisica);
+                
+                if(!atender_page_fault(pid, floor(atof(parametros[2])/tam_pagina), direccion_fisica->frame, socket_kernel_dispatch))
+                {
+                    enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+                    enviar_motivo_desalojo(socket_kernel_dispatch, F_WRITE);
+                    enviar_mensaje(parametros[1],socket_kernel_dispatch);
+                    printf("Direccion = %i:%i\n", direccion_fisica->frame, direccion_fisica->offset);
+                    enviar_direccion(socket_kernel_dispatch, direccion_fisica);
+                }
             }
             else if(!strcmp(parametros[0], "F_TRUNCATE"))
             {

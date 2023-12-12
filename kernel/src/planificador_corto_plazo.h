@@ -16,6 +16,7 @@
 #include <locks/lock.h>
 
 #include "manejo_de_archivos.h"
+#include "planificador_mediano_plazo.h"
 
 char* de_t_motivo_a_string(t_motivo_desalojo motivo);
 void evaluar_motivo_desalojo(t_log* logger_hilo, t_motivo_desalojo motivo, void* arg);

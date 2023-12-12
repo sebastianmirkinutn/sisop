@@ -209,3 +209,27 @@ void signal_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatc
     
     }
 }
+
+void atender_page_fault(void *arg)
+{
+    t_args_hilo_archivos *arg_h = (t_args_hilo_archivos *)arg;
+    t_response respuesta;
+
+    enviar_operacion(arg_h->socket_memoria, OP_PAGE_FAULT);
+    send(arg_h->socket_filesystem, &(arg_h->execute->pid), sizeof(uint32_t), NULL);
+    send(arg_h->socket_filesystem, &(arg_h->pagina), sizeof(uint32_t), NULL);
+
+    respuesta = recibir_respuesta(arg_h->socket_memoria);
+    switch (respuesta)
+    {
+    case OK:
+        sem_wait(&mutex_cola_ready);
+        queue_push(cola_ready, arg_h->execute);
+        sem_post(&mutex_cola_ready);
+        sem_post(&procesos_en_ready);
+        break;
+    
+    default:
+        break;
+    }
+}
