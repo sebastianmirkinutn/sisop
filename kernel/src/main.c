@@ -267,7 +267,7 @@ int main(int argc, char* argv[])
             imprimir_procesos_por_estado();
             
         }
-        else if(!strcmp(c_argv[0], "IMPRIMIR_RECURSOS"))
+        else if(!strcmp(c_argv[0], "RECURSOS_DISPONIBLES"))
         {   
             imprimir_recursos();
             
@@ -411,7 +411,7 @@ void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch)
     {
         t_recurso* recurso_local = (t_recurso*)arg;
         t_recurso* recurso = buscar_recurso(((t_recurso*)arg)->nombre);
-        if(recurso_local->instancias == 0)
+        if(recurso->cola_blocked == obtener_queue(pcb->pid))
         {
             recurso->instancias++;
             //desbloquear_procesos(recurso->nombre);
@@ -432,7 +432,7 @@ void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch)
         list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
         list_iterate(pcb->recursos_asignados, hacer_signal);
     }
-    if(cola != NULL)
+    else if(cola != NULL)
     {
         pcb = buscar_proceso_segun_pid(pid, cola);
         //list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
