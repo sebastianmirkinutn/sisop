@@ -528,7 +528,7 @@ void file_seek(void *arg)
         archivo->puntero = arg_h->puntero;
         log_info(logger, "Archivo: %s - Puntero: %i", arg_h->nombre_archivo, arg_h->puntero);
         sem_wait(&mutex_cola_ready);
-        queue_push(cola_ready, arg_h->execute);
+        agregar_primero_en_cola(cola_ready, arg_h->execute);
         sem_post(&mutex_cola_ready);
         sem_post(&procesos_en_ready);
     }

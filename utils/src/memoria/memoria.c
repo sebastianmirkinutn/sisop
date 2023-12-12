@@ -59,7 +59,7 @@ void enviar_frame (int socket, int32_t frame)
     }
     else
     {
-        enviar_operacion(socket, PAGE_FAULT);
+        enviar_operacion(socket, OP_PAGE_FAULT);
     }
 }
 
@@ -72,9 +72,11 @@ uint32_t recibir_frame(int socket)
     case FRAME:
         recv(socket, &frame, sizeof(uint32_t), MSG_WAITALL);
         break;
-    case PAGE_FAULT:
+
+    case OP_PAGE_FAULT:
         frame = -1;
         break;
+
     default:
         break;
     }
@@ -100,24 +102,8 @@ t_pagina* crear_pagina(uint32_t nro_pagina, uint32_t frame, uint32_t bloque_swap
     t_pagina* pagina = malloc(sizeof(t_pagina));
     pagina->pagina = nro_pagina;
     pagina->frame = frame;
-    pagina->modificado = 0;
-    pagina->presencia = 1;
     pagina->posicion_en_swap = bloque_swap;
-    //time(pagina->timestamp);
+    pagina->timestamp_carga = time(NULL);
+    pagina->timestamp_uso = pagina->timestamp_carga;
     return pagina;
-}
-
-t_frame_info* crear_frame_info(uint32_t frame, uint32_t pid, uint32_t orden){
-    t_frame_info* frame_info = malloc(sizeof(t_frame_info));
-    frame_info->frame = frame;
-    frame_info->pid = pid;
-    frame_info->orden = orden;
-    return frame_info;
-}
-
-void* menor_que(void* frame1, void* frame2){
-    if(((t_frame_info*)frame1)->orden <= ((t_frame_info*)frame2)->orden)
-        return frame1;
-    else
-        return frame2;
 }

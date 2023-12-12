@@ -9,16 +9,16 @@ extern int tam_pagina;
 extern int tam_memoria;
 extern t_log* logger;
 
-uint8_t leer_de_memoria(t_direccion_fisica* direccion)
+uint32_t leer_de_memoria(t_direccion_fisica* direccion)
 {
-    uint8_t leido;
-    memcpy(&leido, memoria_de_usuario + (direccion->frame * tam_pagina) + direccion->offset, sizeof(uint8_t));
+    uint32_t leido;
+    memcpy(&leido, memoria_de_usuario + (direccion->frame * tam_pagina) + direccion->offset, sizeof(uint32_t));
     return leido;
 }
 
-void escribir_en_memoria(t_direccion_fisica* direccion, uint8_t a_escribir)
+void escribir_en_memoria(t_direccion_fisica* direccion, uint32_t a_escribir)
 {
-    memcpy(memoria_de_usuario + (direccion->frame * tam_pagina) + direccion->offset, &a_escribir, sizeof(uint8_t));
+    memcpy(memoria_de_usuario + (direccion->frame * tam_pagina) + direccion->offset, &a_escribir, sizeof(uint32_t));
 }
 
 int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada)

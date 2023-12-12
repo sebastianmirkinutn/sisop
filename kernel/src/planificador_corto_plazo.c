@@ -176,6 +176,7 @@ void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
 {
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     uint32_t tam_archivo;
+    uint32_t pagina;
     char* recurso;
     char* nombre_archivo;
     char* lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
@@ -302,6 +303,13 @@ void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
             pthread_create(&h_file_truncate, NULL, &file_close, (void*)argumentos_file_management);
             pthread_detach(h_file_truncate);
      
+            break;
+
+        case PAGE_FAULT:
+            recv(arg_h->socket_dispatch, &pagina, sizeof(uint32_t), MSG_WAITALL);
+
+            //Pedirle a memoria que cargue la página del proceso
+
             break;
         default:
             break;

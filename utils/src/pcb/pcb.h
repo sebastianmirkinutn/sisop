@@ -70,7 +70,8 @@ typedef enum
 	F_CLOSE,
 	F_OPEN,
 	F_TRUNCATE,
-	KILL
+	KILL,
+	PAGE_FAULT
 }t_motivo_desalojo;
 
 t_pcb* crear_pcb(uint32_t prioridad, char* pseudocodigo);

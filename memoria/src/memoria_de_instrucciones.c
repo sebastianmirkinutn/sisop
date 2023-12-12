@@ -158,7 +158,7 @@ t_proceso* crear_proceso(uint32_t pid)
     t_proceso* proceso = malloc(sizeof(t_proceso));
     proceso->pid = pid;
     proceso->instrucciones = list_create();
-    proceso->tabla_de_paginas = malloc(sizeof(t_pagina));
+    proceso->tabla_de_paginas = list_create();
     return proceso;
 }
 
