@@ -28,6 +28,7 @@ typedef struct
     int socket_kernel;
     int socket_cpu;
     int socket_filesystem;
+    int socket_swap;
     t_pcb* pcb;
     uint32_t quantum;
     uint32_t retardo_memoria;

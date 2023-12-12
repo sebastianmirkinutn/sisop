@@ -186,7 +186,6 @@ int main(int argc, char* argv[])
     int sem_value_lp, sem_value_cp;
 
     while(1){
-        t_mensaje mensaje;
         fflush(stdin);
         char* leido = readline("> ");
         add_history(leido);

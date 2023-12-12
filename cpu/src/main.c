@@ -137,7 +137,6 @@ uint8_t atender_page_fault(uint32_t pid, uint32_t pagina, uint32_t frame, int so
         registros->PC--;
         enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
         enviar_motivo_desalojo(socket_kernel_dispatch, PAGE_FAULT);
-        send(socket_kernel_dispatch, &pid, sizeof(uint32_t), NULL);
         send(socket_kernel_dispatch, &pagina, sizeof(uint32_t), NULL);
         return 1;
     }

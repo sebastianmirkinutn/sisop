@@ -12,6 +12,7 @@ void conexion_memoria(void* arg)
     uint32_t pid;
     uint32_t cantidad_de_bloques;
     uint32_t nro_bloque;
+    void* bloque_swap;
     while(1)
     {
         op_code codigo = recibir_operacion(arg_h->socket_swap);
@@ -35,12 +36,17 @@ void conexion_memoria(void* arg)
                 break;
 
 	        case ESCRIBIR_SWAP:
-
+                recv(arg_h->socket_swap, &nro_bloque, sizeof(uint32_t), MSG_WAITALL);
+                recv(arg_h->socket_swap, bloque_swap, tam_bloque, MSG_WAITALL);
+                escribir_bloque_swap(nro_bloque, bloque_swap);
+                enviar_respuesta(arg_h->socket_swap, OK);
                 
                 break;
 
 	        case LEER_SWAP:
                 recv(arg_h->socket_swap, &nro_bloque, sizeof(uint32_t), MSG_WAITALL);
+                bloque_swap = leer_bloque_swap(nro_bloque);
+                send(arg_h->socket_swap, bloque_swap, tam_bloque, NULL);
    
                 //Enviar bloque
 
