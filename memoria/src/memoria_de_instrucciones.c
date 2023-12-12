@@ -99,7 +99,7 @@ void parsear_instrucciones(t_log* logger,t_proceso* proceso, char* str)
         //log_info(logger, "Instruccion: %s", token);
         if (strlen(token) > 0)
         {
-            char* token_cpy = malloc(strlen(token));
+            char* token_cpy = malloc(strlen(token) + 1);
             memcpy(token_cpy, token,strlen(token));
             token_cpy[strlen(token_cpy)] = '\0';
             list_add(proceso->instrucciones, token);
@@ -114,7 +114,7 @@ void parsear_instrucciones(t_log* logger,t_proceso* proceso, char* str)
 char* leer_pseudocodigo(t_log* logger, char* nombre_archivo)
 {
     //log_info(logger, "leer_pseudocodigo.");
-    char* ruta = malloc(strlen(nombre_archivo) + 15);
+    char* ruta = malloc(strlen(nombre_archivo) + 15 + 1);
     strcpy(ruta, "./pseudocodigo/");
     //log_info(logger, "char*.");
     strcat(ruta, nombre_archivo);
@@ -168,7 +168,8 @@ void conexion_kernel(void* arg)
     log_info(logger_hilo, "HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     t_list* bloques_swap;
-    uint32_t cant_bloques_swap;
+    uint32_t cant_bloques_swap, nro_pagina;
+    void* pagina;
     //log_info(logger_hilo,"Socket: %i", arg_h->socket_kernel);
     while(1)
     {
@@ -207,13 +208,22 @@ void conexion_kernel(void* arg)
                 list_add(bloques_swap, *elemento);
             }
 
-            asignar_memoria(pid, size, algoritmo, bloques_swap);
+            asignar_memoria(pid, size, bloques_swap);
 
             break;
         
         case FINALIZAR_PROCESO:
             //liberar_memoria();
             break; 
+
+        case OP_PAGE_FAULT:
+            recv(arg_h->socket_kernel, &pid, sizeof(uint32_t), MSG_WAITALL);
+            recv(arg_h->socket_kernel, &nro_pagina, sizeof(uint32_t), MSG_WAITALL);
+            printf("Voy a enviar\n");
+            enviar_respuesta(arg_h->socket_kernel, OK);
+            printf("Envié\n");
+            break;
+
         default:
             liberar_conexion(arg_h->socket_kernel);
             return;

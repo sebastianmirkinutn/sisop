@@ -41,8 +41,15 @@ int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada)
         t_pagina* pagina = list_find(proceso->tabla_de_paginas, es_la_pagina);
         if(pagina != NULL)
         {
-            printf("El frame de la página %i del proceso %i es %i\n", pagina_buscada, pid, pagina->frame);
-            return pagina->frame;
+            if(pagina->presencia == 1)
+            {       
+                printf("El frame de la página %i del proceso %i es %i\n", pagina_buscada, pid, pagina->frame);
+                return pagina->frame;
+            }
+            else
+            {
+                return -1;
+            }
         }
         else
         {
@@ -57,30 +64,18 @@ int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada)
     }
 }
 
-void asignar_memoria(uint32_t pid, uint32_t size, uint32_t (*algoritmo)(void), t_list* bloques_swap)
+void asignar_memoria(uint32_t pid, uint32_t size, t_list* bloques_swap)
 {
-    uint32_t frame;
     uint32_t bloque_swap;
     for(int nro_pagina = 0; nro_pagina < ceil(size / tam_pagina); nro_pagina++)
     {
-        printf("Se asigna el frame %i\n", frame);
-
-        frame = buscar_frame_libre();
-        if(frame != -1)
-        {
-            bitarray_set_bit(frame_bitarray, frame);
-        }
-        else
-        {
-            frame = algoritmo();
-        }
         bloque_swap = list_get(bloques_swap, nro_pagina);
-        agregar_pagina(pid, nro_pagina, frame, bloque_swap);
-        printf("Se asigna el frame %i al proceso %i para la página %i\n", frame, pid, nro_pagina);
+        agregar_pagina(pid, nro_pagina, bloque_swap);
+        printf("Se asigna el frame %i al proceso %i para la página %i\n", pid, nro_pagina);
     }
 }
 
-void agregar_pagina(uint32_t pid, uint32_t nro_pagina, uint32_t nro_frame, uint32_t bloque_swap)
+void agregar_pagina(uint32_t pid, uint32_t nro_pagina, uint32_t bloque_swap)
 {
     bool tiene_mismo_pid(void* proceso) {
         return (((t_proceso*)proceso)->pid == pid);
@@ -92,7 +87,7 @@ void agregar_pagina(uint32_t pid, uint32_t nro_pagina, uint32_t nro_frame, uint3
     if(proceso != NULL)
     {
         printf("Se crea una página\n");
-        t_pagina* pagina = crear_pagina(nro_pagina, nro_frame, bloque_swap);
+        t_pagina* pagina = crear_pagina(nro_pagina, bloque_swap);
         printf("Se creó una página (p = %i - f = %i - s = %i)\n", pagina->pagina, pagina->frame, pagina->posicion_en_swap);
         if(pagina != NULL)
         {
@@ -106,68 +101,6 @@ void agregar_pagina(uint32_t pid, uint32_t nro_pagina, uint32_t nro_frame, uint3
     }
 }
 
-/*ALGORTMOS DE REEMPLAZO*/
-
-uint32_t contador_frame = 0;
-uint32_t buscar_victima_fifo(void)
-{
-    uint32_t victima = contador_frame;
-    contador_frame++;
-    //Lógica de desalojo
-
-    if(contador_frame > tam_memoria / tam_pagina)
-    {
-        contador_frame = 0;
-    }
-    return victima;
-}
-
-int32_t buscar_frame_libre()
-{
-    uint32_t i;
-    for(i = 0; i < tam_memoria / tam_pagina; i++)
-    {
-        if(bitarray_test_bit(frame_bitarray, i))
-        {
-            return i;
-        }
-    }
-    return -1;
-}
-
-/*
-uint32_t buscar_victima_lru(void)
-{
-    uint32_t victima = contador_frame;
-
-    contador_frame++;
-    //Lógica de desalojo
-
-    if(contador_frame > tam_memoria / tam_pagina)
-    {
-        victima = ultima_pagina_accedida();
-    }
-    //for(uint32_t i; i < tam_memoria / tam_pagina)
-
-    //bitarray_set_bit(frame_bitarray, victima);
-    return victima;
-}
-
-uint32_t ultima_pagina_accedida()
-{
-    bool es_menor_el_timestamp(void* e1, void* e2)
-    {
-        return(((t_pagina*)e1)->timestamp > ((t_pagina*)e2)->timestamp);
-    }
-    bool el_menor_timestamp(void* e1, void* e2)
-    {
-        t_pagina* p1, p2;
-        p1 = list_find(((t_proceso*)e1)->tabla_de_paginas, es_menor_el_timestamp);
-    }
-    t_proceso* respuesta = (t_proceso*)list_find(procesos_en_memoria, el_menor_timestamp);
-    return list_find(respuesta->tabla_de_paginas, es_menor_el_timestamp);
-}
-*/
 
 t_proceso* buscar_proceso(uint32_t pid)
 {

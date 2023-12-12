@@ -1,5 +1,5 @@
-#ifndef MEMORIA_DE_INSTRUCCIONES_H
-#define MEMORIA_DE_INSTRUCCIONES_H
+#ifndef PAGE_FAULT_H
+#define PAGE_FAULT_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,13 +16,9 @@
 #include <threads/thread_parameters.h>
 #include <memoria/memoria.h>
 
-#include "memoria_de_usuario.h"
-#include "page_fault.h"
-
-void conexion_cpu(void* arg);
-void parsear_instrucciones(t_log* logger,t_proceso* proceso, char* str);
-char* leer_pseudocodigo(t_log* logger, char* nombre_archivo);
-t_proceso* crear_proceso(uint32_t pid);
-void conexion_kernel(void* arg);
+uint32_t buscar_victima_fifo(void);
+int32_t buscar_frame_libre();
+void* leer_pagina(uint32_t nro_frame);
+void escribir_pagina(uint32_t nro_frame, void* a_escribir);
 
 #endif

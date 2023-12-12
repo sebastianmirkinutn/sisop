@@ -20,12 +20,9 @@
 uint32_t leer_de_memoria(t_direccion_fisica* direccion);
 void escribir_en_memoria(t_direccion_fisica* direccion, uint32_t a_escribir);
 int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada);
-void asignar_memoria(uint32_t pid, uint32_t size, uint32_t (*algoritmo)(void), t_list* bloques_swap);
-uint32_t buscar_victima_fifo(void);
-uint32_t buscar_victima_lru(void);
+void asignar_memoria(uint32_t pid, uint32_t size, t_list* bloques_swap);
 t_proceso* buscar_proceso(uint32_t pid);
 void conexion_filesystem(void* arg);
-int32_t buscar_frame_libre();
 
 //uint32_t ultima_pagina_accedida();
 

@@ -53,7 +53,7 @@ uint32_t recibir_frame(int socket);
 void enviar_frame (int socket, int32_t frame);
 void enviar_direccion(int socket, t_direccion_fisica* direccion);
 t_direccion_fisica* recibir_direccion(int socket);
-t_pagina* crear_pagina(uint32_t pagina, uint32_t frame, uint32_t bloque_swap);
+t_pagina* crear_pagina(uint32_t pagina, uint32_t bloque_swap);
 t_frame_info* crear_frame_info(uint32_t frame, uint32_t pid, uint32_t orden);
 void* menor_que(void* frame1, void* frame2);
 

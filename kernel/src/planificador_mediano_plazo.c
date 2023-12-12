@@ -215,17 +215,23 @@ void atender_page_fault(void *arg)
     t_args_hilo_archivos *arg_h = (t_args_hilo_archivos *)arg;
     t_response respuesta;
 
+    log_info(logger, "Page Fault PID: %i - Página: %i", arg_h->execute->pid, arg_h->pagina);
+
     enviar_operacion(arg_h->socket_memoria, OP_PAGE_FAULT);
     send(arg_h->socket_filesystem, &(arg_h->execute->pid), sizeof(uint32_t), NULL);
     send(arg_h->socket_filesystem, &(arg_h->pagina), sizeof(uint32_t), NULL);
-
-    respuesta = recibir_respuesta(arg_h->socket_memoria);
+    printf("Voy a recibir la respuesta\n");
+    respuesta = recibir_respuesta(arg_h->socket_filesystem);
+    printf("OK\n");
     switch (respuesta)
     {
     case OK:
+    printf("OK\n");
         sem_wait(&mutex_cola_ready);
+        printf("OK\n");
         queue_push(cola_ready, arg_h->execute);
         sem_post(&mutex_cola_ready);
+        printf("OK\n");
         sem_post(&procesos_en_ready);
         break;
     
