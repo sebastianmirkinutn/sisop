@@ -158,3 +158,20 @@ void conexion_filesystem(void* arg)
 
     }
 }
+
+t_pagina* buscar_pagina_segun_frame(uint32_t frame)
+{
+    t_proceso* proceso;
+    t_pagina* pagina;
+    bool es_la_pagina(void* element)
+    {
+        return (((t_pagina*)element)->presencia == 1 && ((t_pagina*)element)->frame == frame);
+    }
+    bool es_el_proceso(void* element)
+    {
+        return (list_find((((t_proceso*)element)->tabla_de_paginas), es_la_pagina) != NULL);
+    }
+    proceso = list_find(procesos_en_memoria, es_el_proceso);
+    pagina = list_find(proceso->tabla_de_paginas, es_la_pagina);
+    return pagina;
+}

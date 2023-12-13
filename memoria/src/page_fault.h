@@ -16,7 +16,15 @@
 #include <threads/thread_parameters.h>
 #include <memoria/memoria.h>
 
-t_pagina* buscar_victima_fifo(void);
+typedef struct
+{
+    t_proceso* proceso;
+    t_pagina* pagina;
+}t_algoritmo_response;
+
+
+t_algoritmo_response* buscar_victima_fifo(void);
+t_algoritmo_response* buscar_victima_lru(void);
 int32_t buscar_frame_libre();
 void* leer_pagina(uint32_t nro_frame);
 void escribir_pagina(uint32_t nro_frame, void* a_escribir);

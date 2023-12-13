@@ -16,6 +16,7 @@ void conexion_cpu(void* arg)
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     //log_info(logger_hilo,"Socket: %i", arg_h->socket_cpu);
     t_direccion_fisica* direccion;
+    t_pagina* pagina;
     //enviar_mensaje("LISTO_PARA_RECIBIR_PEDIDOS",arg_h->socket_cpu);
     while(1)
     {
@@ -61,6 +62,8 @@ void conexion_cpu(void* arg)
         case PEDIDO_LECTURA:
             direccion = recibir_direccion(arg_h->socket_cpu);
             uint32_t lectura = leer_de_memoria(direccion);
+            pagina = buscar_pagina_segun_frame(direccion->frame);
+            pagina->timestamp_uso = time(NULL);
             send(arg_h->socket_cpu, &lectura, sizeof(uint32_t), NULL);
             break;
 
@@ -68,6 +71,11 @@ void conexion_cpu(void* arg)
             uint32_t a_escribir;
             direccion = recibir_direccion(arg_h->socket_cpu);
             recv(arg_h->socket_cpu, &a_escribir, sizeof(uint32_t), MSG_WAITALL);
+
+            pagina = buscar_pagina_segun_frame(direccion->frame);
+            pagina->timestamp_uso = time(NULL);
+            pagina->modificado = 1;
+
             //printf("Voy a escribir en memoria\n");
             escribir_en_memoria(direccion, a_escribir);
             //send(arg_h->socket_cpu, &direccion, sizeof(uint32_t), NULL);
@@ -173,9 +181,8 @@ void conexion_kernel(void* arg)
     uint32_t cant_bloques_swap, nro_pagina, nro_frame;
     void* pagina;
     t_pagina* pagina_a_agregar;
-    t_pagina* pagina_a_sacar;
+    t_algoritmo_response* pagina_a_sacar;
     t_proceso* proceso_a_agregar;
-    t_proceso* proceso_a_sacar;
     bool es_la_pagina(void* arg)
     {
         t_pagina* pagina = (t_pagina*)arg;
@@ -247,29 +254,27 @@ void conexion_kernel(void* arg)
             else
             {
                 pagina_a_sacar = algoritmo();
-                printf("Víctima = %i\n", pagina_a_sacar);
-                printf("Víctima = %i\n", pagina_a_sacar);
-                printf("Víctima = %i\n", pagina_a_sacar);
-                if(pagina_a_sacar->modificado == 1)
+                printf("Víctima = %i\n", pagina_a_sacar->pagina->pagina);
+                if(pagina_a_sacar->pagina->modificado == 1)
                 {
-                    pagina = leer_pagina(pagina_a_sacar->frame);
-                    swap_out(arg_h->socket_swap, pagina_a_sacar, pagina_a_sacar->frame, pagina, proceso_a_sacar);
-                    pagina_a_sacar->modificado = 0;
-                    pagina_a_sacar->presencia = 0;
-                    swap_in(arg_h->socket_swap, pagina_a_agregar, pagina_a_sacar->frame, proceso_a_agregar);
+                    pagina = leer_pagina(pagina_a_sacar->pagina->frame);
+                    swap_out(arg_h->socket_swap, pagina_a_sacar, pagina_a_sacar->pagina->frame, pagina, pagina_a_sacar->proceso);
+                    pagina_a_sacar->pagina->modificado = 0;
+                    pagina_a_sacar->pagina->presencia = 0;
+                    swap_in(arg_h->socket_swap, pagina_a_agregar, pagina_a_sacar->pagina->frame, proceso_a_agregar);
                     pagina_a_agregar->timestamp_carga = time(NULL);
                     pagina_a_agregar->timestamp_uso = pagina_a_agregar->timestamp_carga;
                     pagina_a_agregar->presencia = 1;
-                    pagina_a_agregar->frame = pagina_a_sacar->frame;
+                    pagina_a_agregar->frame = pagina_a_sacar->pagina->frame;
                 }
                 else
                 {
-                    pagina_a_sacar->presencia = 0;
-                    swap_in(arg_h->socket_swap, pagina_a_agregar, pagina_a_sacar->frame, proceso_a_agregar);
+                    pagina_a_sacar->pagina->presencia = 0;
+                    swap_in(arg_h->socket_swap, pagina_a_agregar, pagina_a_sacar->pagina->frame, proceso_a_agregar);
                     pagina_a_agregar->timestamp_carga = time(NULL);
                     pagina_a_agregar->timestamp_uso = pagina_a_agregar->timestamp_carga;
                     pagina_a_agregar->presencia = 1;
-                    pagina_a_agregar->frame = pagina_a_sacar->frame; 
+                    pagina_a_agregar->frame = pagina_a_sacar->pagina->frame; 
                 }
             }
 
