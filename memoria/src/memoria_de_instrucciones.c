@@ -74,7 +74,9 @@ void conexion_cpu(void* arg)
 
             pagina = buscar_pagina_segun_frame(direccion->frame);
             pagina->timestamp_uso = time(NULL);
+            printf("pagina->modificado = %i\n", pagina->modificado);
             pagina->modificado = 1;
+            printf("pagina->modificado = %i\n", pagina->modificado);
 
             //printf("Voy a escribir en memoria\n");
             escribir_en_memoria(direccion, a_escribir);
@@ -255,6 +257,7 @@ void conexion_kernel(void* arg)
             {
                 pagina_a_sacar = algoritmo();
                 printf("Víctima = %i\n", pagina_a_sacar->pagina->pagina);
+                printf("pagina_a_sacar->pagina->modificado = %i\n", pagina_a_sacar->pagina->modificado);
                 if(pagina_a_sacar->pagina->modificado == 1)
                 {
                     pagina = leer_pagina(pagina_a_sacar->pagina->frame);
