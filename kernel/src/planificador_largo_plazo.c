@@ -64,14 +64,14 @@ void finalizar_procesos_en_exit(void* arg)
         log_info(logger,"Hice wait de la cola de new: %i",cola_new);
         t_pcb* pcb = queue_pop(cola_exit);
         sem_post(&mutex_cola_exit);
-        finalizar_proceso_en_exit(pcb->pid, arg_h->socket_dispatch, pcb);
+        finalizar_proceso_en_exit(pcb->pid, arg_h->socket_dispatch, arg_h->socket_memoria, pcb);
         sem_post(&grado_de_multiprogramacion);
 
         sem_post(&planificacion_largo_plazo);
     }
 }
 
-void finalizar_proceso_en_exit(uint32_t pid, int socket_cpu_dispatch, t_pcb* pcb)
+void finalizar_proceso_en_exit(uint32_t pid, int socket_cpu_dispatch, int socket_memoria, t_pcb* pcb)
 {
     
     void hacer_f_close(void* arg)
@@ -99,6 +99,8 @@ void finalizar_proceso_en_exit(uint32_t pid, int socket_cpu_dispatch, t_pcb* pcb
     }
 
     list_iterate(pcb->recursos_asignados, hacer_signal);
+    enviar_operacion(socket_memoria, FINALIZAR_PROCESO);
+    send(socket_memoria, &(pcb->pid), sizeof(uint32_t), NULL);
 }
 
 

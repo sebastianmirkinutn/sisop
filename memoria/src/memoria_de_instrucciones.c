@@ -231,7 +231,8 @@ void conexion_kernel(void* arg)
             break;
         
         case FINALIZAR_PROCESO:
-            //liberar_memoria();
+            recv(arg_h->socket_kernel, &pid, sizeof(uint32_t), MSG_WAITALL);
+            finalizar_proceso(pid);
             break; 
 
         case OP_PAGE_FAULT:
@@ -293,4 +294,19 @@ void conexion_kernel(void* arg)
 
     }
     
+}
+
+void finalizar_proceso(uint32_t pid)
+{
+    t_proceso* proceso = buscar_proceso(pid);
+    sem_wait(&cantidad_de_procesos);
+    void desasignar_paginas(t_pagina* pagina)
+    {
+        if(pagina->presencia == 1)
+        {
+            bitarray_clean_bit(frame_bitarray, pagina->frame);
+        }
+        free(pagina);
+    }
+    list_iterate(proceso->tabla_de_paginas, desasignar_paginas);
 }

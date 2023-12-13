@@ -241,7 +241,7 @@ int main(int argc, char* argv[])
             
 
             //send a memoria para liberar espacio
-            finalizar_proceso (atoi(c_argv[1]), conexion_cpu_dispatch);
+            finalizar_proceso (atoi(c_argv[1]), conexion_cpu_dispatch, conexion_memoria);
             enviar_operacion(conexion_memoria, FINALIZAR_PROCESO);
             //send(arg_h->socket_memoria, &(pcb->pid), sizeof(int), 0); //mandamos el pid 
             //liberar_recursos_archivos(pcb);
@@ -398,7 +398,7 @@ void liberar_recursos_archivos(t_pcb* pcb, int socket_filesystem)
     list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
 }
 */
-void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch)
+void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch, int socket_memoria)
 {
     t_pcb* pcb;
     
@@ -444,6 +444,8 @@ void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch)
         list_iterate(pcb->recursos_asignados, hacer_signal);
         list_remove_element(cola->elements, pcb);
     }
+    enviar_operacion(socket_memoria, FINALIZAR_PROCESO);
+    send(socket_memoria, &(pcb->pid), sizeof(uint32_t), NULL);
 }
 
 t_queue* obtener_queue(uint32_t pid)
