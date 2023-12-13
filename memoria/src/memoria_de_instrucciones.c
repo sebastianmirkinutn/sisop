@@ -3,6 +3,7 @@
 extern t_list* procesos_en_memoria;
 extern char* saveptr;
 extern sem_t mutex_lista_procesos;
+extern t_bitarray* frame_bitarray;
 extern sem_t cantidad_de_procesos;
 extern int tam_pagina;
 extern t_log* logger;
@@ -51,7 +52,7 @@ void conexion_cpu(void* arg)
             recv(arg_h->socket_cpu, &pid, sizeof(uint32_t), MSG_WAITALL);
             printf("Recibí pid\n");
             recv(arg_h->socket_cpu, &pagina_buscada, sizeof(uint32_t), MSG_WAITALL);
-            printf("RECIBI PAGINA\n");
+            printf("RECIBI PAGINA %i\n", pagina_buscada);
             int32_t marco = obtener_numero_de_marco(pid, pagina_buscada);
             enviar_frame(arg_h->socket_cpu, marco);
             break;
@@ -234,7 +235,9 @@ void conexion_kernel(void* arg)
 
             if(nro_frame != -1)
             {
-                swap_in(arg_h->socket_swap, pagina_buscada, nro_frame);
+                printf("Voy a hacer SWAP_IN: Pid: %i - Página: %i\n", proceso_buscado->pid, pagina_buscada->pagina);
+                bitarray_set_bit(frame_bitarray, nro_frame);
+                swap_in(arg_h->socket_swap, pagina_buscada, nro_frame, proceso_buscado);
                 pagina_buscada->presencia = 1;
                 pagina_buscada->frame = nro_frame;
             }
