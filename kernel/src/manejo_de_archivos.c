@@ -539,3 +539,200 @@ void file_seek(void *arg)
     liberar_conexion(arg_h->socket_filesystem);
     //sem_post(&mutex_file_management);
 }
+
+
+
+/*FUNCIONES PARA FINALIZAR_PROCESO*/
+void cerrar_archivo(void *arg)
+{
+    t_args_hilo_archivos *arg_h = (t_args_hilo_archivos *)arg;
+    t_archivo *archivo;
+    t_archivo_local *archivo_local = malloc(sizeof(t_archivo_local));
+    printf("Me piden F_CLOSE de %s\n", arg_h->nombre_archivo);
+    t_proceso_bloqueado_por_fs *proceso_bloqueado;
+    bool es_el_archivo(void *arg)
+    {
+        return (!strcmp(((t_archivo *)arg)->nombre, arg_h->nombre_archivo));
+    }
+    bool es_el_archivo_local(void *arg)
+    {
+        return (!strcmp(((t_archivo_local *)arg)->archivo->nombre, arg_h->nombre_archivo));
+    }
+    bool es_el_proceso(void *arg)
+    {
+        return (((t_pcb *)arg)->pid == arg_h->execute->pid);
+    }
+    bool tiene_lock_lectura(void *arg)
+    {
+        return (((t_proceso_bloqueado_por_fs *)arg)->lock == READ);
+    }
+    void iterator_agregar_a_ready(void *arg)
+    {
+        list_add(((t_pcb *)arg)->tabla_de_archivos_abiertos, archivo_local);
+        printf("AGREGUÉ EL ARCHIVO LOCAL %s\n\n", archivo_local->archivo->nombre);
+        queue_push(cola_ready, (t_pcb *)arg);
+        sem_post(&procesos_en_ready);
+        log_info(logger, "PID: %i - Estado Anterior: BLOCKED - Estado Actual: READY", ((t_pcb *)arg)->pid);
+    }
+    void iterator_agregar_a_locks_lectura(void *arg)
+    {
+        if ((t_proceso_bloqueado_por_fs *)arg != proceso_bloqueado)
+        {
+            printf("Agrego PID: %i a los locks de lectura\n\n", ((t_proceso_bloqueado_por_fs *)arg)->pcb->pid);
+            list_add(((t_proceso_bloqueado_por_fs *)arg)->pcb->tabla_de_archivos_abiertos, archivo_local);
+            list_add(archivo->locks_lectura, ((t_proceso_bloqueado_por_fs *)arg)->pcb);
+        }
+    }
+    void iterator_eliminar_procesos_con_lock_de_escritura(void *arg)
+    {
+        list_remove_by_condition(arg, tiene_lock_lectura);
+    }
+    printf("file_close()\n");
+    //sem_wait(&mutex_file_management);
+    printf("ejecuta file_close()\n");
+    t_response respuesta;
+    arg_h->socket_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
+
+    archivo = buscar_archivo(tabla_global_de_archivos, arg_h->nombre_archivo);
+    if (archivo != NULL)
+    {
+        printf("archivo != NULL (es %s)\n", archivo->nombre);
+        printf("Procesos bloqueados por lock = %i\n", archivo->cola_blocked->elements->elements_count);
+        list_remove_by_condition(arg_h->execute->tabla_de_archivos_abiertos, es_el_archivo_local);
+
+        arg_h->execute->estado = READY;
+        //sem_wait(&mutex_cola_ready);
+        //queue_push(cola_ready, arg_h->execute);
+        //sem_post(&mutex_cola_ready);
+        //sem_post(&procesos_en_ready);
+        log_info(logger, "PID: %i (EL QUE LO PIDIÓ)- Estado Anterior: BLOCKED - Estado Actual: READY", arg_h->execute->pid);
+        printf("archivo->cola_blocked->elements->elements_count = %i\n", archivo->cola_blocked->elements->elements_count);
+        printf("archivo->locks_lectura->elements_count = %i\n", archivo->locks_lectura->elements_count);
+        if (archivo->lock == READ)
+        {
+            printf("archivo->lock == READ\n");
+            list_remove_by_condition(archivo->locks_lectura, es_el_proceso);
+            archivo->contador_aperturas--;
+            if (archivo->locks_lectura->elements_count == 0) // El proceso es el único que lo está leyendo
+            {
+                printf("archivo->locks_lectura->elements_count == 0\n");
+                if (archivo->cola_blocked->elements->elements_count != 0) // Hay elememtos bloqueados
+                {
+                    proceso_bloqueado = queue_pop(archivo->cola_blocked);
+                    if (proceso_bloqueado != NULL)
+                    {
+                        archivo->lock = proceso_bloqueado->lock;
+                        arg_h->execute->estado = READY;
+                        archivo_local->archivo = archivo;
+                        archivo_local->puntero = 0;
+
+                        list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
+                        sem_wait(&mutex_cola_ready);
+                        // queue_push(cola_ready, arg_h->execute);
+                        queue_push(cola_ready, proceso_bloqueado);
+                        sem_post(&mutex_cola_ready);
+                        sem_post(&procesos_en_ready);
+                        archivo->contador_aperturas++;
+                    }
+                    printf("TERMINA EL HILO PORQUE TODOS LOS BLOQUEADOS SON DE ESCRITURA\n");
+                    liberar_parametros(arg_h);
+                    //sem_post(&mutex_file_management);
+                    return;
+                }
+                else // Se elimina el archivo completamente
+                {
+                    log_warning(logger, "Se elimina el archivo");
+                    list_remove_by_condition(tabla_global_de_archivos, es_el_archivo);
+
+                    liberar_conexion(arg_h->socket_filesystem);
+                    printf("TERMINA EL HILO PORQUE NO HAY NADA\n");
+                    liberar_parametros(arg_h);
+                    //sem_post(&mutex_file_management);
+                    return;
+                }
+            }
+            else
+            {
+                liberar_conexion(arg_h->socket_filesystem);
+                liberar_parametros(arg_h);
+                //sem_post(&mutex_file_management);
+                return;
+            }
+        }
+        else // CUANDO EL LOCK DEL ARCHIVO ES WRITE
+        {
+            if (archivo->cola_blocked->elements->elements_count > 0) // Hay elementos bloqueados (no se sabe si R o W)
+            {
+                archivo_local->archivo = archivo;
+                archivo_local->puntero = 0;
+                // sem_wait(&(archivo->mutex_cola_blocked));
+                proceso_bloqueado = queue_pop(archivo->cola_blocked);
+                // sem_post(&(archivo->mutex_cola_blocked));
+                if (proceso_bloqueado != NULL)
+                {
+                    archivo->lock = proceso_bloqueado->lock;
+                    list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
+                    printf("EL PROCESO BLOQUEADO ES EL QUE TIENE PID = %i\n", proceso_bloqueado->pcb->pid);
+
+                    if (proceso_bloqueado->lock == READ && archivo->cola_blocked->elements->elements_count > 0) // Hay que desbloquear otros procesos con READ
+                    {
+                        archivo_local->archivo = archivo;
+                        archivo_local->puntero = 0;
+                        t_list *procesos_lectura = list_filter(archivo->cola_blocked->elements, tiene_lock_lectura);
+                        list_iterate(procesos_lectura, iterator_agregar_a_locks_lectura);
+                        sem_wait(&mutex_cola_ready);
+                        queue_push(cola_ready, proceso_bloqueado->pcb);
+                        list_iterate(archivo->locks_lectura, iterator_agregar_a_ready);
+                        list_add(archivo->locks_lectura, proceso_bloqueado->pcb);
+                        sem_post(&procesos_en_ready);
+                        sem_post(&mutex_cola_ready);
+                        void *element;
+                        do
+                        {
+                            element = list_remove_by_condition(archivo->cola_blocked->elements, tiene_lock_lectura);
+                        } while (element != NULL);
+                        printf("TERMINA EL HILO PORQUE NO HAY NADA\n");
+                        liberar_parametros(arg_h);
+                        liberar_conexion(arg_h->socket_filesystem);
+                        //sem_post(&mutex_file_management);
+                        printf("Después del fclose, hay %i archivos con lock de lectura, y %i bloqueados\n", archivo->locks_lectura->elements_count, archivo->cola_blocked->elements->elements_count);
+                        return;
+                    }
+                    else // No se desbloquea nada (El lock es WRITE)
+                    {
+                        archivo_local->archivo = archivo;
+                        archivo_local->puntero = 0;
+                        //sem_wait(&mutex_cola_ready);
+                        //// queue_push(cola_ready, arg_h->execute);
+                        //queue_push(cola_ready, proceso_bloqueado->pcb);
+                        //sem_post(&procesos_en_ready);
+                        //sem_post(&mutex_cola_ready);
+                        //list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
+                        printf("TERMINA EL HILO PORQUE NO HAY NADA\n");
+                        liberar_parametros(arg_h);
+                        liberar_conexion(arg_h->socket_filesystem);
+                        //sem_post(&mutex_file_management);
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                // Se elimina el archivo
+                list_remove_element(tabla_global_de_archivos, archivo);
+                log_warning(logger, "Se elimina el archivo");
+            }
+        }
+        liberar_parametros(arg_h);
+        liberar_conexion(arg_h->socket_filesystem);
+        //sem_post(&mutex_file_management);
+        return;
+    }
+
+    // sem_wait(&mutex_cola_ready);
+    // queue_push(cola_ready, arg_h->execute);
+    // sem_post(&mutex_cola_ready);
+    // sem_post(&procesos_en_ready);
+    // printf("TERMINA EL HILO\n");
+    // //sem_post(&mutex_file_management);
+}

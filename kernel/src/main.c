@@ -5,6 +5,7 @@ sem_t mutex_cola_new;
 sem_t mutex_cola_ready;
 sem_t mutex_cola_exit;
 sem_t procesos_en_new;
+sem_t procesos_en_exit;
 sem_t procesos_en_ready;
 sem_t planificacion_largo_plazo;
 sem_t planificacion_corto_plazo;
@@ -138,6 +139,7 @@ int main(int argc, char* argv[])
     sem_init(&mutex_cola_exit, 0, 1);
     sem_init(&procesos_en_new, 0, 0);
     sem_init(&procesos_en_ready, 0, 0);
+    sem_init(&procesos_en_exit, 0, 0);
     sem_init(&grado_de_multiprogramacion, 0, atoi(grado_max_de_multiprogramacion));
     sem_init(&planificacion_largo_plazo, 0, 0);
     sem_init(&planificacion_corto_plazo, 0, 0);
@@ -162,6 +164,10 @@ int main(int argc, char* argv[])
     pthread_t hilo_planificador_de_largo_plazo;
     pthread_create(&hilo_planificador_de_largo_plazo, NULL, &planificador_largo_plazo, (void*)&args_hilo);
     pthread_detach(&hilo_planificador_de_largo_plazo);
+
+    pthread_t hilo_planificador_de_largo_plazo_exit;
+    pthread_create(&hilo_planificador_de_largo_plazo_exit, NULL, &finalizar_procesos_en_exit, (void*)&args_hilo);
+    pthread_detach(&hilo_planificador_de_largo_plazo_exit);
 
     pthread_t hilo_planificador_de_corto_plazo;
 

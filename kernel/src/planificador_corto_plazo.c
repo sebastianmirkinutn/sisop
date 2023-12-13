@@ -6,6 +6,7 @@ extern sem_t mutex_cola_ready;
 extern sem_t mutex_cola_exit;
 extern sem_t procesos_en_new;
 extern sem_t procesos_en_ready;
+extern sem_t procesos_en_exit;
 extern sem_t planificacion_largo_plazo;
 extern sem_t planificacion_corto_plazo;
 extern sem_t mutex_file_management;
@@ -192,6 +193,7 @@ void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
             sem_wait(&mutex_cola_exit);
             queue_push(cola_exit, execute);
             sem_post(&mutex_cola_exit);
+            sem_post(&procesos_en_exit);
             log_info(logger, "Fin de proceso %i motivo %s (%i)", execute->pid, de_t_motivo_a_string(motivo));
             break;
 

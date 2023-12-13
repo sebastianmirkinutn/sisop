@@ -13,6 +13,10 @@
 #include <threads/thread_parameters.h>
 #include <pthread.h>
 
+#include "manejo_de_archivos.h"
+
 void planificador_largo_plazo(void* arg);
+void finalizar_procesos_en_exit(void* arg);
+void finalizar_proceso_en_exit(uint32_t pid, int socket_cpu_dispatch, t_pcb* pcb);
 
 #endif 

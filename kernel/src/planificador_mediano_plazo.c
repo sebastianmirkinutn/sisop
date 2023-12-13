@@ -6,6 +6,7 @@ extern sem_t mutex_cola_ready;
 extern sem_t mutex_cola_exit;
 extern sem_t procesos_en_new;
 extern sem_t procesos_en_ready;
+extern sem_t procesos_en_exit;
 extern sem_t planificacion_largo_plazo;
 extern sem_t planificacion_corto_plazo;
   
@@ -98,6 +99,7 @@ void wait_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch)
         sem_wait(&mutex_cola_exit);
         queue_push(cola_exit, execute);
         sem_post(&mutex_cola_exit);
+        sem_post(&procesos_en_exit);
         log_info(logger, "Fin de proceso %i motivo %s", execute->pid, "INVALID_RESOURCE");
     }
     else
@@ -167,6 +169,7 @@ void signal_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatc
         sem_wait(&mutex_cola_exit);
         queue_push(cola_exit, execute);
         sem_post(&mutex_cola_exit);
+        sem_post(&procesos_en_exit);
         log_info(logger, "Fin de proceso %i motivo %s", execute->pid, "INVALID_RESOURCE");
     }
     else
@@ -195,6 +198,7 @@ void signal_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatc
                 sem_wait(&mutex_cola_exit);
                 queue_push(cola_exit, execute);
                 sem_post(&mutex_cola_exit);
+                sem_post(&procesos_en_exit);
                 log_info(logger, "Fin de proceso %i motivo %s", execute->pid, "INVALID_RESOURCE");
             }
         }
@@ -204,6 +208,7 @@ void signal_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatc
             sem_wait(&mutex_cola_exit);
             queue_push(cola_exit, execute);
             sem_post(&mutex_cola_exit);
+            sem_post(&procesos_en_exit);
             log_info(logger, "Fin de proceso %i motivo %s", execute->pid, "INVALID_RESOURCE");
         }
     

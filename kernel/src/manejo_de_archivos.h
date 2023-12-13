@@ -53,5 +53,6 @@ void file_write(void* arg);
 void file_read(void* arg);
 void file_close(void* arg);
 void file_seek(void* arg);
+void cerrar_archivo(void *arg);
 
 #endif
