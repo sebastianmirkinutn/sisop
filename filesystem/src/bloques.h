@@ -15,9 +15,11 @@
 #include <pcb/pcb.h>
 #include <fcntl.h>
 #include <math.h>
+#include <sys/stat.h>
 
 void* leer_bloque(uint32_t puntero);
 void escribir_dato(uint32_t bloque, uint32_t offset, uint32_t dato);
 uint32_t leer_dato(uint32_t bloque, uint32_t offset);
+int abrir_archivo_de_bloques(char* path);
 
 #endif

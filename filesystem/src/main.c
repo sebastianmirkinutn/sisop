@@ -168,7 +168,10 @@ int main(int argc, char* argv[]) {
     retardo_acceso_bloque=config_get_int_value(config,"RETARDO_ACCESO_BLOQUE");
     retardo_acceso_fat=config_get_int_value(config,"RETARDO_ACCESO_FAT");
 
-	bloques = fopen(path_bloques, "rb+");
+
+
+	//bloques = fopen(path_bloques, "rb+");
+	int archivo_de_bloques = abrir_archivo_de_bloques(path_bloques);
 
 	char* s_bitarray = malloc((tam_bloque * cant_bloques_swap) / 8);
     swap_bitarray = bitarray_create_with_mode(s_bitarray, sizeof(s_bitarray), LSB_FIRST);
@@ -207,6 +210,6 @@ int main(int argc, char* argv[]) {
 		pthread_create(&h_conexion_kernel, NULL, &conexion_kernel, (void*)args_hilo);
     	pthread_detach(h_conexion_kernel);
 	}
-	fclose(path_bloques);
+	close(archivo_de_bloques);
 	return 0;
 }

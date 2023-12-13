@@ -42,3 +42,22 @@ void escribir(uint32_t puntero, )
     return bloque;
 }
 */
+
+int abrir_archivo_de_bloques(char* path)
+{
+    int archivo_de_bloques = open(path, O_RDWR);
+    struct stat file_stat;
+    fstat(archivo_de_bloques, &file_stat);
+    off_t file_size = file_stat.st_size;
+    if(archivo_de_bloques == -1)
+    {
+        archivo_de_bloques = open(path, O_CREAT | O_RDWR, (mode_t) 0664);
+    }
+
+    if(file_size != tam_bloque * cant_bloques_total)
+    {
+        truncate(archivo_de_bloques, tam_bloque * cant_bloques_total);
+    }
+    bloques = fdopen(archivo_de_bloques, "rb+");
+    return archivo_de_bloques;
+}
