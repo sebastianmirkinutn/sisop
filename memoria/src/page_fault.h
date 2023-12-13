@@ -20,5 +20,7 @@ uint32_t buscar_victima_fifo(void);
 int32_t buscar_frame_libre();
 void* leer_pagina(uint32_t nro_frame);
 void escribir_pagina(uint32_t nro_frame, void* a_escribir);
+void swap_in(int socket_swap, t_pagina* pagina, uint32_t frame);
+void swap_out(int socket_swap, t_pagina* pagina, uint32_t frame, void* a_escribir);
 
 #endif

@@ -30,7 +30,8 @@ int32_t obtener_numero_de_marco(uint32_t pid, uint32_t pagina_buscada)
         return proceso->pid == pid;
     }
 */
-    bool es_la_pagina(void* arg){
+    bool es_la_pagina(void* arg)
+    {
         t_pagina* pagina = (t_pagina*)arg;
         return pagina->pagina == pagina_buscada;
     }

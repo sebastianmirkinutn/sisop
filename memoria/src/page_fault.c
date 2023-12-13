@@ -82,3 +82,22 @@ void escribir_pagina(uint32_t nro_frame, void* a_escribir)
 {
     memcpy(memoria_de_usuario + (nro_frame * tam_pagina) , a_escribir, tam_pagina);
 }
+
+void swap_in(int socket_swap, t_pagina* pagina, uint32_t frame)
+{
+    void* a_escribir = malloc(tam_pagina);
+    enviar_operacion(socket_swap, LEER_SWAP);
+    send(socket_swap, &(pagina->posicion_en_swap), sizeof(uint32_t), NULL);
+    recv(socket_swap, a_escribir, tam_pagina, MSG_WAITALL);
+    escribir_pagina(frame, a_escribir);
+    free(a_escribir);
+}
+
+void swap_out(int socket_swap, t_pagina* pagina, uint32_t frame, void* a_escribir)
+{
+    t_response respuesta;
+    enviar_operacion(socket_swap, ESCRIBIR_SWAP);
+    send(socket_swap, &(pagina->posicion_en_swap), sizeof(uint32_t), NULL);
+    send(socket_swap, a_escribir, tam_pagina, NULL);
+    respuesta = recibir_respuesta(socket_swap);
+}

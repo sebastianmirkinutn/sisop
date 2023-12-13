@@ -168,8 +168,15 @@ void conexion_kernel(void* arg)
     log_info(logger_hilo, "HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     t_list* bloques_swap;
-    uint32_t cant_bloques_swap, nro_pagina;
+    uint32_t cant_bloques_swap, nro_pagina, nro_frame;
     void* pagina;
+    t_pagina* pagina_buscada;
+    t_proceso* proceso_buscado;
+    bool es_la_pagina(void* arg)
+    {
+        t_pagina* pagina = (t_pagina*)arg;
+        return pagina->pagina == nro_pagina;
+    }
     //log_info(logger_hilo,"Socket: %i", arg_h->socket_kernel);
     while(1)
     {
@@ -220,6 +227,23 @@ void conexion_kernel(void* arg)
             recv(arg_h->socket_kernel, &pid, sizeof(uint32_t), MSG_WAITALL);
             recv(arg_h->socket_kernel, &nro_pagina, sizeof(uint32_t), MSG_WAITALL);
             printf("Voy a enviar\n");
+            proceso_buscado = buscar_proceso(pid);
+            pagina_buscada = list_find(proceso_buscado->tabla_de_paginas, es_la_pagina);
+
+            nro_frame = buscar_frame_libre();
+
+            if(nro_frame != -1)
+            {
+                swap_in(arg_h->socket_swap, pagina_buscada, nro_frame);
+                pagina_buscada->presencia = 1;
+                pagina_buscada->frame = nro_frame;
+            }
+            else
+            {
+                //Busco la víctima
+            }
+
+            
             enviar_respuesta(arg_h->socket_kernel, OK);
             printf("Envié\n");
             break;
