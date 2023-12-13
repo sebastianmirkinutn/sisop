@@ -11,16 +11,37 @@ extern t_log* logger;
 
 /*ALGORTMOS DE REEMPLAZO*/
 uint32_t contador_frame = 0;
-uint32_t buscar_victima_fifo(void)
+t_pagina* buscar_victima_fifo(void)
 {
-    uint32_t victima = contador_frame;
-    contador_frame++;
-    //Lógica de desalojo
-
-    if(contador_frame > tam_memoria / tam_pagina)
+    t_pagina* pagina_con_el_menor_el_timestamp(void* e1, void* e2)
     {
-        contador_frame = 0;
+        if(((t_pagina*)e1)->timestamp_carga > ((t_pagina*)e2)->timestamp_carga)
+        {
+            return e2;
+        }
+        else
+        {
+            return e1;
+        }
     }
+    t_proceso* proceso_con_el_menor_el_timestamp(void* e1, void* e2)
+    {
+        t_pagina* p1;
+        t_pagina* p2;
+        p1 = list_get_minimum(((t_proceso*)e1)->tabla_de_paginas, pagina_con_el_menor_el_timestamp);
+        p2 = list_get_minimum(((t_proceso*)e2)->tabla_de_paginas, pagina_con_el_menor_el_timestamp);
+        if(p1->timestamp_carga > p2->timestamp_carga)
+        {
+            return e2;
+        }
+        else
+        {
+            return e1;
+        }
+    }
+    t_proceso* respuesta = list_get_minimum(procesos_en_memoria, proceso_con_el_menor_el_timestamp);
+    printf("Proceso víctima = %i\n", respuesta->pid);
+    t_pagina* victima = list_get_minimum(respuesta->tabla_de_paginas, pagina_con_el_menor_el_timestamp);
     return victima;
 }
 

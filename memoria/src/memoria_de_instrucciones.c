@@ -7,6 +7,7 @@ extern t_bitarray* frame_bitarray;
 extern sem_t cantidad_de_procesos;
 extern int tam_pagina;
 extern t_log* logger;
+extern t_pagina* (*algoritmo)(void);
 
 void conexion_cpu(void* arg)
 {
@@ -171,8 +172,10 @@ void conexion_kernel(void* arg)
     t_list* bloques_swap;
     uint32_t cant_bloques_swap, nro_pagina, nro_frame;
     void* pagina;
-    t_pagina* pagina_buscada;
-    t_proceso* proceso_buscado;
+    t_pagina* pagina_a_agregar;
+    t_pagina* pagina_a_sacar;
+    t_proceso* proceso_a_agregar;
+    t_proceso* proceso_a_sacar;
     bool es_la_pagina(void* arg)
     {
         t_pagina* pagina = (t_pagina*)arg;
@@ -201,9 +204,7 @@ void conexion_kernel(void* arg)
             sem_post(&cantidad_de_procesos);
             //log_info(logger_hilo, "SIGNAL cantidad_de_procesos");
 
-            log_info(logger, "PID: %i - Tamaño: %i", pid, size);
-            uint32_t (*algoritmo)(void);
-            algoritmo = buscar_victima_fifo;
+            log_info(logger, "PID: %i - Tamaño: %i", pid, size);;
 
             enviar_operacion(arg_h->socket_swap, RESERVAR_BLOQUES_SWAP);
             cant_bloques_swap = size / tam_pagina;
@@ -228,22 +229,37 @@ void conexion_kernel(void* arg)
             recv(arg_h->socket_kernel, &pid, sizeof(uint32_t), MSG_WAITALL);
             recv(arg_h->socket_kernel, &nro_pagina, sizeof(uint32_t), MSG_WAITALL);
             printf("Voy a enviar\n");
-            proceso_buscado = buscar_proceso(pid);
-            pagina_buscada = list_find(proceso_buscado->tabla_de_paginas, es_la_pagina);
+            proceso_a_agregar = buscar_proceso(pid);
+            pagina_a_agregar = list_find(proceso_a_agregar->tabla_de_paginas, es_la_pagina);
 
             nro_frame = buscar_frame_libre();
 
             if(nro_frame != -1)
             {
-                printf("Voy a hacer SWAP_IN: Pid: %i - Página: %i\n", proceso_buscado->pid, pagina_buscada->pagina);
+                printf("Voy a hacer SWAP_IN: Pid: %i - Página: %i\n", proceso_a_agregar->pid, pagina_a_agregar->pagina);
                 bitarray_set_bit(frame_bitarray, nro_frame);
-                swap_in(arg_h->socket_swap, pagina_buscada, nro_frame, proceso_buscado);
-                pagina_buscada->presencia = 1;
-                pagina_buscada->frame = nro_frame;
+                swap_in(arg_h->socket_swap, pagina_a_agregar, nro_frame, proceso_a_agregar);
+                pagina_a_agregar->timestamp_carga = time(NULL);
+                pagina_a_agregar->timestamp_uso = pagina_a_agregar->timestamp_carga;
+                pagina_a_agregar->presencia = 1;
+                pagina_a_agregar->frame = nro_frame;
             }
             else
             {
-                //Busco la víctima
+                pagina_a_sacar = algoritmo();
+                printf("Víctima = %i\n", pagina_a_sacar);
+                printf("Víctima = %i\n", pagina_a_sacar);
+                printf("Víctima = %i\n", pagina_a_sacar);
+                if(pagina_a_sacar->modificado == 1)
+                {
+                    pagina = leer_pagina(pagina_a_sacar->frame);
+                    swap_out(arg_h->socket_swap, pagina_a_sacar, nro_frame, pagina, proceso_a_sacar);
+                    pagina_a_sacar->modificado = 0;
+                    pagina_a_sacar->presencia = 0;
+                    swap_in(arg_h->socket_swap, pagina_a_agregar, nro_frame, proceso_a_agregar);
+                    pagina_a_agregar->presencia = 1;
+                    pagina_a_agregar->frame = pagina_a_sacar->frame;
+                }
             }
 
             

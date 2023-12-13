@@ -16,7 +16,7 @@
 #include <threads/thread_parameters.h>
 #include <memoria/memoria.h>
 
-uint32_t buscar_victima_fifo(void);
+t_pagina* buscar_victima_fifo(void);
 int32_t buscar_frame_libre();
 void* leer_pagina(uint32_t nro_frame);
 void escribir_pagina(uint32_t nro_frame, void* a_escribir);

@@ -9,7 +9,7 @@ sem_t cantidad_de_procesos;
 /*ESTRUCTURAS PARA MEMORIA DE USUARIO*/
 void* memoria_de_usuario;
 t_bitarray* frame_bitarray;
-uint32_t (*algoritmo)(void);
+t_pagina* (*algoritmo)(void);
 
 int tam_pagina; 
 int tam_memoria;
