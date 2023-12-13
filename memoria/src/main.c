@@ -30,7 +30,7 @@ int main(int argc, char* argv[]){
 
     if(!strcmp(algoritmo_reemplazo, "LRU"))
     {
-        //algoritmo = buscar_victima_lru;
+        algoritmo = buscar_victima_lru;
     }
     else
     {

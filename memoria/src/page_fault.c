@@ -53,6 +53,10 @@ t_algoritmo_response* buscar_victima_fifo(void)
 t_algoritmo_response* buscar_victima_lru(void)
 {
     t_algoritmo_response* respuesta = malloc(sizeof(t_algoritmo_response));
+    bool esta_presente(void* arg)
+    {
+        return (((t_pagina*)arg)->presencia == 1);
+    }
     t_pagina* pagina_con_el_menor_el_timestamp(void* e1, void* e2)
     {
         if(((t_pagina*)e1)->timestamp_uso > ((t_pagina*)e2)->timestamp_uso)
@@ -68,8 +72,8 @@ t_algoritmo_response* buscar_victima_lru(void)
     {
         t_pagina* p1;
         t_pagina* p2;
-        p1 = list_get_minimum(((t_proceso*)e1)->tabla_de_paginas, pagina_con_el_menor_el_timestamp);
-        p2 = list_get_minimum(((t_proceso*)e2)->tabla_de_paginas, pagina_con_el_menor_el_timestamp);
+        p1 = list_get_minimum(list_filter(((t_proceso*)e1)->tabla_de_paginas, esta_presente), pagina_con_el_menor_el_timestamp);
+        p2 = list_get_minimum(list_filter(((t_proceso*)e2)->tabla_de_paginas, esta_presente), pagina_con_el_menor_el_timestamp);
         if(p1->timestamp_uso > p2->timestamp_uso)
         {
             return e2;
@@ -81,7 +85,7 @@ t_algoritmo_response* buscar_victima_lru(void)
     }
     respuesta->proceso = list_get_minimum(procesos_en_memoria, proceso_con_el_menor_el_timestamp);
     printf("Proceso víctima = %i\n", respuesta->proceso->pid);
-    respuesta->pagina = list_get_minimum(respuesta->proceso->tabla_de_paginas, pagina_con_el_menor_el_timestamp);
+    respuesta->pagina = list_get_minimum(list_filter(respuesta->proceso->tabla_de_paginas, esta_presente), pagina_con_el_menor_el_timestamp);
     return respuesta;
 }
 
