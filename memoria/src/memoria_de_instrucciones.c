@@ -253,12 +253,23 @@ void conexion_kernel(void* arg)
                 if(pagina_a_sacar->modificado == 1)
                 {
                     pagina = leer_pagina(pagina_a_sacar->frame);
-                    swap_out(arg_h->socket_swap, pagina_a_sacar, nro_frame, pagina, proceso_a_sacar);
+                    swap_out(arg_h->socket_swap, pagina_a_sacar, pagina_a_sacar->frame, pagina, proceso_a_sacar);
                     pagina_a_sacar->modificado = 0;
                     pagina_a_sacar->presencia = 0;
-                    swap_in(arg_h->socket_swap, pagina_a_agregar, nro_frame, proceso_a_agregar);
+                    swap_in(arg_h->socket_swap, pagina_a_agregar, pagina_a_sacar->frame, proceso_a_agregar);
+                    pagina_a_agregar->timestamp_carga = time(NULL);
+                    pagina_a_agregar->timestamp_uso = pagina_a_agregar->timestamp_carga;
                     pagina_a_agregar->presencia = 1;
                     pagina_a_agregar->frame = pagina_a_sacar->frame;
+                }
+                else
+                {
+                    pagina_a_sacar->presencia = 0;
+                    swap_in(arg_h->socket_swap, pagina_a_agregar, pagina_a_sacar->frame, proceso_a_agregar);
+                    pagina_a_agregar->timestamp_carga = time(NULL);
+                    pagina_a_agregar->timestamp_uso = pagina_a_agregar->timestamp_carga;
+                    pagina_a_agregar->presencia = 1;
+                    pagina_a_agregar->frame = pagina_a_sacar->frame; 
                 }
             }
 

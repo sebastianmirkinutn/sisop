@@ -40,6 +40,11 @@ int main(int argc, char* argv[]){
     memoria_de_usuario = malloc(tam_memoria);
     char* c_bitarray = malloc(tam_memoria / 8);
     frame_bitarray = bitarray_create_with_mode(c_bitarray, sizeof(c_bitarray), LSB_FIRST);
+    for(int i = 0; i < tam_memoria; i++)
+    {
+        bitarray_clean_bit(frame_bitarray, i);
+        //printf("%i", bitarray_test_bit(frame_bitarray, i));
+    }
 
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
     int socket_servidor = iniciar_servidor(logger,puerto_escucha);
