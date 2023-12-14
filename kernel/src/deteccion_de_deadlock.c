@@ -146,26 +146,64 @@ void deteccion_de_deadlock()
         return list_all_satisfy(proceso_deadlock->recursos_asignados, el_recurso_tiene_cero_instancias);
     }
 
+    
+
     bool alcanzan_los_recursos_disponibles(t_recurso_deadlock* recurso_deadlock)
     {
+        bool es_el_recurso_deadlock(void* arg)
+        {
+            t_recurso_deadlock* elemento = (t_recurso_deadlock*) arg;
+            return (!strcmp(elemento->nombre, recurso_deadlock->nombre));
+        }
         
-        return recurso_deadlock->instancias <= l
+        return recurso_deadlock->instancias <= list_find(recursos_deadlock_disponibles, es_el_recurso_deadlock);
     }
 
     bool puedo_terminar_el_proceso(t_proceso_deadlock* proceso_deadlock)
     {
-        return recursos_deadlock_disponibles >= procesos_deadlock->solicitudes_actuales;
+        return list_all_satisfy(proceso_deadlock->solicitudes_actuales, alcanzan_los_recursos_disponibles);
+    }
+
+    void liberar_recursos_deadlock(t_recurso_deadlock* recurso_deadlock)
+    {
+        bool es_el_recurso_deadlock(void* arg)
+        {
+            t_recurso_deadlock* elemento = (t_recurso_deadlock*) arg;
+            return (!strcmp(elemento->nombre, recurso_deadlock->nombre));
+        }
+        t_recurso_deadlock* recurso_deadlock_disponible = list_find(recursos_deadlock_disponibles, es_el_recurso_deadlock);
+        recurso_deadlock_disponible->instancias += recurso_deadlock->instancias;
     }
 
     void terminar_proceso_si_se_puede(t_proceso_deadlock* proceso_deadlock)
     {
-
+        if(puedo_terminar_el_proceso(proceso_deadlock))
+        {
+            list_iterate(proceso_deadlock->recursos_asignados, liberar_recursos_deadlock);
+            list_remove_and_destroy_element(procesos_deadlock, proceso_deadlock, free);
+        }
     }
 
     //Elimino procesos que no tengan recursos asignados
     list_remove_and_destroy_all_by_condition(procesos_deadlock, no_tiene_recursos, free);
     
     //Me fijo cual puedo terminar y simulo que lo termino (un for, hasta que no quede ninguno o no cambie nada), sumando los recursos a los disponibles
-    list_iterate(procesos_deadlock, terminar_proceso_si_se_puede);
+    uint32_t elementos_actuales = list_size(procesos_deadlock);
+    uint32_t elementos_anteriores = elementos_actuales;
+    do
+    {
+        list_iterate(procesos_deadlock, terminar_proceso_si_se_puede);
+        elementos_anteriores = elementos_actuales;
+        elementos_actuales = list_size(procesos_deadlock);
+    } while(elementos_actuales != 0 && elementos_actuales != elementos_anteriores);
+    
     //Analizo si la lista está vacía
+    if(elementos_actuales == 0)
+    {
+        printf("No hay deadlock\n");
+    }
+    else
+    {
+        printf("Hay deadlock\n");
+    }
 }
