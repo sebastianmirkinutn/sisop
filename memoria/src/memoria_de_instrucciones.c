@@ -232,7 +232,7 @@ void conexion_kernel(void* arg)
         
         case FINALIZAR_PROCESO:
             recv(arg_h->socket_kernel, &pid, sizeof(uint32_t), MSG_WAITALL);
-            finalizar_proceso(pid);
+            finalizar_proceso(pid, arg_h->socket_swap);
             break; 
 
         case OP_PAGE_FAULT:
@@ -296,17 +296,35 @@ void conexion_kernel(void* arg)
     
 }
 
-void finalizar_proceso(uint32_t pid)
+void finalizar_proceso(uint32_t pid, int socket_swap)
 {
     t_proceso* proceso = buscar_proceso(pid);
     sem_wait(&cantidad_de_procesos);
+    printf("Socket = %i\n", socket_swap);
     void desasignar_paginas(t_pagina* pagina)
     {
+        printf("Libero %i\n", pagina->pagina);
         if(pagina->presencia == 1)
         {
             bitarray_clean_bit(frame_bitarray, pagina->frame);
         }
+        send(socket_swap, &(pagina->posicion_en_swap), sizeof(uint32_t), NULL);
         free(pagina);
     }
+    //void* obtener_bloques_swap(t_pagina* pagina)
+    //{
+    //    return pagina->posicion_en_swap;
+    //}
+    //void enviar_bloques(void* arg)
+    //{
+    //    send(socket_filesystem, arg, sizeof(uint32_t), NULL);
+    //}
+    //t_list* bloques_en_swap = list_map(proceso->tabla_de_paginas, obtener_bloques_swap);
+    
+    enviar_operacion(socket_swap, LIBERAR_BLOQUES_SWAP);
+    send(socket_swap, &(proceso->tabla_de_paginas->elements_count), sizeof(proceso->tabla_de_paginas->elements_count), NULL);
     list_iterate(proceso->tabla_de_paginas, desasignar_paginas);
+
+    //list_iterate(bloques_en_swap, enviar_bloques);
+    //list_destroy_and_destroy_elements(bloques_en_swap, free);
 }

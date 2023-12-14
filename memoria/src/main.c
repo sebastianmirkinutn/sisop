@@ -68,6 +68,7 @@ int main(int argc, char* argv[]){
     t_args_hilo args_conexion_kernel;
     args_conexion_kernel.socket_kernel = socket_kernel;
     args_conexion_kernel.socket_swap = socket_swap;
+    args_conexion_kernel.socket_filesystem = socket_filesystem;
     pthread_t hilo_conexion_kernel;
     log_info(logger, "Declaré el hilo.");
     log_info(logger, "socket: %i", args_conexion_kernel.socket_kernel);

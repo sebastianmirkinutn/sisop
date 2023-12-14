@@ -13,9 +13,11 @@ void conexion_memoria(void* arg)
     uint32_t cantidad_de_bloques;
     uint32_t nro_bloque;
     void* bloque_swap;
+    t_list* bloques;
     while(1)
     {
         op_code codigo = recibir_operacion(arg_h->socket_swap);
+        printf("Codigo = %i", codigo);
         switch (codigo)
         {
             case RESERVAR_BLOQUES_SWAP:
@@ -31,6 +33,7 @@ void conexion_memoria(void* arg)
                         send(arg_h->socket_swap, elemento, sizeof(uint32_t), NULL);
                         printf("Envío: %i\n", *elemento);
                     }
+                    printf("Salió del for\n");
                 }
                 //enviar los bloques
                 break;
@@ -53,12 +56,23 @@ void conexion_memoria(void* arg)
                 break;
 
 	        case LIBERAR_BLOQUES_SWAP:
-                recv(arg_h->socket_swap, &nro_bloque, sizeof(uint32_t), MSG_WAITALL);
+                printf("LIBERAR_BLOQUES_SWAP\n");
+                recv(arg_h->socket_swap, &cantidad_de_bloques, sizeof(uint32_t), MSG_WAITALL);
+                printf("Necesito liberar %i bloques\n", cantidad_de_bloques);
+                for(int i = 0; i < cantidad_de_bloques; i++)
+                    {
+                        uint32_t elemento;
+                        recv(arg_h->socket_swap, &elemento, sizeof(uint32_t), MSG_WAITALL);
+                        printf("Libero: %i\n", elemento);
+                        bitarray_clean_bit(swap_bitarray, elemento);
+                    }
 
                 enviar_respuesta(arg_h->socket_swap, OK);
                 break;
 
         default:
+
+            log_error(logger, "Código inválido");
             //list_destroy_and_destroy_elements(lista_de_bloques_swap, free);
             //liberar_conexion(arg_h->socket_swap);
             return;
