@@ -30,5 +30,6 @@ typedef struct
     t_list* solicitudes_actuales; 
 }t_proceso_deadlock;
 
+void deteccion_de_deadlock();
 
 #endif

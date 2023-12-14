@@ -13,6 +13,8 @@
 #include <threads/thread_parameters.h>
 #include <pthread.h>
 
+#include "deteccion_de_deadlock.h"
+
 t_recurso* buscar_recurso(char* recurso_buscado);
 void desbloquear_procesos(char* recurso_buscado);
 void wait_recurso(t_log* logger, char* recurso_buscado, int conexion_cpu_dispatch);

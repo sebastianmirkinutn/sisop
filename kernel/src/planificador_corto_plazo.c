@@ -31,6 +31,7 @@ void planificador_rr(void* arg)
     {
         sem_wait(&procesos_en_ready);
         sem_wait(&planificacion_corto_plazo);
+        sem_post(&planificacion_corto_plazo);
         //log_info(logger,"Hice wait del gdmp");
         sem_wait(&mutex_cola_ready);
         //log_info(logger,"Hice wait de la cola de new: %i",cola_new);
@@ -53,7 +54,6 @@ void planificador_rr(void* arg)
         motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
         evaluar_motivo_desalojo(logger, motivo, arg);
         
-        sem_post(&planificacion_corto_plazo);
     }
 }
 
@@ -66,6 +66,7 @@ void planificador_fifo(void* arg)
     {
         sem_wait(&procesos_en_ready);
         sem_wait(&planificacion_corto_plazo);
+        sem_post(&planificacion_corto_plazo);
         log_info(logger,"Hice wait del gdmp");
         sem_wait(&mutex_cola_ready);
         //log_info(logger,"Hice wait de la cola de new: %i",cola_new);
@@ -87,7 +88,6 @@ void planificador_fifo(void* arg)
         motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
         evaluar_motivo_desalojo(logger, motivo, arg);
         
-        sem_post(&planificacion_corto_plazo);
     }
 }
 
@@ -101,6 +101,7 @@ void planificador_prioridades(void* arg)
     {
         sem_wait(&procesos_en_ready);
         sem_wait(&planificacion_corto_plazo);
+        sem_post(&planificacion_corto_plazo);
         //log_info(logger,"Hice wait del gdmp");
         sem_wait(&mutex_cola_ready);
         //log_info(logger,"Hice wait de la cola de new: %i",cola_new);
@@ -120,7 +121,6 @@ void planificador_prioridades(void* arg)
         motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
         evaluar_motivo_desalojo(logger, motivo, arg);
 
-        sem_post(&planificacion_corto_plazo);
     }
 }
 

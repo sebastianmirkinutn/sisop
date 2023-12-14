@@ -8,6 +8,7 @@ sem_t procesos_en_new;
 sem_t procesos_en_exit;
 sem_t procesos_en_ready;
 sem_t planificacion_largo_plazo;
+sem_t planificacion_largo_plazo_exit;
 sem_t planificacion_corto_plazo;
 sem_t mutex_file_management;
 sem_t mutex_tabla_global_de_archivos;
@@ -94,7 +95,11 @@ void iniciar_planificacion()
     if(!planificacion_iniciada)
     {
         sem_post(&planificacion_largo_plazo);
+        printf("OK!\n");
+        sem_post(&planificacion_largo_plazo_exit);
+        printf("OK!\n");
         sem_post(&planificacion_corto_plazo);
+        printf("OK!\n");
         planificacion_iniciada = 1;
         log_info(logger, "Se inició");
     }
@@ -105,7 +110,11 @@ void detener_planificacion()
     if(planificacion_iniciada)
     {
         sem_wait(&planificacion_largo_plazo);
+        printf("OK!\n");
+        sem_wait(&planificacion_largo_plazo_exit);
+        printf("OK!\n");
         sem_wait(&planificacion_corto_plazo);
+        printf("OK!\n");
         planificacion_iniciada = 0;
     }
     log_info(logger, "Se detuvo");
@@ -142,6 +151,7 @@ int main(int argc, char* argv[])
     sem_init(&procesos_en_exit, 0, 0);
     sem_init(&grado_de_multiprogramacion, 0, atoi(grado_max_de_multiprogramacion));
     sem_init(&planificacion_largo_plazo, 0, 0);
+    sem_init(&planificacion_largo_plazo_exit, 0, 0);
     sem_init(&planificacion_corto_plazo, 0, 0);
     sem_init(&mutex_file_management, 0, 1);
     sem_init(&mutex_tabla_global_de_archivos, 0, 1);

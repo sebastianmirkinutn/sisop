@@ -8,6 +8,7 @@ extern sem_t procesos_en_new;
 extern sem_t procesos_en_ready;
 extern sem_t procesos_en_exit;
 extern sem_t planificacion_largo_plazo;
+extern sem_t planificacion_largo_plazo_exit;
 extern sem_t planificacion_corto_plazo;
 extern sem_t start_interrupts;
 extern sem_t mutex_flag_p_finished;
@@ -29,6 +30,7 @@ void planificador_largo_plazo(void* arg)
     {
         sem_wait(&procesos_en_new);
         sem_wait(&planificacion_largo_plazo);
+        sem_post(&planificacion_largo_plazo);
         sem_wait(&grado_de_multiprogramacion);
         log_info(logger,"Hice wait del gdmp");
         sem_wait(&mutex_cola_new);
@@ -47,7 +49,6 @@ void planificador_largo_plazo(void* arg)
         enviar_mensaje(pcb->archivo_de_pseudocodigo, arg_h->socket_memoria); 
         send(arg_h->socket_memoria, &(pcb->size), sizeof(uint32_t), 0);    
         sem_post(&procesos_en_ready);
-        sem_post(&planificacion_largo_plazo);
     }
 }
 
@@ -58,7 +59,8 @@ void finalizar_procesos_en_exit(void* arg)
     while(1)
     {
         sem_wait(&procesos_en_exit);
-        sem_wait(&planificacion_largo_plazo);
+        sem_wait(&planificacion_largo_plazo_exit);
+        sem_post(&planificacion_largo_plazo_exit);
         log_info(logger,"Hice wait del gdmp");
         sem_wait(&mutex_cola_exit);
         log_info(logger,"Hice wait de la cola de exit: %i", cola_exit);
@@ -67,7 +69,6 @@ void finalizar_procesos_en_exit(void* arg)
         finalizar_proceso_en_exit(pcb->pid, arg_h->socket_dispatch, arg_h->socket_memoria, pcb, arg);
         sem_post(&grado_de_multiprogramacion);
 
-        sem_post(&planificacion_largo_plazo);
     }
 }
 
