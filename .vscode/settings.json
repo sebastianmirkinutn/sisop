@@ -45,6 +45,7 @@
         "bloques.h": "c",
         "cmath": "c",
         "ctype.h": "c",
-        "page_fault.h": "c"
+        "page_fault.h": "c",
+        "deteccion_de_deadlock.h": "c"
     }
 }
