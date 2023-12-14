@@ -6,6 +6,7 @@ extern sem_t mutex_cola_ready;
 extern sem_t mutex_cola_exit;
 extern sem_t procesos_en_new;
 extern sem_t procesos_en_ready;
+extern sem_t procesos_en_exit;
 extern sem_t planificacion_largo_plazo;
 extern sem_t planificacion_corto_plazo;
 extern sem_t mutex_file_management;
@@ -255,9 +256,22 @@ void file_write(void *arg)
         return (!strcmp(((t_archivo_local *)arg)->archivo->nombre, arg_h->nombre_archivo));
     }
     printf("Direccion = %i:%i\n", arg_h->direccion->frame, arg_h->direccion->offset);
+    t_archivo_local *archivo = list_find(arg_h->execute->tabla_de_archivos_abiertos, es_el_archivo_local);
+
+    if(archivo->archivo->lock == READ)
+    {
+        sem_wait(&mutex_cola_exit);
+        queue_push(cola_exit, arg_h->execute);
+        log_info(logger, "Fin de proceso %i motivo INVALID WRITE", arg_h->execute->pid);
+        sem_post(&mutex_cola_exit);
+        sem_post(&procesos_en_exit);
+        liberar_conexion(arg_h->socket_filesystem);
+        liberar_parametros(arg_h);
+        return;
+    }
+
     enviar_operacion(arg_h->socket_filesystem, ESCRIBIR_ARCHIVO);
     enviar_mensaje(arg_h->nombre_archivo, arg_h->socket_filesystem);
-    t_archivo_local *archivo = list_find(arg_h->execute->tabla_de_archivos_abiertos, es_el_archivo_local);
     send(arg_h->socket_filesystem, &(archivo->puntero), sizeof(uint32_t), 0);
     enviar_direccion(arg_h->socket_filesystem, arg_h->direccion); // SERIALIZAR (OPERACION, NOMBRE, PUNTERO, DIRECCION)
     respuesta = recibir_respuesta(arg_h->socket_filesystem);
