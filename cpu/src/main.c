@@ -229,13 +229,15 @@ int main(int argc, char* argv[]){
         {
             /*FETCH*/
             op_code codigo = FETCH_INSTRUCCION;
-            printf("pid= %i - ip= %i\n", pid, registros->PC);
+            //printf("pid= %i - ip= %i\n", pid, registros->PC);
+            log_info(logger, "PID: %i - FETCH - Program Counter: %i", pid, registros->PC);
             send(conexion_memoria, &codigo, sizeof(op_code), 0);
             send(conexion_memoria, &pid, sizeof(uint32_t), 0);
             send(conexion_memoria, &(registros->PC), sizeof(uint32_t), 0) ;  //SERIALIZAR
-            log_info(logger, "Envié el pedido");     
+            //log_info(logger, "Envié el pedido");     
             char* instruccion = recibir_mensaje(conexion_memoria);
-            log_info(logger, "%s", instruccion);
+            //log_info(logger, "%s", instruccion);
+            
 
             /*DECODE*/
             char* parametros[4];
@@ -250,17 +252,19 @@ int main(int argc, char* argv[]){
                     i++;
                 }
             }
-            log_info(logger, "%s", parametros[0]);
-            log_info(logger, "%s", parametros[1]);
-            log_info(logger, "%s", parametros[2]);
-            log_info(logger, "%s %s %s", parametros[0], parametros[1], parametros[2]);
+            //log_info(logger, "%s", parametros[0]);
+            //log_info(logger, "%s", parametros[1]);
+            //log_info(logger, "%s", parametros[2]);
+            //log_info(logger, "%s %s %s", parametros[0], parametros[1], parametros[2]);
 
             registros->PC++;
             /*EXECUTE*/
+            
             /*Uso ifs anidados en lugar de pasar a enum y usar switch porque, independientemente de que
             usemos un enum, vamos a tener que hacer strcmp en ifs anidados.*/
             if(!strcmp(parametros[0], "SET"))
             {
+                log_info(logger, "PID: %i - Ejecutando: %s - %s %s", pid, parametros[0], parametros[1], parametros[2]);
                 if(!strcmp(parametros[1], "AX"))
                 {
                     registros->AX = atoi(parametros[2]);
@@ -281,14 +285,17 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "SUM"))
             {
+                log_info(logger, "PID: %i - Ejecutando: %s - %s %s", pid, parametros[0], parametros[1], parametros[2]);
                 sum(parametros[1], parametros[2]);
             }
             else if(!strcmp(parametros[0], "SUB"))
             {
+                log_info(logger, "PID: %i - Ejecutando: %s - %s %s", pid, parametros[0], parametros[1], parametros[2]);
                 sub(parametros[1], parametros[2]);
             }
             else if(!strcmp(parametros[0], "JNZ"))
             {
+                log_info(logger, "PID: %i - Ejecutando: %s - %s %s", pid, parametros[0], parametros[1], parametros[2]);
                 uint32_t valor = valor_de_registro(parametros[1]);
 
                 if(valor != 0)
@@ -298,10 +305,12 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "SLEEP"))
             {
+                log_info(logger, "PID: %i - Ejecutando: %s - %s", pid, parametros[0], parametros[1]);
                 sleep(atoi(parametros[1]) / 1000);
             }
             else if(!strcmp(parametros[0], "WAIT"))
-            {    
+            {
+            log_info(logger, "PID: %i - Ejecutando: %s - %s", pid, parametros[0], parametros[1]);
             execute = 0;
             enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
             enviar_motivo_desalojo(socket_kernel_dispatch, WAIT);
@@ -309,6 +318,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "SIGNAL"))
             {
+            log_info(logger, "PID: %i - Ejecutando: %s - %s", pid, parametros[0], parametros[1]);
             execute = 0;
             enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
             enviar_motivo_desalojo(socket_kernel_dispatch, SIGNAL);
@@ -316,6 +326,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "MOV_IN"))
             {
+                log_info(logger, "PID: %i - Ejecutando: %s - %s %s", pid, parametros[0], parametros[1], parametros[2]);
                 t_direccion_fisica* direccion = traducir_direccion(parametros[2], tam_pagina, conexion_memoria, pid);
 
                 if(!atender_page_fault(pid, floor(atof(parametros[2])/tam_pagina), direccion->frame, socket_kernel_dispatch))
@@ -331,6 +342,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "MOV_OUT"))
             {
+                log_info(logger, "PID: %i - Ejecutando: %s - %s %s", pid, parametros[0], parametros[1], parametros[2]);
                 t_direccion_fisica* direccion = traducir_direccion(parametros[1], tam_pagina, conexion_memoria, pid);
                 
                 if(!atender_page_fault(pid, floor(atof(parametros[1])/tam_pagina), direccion->frame, socket_kernel_dispatch))
@@ -344,6 +356,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "F_OPEN"))
             {
+                log_info(logger, "PID: %i - Ejecutando: %s - %s %s", pid, parametros[0], parametros[1], parametros[2]);
                 execute = 0;
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
                 enviar_motivo_desalojo(socket_kernel_dispatch, F_OPEN);
@@ -352,6 +365,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "F_CLOSE"))
             {
+                log_info(logger, "PID: %i - Ejecutando: %s - %s", pid, parametros[0], parametros[1]);
                 execute = 0;
                 log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", registros->AX, registros->BX, registros->CX, registros->DX, registros->PC);
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
@@ -361,6 +375,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "F_SEEK"))
             {
+                log_info(logger, "PID: %i - Ejecutando: %s - %s %s", pid, parametros[0], parametros[1], parametros[2]);
                 execute = 0;
                 puntero = atoi(parametros[2]);
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
@@ -371,6 +386,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "F_READ"))
             {
+                log_info(logger, "PID: %i - Ejecutando: %s - %s %s", pid, parametros[0], parametros[1], parametros[2]);
                 execute = 0;
                 t_direccion_fisica* direccion_fisica = traducir_direccion(parametros[2], tam_pagina, conexion_memoria, pid); //revisar
                 
@@ -384,6 +400,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "F_WRITE"))
             {
+                log_info(logger, "PID: %i - Ejecutando: %s - %s %s", pid, parametros[0], parametros[1], parametros[2]);
                 execute = 0;
                 t_direccion_fisica* direccion_fisica = traducir_direccion(parametros[2], tam_pagina, conexion_memoria, pid);
                 
@@ -398,6 +415,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "F_TRUNCATE"))
             {
+                log_info(logger, "PID: %i - Ejecutando: %s - %s %s", pid, parametros[0], parametros[1], parametros[2]);
                 execute = 0;
                 size = atoi(parametros[2]);
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
@@ -407,6 +425,7 @@ int main(int argc, char* argv[]){
             }
             else if(!strcmp(parametros[0], "EXIT"))
             {
+                log_info(logger, "PID: %i - Ejecutando: %s", pid, parametros[0]);
                 execute = 0;
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
                 enviar_motivo_desalojo(socket_kernel_dispatch, SUCCESS);

@@ -116,6 +116,7 @@ void file_open(void *arg)
             t_proceso_bloqueado_por_fs *bloqueado = malloc(sizeof(t_proceso_bloqueado_por_fs));
             bloqueado->pcb = arg_h->execute;
             bloqueado->lock = arg_h->lock;
+            bloqueado->pcb->estado = BLOCKED;
             printf("archivo->mutex_cola_blocked = %i\n", temp);
             sem_wait(&(archivo->mutex_cola_blocked));
             queue_push(archivo->cola_blocked, bloqueado);
@@ -392,14 +393,15 @@ void file_close(void *arg)
                     if (proceso_bloqueado != NULL)
                     {
                         archivo->lock = proceso_bloqueado->lock;
-                        arg_h->execute->estado = READY;
+                        proceso_bloqueado->pcb->estado = READY;
                         archivo_local->archivo = archivo;
                         archivo_local->puntero = 0;
 
                         list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
                         sem_wait(&mutex_cola_ready);
                         // queue_push(cola_ready, arg_h->execute);
-                        queue_push(cola_ready, proceso_bloqueado);
+                        queue_push(cola_ready, proceso_bloqueado->pcb);
+                        printf("EL PROCESO QUE DESBLOQUEO QUE TENÍA LOCK DE ESCRITURA ES EL %i\n", proceso_bloqueado->pcb->pid);
                         sem_post(&mutex_cola_ready);
                         sem_post(&procesos_en_ready);
                         archivo->contador_aperturas++;
