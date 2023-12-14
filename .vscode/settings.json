@@ -46,6 +46,7 @@
         "cmath": "c",
         "ctype.h": "c",
         "page_fault.h": "c",
-        "deteccion_de_deadlock.h": "c"
+        "deteccion_de_deadlock.h": "c",
+        "archivos.h": "c"
     }
 }
