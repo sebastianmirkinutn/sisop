@@ -29,6 +29,6 @@ int32_t buscar_frame_libre();
 void* leer_pagina(uint32_t nro_frame);
 void escribir_pagina(uint32_t nro_frame, void* a_escribir);
 void swap_in(int socket_swap, t_pagina* pagina, uint32_t frame, t_proceso* proceso);
-void swap_out(int socket_swap, t_pagina* pagina, uint32_t frame, void* a_escribir,t_proceso* proceso);
+void swap_out(int socket_swap, t_pagina* pagina, uint32_t frame, t_proceso* proceso);
 
 #endif

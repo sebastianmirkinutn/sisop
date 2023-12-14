@@ -232,6 +232,7 @@ void conexion_kernel(void* arg)
         
         case FINALIZAR_PROCESO:
             recv(arg_h->socket_kernel, &pid, sizeof(uint32_t), MSG_WAITALL);
+            //enviar_operacion(arg_h->socket_swap, LIBERAR_BLOQUES_SWAP);
             finalizar_proceso(pid, arg_h->socket_swap);
             break; 
 
@@ -261,8 +262,7 @@ void conexion_kernel(void* arg)
                 printf("pagina_a_sacar->pagina->modificado = %i\n", pagina_a_sacar->pagina->modificado);
                 if(pagina_a_sacar->pagina->modificado == 1)
                 {
-                    pagina = leer_pagina(pagina_a_sacar->pagina->frame);
-                    swap_out(arg_h->socket_swap, pagina_a_sacar, pagina_a_sacar->pagina->frame, pagina, pagina_a_sacar->proceso);
+                    swap_out(arg_h->socket_swap, pagina_a_sacar->pagina, pagina_a_sacar->pagina->frame, pagina_a_sacar->proceso);
                     pagina_a_sacar->pagina->modificado = 0;
                     pagina_a_sacar->pagina->presencia = 0;
                     swap_in(arg_h->socket_swap, pagina_a_agregar, pagina_a_sacar->pagina->frame, proceso_a_agregar);
@@ -303,7 +303,7 @@ void finalizar_proceso(uint32_t pid, int socket_swap)
     printf("Socket = %i\n", socket_swap);
     void desasignar_paginas(t_pagina* pagina)
     {
-        printf("Libero %i\n", pagina->pagina);
+        printf("Libero %i (p = %i)\n", pagina->pagina, pagina->presencia);
         if(pagina->presencia == 1)
         {
             bitarray_clean_bit(frame_bitarray, pagina->frame);
@@ -311,15 +311,15 @@ void finalizar_proceso(uint32_t pid, int socket_swap)
         send(socket_swap, &(pagina->posicion_en_swap), sizeof(uint32_t), NULL);
         free(pagina);
     }
-    //void* obtener_bloques_swap(t_pagina* pagina)
-    //{
-    //    return pagina->posicion_en_swap;
-    //}
+    void* obtener_bloques_swap(t_pagina* pagina)
+    {
+        return pagina->posicion_en_swap;
+    }
     //void enviar_bloques(void* arg)
     //{
-    //    send(socket_filesystem, arg, sizeof(uint32_t), NULL);
+    //    send(socket_sw, arg, sizeof(uint32_t), NULL);
     //}
-    //t_list* bloques_en_swap = list_map(proceso->tabla_de_paginas, obtener_bloques_swap);
+    t_list* bloques_en_swap = list_map(proceso->tabla_de_paginas, obtener_bloques_swap);
     
     enviar_operacion(socket_swap, LIBERAR_BLOQUES_SWAP);
     send(socket_swap, &(proceso->tabla_de_paginas->elements_count), sizeof(proceso->tabla_de_paginas->elements_count), NULL);

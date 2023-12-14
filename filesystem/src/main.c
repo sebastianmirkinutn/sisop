@@ -5,6 +5,7 @@ uint32_t cant_bloques_swap;
 uint32_t tam_bloque;
 uint32_t retardo_acceso_bloque;
 uint32_t retardo_acceso_fat;
+uint32_t tam_pagina;
 
 t_list* archivos_abiertos; //Si bien la tabla global de archivos abiertos está en kernel, necesitamos guardar una lista de fcbs.
 t_fat* fat;
@@ -184,6 +185,7 @@ int main(int argc, char* argv[]) {
     int socket_servidor = iniciar_servidor(logger, puerto_escucha);
 
 	int socket_swap = esperar_cliente(logger, socket_servidor);
+	recv(socket_swap, &tam_pagina, sizeof(uint32_t), MSG_WAITALL);
 
 	t_args_hilo* args_hilo = malloc(sizeof(t_args_hilo));
 	args_hilo->socket_memoria = socket_memoria;

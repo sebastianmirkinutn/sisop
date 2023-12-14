@@ -62,6 +62,7 @@ int main(int argc, char* argv[]){
         log_info(logger,"Se conectó kernel");
     }
     socket_swap = crear_conexion(logger, ip_filesystem, puerto_filesystem);
+    send(socket_swap, &tam_pagina, sizeof(uint32_t), NULL);
     sem_init(&mutex_lista_procesos, 0, 1);
     sem_init(&cantidad_de_procesos, 0, 0);
     procesos_en_memoria = list_create();

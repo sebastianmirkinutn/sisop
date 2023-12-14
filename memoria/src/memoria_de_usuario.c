@@ -72,7 +72,7 @@ void asignar_memoria(uint32_t pid, uint32_t size, t_list* bloques_swap)
     {
         bloque_swap = list_get(bloques_swap, nro_pagina);
         agregar_pagina(pid, nro_pagina, bloque_swap);
-        printf("Se asigna el frame %i al proceso %i para la página %i\n", pid, nro_pagina);
+        printf("Se asigna el frame ? al proceso %i para la página %i - BLOQUE SWAP = %i\n", pid, nro_pagina, bloque_swap);
     }
 }
 

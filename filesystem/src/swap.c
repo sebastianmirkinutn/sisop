@@ -5,6 +5,7 @@ extern uint32_t cant_bloques_swap;
 extern uint32_t tam_bloque;
 extern t_bitarray* swap_bitarray;
 extern t_log* logger;
+extern uint32_t tam_pagina;
 
 void conexion_memoria(void* arg)
 {
@@ -21,6 +22,7 @@ void conexion_memoria(void* arg)
         switch (codigo)
         {
             case RESERVAR_BLOQUES_SWAP:
+            printf("RESERVAR_BLOQUES_SWAP\n");
                 recv(arg_h->socket_swap, &cantidad_de_bloques, sizeof(uint32_t), MSG_WAITALL);
                 {
                     log_info(logger, "Pide reservar %i bloques", cantidad_de_bloques);
@@ -39,17 +41,24 @@ void conexion_memoria(void* arg)
                 break;
 
 	        case ESCRIBIR_SWAP:
+                printf("ESCRIBIR_SWAP\n");
+                printf("tam_pagina = %i\n", tam_pagina);
                 recv(arg_h->socket_swap, &nro_bloque, sizeof(uint32_t), MSG_WAITALL);
-                recv(arg_h->socket_swap, bloque_swap, tam_bloque, MSG_WAITALL);
+                printf("bloque %i\n", nro_bloque);
+                recv(arg_h->socket_swap, bloque_swap, tam_pagina, MSG_WAITALL);
+                printf("bloque %i\n", nro_bloque);
                 escribir_bloque_swap(nro_bloque, bloque_swap);
+                printf("Ya lo escribió\n");
                 enviar_respuesta(arg_h->socket_swap, OK);
+                printf("Termino de ESCRIBIR_SWAP\n");
                 
                 break;
 
 	        case LEER_SWAP:
+            printf("LEER_SWAP\n");
                 recv(arg_h->socket_swap, &nro_bloque, sizeof(uint32_t), MSG_WAITALL);
                 bloque_swap = leer_bloque_swap(nro_bloque);
-                send(arg_h->socket_swap, bloque_swap, tam_bloque, NULL);
+                send(arg_h->socket_swap, bloque_swap, tam_pagina, NULL);
    
                 //Enviar bloque
 
@@ -122,14 +131,14 @@ uint32_t buscar_bloque_swap_libre()
 
 void* leer_bloque_swap(uint32_t nro_bloque)
 {
-    void* bloque = malloc(tam_bloque);
-    fseek(bloques, nro_bloque * tam_bloque, SEEK_SET);
-    fread(bloque, tam_bloque, 1, bloques);
+    void* bloque = malloc(tam_pagina);
+    fseek(bloques, nro_bloque * tam_pagina, SEEK_SET);
+    fread(bloque, tam_pagina, 1, bloques);
     return bloque;
 }
 
 void escribir_bloque_swap(uint32_t nro_bloque, void* contenido)
 {
-    fseek(bloques, nro_bloque * tam_bloque, SEEK_SET);
-    fwrite(contenido, tam_bloque, 1, bloques);
+    fseek(bloques, nro_bloque * tam_pagina, SEEK_SET);
+    fwrite(contenido, tam_pagina, 1, bloques);
 }

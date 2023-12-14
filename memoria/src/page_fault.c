@@ -159,11 +159,14 @@ void swap_in(int socket_swap, t_pagina* pagina, uint32_t frame, t_proceso* proce
     log_info(logger, "SWAP IN -  PID: %i - Marco: %i - Page In: %i-%i", proceso->pid, frame, proceso->pid, pagina->pagina);
 }
 
-void swap_out(int socket_swap, t_pagina* pagina, uint32_t frame, void* a_escribir,t_proceso* proceso)
+void swap_out(int socket_swap, t_pagina* pagina, uint32_t frame,t_proceso* proceso)
 {
     t_response respuesta;
+    void* a_escribir = leer_pagina(pagina->frame);
     enviar_operacion(socket_swap, ESCRIBIR_SWAP);
+    printf("pagina->posicion_en_swap = %i\n", pagina->posicion_en_swap);
     send(socket_swap, &(pagina->posicion_en_swap), sizeof(uint32_t), NULL);
+    printf("Mandé la página (ptr = %i)\n", a_escribir);
     send(socket_swap, a_escribir, tam_pagina, NULL);
     respuesta = recibir_respuesta(socket_swap);
     log_info(logger, "SWAP OUT -  PID: %i - Marco: %i - Page Out: %i-%i", proceso->pid, frame, proceso->pid, pagina->pagina);
