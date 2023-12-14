@@ -18,7 +18,10 @@ t_args_hilo_archivos* crear_parametros(t_args_hilo* src, char* nombre_archivo, t
 
 void liberar_parametros(t_args_hilo_archivos* arg)
 {
-    free(arg->nombre_archivo);
+    if(arg->nombre_archivo != NULL)
+    {
+        free(arg->nombre_archivo);
+    }
     //free(arg->direccion);
     free(arg);
 }

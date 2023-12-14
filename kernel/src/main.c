@@ -241,8 +241,7 @@ int main(int argc, char* argv[])
             
 
             //send a memoria para liberar espacio
-            finalizar_proceso (atoi(c_argv[1]), conexion_cpu_dispatch, conexion_memoria);
-            enviar_operacion(conexion_memoria, FINALIZAR_PROCESO);
+            finalizar_proceso (atoi(c_argv[1]), conexion_cpu_dispatch, conexion_memoria, &args_hilo);
             //send(arg_h->socket_memoria, &(pcb->pid), sizeof(int), 0); //mandamos el pid 
             //liberar_recursos_archivos(pcb);
             
@@ -398,19 +397,20 @@ void liberar_recursos_archivos(t_pcb* pcb, int socket_filesystem)
     list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
 }
 */
-void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch, int socket_memoria)
+void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch, int socket_memoria, void* arg_h)
 {
     t_pcb* pcb;
     
     void hacer_f_close(void* arg)
     {
         pthread_t h_file_close_deallocate;
-        t_args_hilo_archivos* argumentos_file_management = malloc(sizeof(argumentos_file_management));
+        t_args_hilo_archivos* argumentos_file_management = crear_parametros(arg_h, ((t_archivo_local*)arg)->archivo->nombre, logger);
         //argumentos_file_management->socket_filesystem = socket_filesystem;
         argumentos_file_management->execute = pcb;
-        argumentos_file_management->nombre_archivo = ((t_archivo_local*)arg)->archivo->nombre;
-        pthread_create(&h_file_close_deallocate, NULL, &file_close, (void*)argumentos_file_management);
+        printf("pcb->pid =  %i\n", argumentos_file_management->execute->pid);
+        pthread_create(&h_file_close_deallocate, NULL, &cerrar_archivo, (void*)argumentos_file_management);
         pthread_detach(h_file_close_deallocate);
+        //cerrar_archivo(argumentos_file_management);
     }
     void hacer_signal(void* arg)
     {
@@ -434,14 +434,15 @@ void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch, int socket_memori
     if(execute->pid == pid)
     {
         pcb = execute;
-        list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
         list_iterate(pcb->recursos_asignados, hacer_signal);
+        list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
     }
     else if(cola != NULL)
     {
         pcb = buscar_proceso_segun_pid(pid, cola);
         //list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
         list_iterate(pcb->recursos_asignados, hacer_signal);
+        list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
         list_remove_element(cola->elements, pcb);
     }
     enviar_operacion(socket_memoria, FINALIZAR_PROCESO);

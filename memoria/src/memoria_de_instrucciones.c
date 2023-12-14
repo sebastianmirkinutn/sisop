@@ -185,6 +185,7 @@ void conexion_kernel(void* arg)
     t_pagina* pagina_a_agregar;
     t_algoritmo_response* pagina_a_sacar;
     t_proceso* proceso_a_agregar;
+    uint32_t pid, size;
     bool es_la_pagina(void* arg)
     {
         t_pagina* pagina = (t_pagina*)arg;
@@ -199,7 +200,6 @@ void conexion_kernel(void* arg)
         {
         case INICIAR_PROCESO:
             bloques_swap = list_create();
-            uint32_t pid, size;
             recv(arg_h->socket_kernel, &pid, sizeof(uint32_t), MSG_WAITALL);
             t_proceso* proceso = crear_proceso(pid);
             //log_info(logger_hilo,"pid: %i", pid);
@@ -233,6 +233,7 @@ void conexion_kernel(void* arg)
         case FINALIZAR_PROCESO:
             recv(arg_h->socket_kernel, &pid, sizeof(uint32_t), MSG_WAITALL);
             //enviar_operacion(arg_h->socket_swap, LIBERAR_BLOQUES_SWAP);
+            printf("Kernel me pid liberar el proceso %i\n", pid);
             finalizar_proceso(pid, arg_h->socket_swap);
             break; 
 
@@ -319,7 +320,7 @@ void finalizar_proceso(uint32_t pid, int socket_swap)
     //{
     //    send(socket_sw, arg, sizeof(uint32_t), NULL);
     //}
-    t_list* bloques_en_swap = list_map(proceso->tabla_de_paginas, obtener_bloques_swap);
+    //t_list* bloques_en_swap = list_map(proceso->tabla_de_paginas, obtener_bloques_swap);
     
     enviar_operacion(socket_swap, LIBERAR_BLOQUES_SWAP);
     send(socket_swap, &(proceso->tabla_de_paginas->elements_count), sizeof(proceso->tabla_de_paginas->elements_count), NULL);

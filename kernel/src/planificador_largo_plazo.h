@@ -17,6 +17,6 @@
 
 void planificador_largo_plazo(void* arg);
 void finalizar_procesos_en_exit(void* arg);
-void finalizar_proceso_en_exit(uint32_t pid, int socket_cpu_dispatch, int socket_memoria, t_pcb* pcb);
+void finalizar_proceso_en_exit(uint32_t pid, int socket_cpu_dispatch, int socket_memoria, t_pcb* pcb, void* arg_h);
 
 #endif 

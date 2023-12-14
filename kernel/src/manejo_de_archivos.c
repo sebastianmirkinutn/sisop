@@ -559,7 +559,7 @@ void file_seek(void *arg)
 
 
 /*FUNCIONES PARA FINALIZAR_PROCESO*/
-void cerrar_archivo(void *arg)
+void cerrar_archivo(void* arg)
 {
     t_args_hilo_archivos *arg_h = (t_args_hilo_archivos *)arg;
     t_archivo *archivo;
@@ -617,11 +617,7 @@ void cerrar_archivo(void *arg)
         list_remove_by_condition(arg_h->execute->tabla_de_archivos_abiertos, es_el_archivo_local);
 
         arg_h->execute->estado = READY;
-        //sem_wait(&mutex_cola_ready);
-        //queue_push(cola_ready, arg_h->execute);
-        //sem_post(&mutex_cola_ready);
-        //sem_post(&procesos_en_ready);
-        log_info(logger, "PID: %i (EL QUE LO PIDIÓ)- Estado Anterior: BLOCKED - Estado Actual: READY", arg_h->execute->pid);
+        
         printf("archivo->cola_blocked->elements->elements_count = %i\n", archivo->cola_blocked->elements->elements_count);
         printf("archivo->locks_lectura->elements_count = %i\n", archivo->locks_lectura->elements_count);
         if (archivo->lock == READ)
@@ -638,14 +634,15 @@ void cerrar_archivo(void *arg)
                     if (proceso_bloqueado != NULL)
                     {
                         archivo->lock = proceso_bloqueado->lock;
-                        arg_h->execute->estado = READY;
+                        proceso_bloqueado->pcb->estado = READY;
                         archivo_local->archivo = archivo;
                         archivo_local->puntero = 0;
 
                         list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
                         sem_wait(&mutex_cola_ready);
                         // queue_push(cola_ready, arg_h->execute);
-                        queue_push(cola_ready, proceso_bloqueado);
+                        queue_push(cola_ready, proceso_bloqueado->pcb);
+                        printf("EL PROCESO QUE DESBLOQUEO QUE TENÍA LOCK DE ESCRITURA ES EL %i\n", proceso_bloqueado->pcb->pid);
                         sem_post(&mutex_cola_ready);
                         sem_post(&procesos_en_ready);
                         archivo->contador_aperturas++;
@@ -718,12 +715,12 @@ void cerrar_archivo(void *arg)
                     {
                         archivo_local->archivo = archivo;
                         archivo_local->puntero = 0;
-                        //sem_wait(&mutex_cola_ready);
-                        //// queue_push(cola_ready, arg_h->execute);
-                        //queue_push(cola_ready, proceso_bloqueado->pcb);
-                        //sem_post(&procesos_en_ready);
-                        //sem_post(&mutex_cola_ready);
-                        //list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
+                        sem_wait(&mutex_cola_ready);
+                        // queue_push(cola_ready, arg_h->execute);
+                        queue_push(cola_ready, proceso_bloqueado->pcb);
+                        sem_post(&procesos_en_ready);
+                        sem_post(&mutex_cola_ready);
+                        list_add(proceso_bloqueado->pcb->tabla_de_archivos_abiertos, archivo_local);
                         printf("TERMINA EL HILO PORQUE NO HAY NADA\n");
                         liberar_parametros(arg_h);
                         liberar_conexion(arg_h->socket_filesystem);

@@ -61,28 +61,28 @@ void finalizar_procesos_en_exit(void* arg)
         sem_wait(&planificacion_largo_plazo);
         log_info(logger,"Hice wait del gdmp");
         sem_wait(&mutex_cola_exit);
-        log_info(logger,"Hice wait de la cola de new: %i",cola_new);
+        log_info(logger,"Hice wait de la cola de exit: %i", cola_exit);
         t_pcb* pcb = queue_pop(cola_exit);
         sem_post(&mutex_cola_exit);
-        finalizar_proceso_en_exit(pcb->pid, arg_h->socket_dispatch, arg_h->socket_memoria, pcb);
+        finalizar_proceso_en_exit(pcb->pid, arg_h->socket_dispatch, arg_h->socket_memoria, pcb, arg);
         sem_post(&grado_de_multiprogramacion);
 
         sem_post(&planificacion_largo_plazo);
     }
 }
 
-void finalizar_proceso_en_exit(uint32_t pid, int socket_cpu_dispatch, int socket_memoria, t_pcb* pcb)
+void finalizar_proceso_en_exit(uint32_t pid, int socket_cpu_dispatch, int socket_memoria, t_pcb* pcb, void* arg_h)
 {
-    
     void hacer_f_close(void* arg)
     {
         pthread_t h_file_close_deallocate;
-        t_args_hilo_archivos* argumentos_file_management = malloc(sizeof(argumentos_file_management));
+        t_args_hilo_archivos* argumentos_file_management = crear_parametros(arg_h, ((t_archivo_local*)arg)->archivo->nombre, logger);
         //argumentos_file_management->socket_filesystem = socket_filesystem;
         argumentos_file_management->execute = pcb;
-        argumentos_file_management->nombre_archivo = ((t_archivo_local*)arg)->archivo->nombre;
+        printf("pcb->pid =  %i\n", argumentos_file_management->execute->pid);
         pthread_create(&h_file_close_deallocate, NULL, &cerrar_archivo, (void*)argumentos_file_management);
         pthread_detach(h_file_close_deallocate);
+        //cerrar_archivo(argumentos_file_management);
     }
     void hacer_signal(void* arg)
     {
@@ -99,8 +99,13 @@ void finalizar_proceso_en_exit(uint32_t pid, int socket_cpu_dispatch, int socket
     }
 
     list_iterate(pcb->recursos_asignados, hacer_signal);
+    printf("Hice signal\n");
+    printf("pcb->tabla_de_archivos_abierto->elements_count = %i\n", pcb->tabla_de_archivos_abiertos->elements_count);
+    list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
+    printf("Hice f_close\n");
     enviar_operacion(socket_memoria, FINALIZAR_PROCESO);
     send(socket_memoria, &(pcb->pid), sizeof(uint32_t), NULL);
+    printf("Finalizar proceso %i en memoria\n", pcb->pid);
 }
 
 
