@@ -129,6 +129,7 @@ void conexion_filesystem(void* arg)
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     log_info(logger_hilo,"Socket: %i", arg_h->socket_filesystem);
     t_direccion_fisica* direccion;
+    t_pagina* pagina;
     //enviar_mensaje("LISTO_PARA_RECIBIR_PEDIDOS",arg_h->socket_cpu);
     while(1)
     {
@@ -140,6 +141,8 @@ void conexion_filesystem(void* arg)
         case PEDIDO_LECTURA:
             direccion = recibir_direccion(arg_h->socket_filesystem);
             uint32_t lectura = leer_de_memoria(direccion);
+            pagina = buscar_pagina_segun_frame(direccion->frame);
+            pagina->timestamp_uso = time(NULL);
             send(arg_h->socket_filesystem, &lectura, sizeof(uint32_t), NULL);
             break;
 
@@ -147,6 +150,9 @@ void conexion_filesystem(void* arg)
             uint32_t a_escribir;
             direccion = recibir_direccion(arg_h->socket_filesystem);
             recv(arg_h->socket_filesystem, &a_escribir, sizeof(uint32_t), MSG_WAITALL);
+            pagina = buscar_pagina_segun_frame(direccion->frame);
+            pagina->timestamp_uso = time(NULL);
+            pagina->modificado = 1;
             printf("Voy a escribir en memoria\n");
             escribir_en_memoria(direccion, a_escribir);
             break;
