@@ -21,6 +21,9 @@ extern t_list* recursos_disponibles;
 extern t_list* tabla_global_de_archivos;
 extern t_log* logger;
 
+t_list* recursos_deadlock_disponibles;
+t_list* procesos_deadlock;
+
 t_recurso_deadlock* buscar_recurso_deadlock(t_list* lista, char* nombre)
 {
     bool es_el_recurso_deadlock(t_recurso_deadlock* elemento)
@@ -115,7 +118,7 @@ t_proceso_deadlock* crear_proceso_deadlock(t_pcb* proceso)
         }
     }
     list_iterate(recursos_disponibles, agregar_solicitud_actual_recurso);
-    list_iterate(recursos_disponibles, agregar_solicitud_actual_archivo);
+    list_iterate(tabla_global_de_archivos, agregar_solicitud_actual_archivo);
 
     return proceso_deadlock;
 }
@@ -149,10 +152,77 @@ t_list* cargar_procesos_deadlock()
     return procesos_deadlock;
 }
 
+bool el_recurso_tiene_cero_instancias(t_recurso_deadlock* recurso_deadlock)
+{
+    return recurso_deadlock->instancias == 0;
+}
+bool no_tiene_recursos(t_proceso_deadlock* proceso_deadlock)
+{
+    printf("proceso_deadlock = %i\n", proceso_deadlock);
+    printf("proceso_deadlock->recursos_asignados = %i\n", proceso_deadlock->recursos_asignados);
+    return list_all_satisfy(proceso_deadlock->recursos_asignados, el_recurso_tiene_cero_instancias);
+}
+bool alcanzan_los_recursos_disponibles(t_recurso_deadlock* recurso_deadlock)
+{
+    t_recurso_deadlock* recurso_deadlock_disponible = buscar_recurso_deadlock(recursos_deadlock_disponibles, recurso_deadlock->nombre);
+    
+    return recurso_deadlock->instancias <= recurso_deadlock_disponible->instancias;
+}
+bool puedo_terminar_el_proceso(t_proceso_deadlock* proceso_deadlock)
+{
+    return list_all_satisfy(proceso_deadlock->solicitudes_actuales, alcanzan_los_recursos_disponibles);
+}
+void liberar_recurso_deadlock(t_recurso_deadlock* recurso_deadlock)
+{
+    printf("recursos_deadlock_disponibles->elements_count = %i\n", recursos_deadlock_disponibles->elements_count);
+    for(int i = 0; i < recursos_deadlock_disponibles->elements_count; i++)
+    {
+        t_recurso_deadlock* prueba = list_get(recursos_deadlock_disponibles, i);
+        printf("Recurso prueba = %s\n", prueba->nombre);
+    }
+    printf("recurso_deadlock->nombre = %s\n", recurso_deadlock->nombre);
+    t_recurso_deadlock* recurso_deadlock_disponible = buscar_recurso_deadlock(recursos_deadlock_disponibles, recurso_deadlock->nombre);
+    recurso_deadlock_disponible->instancias += recurso_deadlock->instancias;
+    printf("Termino de liberar el recurso\n");
+}
+
+void liberar_recursos_deadlock(t_list* recursos_deadlock)
+{
+    printf("liberar_recursos_deadlock: recursos_deadlock->elements_count = %i\n", list_size(recursos_deadlock));
+    //t_recurso_deadlock* prueba = list_get(recursos_deadlock, 0);
+    //printf("Recurso prueba recursos_deadlock = %s\n", prueba);
+    for(int i = 0; i < list_size(recursos_deadlock); i++)
+    {
+        printf("Busco el elemento %i que tiene que ser menor que %i\n", i, list_size(recursos_deadlock));
+        t_recurso_deadlock* recurso_deadlock = list_get(recursos_deadlock, i);
+        if(recurso_deadlock != NULL)
+        {
+            t_recurso_deadlock* recurso_deadlock_disponible = buscar_recurso_deadlock(recursos_deadlock_disponibles, recurso_deadlock->nombre);
+            recurso_deadlock_disponible->instancias += recurso_deadlock->instancias;
+            printf("Termino de liberar el recurso\n");
+        }
+    }
+    printf("Salgo del for\n");
+    return;
+}
+
+void terminar_proceso_si_se_puede(t_proceso_deadlock* proceso_deadlock)
+{
+    if(puedo_terminar_el_proceso(proceso_deadlock))
+    {
+        printf("terminar_proceso_si_se_puede: proceso_deadlock = %i\n", proceso_deadlock);
+        printf("procesos_deadlock->elements_count = %i\n", procesos_deadlock->elements_count);
+        printf("proceso_deadlock->recursos_asignados->elements_count = %i\n", proceso_deadlock->recursos_asignados->elements_count);
+        liberar_recursos_deadlock(proceso_deadlock->recursos_asignados);
+        printf("Liberé todos los recursos");
+        list_remove_element(procesos_deadlock, proceso_deadlock); //Falta liberar
+    }
+}
+
 void deteccion_de_deadlock()
 {
-    t_list* recursos_deadlock_disponibles = cargar_recursos_deadlock(recursos_disponibles);
-    t_list* procesos_deadlock = cargar_procesos_deadlock();
+    recursos_deadlock_disponibles = cargar_recursos_deadlock(recursos_disponibles);
+    procesos_deadlock = cargar_procesos_deadlock();
 
     for(int i = 0; i < procesos_deadlock->elements_count; i++)
     {
@@ -169,66 +239,7 @@ void deteccion_de_deadlock()
         }
     }
 
-    bool el_recurso_tiene_cero_instancias(t_recurso_deadlock* recurso_deadlock)
-    {
-        return recurso_deadlock->instancias == 0;
-    }
-
-    bool no_tiene_recursos(t_proceso_deadlock* proceso_deadlock)
-    {
-        printf("proceso_deadlock = %i\n", proceso_deadlock);
-        printf("proceso_deadlock->recursos_asignados = %i\n", proceso_deadlock->recursos_asignados);
-        return list_all_satisfy(proceso_deadlock->recursos_asignados, el_recurso_tiene_cero_instancias);
-    }
-
-
-    bool alcanzan_los_recursos_disponibles(t_recurso_deadlock* recurso_deadlock)
-    {
-        t_recurso_deadlock* recurso_deadlock_disponible = buscar_recurso_deadlock(recursos_deadlock_disponibles, recurso_deadlock->nombre);
-
-        
-        return recurso_deadlock->instancias <= recurso_deadlock_disponible->instancias;
-    }
-
-    bool puedo_terminar_el_proceso(t_proceso_deadlock* proceso_deadlock)
-    {
-        return list_all_satisfy(proceso_deadlock->solicitudes_actuales, alcanzan_los_recursos_disponibles);
-    }
-
-    void liberar_recurso_deadlock(t_recurso_deadlock* recurso_deadlock)
-    {
-        printf("recursos_deadlock_disponibles->elements_count = %i\n", recursos_deadlock_disponibles->elements_count);
-        for(int i = 0; i < recursos_deadlock_disponibles->elements_count; i++)
-        {
-            t_recurso_deadlock* prueba = list_get(recursos_deadlock_disponibles, i);
-            printf("Recurso prueba = %s\n", prueba->nombre);
-        }
-        printf("recurso_deadlock->nombre = %s\n", recurso_deadlock->nombre);
-        t_recurso_deadlock* recurso_deadlock_disponible = buscar_recurso_deadlock(recursos_deadlock_disponibles, recurso_deadlock->nombre);
-        recurso_deadlock_disponible->instancias += recurso_deadlock->instancias;
-    }
-
-    void liberar_recursos_deadlock(t_list* recursos_deadlock)
-    {
-        printf("liberar_recursos_deadlock: recursos_deadlock->elements_count = %i\n", recursos_deadlock->elements_count);
-        for(int i = 0; i < recursos_deadlock->elements_count; i++)
-        {
-            t_recurso_deadlock* prueba = list_get(recursos_deadlock, i);
-            printf("Recurso prueba recursos_deadlock = %s\n", prueba->nombre);
-        }
-        list_iterate(recursos_deadlock, liberar_recurso_deadlock);
-    }
-
-    void terminar_proceso_si_se_puede(t_proceso_deadlock* proceso_deadlock)
-    {
-        if(puedo_terminar_el_proceso(proceso_deadlock))
-        {
-            printf("terminar_proceso_si_se_puede: proceso_deadlock = %i\n", proceso_deadlock);
-            printf("procesos_deadlock->elements_count = %i\n", procesos_deadlock->elements_count);
-            list_iterate(proceso_deadlock->recursos_asignados, liberar_recursos_deadlock);
-            list_remove_element(procesos_deadlock, proceso_deadlock); //Falta liberar
-        }
-    }
+    
 
     //Elimino procesos que no tengan recursos asignados
     printf("procesos_deadlock->elements_count = %i\n", procesos_deadlock->elements_count);
