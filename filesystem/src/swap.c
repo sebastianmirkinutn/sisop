@@ -6,6 +6,7 @@ extern uint32_t tam_bloque;
 extern t_bitarray* swap_bitarray;
 extern t_log* logger;
 extern uint32_t tam_pagina;
+extern uint32_t retardo_acceso_bloque;
 
 void conexion_memoria(void* arg)
 {
@@ -134,6 +135,7 @@ void* leer_bloque_swap(uint32_t nro_bloque)
     void* bloque = malloc(tam_pagina);
     fseek(bloques, nro_bloque * tam_pagina, SEEK_SET);
     fread(bloque, tam_pagina, 1, bloques);
+    sleep(retardo_acceso_bloque / 1000);
     return bloque;
 }
 
@@ -141,4 +143,5 @@ void escribir_bloque_swap(uint32_t nro_bloque, void* contenido)
 {
     fseek(bloques, nro_bloque * tam_pagina, SEEK_SET);
     fwrite(contenido, tam_pagina, 1, bloques);
+    sleep(retardo_acceso_bloque / 1000);
 }

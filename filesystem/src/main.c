@@ -66,7 +66,9 @@ void conexion_kernel(void* arg)
 			printf("2\n");
 			for(uint32_t i; i < ceil(puntero / tam_bloque); i++)
 			{
+				log_info(logger, "Acceso FAT - Entrada: %i - Valor: %i", nro_bloque, fat->memory_map[nro_bloque]);
 				nro_bloque = fat->memory_map[nro_bloque]; //No validemos que se pida un dato mayor al mapeado;
+				sleep(retardo_acceso_fat / 1000);
 			}
 			printf("3\n");
 			uint32_t a_enviar = leer_dato(nro_bloque, puntero - ceil(puntero / tam_bloque) * tam_bloque);
@@ -91,6 +93,7 @@ void conexion_kernel(void* arg)
 			{
 				log_info(logger, "Acceso FAT - Entrada: %i - Valor: %i", bloque, fat->memory_map[bloque]);
 				bloque = fat->memory_map[bloque]; //No validemos que se pida un dato mayor al mapeado;
+				sleep(retardo_acceso_fat / 1000);
 			}
 			printf("Pido el dato a memoria\n");
 			enviar_operacion(arg_h->socket_memoria, PEDIDO_LECTURA);

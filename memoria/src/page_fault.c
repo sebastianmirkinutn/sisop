@@ -45,7 +45,7 @@ t_algoritmo_response* buscar_victima_fifo(void)
         }
     }
     respuesta->proceso = list_get_minimum(procesos_en_memoria, proceso_con_el_menor_el_timestamp);
-    printf("Proceso víctima = %i\n", respuesta->proceso->pid);
+    //printf("Proceso víctima = %i\n", respuesta->proceso->pid);
     respuesta->pagina = list_get_minimum(list_filter(respuesta->proceso->tabla_de_paginas, esta_presente), pagina_con_el_menor_el_timestamp);
     return respuesta;
 }
@@ -84,7 +84,7 @@ t_algoritmo_response* buscar_victima_lru(void)
         }
     }
     respuesta->proceso = list_get_minimum(procesos_en_memoria, proceso_con_el_menor_el_timestamp);
-    printf("Proceso víctima = %i\n", respuesta->proceso->pid);
+    //printf("Proceso víctima = %i\n", respuesta->proceso->pid);
     respuesta->pagina = list_get_minimum(list_filter(respuesta->proceso->tabla_de_paginas, esta_presente), pagina_con_el_menor_el_timestamp);
     return respuesta;
 }
@@ -164,9 +164,9 @@ void swap_out(int socket_swap, t_pagina* pagina, uint32_t frame,t_proceso* proce
     t_response respuesta;
     void* a_escribir = leer_pagina(pagina->frame);
     enviar_operacion(socket_swap, ESCRIBIR_SWAP);
-    printf("pagina->posicion_en_swap = %i\n", pagina->posicion_en_swap);
+    //printf("pagina->posicion_en_swap = %i\n", pagina->posicion_en_swap);
     send(socket_swap, &(pagina->posicion_en_swap), sizeof(uint32_t), NULL);
-    printf("Mandé la página (ptr = %i)\n", a_escribir);
+    //printf("Mandé la página (ptr = %i)\n", a_escribir);
     send(socket_swap, a_escribir, tam_pagina, NULL);
     respuesta = recibir_respuesta(socket_swap);
     log_info(logger, "SWAP OUT -  PID: %i - Marco: %i - Page Out: %i-%i", proceso->pid, frame, proceso->pid, pagina->pagina);

@@ -12,6 +12,7 @@ extern uint32_t retardo_acceso_fat;
 extern t_list* archivos_abiertos;
 
 extern t_fat* fat;
+extern t_log* logger;
 
 int32_t abrir_archivo(char* path_fcb, char* nombre)
 {
@@ -256,6 +257,8 @@ int32_t achicar_archivo(t_fcb* archivo, uint32_t size)
 		contBlk++;
 		if (contBlk>1) ptrBl3 = ptrBl2;
 		ptrBl2 = ptrBl1;
+		log_info(logger, "Acceso FAT - Entrada: %i - Valor: %i", ptrBl1, fat->memory_map[ptrBl1]);
+		sleep(retardo_acceso_fat / 1000);
 		ptrBl1 = fat->memory_map[ptrBl1];
 	}
 	//contBlk++;
@@ -345,7 +348,16 @@ int32_t agrandar_archivo_NuevoBloque(t_fcb* archivo, uint32_t size)
 		//----------------------------------------------------------------------------
 		printf ("Adiciona un nuevo bloque a la fat\n");
 		uint32_t nuevo_bloque = obtener_bloque_libre();
+
+
+		log_info(logger, "Acceso FAT - Entrada: %i - Valor: %i", ultimo_bloque(archivo->bloque_inicial), nuevo_bloque);
+		sleep(retardo_acceso_fat / 1000);
+
+
 		fat->memory_map[ultimo_bloque(archivo->bloque_inicial)] = nuevo_bloque;
+
+		
+
 		fat->memory_map[nuevo_bloque] = UINT32_MAX;
 		if (size < tam_bloque) 
 		{
@@ -397,6 +409,7 @@ uint32_t ultimo_bloque(uint32_t puntero)
 	while(puntero_sig != UINT32_MAX)
 	{
 		puntero_sig = fat->memory_map[puntero];
+		sleep(retardo_acceso_fat / 1000);
 		if(puntero_sig != UINT32_MAX)
 		{
 			puntero = puntero_sig;

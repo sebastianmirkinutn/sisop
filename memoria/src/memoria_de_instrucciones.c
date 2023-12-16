@@ -49,12 +49,12 @@ void conexion_cpu(void* arg)
             break;
         
         case PEDIDO_DE_FRAME:
-            printf("PEDIDO_DE_FRAME\n");
+            //printf("PEDIDO_DE_FRAME\n");
             uint32_t pagina_buscada;
             recv(arg_h->socket_cpu, &pid, sizeof(uint32_t), MSG_WAITALL);
-            printf("Recibí pid\n");
+            //printf("Recibí pid\n");
             recv(arg_h->socket_cpu, &pagina_buscada, sizeof(uint32_t), MSG_WAITALL);
-            printf("RECIBI PAGINA %i\n", pagina_buscada);
+            //printf("RECIBI PAGINA %i\n", pagina_buscada);
             int32_t marco = obtener_numero_de_marco(pid, pagina_buscada);
             enviar_frame(arg_h->socket_cpu, marco);
             break;
@@ -64,6 +64,7 @@ void conexion_cpu(void* arg)
             uint32_t lectura = leer_de_memoria(direccion);
             pagina = buscar_pagina_segun_frame(direccion->frame);
             pagina->timestamp_uso = time(NULL);
+            log_info(logger_hilo, "PID: %i - Accion: LEER - Direccion fisica: %i", buscar_pid_segun_frame(direccion->frame), (direccion->frame + direccion->offset));
             send(arg_h->socket_cpu, &lectura, sizeof(uint32_t), NULL);
             break;
 
@@ -74,11 +75,12 @@ void conexion_cpu(void* arg)
 
             pagina = buscar_pagina_segun_frame(direccion->frame);
             pagina->timestamp_uso = time(NULL);
-            printf("pagina->modificado = %i\n", pagina->modificado);
+            //printf("pagina->modificado = %i\n", pagina->modificado);
             pagina->modificado = 1;
-            printf("pagina->modificado = %i\n", pagina->modificado);
+            //printf("pagina->modificado = %i\n", pagina->modificado);
 
-            //printf("Voy a escribir en memoria\n");
+            ////printf("Voy a escribir en memoria\n");
+            log_info(logger_hilo, "PID: %i - Accion: ESCRIBIR - Direccion fisica: %i", buscar_pid_segun_frame(direccion->frame), (direccion->frame + direccion->offset));
             escribir_en_memoria(direccion, a_escribir);
             //send(arg_h->socket_cpu, &direccion, sizeof(uint32_t), NULL);
             break;
@@ -160,7 +162,7 @@ char* leer_pseudocodigo(t_log* logger, char* nombre_archivo)
 
     fclose(archivo);
 
-    printf("%s", pseudocodigo);
+    //printf("%s", pseudocodigo);
     return pseudocodigo;
 
 }
@@ -177,7 +179,7 @@ t_proceso* crear_proceso(uint32_t pid)
 void conexion_kernel(void* arg)
 {
     t_log* logger_hilo = iniciar_logger("logger_hilo.log","HILO");
-    log_info(logger_hilo, "HILO");
+    //log_info(logger_hilo, "HILO");
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     t_list* bloques_swap;
     uint32_t cant_bloques_swap, nro_pagina, nro_frame;
@@ -195,7 +197,7 @@ void conexion_kernel(void* arg)
     while(1)
     {
         op_code codigo = recibir_operacion(arg_h->socket_kernel);
-        log_info(logger_hilo,"op_code: %i", codigo);
+        //log_info(logger_hilo,"op_code: %i", codigo);
         switch (codigo)
         {
         case INICIAR_PROCESO:
@@ -213,7 +215,7 @@ void conexion_kernel(void* arg)
             sem_post(&cantidad_de_procesos);
             //log_info(logger_hilo, "SIGNAL cantidad_de_procesos");
 
-            log_info(logger, "PID: %i - Tamaño: %i", pid, size);;
+            
 
             enviar_operacion(arg_h->socket_swap, RESERVAR_BLOQUES_SWAP);
             cant_bloques_swap = size / tam_pagina;
@@ -222,12 +224,12 @@ void conexion_kernel(void* arg)
             {
                 uint32_t* elemento = malloc(sizeof(uint32_t));
                 recv(arg_h->socket_swap, elemento, sizeof(uint32_t), MSG_WAITALL);
-                printf("Recibo: %i\n", *elemento);
+                //printf("Recibo: %i\n", *elemento);
                 list_add(bloques_swap, *elemento);
             }
 
             asignar_memoria(pid, size, bloques_swap);
-
+            log_info(logger, "Crea TP PID: %i - Tamaño: %i", pid, proceso->tabla_de_paginas->elements_count);
             enviar_respuesta(arg_h->socket_kernel, OK);
 
             break;
@@ -235,14 +237,14 @@ void conexion_kernel(void* arg)
         case FINALIZAR_PROCESO:
             recv(arg_h->socket_kernel, &pid, sizeof(uint32_t), MSG_WAITALL);
             //enviar_operacion(arg_h->socket_swap, LIBERAR_BLOQUES_SWAP);
-            printf("Kernel me pid liberar el proceso %i\n", pid);
+            //printf("Kernel me pid liberar el proceso %i\n", pid);
             finalizar_proceso(pid, arg_h->socket_swap);
             break; 
 
         case OP_PAGE_FAULT:
             recv(arg_h->socket_kernel, &pid, sizeof(uint32_t), MSG_WAITALL);
             recv(arg_h->socket_kernel, &nro_pagina, sizeof(uint32_t), MSG_WAITALL);
-            printf("Voy a enviar\n");
+            //printf("Voy a enviar\n");
             proceso_a_agregar = buscar_proceso(pid);
             pagina_a_agregar = list_find(proceso_a_agregar->tabla_de_paginas, es_la_pagina);
 
@@ -250,8 +252,8 @@ void conexion_kernel(void* arg)
 
             if(nro_frame != -1)
             {
-                printf("Voy a hacer SWAP_IN: Pid: %i - Página: %i\n", pid, pagina);
-                //printf("Voy a hacer SWAP_IN: Pid: %i - Página: %i\n", proceso_a_agregar->pid, pagina_a_agregar->pagina);
+                //printf("Voy a hacer SWAP_IN: Pid: %i - Página: %i\n", pid, pagina);
+                ////printf("Voy a hacer SWAP_IN: Pid: %i - Página: %i\n", proceso_a_agregar->pid, pagina_a_agregar->pagina);
                 bitarray_set_bit(frame_bitarray, nro_frame);
                 swap_in(arg_h->socket_swap, pagina_a_agregar, nro_frame, proceso_a_agregar);
                 pagina_a_agregar->timestamp_carga = time(NULL);
@@ -262,8 +264,9 @@ void conexion_kernel(void* arg)
             else
             {
                 pagina_a_sacar = algoritmo();
-                printf("Víctima = %i\n", pagina_a_sacar->pagina->pagina);
-                printf("pagina_a_sacar->pagina->modificado = %i\n", pagina_a_sacar->pagina->modificado);
+                //printf("Víctima = %i\n", pagina_a_sacar->pagina->pagina);
+                //printf("pagina_a_sacar->pagina->modificado = %i\n", pagina_a_sacar->pagina->modificado);
+                log_info(logger_hilo, "REEMPLAZO - Marco: %i - Page Out: %i-%i - Page In: %i-%i", pagina_a_sacar->pagina->frame, pagina_a_sacar->proceso->pid, pagina_a_sacar->pagina->pagina, proceso_a_agregar->pid, pagina_a_agregar->pagina);
                 if(pagina_a_sacar->pagina->modificado == 1)
                 {
                     swap_out(arg_h->socket_swap, pagina_a_sacar->pagina, pagina_a_sacar->pagina->frame, pagina_a_sacar->proceso);
@@ -288,7 +291,7 @@ void conexion_kernel(void* arg)
 
             
             enviar_respuesta(arg_h->socket_kernel, OK);
-            printf("Envié\n");
+            //printf("Envié\n");
             break;
 
         default:
@@ -304,10 +307,10 @@ void finalizar_proceso(uint32_t pid, int socket_swap)
 {
     t_proceso* proceso = buscar_proceso(pid);
     sem_wait(&cantidad_de_procesos);
-    printf("Socket = %i\n", socket_swap);
+    //printf("Socket = %i\n", socket_swap);
     void desasignar_paginas(t_pagina* pagina)
     {
-        printf("Libero %i (p = %i)\n", pagina->pagina, pagina->presencia);
+        //printf("Libero %i (p = %i)\n", pagina->pagina, pagina->presencia);
         if(pagina->presencia == 1)
         {
             bitarray_clean_bit(frame_bitarray, pagina->frame);
@@ -328,7 +331,7 @@ void finalizar_proceso(uint32_t pid, int socket_swap)
     enviar_operacion(socket_swap, LIBERAR_BLOQUES_SWAP);
     send(socket_swap, &(proceso->tabla_de_paginas->elements_count), sizeof(proceso->tabla_de_paginas->elements_count), NULL);
     list_iterate(proceso->tabla_de_paginas, desasignar_paginas);
-
+    log_info(logger, "Destruyo TP PID: %i - Tamaño:_%i", proceso->pid, proceso->tabla_de_paginas->elements_count);
     //list_iterate(bloques_en_swap, enviar_bloques);
     //list_destroy_and_destroy_elements(bloques_en_swap, free);
 }
