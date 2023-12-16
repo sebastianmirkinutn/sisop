@@ -336,6 +336,9 @@ void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
             pthread_create(&h_sleep, NULL, &sleep_function, (void*)args_hilo);
             pthread_detach(h_sleep);
             break;
+
+        case KILL:
+            break;
         default:
             break;
     }

@@ -25,6 +25,7 @@ extern t_log* logger;
 void planificador_largo_plazo(void* arg)
 {
     t_args_hilo* arg_h = (t_args_hilo*) arg;
+    t_response respuesta;
 
     while(1)
     {
@@ -36,6 +37,16 @@ void planificador_largo_plazo(void* arg)
         sem_wait(&mutex_cola_new);
         log_info(logger,"Hice wait de la cola de new: %i",cola_new);
         t_pcb* pcb = queue_pop(cola_new);
+        
+        
+
+        op_code operacion = INICIAR_PROCESO;
+        send(arg_h->socket_memoria, &operacion, sizeof(op_code), 0);
+        send(arg_h->socket_memoria, &(pcb->pid), sizeof(int), 0);
+        enviar_mensaje(pcb->archivo_de_pseudocodigo, arg_h->socket_memoria); 
+        send(arg_h->socket_memoria, &(pcb->size), sizeof(uint32_t), 0);    
+        respuesta = recibir_respuesta(arg_h->socket_memoria);
+
         sem_post(&mutex_cola_new);
         sem_wait(&mutex_cola_ready);
         queue_push(cola_ready, pcb);
@@ -43,11 +54,6 @@ void planificador_largo_plazo(void* arg)
         log_info(logger, "PID:%i - Estado:%i", pcb->pid, pcb->estado);
         log_info(logger, "PID: %i - Estado Anterior: NEW - Estado Actual: READY", pcb->pid);
 
-        op_code operacion = INICIAR_PROCESO;
-        send(arg_h->socket_memoria, &operacion, sizeof(op_code), 0);
-        send(arg_h->socket_memoria, &(pcb->pid), sizeof(int), 0);
-        enviar_mensaje(pcb->archivo_de_pseudocodigo, arg_h->socket_memoria); 
-        send(arg_h->socket_memoria, &(pcb->size), sizeof(uint32_t), 0);    
         sem_post(&procesos_en_ready);
     }
 }

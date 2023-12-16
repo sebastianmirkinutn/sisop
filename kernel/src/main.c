@@ -251,7 +251,7 @@ int main(int argc, char* argv[])
             
 
             //send a memoria para liberar espacio
-            finalizar_proceso (atoi(c_argv[1]), conexion_cpu_dispatch, conexion_memoria, &args_hilo);
+            finalizar_proceso (atoi(c_argv[1]), conexion_cpu_dispatch, conexion_memoria, &args_hilo, conexion_cpu_interrupt);
             //send(arg_h->socket_memoria, &(pcb->pid), sizeof(int), 0); //mandamos el pid 
             //liberar_recursos_archivos(pcb);
             
@@ -407,7 +407,7 @@ void liberar_recursos_archivos(t_pcb* pcb, int socket_filesystem)
     list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
 }
 */
-void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch, int socket_memoria, void* arg_h)
+void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch, int socket_memoria, void* arg_h, int socket_cpu_interrupt)
 {
     t_pcb* pcb;
     
@@ -443,9 +443,14 @@ void finalizar_proceso (uint32_t pid, int socket_cpu_dispatch, int socket_memori
     t_queue* cola = obtener_queue(pid);
     if(execute->pid == pid)
     {
-        pcb = execute;
+        pcb = execute;        //recibir_contexto_de_ejecucion(socket_cpu_dispatch);
+        //t_motivo_desalojo motivo = recibir_motivo_desalojo(socket_cpu_dispatch);
         list_iterate(pcb->recursos_asignados, hacer_signal);
         list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
+        printf("Mando la interrupcion\n");
+        enviar_operacion(socket_cpu_interrupt, FINALIZAR_PROCESO);
+        printf("Mandé la interrupcion\n");
+        //evaluar_motivo_desalojo(logger, motivo, arg)
     }
     else if(cola != NULL)
     {

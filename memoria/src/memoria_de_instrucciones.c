@@ -228,6 +228,8 @@ void conexion_kernel(void* arg)
 
             asignar_memoria(pid, size, bloques_swap);
 
+            enviar_respuesta(arg_h->socket_kernel, OK);
+
             break;
         
         case FINALIZAR_PROCESO:
