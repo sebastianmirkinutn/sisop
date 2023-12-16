@@ -54,6 +54,8 @@ void planificador_rr(void* arg)
         motivo = recibir_motivo_desalojo(arg_h->socket_dispatch);
         evaluar_motivo_desalojo(logger, motivo, arg);
         
+
+        
     }
 }
 
@@ -132,6 +134,7 @@ void clock_interrupt(void* arg)
     sleep(arg_h->quantum / 1000);
     if (arg_h->pcb->estado == EXEC){
         //printf("Mando interrupcion por el proceso %i", arg_h->pcb->pid);
+        //log_info(logger, "PID: %i, Desalojado por fin de Quantum”, arg_h->pcb->pid);
         send(arg_h->socket_interrupt, &operacion, sizeof(op_code), 0);
     }
 }

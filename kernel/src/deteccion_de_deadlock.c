@@ -269,5 +269,25 @@ void deteccion_de_deadlock()
     else
     {
         log_info(logger, "Hay deadlock\n");
+        char* recursos_en_posesion;
+        char* nombre_recurso;
+        t_recurso_deadlock* recurso;
+        for(int i = 0; i < elementos_actuales; i++){
+            t_proceso_deadlock* proceso = list_get(procesos_deadlock, i);
+            recursos_en_posesion = list_get(proceso->recursos_asignados, 1);
+            for(int j = 1; j < proceso->recursos_asignados->elements_count; j++){
+                recurso = list_get(proceso->recursos_asignados, j);
+                strcat(recursos_en_posesion, ", ");
+                strcat(recursos_en_posesion, recurso->nombre);
+            }
+            strcat(recursos_en_posesion, "\0");
+            bool es_el_recurso(void* recurso){
+                    return ((t_recurso_deadlock*)recurso)->instancias == 1;
+            }
+            t_recurso_deadlock* recurso_asociado = list_find(proceso->solicitudes_actuales, es_el_recurso);
+            log_info(logger, "Deadlock detectado: %i - Recursos en posesion: %s - Recurso requerido: %s", proceso->pid,recursos_en_posesion,recurso_asociado->nombre);
+            free(recursos_en_posesion);
+        }
+        
     }
 }

@@ -98,7 +98,7 @@ void conexion_kernel(void* arg)
 			printf("Pido el dato a memoria\n");
 			enviar_operacion(arg_h->socket_memoria, PEDIDO_LECTURA);
 			enviar_direccion(arg_h->socket_memoria, direccion);
-			printf("Pedí el dato a memoria, ahora lo recibo\n");
+			//printf("Pedí el dato a memoria, ahora lo recibo\n");
 			recv(arg_h->socket_memoria, &a_escribir, sizeof(uint32_t), MSG_WAITALL);
 			//Escribir en el archivo
 			printf("El dato que recibí es %i\n", a_escribir);

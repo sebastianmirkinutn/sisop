@@ -26,9 +26,9 @@ void conexion_memoria(void* arg)
             printf("RESERVAR_BLOQUES_SWAP\n");
                 recv(arg_h->socket_swap, &cantidad_de_bloques, sizeof(uint32_t), MSG_WAITALL);
                 {
-                    log_info(logger, "Pide reservar %i bloques", cantidad_de_bloques);
+                    log_info(logger, "RESERVAR_BLOQUES_SWAP - Pide reservar %i bloques", cantidad_de_bloques);
                     t_list* bloques = reservar_bloques_swap(cantidad_de_bloques);
-                    log_info(logger, "Se reservaron.");
+                    log_info(logger, "RESERVAR_BLOQUES_SWAP - Se reservaron bloques.");
 
                     for(int i = 0; i < cantidad_de_bloques; i++)
                     {
@@ -36,7 +36,7 @@ void conexion_memoria(void* arg)
                         send(arg_h->socket_swap, elemento, sizeof(uint32_t), NULL);
                         printf("Envío: %i\n", *elemento);
                     }
-                    printf("Salió del for\n");
+                    //printf("Salió del for\n");
                 }
                 //enviar los bloques
                 break;
@@ -49,9 +49,10 @@ void conexion_memoria(void* arg)
                 recv(arg_h->socket_swap, bloque_swap, tam_pagina, MSG_WAITALL);
                 printf("bloque %i\n", nro_bloque);
                 escribir_bloque_swap(nro_bloque, bloque_swap);
-                printf("Ya lo escribió\n");
+                //printf("Ya lo escribió\n");
                 enviar_respuesta(arg_h->socket_swap, OK);
-                printf("Termino de ESCRIBIR_SWAP\n");
+                //printf("Termino de ESCRIBIR_SWAP\n");
+                log_info(logger,"ESCRIBIR_SWAP - Escribe bloque: %i de datos swap",nro_bloque);
                 
                 break;
 
@@ -60,7 +61,7 @@ void conexion_memoria(void* arg)
                 recv(arg_h->socket_swap, &nro_bloque, sizeof(uint32_t), MSG_WAITALL);
                 bloque_swap = leer_bloque_swap(nro_bloque);
                 send(arg_h->socket_swap, bloque_swap, tam_pagina, NULL);
-   
+                log_info(logger,"LEER_SWAP - Lee bloque de datos swap");
                 //Enviar bloque
 
                 break;
@@ -74,6 +75,7 @@ void conexion_memoria(void* arg)
                         uint32_t elemento;
                         recv(arg_h->socket_swap, &elemento, sizeof(uint32_t), MSG_WAITALL);
                         printf("Libero: %i\n", elemento);
+                        log_info(logger,"LIBERAR_BLOQUES_SWAP - se liberó:", elemento);
                         bitarray_clean_bit(swap_bitarray, elemento);
                     }
 
@@ -124,6 +126,7 @@ uint32_t buscar_bloque_swap_libre()
     {
         if(!bitarray_test_bit(swap_bitarray,i))
         {
+            log_info(logger, "BUSCAR BLOQUE SWAP LIBRE - bloque:  %i",i);
             return i;
         }
     }
@@ -136,6 +139,7 @@ void* leer_bloque_swap(uint32_t nro_bloque)
     fseek(bloques, nro_bloque * tam_pagina, SEEK_SET);
     fread(bloque, tam_pagina, 1, bloques);
     sleep(retardo_acceso_bloque / 1000);
+    log_info(logger, "LEER BLOQUE SWAP - bloque:  %i",bloque);
     return bloque;
 }
 

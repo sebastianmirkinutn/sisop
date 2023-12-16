@@ -32,7 +32,7 @@ int32_t abrir_archivo(char* path_fcb, char* nombre)
     t_fcb* fcb = leer_fcb(path_fcb, nombre);
 	list_add(archivos_abiertos, fcb);
 	tam_archivo = fcb->tam_archivo;
-	printf("aa_tam_archivo = %i\n", tam_archivo);
+	//printf("aa_tam_archivo = %i\n", tam_archivo);
     return tam_archivo;
 }
 
@@ -251,8 +251,9 @@ int32_t achicar_archivo(t_fcb* archivo, uint32_t size)
 	uint32_t ptrBl2;
 	uint32_t ptrBl3 = archivo->bloque_inicial;
 
-	printf ("TRUNCAR: ACHICAR ARCHIVO\n");
+	//printf ("TRUNCAR: ACHICAR ARCHIVO\n");
 	uint32_t contBlk=0;
+	log_info(logger, "Truncar: Achicar Archivo\n");
 	while (ptrBl1 != UINT32_MAX) {
 		contBlk++;
 		if (contBlk>1) ptrBl3 = ptrBl2;
@@ -262,18 +263,20 @@ int32_t achicar_archivo(t_fcb* archivo, uint32_t size)
 		ptrBl1 = fat->memory_map[ptrBl1];
 	}
 	//contBlk++;
-	printf ("CANTIDAD DE BLOQUES ASIGNADOS:%u\n",contBlk);
+	//printf ("CANTIDAD DE BLOQUES ASIGNADOS:%u\n",contBlk);
 	if ((size >= (tam_bloque * contBlk)) || (contBlk == 0)) {
 		printf ("\n>>> ACHICA EL ARCHIVO PERO NO DESASIGNA BLOQUES\n");
 		archivo->tam_archivo = size;
 		config_set_value(archivo->config, "TAMANIO_ARCHIVO", int_to_string(archivo->tam_archivo));
 		config_save(archivo->config);
+		log_info(logger, "Truncar: Achica el archivo pero no desasigna bloques\n");
 	}
 	else {
-		printf ("\n>>> ACHICA EL ARCHIVO PERO SI DESASIGNA BLOQUES\n");
+		//printf ("\n>>> ACHICA EL ARCHIVO PERO SI DESASIGNA BLOQUES\n");
 		fat->memory_map[ptrBl2] = 0;
 		fat->memory_map[ptrBl3] = UINT32_MAX;
 		achicar_archivo(archivo,size);
+		log_info(logger, "Truncar: Achica el archivo desasignado bloques\n");
 	}
 	return;
 }
@@ -293,6 +296,7 @@ int32_t agrandar_archivo(t_fcb* archivo, uint32_t size)
 	t_fcb* fcb;
 	//Al tamaño requerido truncar le resto el tamaño anterior del archivo que podría ser 0 si el
 	//archivo es nuevo o tener una cantidad de bytes ya asignados si fue creado previamente
+	log_info(logger, "Truncar: Agrandar Archivo\n");
 	if(archivo->bloque_inicial == UINT32_MAX)
 	{
 		//Caso (1) El archivo no existía y se le asigna el primer bloque
@@ -346,9 +350,8 @@ int32_t agrandar_archivo_NuevoBloque(t_fcb* archivo, uint32_t size)
 {
 	if (size>0) {
 		//----------------------------------------------------------------------------
-		printf ("Adiciona un nuevo bloque a la fat\n");
+		//printf ("Adiciona un nuevo bloque a la fat\n");
 		uint32_t nuevo_bloque = obtener_bloque_libre();
-
 
 		log_info(logger, "Acceso FAT - Entrada: %i - Valor: %i", ultimo_bloque(archivo->bloque_inicial), nuevo_bloque);
 		sleep(retardo_acceso_fat / 1000);
@@ -379,9 +382,11 @@ int32_t agrandar_archivo_NuevoBloque(t_fcb* archivo, uint32_t size)
 
 int32_t truncar_archivo(char* nombre, uint32_t size)
 {
-	printf("truncar_archivo\n");
+	//printf("truncar_archivo\n");
+	log_info(logger, "Truncar: Archivo\n");
 	t_fcb* archivo = buscar_archivo(nombre, archivos_abiertos);
-	printf("Encontré al archivo\n");
+	log_info(logger, "Truncar: nombre de archivo:",archivo->nombre);
+	//printf("Encontré al archivo\n");
 	//archivo->tam_archivo = size; //Faltan validaciones
 
 	if(size > archivo->tam_archivo) //Se amplía
