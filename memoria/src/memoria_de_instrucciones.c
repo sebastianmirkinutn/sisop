@@ -248,7 +248,8 @@ void conexion_kernel(void* arg)
 
             if(nro_frame != -1)
             {
-                printf("Voy a hacer SWAP_IN: Pid: %i - Página: %i\n", proceso_a_agregar->pid, pagina_a_agregar->pagina);
+                printf("Voy a hacer SWAP_IN: Pid: %i - Página: %i\n", pid, pagina);
+                //printf("Voy a hacer SWAP_IN: Pid: %i - Página: %i\n", proceso_a_agregar->pid, pagina_a_agregar->pagina);
                 bitarray_set_bit(frame_bitarray, nro_frame);
                 swap_in(arg_h->socket_swap, pagina_a_agregar, nro_frame, proceso_a_agregar);
                 pagina_a_agregar->timestamp_carga = time(NULL);

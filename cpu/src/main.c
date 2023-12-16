@@ -6,6 +6,7 @@ sem_t mutex_flag_interrupciones;
 
 int flag_interrupciones;
 int execute;
+int flag_contexto_enviado;
 t_motivo_desalojo motivo_desalojo;
 
 uint32_t valor_de_registro(char* registro)
@@ -136,6 +137,7 @@ uint8_t atender_page_fault(uint32_t pid, uint32_t pagina, uint32_t frame, int so
         execute = 0;
         registros->PC--;
         enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+        flag_contexto_enviado = 1;
         enviar_motivo_desalojo(socket_kernel_dispatch, PAGE_FAULT);
         send(socket_kernel_dispatch, &pagina, sizeof(uint32_t), NULL);
         return 1;
@@ -204,6 +206,7 @@ int main(int argc, char* argv[]){
     while(1)
     {
         execute = 1;
+        flag_contexto_enviado = 0;
 
         if(recv(socket_kernel_dispatch, &pid, sizeof(uint32_t), MSG_WAITALL) <= 0)
         {
@@ -310,6 +313,7 @@ int main(int argc, char* argv[]){
                 execute = 0;
                 uint32_t sleep_time = atoi(parametros[1]);
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+                flag_contexto_enviado = 1;
                 enviar_motivo_desalojo(socket_kernel_dispatch, SLEEP);
                 send(socket_kernel_dispatch, &sleep_time, sizeof(uint32_t), NULL);
             }
@@ -318,6 +322,7 @@ int main(int argc, char* argv[]){
             log_info(logger, "PID: %i - Ejecutando: %s - %s", pid, parametros[0], parametros[1]);
             execute = 0;
             enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+            flag_contexto_enviado = 1;
             enviar_motivo_desalojo(socket_kernel_dispatch, WAIT);
             enviar_mensaje(parametros[1],socket_kernel_dispatch);
             }
@@ -326,6 +331,7 @@ int main(int argc, char* argv[]){
             log_info(logger, "PID: %i - Ejecutando: %s - %s", pid, parametros[0], parametros[1]);
             execute = 0;
             enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+            flag_contexto_enviado = 1;
             enviar_motivo_desalojo(socket_kernel_dispatch, SIGNAL);
             enviar_mensaje(parametros[1],socket_kernel_dispatch);
             }
@@ -364,6 +370,7 @@ int main(int argc, char* argv[]){
                 log_info(logger, "PID: %i - Ejecutando: %s - %s %s", pid, parametros[0], parametros[1], parametros[2]);
                 execute = 0;
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+                flag_contexto_enviado = 1;
                 enviar_motivo_desalojo(socket_kernel_dispatch, F_OPEN);
                 enviar_mensaje(parametros[1],socket_kernel_dispatch);
                 enviar_mensaje(parametros[2],socket_kernel_dispatch);
@@ -374,6 +381,7 @@ int main(int argc, char* argv[]){
                 execute = 0;
                 log_info(logger, "AX:%i - BX:%i - CX:%i - DX:%i - PC:%i", registros->AX, registros->BX, registros->CX, registros->DX, registros->PC);
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+                flag_contexto_enviado = 1;
                 enviar_motivo_desalojo(socket_kernel_dispatch, F_CLOSE);
                 enviar_mensaje(parametros[1],socket_kernel_dispatch);
             
@@ -384,6 +392,7 @@ int main(int argc, char* argv[]){
                 execute = 0;
                 puntero = atoi(parametros[2]);
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+                flag_contexto_enviado = 1;
                 enviar_motivo_desalojo(socket_kernel_dispatch, F_SEEK);
                 enviar_mensaje(parametros[1],socket_kernel_dispatch);
                 send(socket_kernel_dispatch, &puntero, sizeof(uint32_t), NULL);
@@ -412,6 +421,7 @@ int main(int argc, char* argv[]){
                 if(!atender_page_fault(pid, floor(atof(parametros[2])/tam_pagina), direccion_fisica->frame, socket_kernel_dispatch))
                 {
                     enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+                    flag_contexto_enviado = 1;
                     enviar_motivo_desalojo(socket_kernel_dispatch, F_WRITE);
                     enviar_mensaje(parametros[1],socket_kernel_dispatch);
                     printf("Direccion = %i:%i\n", direccion_fisica->frame, direccion_fisica->offset);
@@ -424,6 +434,7 @@ int main(int argc, char* argv[]){
                 execute = 0;
                 size = atoi(parametros[2]);
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+                flag_contexto_enviado = 1;
                 enviar_motivo_desalojo(socket_kernel_dispatch, F_TRUNCATE);
                 enviar_mensaje(parametros[1],socket_kernel_dispatch);
                 send(socket_kernel_dispatch, &size, sizeof(uint32_t), NULL);
@@ -433,6 +444,7 @@ int main(int argc, char* argv[]){
                 log_info(logger, "PID: %i - Ejecutando: %s", pid, parametros[0]);
                 execute = 0;
                 enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+                flag_contexto_enviado = 1;
                 enviar_motivo_desalojo(socket_kernel_dispatch, SUCCESS);
             }
             atender_interrupciones(socket_kernel_dispatch);

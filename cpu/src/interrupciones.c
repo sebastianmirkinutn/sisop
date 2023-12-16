@@ -6,6 +6,7 @@ extern sem_t mutex_flag_interrupciones;
 
 extern int flag_interrupciones;
 extern int execute;
+extern int flag_contexto_enviado;
 int motivo;
 
 void recibir_interrupciones(void* arg)
@@ -39,11 +40,12 @@ void recibir_interrupciones(void* arg)
 void atender_interrupciones(int socket_kernel_dispatch)
 {
     sem_wait(&mutex_flag_interrupciones);
-    if(flag_interrupciones)
+    if(flag_interrupciones && !flag_contexto_enviado)
     {
         flag_interrupciones = 0; 
         sem_post(&mutex_flag_interrupciones);
         enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+        flag_contexto_enviado = 1;
         enviar_motivo_desalojo(socket_kernel_dispatch, motivo);
         execute = 0;
     }
