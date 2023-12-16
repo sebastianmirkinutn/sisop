@@ -248,7 +248,7 @@ void atender_page_fault(void *arg)
 void sleep_function(void* arg)
 {
     t_args_hilo_archivos *arg_h = (t_args_hilo_archivos *)arg;
-    sleep(arg_h->sleep_time);
+    sleep(arg_h->sleep_time / 1000);
     arg_h->execute->estado = READY;
     sem_wait(&mutex_cola_ready);
     queue_push(cola_ready, arg_h->execute);

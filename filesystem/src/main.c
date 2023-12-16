@@ -178,6 +178,8 @@ int main(int argc, char* argv[]) {
     swap_bitarray = bitarray_create_with_mode(s_bitarray, sizeof(s_bitarray), LSB_FIRST);
 
     printf("PUERTO_ESCUCHA=%s\n",puerto_escucha);
+	if(remove(path_fat) == 0)
+		printf("Se eliminó tabla FAT");
 	fat = crear_fat_mapeada(path_fat);
 	mem_hexdump(fat->memory_map, (cant_bloques_total - cant_bloques_swap) * sizeof(uint32_t));
 
