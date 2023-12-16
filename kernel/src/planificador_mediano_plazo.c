@@ -143,6 +143,7 @@ void wait_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch)
             }
             sem_wait(&(recurso->mutex_cola_blocked));
             queue_push(recurso->cola_blocked, execute);
+            deteccion_de_deadlock();
             sem_post(&(recurso->mutex_cola_blocked));
             printf("no se asigna el recurso %s\n", recurso->nombre);
         }
