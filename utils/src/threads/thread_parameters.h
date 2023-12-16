@@ -40,6 +40,7 @@ typedef struct
     t_direccion_fisica* direccion;
     t_pcb* execute;
     uint32_t pagina;
+    uint32_t sleep_time;
 }t_args_hilo_archivos;
 
 t_args_hilo_archivos* crear_parametros(t_args_hilo* src, char* nombre_archivo, t_log* logger);

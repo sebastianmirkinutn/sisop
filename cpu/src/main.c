@@ -306,7 +306,12 @@ int main(int argc, char* argv[]){
             else if(!strcmp(parametros[0], "SLEEP"))
             {
                 log_info(logger, "PID: %i - Ejecutando: %s - %s", pid, parametros[0], parametros[1]);
-                sleep(atoi(parametros[1]) / 1000);
+                //sleep(atoi(parametros[1]) / 1000);
+                execute = 0;
+                uint32_t sleep_time = atoi(parametros[1]);
+                enviar_contexto_de_ejecucion(registros, socket_kernel_dispatch);
+                enviar_motivo_desalojo(socket_kernel_dispatch, SLEEP);
+                send(socket_kernel_dispatch, &sleep_time, sizeof(uint32_t), NULL);
             }
             else if(!strcmp(parametros[0], "WAIT"))
             {

@@ -244,3 +244,16 @@ void atender_page_fault(void *arg)
         break;
     }
 }
+
+void sleep_function(void* arg)
+{
+    t_args_hilo_archivos *arg_h = (t_args_hilo_archivos *)arg;
+    sleep(arg_h->sleep_time);
+    arg_h->execute->estado = READY;
+    sem_wait(&mutex_cola_ready);
+    queue_push(cola_ready, arg_h->execute);
+    sem_post(&mutex_cola_ready);
+    log_info(logger, "PID: %i - Estado Anterior: BLOCKED - Estado Actual: READY", arg_h->execute->pid);
+    sem_post(&procesos_en_ready);
+
+}

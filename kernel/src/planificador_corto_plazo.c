@@ -178,12 +178,14 @@ void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
     t_args_hilo* arg_h = (t_args_hilo*) arg;
     uint32_t tam_archivo;
     uint32_t pagina;
+    uint32_t sleep_time;
     char* recurso;
     char* nombre_archivo;
     char* lock; //Podríamos usar un enum y traducirlo en CPU o en Kernel
     t_direccion_fisica* direccion;
     t_response respuesta;
     t_archivo* archivo;
+    t_args_hilo_archivos* args_hilo;
     uint32_t puntero;
     t_args_hilo_archivos* argumentos_file_management;
     switch (motivo)
@@ -312,7 +314,7 @@ void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
 
             pthread_t h_page_fault;
             //char* null_string = "NULL";
-            t_args_hilo_archivos* args_hilo = crear_parametros(arg_h, "", logger);
+            args_hilo = crear_parametros(arg_h, "", logger);
             args_hilo->execute = execute;
             args_hilo->pagina = pagina;
             pthread_create(&h_page_fault, NULL, &atender_page_fault, (void*)args_hilo);
@@ -320,6 +322,19 @@ void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
 
             //Pedirle a memoria que cargue la página del proceso
 
+            break;
+
+        case SLEEP:
+            recv(arg_h->socket_dispatch, &sleep_time, sizeof(uint32_t), MSG_WAITALL);
+            log_info(logger, "PID: %i - Estado Anterior: EXEC - Estado Actual: BLOCKED", execute->pid);
+            log_info(logger, "PID: %i- Bloqueado por: SLEEP", execute->pid);
+            execute->estado = BLOCKED;
+            pthread_t h_sleep;
+            args_hilo = crear_parametros(arg_h, "", logger);
+            args_hilo->execute = execute;
+            args_hilo->sleep_time = sleep_time;
+            pthread_create(&h_sleep, NULL, &sleep_function, (void*)args_hilo);
+            pthread_detach(h_sleep);
             break;
         default:
             break;

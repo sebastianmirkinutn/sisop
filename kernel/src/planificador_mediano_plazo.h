@@ -20,5 +20,6 @@ void desbloquear_procesos(char* recurso_buscado);
 void wait_recurso(t_log* logger, char* recurso_buscado, int conexion_cpu_dispatch);
 void signal_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch, t_pcb* execute);
 void atender_page_fault(void *arg);
+void sleep_function(void* arg);
 
 #endif
