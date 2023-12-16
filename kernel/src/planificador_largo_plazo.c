@@ -21,6 +21,7 @@ extern t_pcb* execute;
 extern t_list* recursos_disponibles;
 extern t_list* tabla_global_de_archivos;
 extern t_log* logger;
+extern char* algoritmo_planificacion;
 
 void planificador_largo_plazo(void* arg)
 {
@@ -50,6 +51,10 @@ void planificador_largo_plazo(void* arg)
         sem_post(&mutex_cola_new);
         sem_wait(&mutex_cola_ready);
         queue_push(cola_ready, pcb);
+        if(!strcmp(algoritmo_planificacion, "PRIORIDADES"))
+    {
+        enviar_operacion(arg_h->socket_interrupt, INTERRUPT);
+    }
         sem_post(&mutex_cola_ready);
         log_info(logger, "PID:%i - Estado:%i", pcb->pid, pcb->estado);
         log_info(logger, "PID: %i - Estado Anterior: NEW - Estado Actual: READY", pcb->pid);

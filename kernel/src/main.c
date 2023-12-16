@@ -12,7 +12,7 @@ sem_t planificacion_largo_plazo_exit;
 sem_t planificacion_corto_plazo;
 sem_t mutex_file_management;
 sem_t mutex_tabla_global_de_archivos;
-
+int socket_interrupt;
 t_queue *cola_new;
 t_queue *cola_ready;
 t_queue *cola_exit;
@@ -26,6 +26,7 @@ uint8_t planificacion_iniciada;
 
 char* ip_filesystem;
 char* puerto_filesystem;
+char* algoritmo_planificacion;
 
 uint32_t* instancias_recursos(char** instancias)
 {
@@ -133,7 +134,7 @@ int main(int argc, char* argv[])
     ip_filesystem = config_get_string_value(config, "IP_FILESYSTEM");
     puerto_filesystem = config_get_string_value(config, "PUERTO_FILESYSTEM");
     char* grado_max_de_multiprogramacion = config_get_string_value(config, "GRADO_MULTIPROGRAMACION_INI");
-    char* algoritmo_planificacion = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
+    algoritmo_planificacion = config_get_string_value(config, "ALGORITMO_PLANIFICACION");
     char** recursos = config_get_array_value(config, "RECURSOS");
     char** instancias_recursos = config_get_array_value(config, "INSTANCIAS_RECURSOS");
     int quantum = config_get_int_value(config, "QUANTUM");
@@ -142,7 +143,7 @@ int main(int argc, char* argv[])
     int conexion_cpu_interrupt = crear_conexion(logger, ip_cpu, puerto_cpu_interrupt);
     int conexion_memoria = crear_conexion(logger, ip_memoria, puerto_memoria);
     //int conexion_filesystem = crear_conexion(logger, ip_filesystem, puerto_filesystem);
-
+    socket_interrupt = conexion_cpu_interrupt;
     sem_init(&mutex_cola_new, 0, 1);
     sem_init(&mutex_cola_ready, 0, 1);
     sem_init(&mutex_cola_exit, 0, 1);

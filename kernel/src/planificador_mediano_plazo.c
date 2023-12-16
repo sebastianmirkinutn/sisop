@@ -13,12 +13,12 @@ extern sem_t planificacion_corto_plazo;
 extern t_queue *cola_ready;
 extern t_queue *cola_exit;
 extern t_queue *cola_new;
- 
+ extern char* algoritmo_planificacion;
 extern t_pcb* execute;
 extern t_list* recursos_disponibles;
 t_motivo_desalojo motivo;
 extern t_log* logger;
-
+extern int socket_interrupt;
 t_recurso* buscar_recurso(char* recurso_buscado)
 {
     bool es_el_recurso(void* arg)
@@ -128,6 +128,10 @@ void wait_recurso(t_log* logger, char* recurso_buscado, int socket_cpu_dispatch)
             sem_wait(&mutex_cola_ready);
             printf("Hice wait de la cola de ready: %i",cola_ready);
             queue_push(cola_ready, execute); // Debería ser en la primera posición.
+            if(!strcmp(algoritmo_planificacion, "PRIORIDADES"))
+                        {
+                            enviar_operacion(socket_interrupt, INTERRUPT);
+                        }
             sem_post(&mutex_cola_ready);
             sem_post(&procesos_en_ready);
         }
@@ -235,6 +239,10 @@ void atender_page_fault(void *arg)
             sem_wait(&mutex_cola_ready);
             printf("OK\n");
             queue_push(cola_ready, arg_h->execute);
+            if(!strcmp(algoritmo_planificacion, "PRIORIDADES"))
+                        {
+                            enviar_operacion(arg_h->socket_interrupt, INTERRUPT);
+                        }
             sem_post(&mutex_cola_ready);
             printf("OK\n");
             sem_post(&procesos_en_ready);

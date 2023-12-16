@@ -172,6 +172,8 @@ int main(int argc, char* argv[]) {
 
 
 	//bloques = fopen(path_bloques, "rb+");
+	if(remove(path_bloques) == 0)
+		printf("Se eliminó archivo de bloques");
 	int archivo_de_bloques = abrir_archivo_de_bloques(path_bloques);
 
 	char* s_bitarray = malloc((tam_bloque * cant_bloques_swap) / 8);
