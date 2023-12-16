@@ -223,7 +223,7 @@ void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
             printf("Me pidieron abrir de %s con lock = %i\n", nombre_archivo, de_string_a_t_lock(lock));
             //printf("lock = %s\n", lock);
             
-
+            log_info(logger, "PID: %i - Estado Anterior: EXEC - Estado Actual: BLOCKED", execute->pid);
             pthread_t h_file_open;
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger);
             argumentos_file_management->lock = de_string_a_t_lock(lock);
@@ -239,7 +239,7 @@ void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             direccion = recibir_direccion(arg_h->socket_dispatch);
             printf("F_OPEN - Mando a FS\n");
-
+            log_info(logger, "PID: %i - Estado Anterior: EXEC - Estado Actual: BLOCKED", execute->pid);
             pthread_t h_file_read;
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger);
             argumentos_file_management->direccion = direccion;
@@ -254,7 +254,7 @@ void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
             printf("F_READ\n");
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             direccion = recibir_direccion(arg_h->socket_dispatch);
-
+            log_info(logger, "PID: %i - Estado Anterior: EXEC - Estado Actual: BLOCKED", execute->pid);
             pthread_t h_file_write;
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger);
             argumentos_file_management->direccion = direccion;
@@ -285,8 +285,8 @@ void evaluar_motivo_desalojo(t_log* logger, t_motivo_desalojo motivo, void* arg)
         printf("ME LLEGO UN F_TRUCNATE\n");
             nombre_archivo = recibir_mensaje(arg_h->socket_dispatch);
             recv(arg_h->socket_dispatch, &tam_archivo, sizeof(uint32_t), MSG_WAITALL);
-            
-            pthread_t h_file_truncate;
+            log_info(logger, "PID: %i - Estado Anterior: EXEC - Estado Actual: BLOCKED", execute->pid);
+            pthread_t h_file_truncate;  
             argumentos_file_management = crear_parametros(arg_h, nombre_archivo, logger);
             argumentos_file_management->tam_archivo = tam_archivo;
             argumentos_file_management->execute = execute;

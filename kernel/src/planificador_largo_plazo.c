@@ -102,7 +102,7 @@ void finalizar_proceso_en_exit(uint32_t pid, int socket_cpu_dispatch, int socket
     list_iterate(pcb->recursos_asignados, hacer_signal);
     printf("Hice signal\n");
     printf("pcb->tabla_de_archivos_abierto->elements_count = %i\n", pcb->tabla_de_archivos_abiertos->elements_count);
-    list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
+    //list_iterate(pcb->tabla_de_archivos_abiertos, hacer_f_close);
     printf("Hice f_close\n");
     enviar_operacion(socket_memoria, FINALIZAR_PROCESO);
     send(socket_memoria, &(pcb->pid), sizeof(uint32_t), NULL);
