@@ -277,8 +277,11 @@ void deteccion_de_deadlock()
             recursos_en_posesion = list_get(proceso->recursos_asignados, 1);
             for(int j = 1; j < proceso->recursos_asignados->elements_count; j++){
                 recurso = list_get(proceso->recursos_asignados, j);
+                nombre_recurso = malloc(strlen(recurso->nombre));
+                strcpy(nombre_recurso, recurso->nombre);
                 strcat(recursos_en_posesion, ", ");
-                strcat(recursos_en_posesion, recurso->nombre);
+                strcat(recursos_en_posesion, nombre_recurso);
+                free(nombre_recurso);
             }
             strcat(recursos_en_posesion, "\0");
             bool es_el_recurso(void* recurso){
